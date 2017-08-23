@@ -1,0 +1,14 @@
+# Node
+node_modules/
+npm-debug.log
+
+# JetBrains
+.idea/
+
+# Development files
+configurations/
+dev-application/
+tmp/
+
+# Library files
+lib/

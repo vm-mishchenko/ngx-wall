@@ -1,0 +1,9 @@
+{
+  "extends": "./base.tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs"
+  },
+  "angularCompilerOptions": {
+    "skipTemplateCodegen": true
+  }
+}

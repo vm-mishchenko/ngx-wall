@@ -1,0 +1,9 @@
+{
+  "extends": "./base.tsconfig.json",
+  "compilerOptions": {
+    "module": "es2015"
+  },
+  "files": [
+    "./tmp/src-inlined/index.ts"
+  ]
+}
