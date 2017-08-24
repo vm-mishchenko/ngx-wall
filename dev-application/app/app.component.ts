@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BrickRegistry } from 'wall';
+import { BrickRegistry, IWallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -21,7 +21,27 @@ export class AppComponent {
         mode: 'readonly'
     };
 
+    wallPlan: IWallDefinition = {
+        bricks: [
+            {
+                id: '1',
+                type: 'text',
+                data: {},
+                meta: {
+                    comments: []
+                }
+            },
+            {
+                id: '2',
+                type: 'text',
+                data: {},
+                meta: {
+                    comments: []
+                }
+            }
+        ]
+    };
+
     constructor(private brickRegistry: BrickRegistry) {
-        console.log(this.brickRegistry.getAll());
     }
 }

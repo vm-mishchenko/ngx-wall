@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { IWallConfiguration, IWallPlan } from '../../wall.interfaces';
+import { IWallConfiguration, IWallDefinition } from '../../wall.interfaces';
 import { WallController } from './wall.controller';
 
 @Component({
@@ -11,21 +11,20 @@ import { WallController } from './wall.controller';
     ]
 })
 export class WallComponent implements OnInit, OnChanges {
-    @Input() plan: IWallPlan = null;
+    @Input() plan: IWallDefinition = null;
     @Input() configuration: IWallConfiguration = null;
 
     constructor(private wallController: WallController) {
     }
 
     onEditorClick(e: Event) {
-        this.wallController.onEditorClick(e);
     }
 
     ngOnInit() {
-        console.log(this.plan);
+        // initialize plan
+        this.wallController.initialize(this.plan);
     }
 
     ngOnChanges() {
-        console.log(this.configuration);
     }
 }

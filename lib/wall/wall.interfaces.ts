@@ -1,25 +1,41 @@
-// Register new brick
+// https://github.com/s-panferov/awesome-typescript-loader/issues/411
+export const awesomeTypescriptLoaderBug = true;
 
-export interface IBrickConfiguration {
+
+// Register new brick
+export interface IBrickSpecification {
     tag: string;
     component: any;
 }
 
 export interface IBrickRegistry {
-    get(tag: string): IBrickConfiguration;
+    get(tag: string): IBrickSpecification;
 
-    getAll(): IBrickConfiguration[];
+    getAll(): IBrickSpecification[];
 
-    register(configuration: IBrickConfiguration): void;
+    register(configuration: IBrickSpecification): void;
+}
+
+
+// Serialized Wall Definition
+export interface IWallDefinition {
+    bricks: IBrickDefinition[];
+}
+
+export interface IBrickDefinition {
+    id: string;
+    type: string;
+
+    // user specific data
+    data: {};
+
+    meta: {
+        comments: any[]
+    }
 }
 
 
 // Wall component
-export interface IWallPlan {
-    id: string;
-    bricks: any[];
-}
-
 export interface IWallConfiguration {
     mode: string;
 }
