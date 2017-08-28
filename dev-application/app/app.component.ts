@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BrickRegistry, IWallDefinition } from 'wall';
+import { IWallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -18,7 +18,10 @@ import { BrickRegistry, IWallDefinition } from 'wall';
 })
 export class AppComponent {
     wallConfiguration = {
-        mode: 'readonly'
+        mode: 'readonly',
+
+        onRegisterApi() {
+        }
     };
 
     wallPlan: IWallDefinition = {
@@ -26,7 +29,9 @@ export class AppComponent {
             {
                 id: '1',
                 type: 'text',
-                data: {},
+                data: {
+                    text: 'boo'
+                },
                 meta: {
                     comments: []
                 }
@@ -34,14 +39,49 @@ export class AppComponent {
             {
                 id: '2',
                 type: 'text',
-                data: {},
-                meta: {
-                    comments: []
-                }
+                data: {
+                    text: 'foo'
+                },
+                meta: {}
+            },
+            {
+                id: '3',
+                type: 'text',
+                data: {
+                    text: 'foo 2'
+                },
+                meta: {}
             }
-        ]
+        ],
+
+        layout: {
+            bricks: [
+                {
+                    type: 'brick',
+                    id: '1'
+                },
+                {
+                    type: 'group',
+                    columns: [
+                        {
+                            bricks: [
+                                {
+                                    id: '2',
+                                    type: 'brick'
+                                },
+                                {
+                                    id: '3',
+                                    type: 'brick'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
     };
 
-    constructor(private brickRegistry: BrickRegistry) {
+    constructor() {
+
     }
 }

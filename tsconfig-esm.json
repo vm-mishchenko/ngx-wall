@@ -1,9 +1,25 @@
 {
-  "extends": "./base.tsconfig.json",
   "compilerOptions": {
-    "module": "es2015"
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "lib": [
+      "es2015",
+      "dom"
+    ]
   },
   "files": [
     "./tmp/src-inlined/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }

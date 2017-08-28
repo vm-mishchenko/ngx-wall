@@ -20,6 +20,7 @@ export interface IBrickRegistry {
 // Serialized Wall Definition
 export interface IWallDefinition {
     bricks: IBrickDefinition[];
+    layout: ILayoutDefinition;
 }
 
 export interface IBrickDefinition {
@@ -30,8 +31,22 @@ export interface IBrickDefinition {
     data: {};
 
     meta: {
-        comments: any[]
+        comments?: any[]
     }
+}
+
+export interface ILayoutDefinition {
+    bricks: (ILayoutBrickDefinition | ILayoutGroupBrickDefinition)[];
+}
+
+export interface ILayoutBrickDefinition {
+    id: string;
+    type: string;
+}
+
+export interface ILayoutGroupBrickDefinition {
+    type: string;
+    columns: any[];
 }
 
 

@@ -1,8 +1,27 @@
 {
-  "extends": "./base.tsconfig.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "declaration": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "outDir": "dist",
+    "lib": [
+      "es2015",
+      "dom"
+    ]
   },
+  "files": [
+    "./lib/index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ],
   "angularCompilerOptions": {
     "skipTemplateCodegen": true
   }
