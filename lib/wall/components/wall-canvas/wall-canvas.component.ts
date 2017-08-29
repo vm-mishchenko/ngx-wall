@@ -1,21 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { WallApi } from '../wall/wall-api.service';
-import { WallCanvasController } from './wall-canvas.controller';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ILayoutDefinition } from '../../wall.interfaces';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html',
-
-    providers: [
-        WallCanvasController
-    ]
+    styleUrls: ['./wall-canvas.component.scss'],
+    providers: []
 })
+export class WallCanvasComponent {
+    @Input() layout: ILayoutDefinition;
+    @Output() canvasClick: EventEmitter<any> = new EventEmitter();
 
-export class WallCanvasComponent implements OnInit {
-    constructor(public wallApi: WallApi, private wallCanvasController: WallCanvasController) {
+    constructor() {
     }
 
-    ngOnInit() {
-        this.wallApi.addBrick();
+    onCanvasClick() {
+        this.canvasClick.next();
     }
 }

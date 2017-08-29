@@ -19,6 +19,7 @@ module.exports = {
     },
 
     externals: [
+        'rxjs/Subject',
         '@angular/core',
         '@angular/common'
     ],

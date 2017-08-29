@@ -1,9 +1,7 @@
 <h2>Wall</h2>
 
-<wall-canvas></wall-canvas>
+<wall-canvas (canvasClick)="onCanvasClick()" [layout]="wallController.wallModel.layout"></wall-canvas>
 
 <br>
 
 <wall-canvas-tree></wall-canvas-tree>
-
-<div class="editor" (click)="onEditorClick($event)"></div>

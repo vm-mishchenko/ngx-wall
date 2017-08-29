@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IWallDefinition } from 'wall';
+import { IWallDefinition, WallApi } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -20,8 +20,27 @@ export class AppComponent {
     wallConfiguration = {
         mode: 'readonly',
 
-        onRegisterApi() {
-        }
+        onRegisterApi(wallApi: WallApi) {
+            wallApi.core.events.subscribe((event: any) => {
+                console.log(event);
+            });
+
+            wallApi.features.logger.log('Use Logger plugin');
+        },
+
+        plugins: [
+            {
+                initialize: function (wallApi: WallApi) {
+
+                    // extend existing API
+                    wallApi.registerFeatureApi('logger', {
+                        log: function (message: string) {
+                            console.log(message);
+                        }
+                    });
+                }
+            }
+        ]
     };
 
     wallPlan: IWallDefinition = {
@@ -82,6 +101,5 @@ export class AppComponent {
     };
 
     constructor() {
-
     }
 }

@@ -53,4 +53,6 @@ export interface ILayoutGroupBrickDefinition {
 // Wall component
 export interface IWallConfiguration {
     mode: string;
+    onRegisterApi: Function;
+    plugins: any[]
 }

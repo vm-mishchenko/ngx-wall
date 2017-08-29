@@ -4,7 +4,6 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "noImplicitAny": true,
     "sourceMap": true,
     "declaration": true,
     "emitDecoratorMetadata": true,

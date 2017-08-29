@@ -3,6 +3,7 @@ import { IWallConfiguration, IWallDefinition } from '../../wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
 import { WallModel } from './wall.model';
+import { WallStore } from './wall-store.service';
 
 @Component({
     selector: 'wall',
@@ -11,6 +12,7 @@ import { WallModel } from './wall.model';
     providers: [
         WallApi,
         WallModel,
+        WallStore,
         WallController
     ]
 })
@@ -21,12 +23,13 @@ export class WallComponent implements OnInit, OnChanges {
     constructor(private wallController: WallController) {
     }
 
-    onEditorClick(e: Event) {
+    onCanvasClick() {
+        this.wallController.wallModel.addDefaultComponent();
     }
 
     ngOnInit() {
         // initialize plan
-        this.wallController.initialize(this.plan);
+        this.wallController.initialize(this.plan, this.configuration);
     }
 
     ngOnChanges() {

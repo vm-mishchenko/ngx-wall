@@ -1,30 +1,15 @@
 import { Injectable } from '@angular/core';
-import { WallModel } from './wall.model';
+import { WallComponentApi } from './wall-component-api.service';
 
 @Injectable()
 export class WallApi {
-    wallModel: WallModel = null;
+    core: WallComponentApi;
 
-    init(wallModel: WallModel) {
-        this.wallModel = wallModel;
-    }
+    features: any = {};
 
-    registerEvent(featureName: string, eventName: string) {
-    }
-
-    registerMethod(featureName: string, methodName: string, callBackFn: Function) {
-    }
-
-    // protected API
-    addBrick() {
-        console.log('addBrick');
-    }
-
-    moveBrick() {
-        console.log('moveBrick');
-    }
-
-    removeBrick() {
-        console.log('removeBrick');
+    registerFeatureApi(featureName: string, api: any) {
+        if (!this.features[featureName]) {
+            this.features[featureName] = api;
+        }
     }
 }
