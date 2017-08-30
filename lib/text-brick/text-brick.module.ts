@@ -6,7 +6,7 @@ import { TextBrickComponent } from './component/text-brick.component';
     imports: [],
     exports: [TextBrickComponent],
     declarations: [TextBrickComponent],
-    entryComponents: [TextBrickComponent]
+    entryComponents: [TextBrickComponent] 
 })
 export class TextBrickModule {
     constructor(private brickRegistry: BrickRegistry) {

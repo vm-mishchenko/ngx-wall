@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { WallApi } from './wall-api.service';
 import { ILayoutDefinition, IWallDefinition } from '../../wall.interfaces';
-import { WallStore } from './wall-store.service';
 import { WallCoreApi } from './wall-core-api.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
 
 /**
  * @desc Responsible for storing wall state.
@@ -12,26 +13,29 @@ import { WallCoreApi } from './wall-core-api.service';
 export class WallModel {
     layout: ILayoutDefinition;
 
-    constructor(public api: WallApi, private brickStore: WallStore) {
+    constructor(public api: WallApi,
+                private brickStore: BrickStore,
+                private layoutStore: LayoutStore) {
     }
 
     initialize(plan: IWallDefinition) {
-        this.layout = plan.layout;
-
-        this.brickStore.initialize(plan.bricks);
-
         this.api.core = new WallCoreApi(this);
 
         // protect core API from extending
         Object.seal(this.api.core);
+
+        this.brickStore.initialize(plan.bricks);
+        this.layoutStore.initialize(plan.layout);
+    }
+
+    getCanvasLayout() {
+        return this.layoutStore.getCanvasLayout();
     }
 
     getPlan(): IWallDefinition {
         return {
-            bricks: [],
-            layout: {
-                bricks: []
-            }
+            bricks: this.brickStore.serialize(),
+            layout: this.layoutStore.serialize()
         }
     }
 
@@ -39,11 +43,18 @@ export class WallModel {
         return this.brickStore.getBrickStore(brickId);
     }
 
-    addDefaultBrick() {
-        /*
-        * Add brick to BrickStore
-        * Add brick to LayoutStore
-        * Trigger event
-        * */
+    moveBrick(brickId: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
     }
+
+    addDefaultBrick() {
+        const newBrick = this.brickStore.addBrick('text');
+
+        this.layoutStore.addBrick(newBrick.id, 0, 0, 0);
+    }
+
+    removeBrick(brickId: string) {
+        this.brickStore.removeBrick(brickId);
+        this.layoutStore.removeBrick(brickId);
+    }
+
 }

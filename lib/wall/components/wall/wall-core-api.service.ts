@@ -15,6 +15,14 @@ export class WallCoreApi {
         return this.wallModel.getPlan();
     }
 
+    addDefaultBrick() {
+        return this.wallModel.addDefaultBrick();
+    }
+
+    removeBrick(brickId: string) {
+        return this.wallModel.removeBrick(brickId);
+    }
+
     getBrickStore(brickId: string) {
         return this.wallModel.getBrickStore(brickId);
     }

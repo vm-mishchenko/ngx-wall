@@ -32,7 +32,8 @@
   },
   "homepage": "https://github.com/vm-mishchenko/wall#readme",
   "peerDependencies": {
-    "@angular/core": ">=4.0.0"
+    "@angular/core": "^4.0.0",
+    "lodash": "^4.17.4"
   },
   "devDependencies": {
     "@angular/core": "4.3.4",
@@ -62,6 +63,7 @@
     "karma-jasmine": "1.1.0",
     "karma-chrome-launcher": "2.2.0",
     "jasmine-core": "2.7.0",
+    "lodash": "4.17.4",
     "source-map-explorer": "1.4.0",
     "gulp": "3.9.1",
     "gulp-inline-ng2-template": "4.0.0",

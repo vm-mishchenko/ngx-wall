@@ -1,8 +1,14 @@
 <div class="wrapper">
     <div class="panel">
+        <button (click)="addDefaultBrick()">Add default brick</button>
+
         <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
     </div>
     <div class="panel">
         <h2>Plan</h2>
+
+        <pre>
+            {{plan | json}}
+        </pre>
     </div>
 </div>

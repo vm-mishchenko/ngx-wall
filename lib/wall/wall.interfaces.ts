@@ -27,7 +27,7 @@ export interface IWallDefinition {
 
 export interface IBrickDefinition {
     id: string;
-    type: string;
+    tag: string;
 
     // user specific data
     data: {};
@@ -38,7 +38,15 @@ export interface IBrickDefinition {
 }
 
 export interface ILayoutDefinition {
-    bricks: (ILayoutBrickDefinition | ILayoutGroupBrickDefinition)[];
+    bricks: IRowLayoutDefinition[];
+}
+
+export interface IRowLayoutDefinition {
+    columns: IColumnLayoutDefinition[];
+}
+
+export interface IColumnLayoutDefinition {
+    bricks: { id: string }[]
 }
 
 export interface ILayoutBrickDefinition {
@@ -70,9 +78,13 @@ export interface IWallApi {
 export interface IWallCoreApi {
     subscribe(callback: Function): Subscription;
 
+    removeBrick(brickId: string);
+
     getPlan(): IWallDefinition;
 
     getBrickStore(): IBrickStore;
+
+    addDefaultBrick(): void;
 }
 
 export interface IWallStore {

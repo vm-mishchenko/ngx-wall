@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { IWallApi, IWallDefinition } from 'wall';
 
 @Component({
@@ -17,19 +17,14 @@ import { IWallApi, IWallDefinition } from 'wall';
     `]
 })
 export class AppComponent {
+    plan: any = null;
+
+    wallApi: IWallApi = null
+
     wallConfiguration = {
         mode: 'readonly',
 
-        onRegisterApi(wallApi: any) {
-            // subscribe to all core events
-            wallApi.core.subscribe((event: any) => {
-                console.log(event);
-            });
-
-
-            // use logger feature provided by Logger plugin
-            wallApi.features.logger.log('Use Logger plugin');
-        },
+        onRegisterApi: this.onRegisterApi.bind(this),
 
         plugins: [
             {
@@ -51,7 +46,7 @@ export class AppComponent {
         bricks: [
             {
                 id: '1',
-                type: 'text',
+                tag: 'text',
                 data: {
                     text: 'boo'
                 },
@@ -61,17 +56,9 @@ export class AppComponent {
             },
             {
                 id: '2',
-                type: 'text',
+                tag: 'text',
                 data: {
                     text: 'foo'
-                },
-                meta: {}
-            },
-            {
-                id: '3',
-                type: 'text',
-                data: {
-                    text: 'foo 2'
                 },
                 meta: {}
             }
@@ -80,21 +67,14 @@ export class AppComponent {
         layout: {
             bricks: [
                 {
-                    type: 'brick',
-                    id: '1'
-                },
-                {
-                    type: 'group',
                     columns: [
                         {
                             bricks: [
                                 {
-                                    id: '2',
-                                    type: 'brick'
+                                    id: '1'
                                 },
                                 {
-                                    id: '3',
-                                    type: 'brick'
+                                    id: '2'
                                 }
                             ]
                         }
@@ -104,6 +84,29 @@ export class AppComponent {
         }
     };
 
-    constructor() {
+    constructor(private changeDetectorRef: ChangeDetectorRef) {
+    }
+
+    onRegisterApi(wallApi: IWallApi) {
+        this.wallApi = wallApi;
+
+        // subscribe to all core events
+        wallApi.core.subscribe((event: any) => {
+            console.log(event);
+
+            // update current plan
+            this.plan = wallApi.core.getPlan();
+        });
+
+        // use logger feature provided by Logger plugin
+        wallApi.features.logger.log('Use Logger plugin');
+
+        this.plan = wallApi.core.getPlan();
+
+        this.changeDetectorRef.detectChanges();
+    }
+
+    addDefaultBrick() {
+        this.wallApi.core.addDefaultBrick();
     }
 }

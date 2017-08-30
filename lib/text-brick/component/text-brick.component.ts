@@ -3,7 +3,8 @@ import { WallApi } from '../../index';
 
 @Component({
     selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html'
+    templateUrl: './text-brick-component.component.html',
+    styleUrls: ['./text-brick-component.component.scss']
 })
 export class TextBrickComponent implements OnInit {
     @Input() id: string;
@@ -11,25 +12,15 @@ export class TextBrickComponent implements OnInit {
     constructor(private wallApi: WallApi) {
     }
 
-    state: any = {
-        text: 'bla bla bla'
-    };
+    state: any = {};
+
+    onRemove() {
+        this.wallApi.core.removeBrick(this.id);
+    }
 
     ngOnInit() {
         const store = this.wallApi.core.getBrickStore(this.id);
 
         this.state = store.get();
-
-        this.updateState();
-
-        store.set(this.state);
-
-        store.subscribe(() => {
-            console.log('State has been changed');
-        });
-    }
-
-    updateState() {
-        this.state.text = 'foo foo foo';
     }
 }

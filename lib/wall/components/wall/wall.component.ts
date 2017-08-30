@@ -3,7 +3,8 @@ import { IWallConfiguration, IWallDefinition } from '../../wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
 import { WallModel } from './wall.model';
-import { WallStore } from './wall-store.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
 
 @Component({
     selector: 'wall',
@@ -12,7 +13,8 @@ import { WallStore } from './wall-store.service';
     providers: [
         WallApi,
         WallModel,
-        WallStore,
+        BrickStore,
+        LayoutStore,
         WallController
     ]
 })
@@ -33,5 +35,20 @@ export class WallComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
+        class FooBrick {
+        }
+
+        const canvasConfig = {
+            bricks: [
+                {
+                    brick: FooBrick,
+                    id: '1'
+                },
+                {
+                    brick: FooBrick,
+                    id: '1'
+                }
+            ]
+        };
     }
 }
