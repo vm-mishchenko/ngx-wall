@@ -24,7 +24,7 @@ export class WallComponent implements OnInit, OnChanges {
     }
 
     onCanvasClick() {
-        this.wallController.wallModel.addDefaultComponent();
+        this.wallController.wallModel.addDefaultBrick();
     }
 
     ngOnInit() {
