@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IWallDefinition, WallApi } from 'wall';
+import { IWallApi, IWallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -20,19 +20,23 @@ export class AppComponent {
     wallConfiguration = {
         mode: 'readonly',
 
-        onRegisterApi(wallApi: WallApi) {
-            wallApi.core.events.subscribe((event: any) => {
+        onRegisterApi(wallApi: any) {
+            // subscribe to all core events
+            wallApi.core.subscribe((event: any) => {
                 console.log(event);
             });
 
+
+            // use logger feature provided by Logger plugin
             wallApi.features.logger.log('Use Logger plugin');
         },
 
         plugins: [
             {
-                initialize: function (wallApi: WallApi) {
+                // example of adding plugins
+                initialize: function (wallApi: IWallApi) {
 
-                    // extend existing API
+                    // register new API which will be available for other plugins
                     wallApi.registerFeatureApi('logger', {
                         log: function (message: string) {
                             console.log(message);

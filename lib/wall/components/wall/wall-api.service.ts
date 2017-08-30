@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { WallComponentApi } from './wall-component-api.service';
+
+// TODO: need to implement IWallApi interface
 
 @Injectable()
 export class WallApi {
-    core: WallComponentApi;
+    core: any; // TODO: need implement IWallCoreApi interface
 
     features: any = {};
 

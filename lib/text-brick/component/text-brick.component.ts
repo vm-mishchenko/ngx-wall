@@ -11,18 +11,25 @@ export class TextBrickComponent implements OnInit {
     constructor(private wallApi: WallApi) {
     }
 
-    state: any = {};
+    state: any = {
+        text: 'bla bla bla'
+    };
 
     ngOnInit() {
-        /*const store = this.wallApi.getBrickStore(this.id);
+        const store = this.wallApi.core.getBrickStore(this.id);
 
         this.state = store.get();
 
         this.updateState();
 
-        store.set(this.state);*/
+        store.set(this.state);
+
+        store.subscribe(() => {
+            console.log('State has been changed');
+        });
     }
 
     updateState() {
+        this.state.text = 'foo foo foo';
     }
 }

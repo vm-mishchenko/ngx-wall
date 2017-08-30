@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { WallApi } from './wall-api.service';
 import { ILayoutDefinition, IWallDefinition } from '../../wall.interfaces';
 import { WallStore } from './wall-store.service';
-import { WallComponentApi } from './wall-component-api.service';
+import { WallCoreApi } from './wall-core-api.service';
 
-/*
-* ViewModel - responsible for storing wall state
-* */
+/**
+ * @desc Responsible for storing wall state.
+ * Provide core functionality
+ * */
 @Injectable()
 export class WallModel {
     layout: ILayoutDefinition;
@@ -19,19 +20,30 @@ export class WallModel {
 
         this.brickStore.initialize(plan.bricks);
 
-        this.api.core = new WallComponentApi(this);
+        this.api.core = new WallCoreApi(this);
 
         // protect core API from extending
         Object.seal(this.api.core);
     }
 
-    getPlan() {
+    getPlan(): IWallDefinition {
         return {
-            bricks: this.brickStore.serialize()
-        };
+            bricks: [],
+            layout: {
+                bricks: []
+            }
+        }
     }
 
-    addDefaultComponent() {
-        this.api.core.events.next(this.getPlan());
+    getBrickStore(brickId: string) {
+        return this.brickStore.getBrickStore(brickId);
+    }
+
+    addDefaultBrick() {
+        /*
+        * Add brick to BrickStore
+        * Add brick to LayoutStore
+        * Trigger event
+        * */
     }
 }
