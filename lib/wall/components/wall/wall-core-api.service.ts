@@ -19,6 +19,10 @@ export class WallCoreApi {
         return this.wallModel.addDefaultBrick();
     }
 
+    addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
+        return this.wallModel.addBrick(tag, targetRowIndex, targetColumnIndex, targetColumnIndex);
+    }
+
     removeBrick(brickId: string) {
         return this.wallModel.removeBrick(brickId);
     }

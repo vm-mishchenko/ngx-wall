@@ -6,23 +6,18 @@ import {
     Input,
     OnChanges,
     OnInit,
-    Output,
-    ViewChild,
-    ViewContainerRef
+    Output
 } from '@angular/core';
 import { WallApi } from '../wall/wall-api.service';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html',
-    styleUrls: ['./wall-canvas.component.scss'],
-    providers: []
+    styleUrls: ['./wall-canvas.component.scss']
 })
 export class WallCanvasComponent implements OnInit, OnChanges {
-    @Input() layout: any;
+    @Input() layout: any = {bricks: []};
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
-
-    @ViewChild('vc', {read: ViewContainerRef}) container: ViewContainerRef;
 
     constructor(private wallApi: WallApi,
                 private injector: Injector,
@@ -30,18 +25,20 @@ export class WallCanvasComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.render();
+        // this.render();
     }
 
     ngOnChanges() {
-        this.render();
+        console.log(this.layout)
+
+        // this.render();
     }
 
     onCanvasClick() {
     }
 
     render() {
-        this.container.clear();
+        /*this.container.clear();
 
         this.layout.bricks.forEach((raw) => {
             raw.columns.forEach((column) => {
@@ -53,6 +50,6 @@ export class WallCanvasComponent implements OnInit, OnChanges {
                     componentReference.instance['id'] = brick.id;
                 });
             });
-        });
+        });*/
     }
 }

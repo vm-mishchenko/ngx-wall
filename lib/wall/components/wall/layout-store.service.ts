@@ -48,13 +48,64 @@ export class LayoutStore {
             component: this.brickRegistry.get(brickTag).component
         };
 
-        this.layout.bricks[targetRowIndex].columns[targetColumnIndex].bricks.splice(positionIndex, 0, brick);
+        let row = this.layout.bricks[targetRowIndex];
+        let column = row.columns[targetColumnIndex];
+
+        if (!column) {
+            positionIndex = 0;
+
+            const siblingColumn = row.columns[targetColumnIndex - 1];
+
+            if (siblingColumn.bricks.length === 0) {
+                column = siblingColumn;
+            } else {
+                column = row.columns[row.columns.length] = {
+                    bricks: []
+                };
+            }
+        }
+
+        column.bricks.splice(positionIndex, 0, brick);
     }
 
-    // super naive implementation
     removeBrick(brickId: string) {
-        this.layout.bricks.forEach((row) => {
-            row.columns.forEach((column) => {
+        const brickPosition = this.getBrickPositionByBrickId(brickId);
+
+        const row = this.layout.bricks[brickPosition.rowIndex];
+        const column = row.columns[brickPosition.columnIndex];
+
+        // remove brick
+        column.bricks.splice(brickPosition.brickIndex, 1);
+
+        // remove column if there are no bricks inside
+        if (column.bricks.length === 0) {
+            row.columns.splice(brickPosition.columnIndex, 1);
+
+            // remove row if there are no columns inside
+            if (row.columns.length === 0) {
+                this.layout.bricks.splice(brickPosition.brickIndex, 1);
+
+                // if there are no rows, create default
+                this.layout.bricks.push({
+                    columns: [{
+                        bricks: []
+                    }]
+                });
+            }
+        }
+    }
+
+    private getBrickPositionByBrickId(brickId: string) {
+        const brickPosition = {
+            rowIndex: null,
+            columnIndex: null,
+            brickIndex: null
+        };
+
+        let i = 0;
+
+        while (brickPosition.rowIndex === null && i < this.layout.bricks.length) {
+            this.layout.bricks[i].columns.forEach((column, columnIndex) => {
                 let brickIndex = null;
 
                 column.bricks.forEach((brick, index) => {
@@ -64,9 +115,15 @@ export class LayoutStore {
                 });
 
                 if (brickIndex || brickIndex === 0) {
-                    column.bricks.splice(brickIndex, 1);
+                    brickPosition.rowIndex = i;
+                    brickPosition.columnIndex = columnIndex;
+                    brickPosition.brickIndex = brickIndex;
                 }
-            })
-        })
+            });
+
+            i++;
+        }
+
+        return brickPosition;
     }
 }

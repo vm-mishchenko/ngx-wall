@@ -47,9 +47,13 @@ export class WallModel {
     }
 
     addDefaultBrick() {
-        const newBrick = this.brickStore.addBrick('text');
+        this.addBrick('text', 0, 0, 0);
+    }
 
-        this.layoutStore.addBrick(newBrick.id, 0, 0, 0);
+    addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
+        const newBrick = this.brickStore.addBrick(tag);
+
+        this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
     }
 
     removeBrick(brickId: string) {

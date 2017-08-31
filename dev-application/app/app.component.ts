@@ -19,7 +19,7 @@ import { IWallApi, IWallDefinition } from 'wall';
 export class AppComponent {
     plan: any = null;
 
-    wallApi: IWallApi = null
+    wallApi: IWallApi = null;
 
     wallConfiguration = {
         mode: 'readonly',
@@ -108,5 +108,9 @@ export class AppComponent {
 
     addDefaultBrick() {
         this.wallApi.core.addDefaultBrick();
+    }
+
+    addBrickToSeparateColumn() {
+        this.wallApi.core.addBrick('text', 0, 1, 0);
     }
 }
