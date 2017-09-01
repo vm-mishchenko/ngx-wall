@@ -1,3 +1,5 @@
-<div class="editor">
+<div #editor class="editor" (click)="onEditorClick($event)">
     <wall-canvas-row [row]="row" *ngFor="let row of layout.bricks"></wall-canvas-row>
+
+    <div #expander class="expander"></div>
 </div>

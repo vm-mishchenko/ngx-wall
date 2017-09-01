@@ -20,7 +20,11 @@ export class WallCoreApi {
     }
 
     addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
-        return this.wallModel.addBrick(tag, targetRowIndex, targetColumnIndex, targetColumnIndex);
+        return this.wallModel.addBrick(tag, targetRowIndex, targetColumnIndex, positionIndex);
+    }
+
+    addBrickAfter(brickId: string, tag: string) {
+        return this.wallModel.addBrickAfter(brickId, tag);
     }
 
     removeBrick(brickId: string) {

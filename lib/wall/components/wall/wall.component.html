@@ -1,3 +1,6 @@
 <h2>Wall</h2>
 
-<wall-canvas (canvasClick)="onCanvasClick()" [layout]="wallController.wallModel.getCanvasLayout()"></wall-canvas>
+<wall-canvas (canvasClick)="onCanvasClick()"
+             [focusedBrickId]="wallController.wallModel.focusedBrickId"
+             [layout]="wallController.wallModel.canvasLayout">
+</wall-canvas>

@@ -1,3 +1,21 @@
-.brick {
-  border: 1px solid silver;
+:host(text-brick) {
+  display: block;
+}
+
+.editor {
+  word-break: break-all;
+  padding: 8px 10px;
+
+  transition: background 0.5s ease;
+
+  border-radius: 2px;
+
+  &:hover {
+    background: #f2f2f2;
+  }
+
+  &:focus {
+    outline: none;
+    background: #f2f2f2;
+  }
 }

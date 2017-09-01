@@ -10,11 +10,15 @@ class BrickItemStore {
     }
 
     get() {
-        return this.brick.data;
+        return this.cloneObject(this.brick.data);
     }
 
     set(data: any) {
         this.brick.data = data;
+    }
+
+    private cloneObject(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 }
 
@@ -55,10 +59,18 @@ export class BrickStore {
         this.bricks.splice(brickIndex, 1);
     }
 
-    getBrickTagById(brickId: string) {
-        const brick = this.bricks.find((brick) => {
+    getBricksCount() {
+        return this.bricks.length;
+    }
+
+    getBrickById(brickId: string) {
+        return this.bricks.find((brick) => {
             return brick.id === brickId;
         });
+    }
+
+    getBrickTagById(brickId: string) {
+        const brick = this.getBrickById(brickId);
 
         return brick.tag;
     }

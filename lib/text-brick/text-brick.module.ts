@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { BrickRegistry } from '../wall';
 import { TextBrickComponent } from './component/text-brick.component';
+import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
-    imports: [],
+    imports: [
+        BrowserModule,
+    ],
     exports: [TextBrickComponent],
     declarations: [TextBrickComponent],
-    entryComponents: [TextBrickComponent] 
+    entryComponents: [TextBrickComponent]
 })
 export class TextBrickModule {
     constructor(private brickRegistry: BrickRegistry) {

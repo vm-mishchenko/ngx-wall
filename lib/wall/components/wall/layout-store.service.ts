@@ -11,12 +11,18 @@ export class LayoutStore {
 
     layout: ILayoutDefinition = null;
 
+    canvasLayout: any = {
+        bricks: []
+    };
+
     initialize(layout: ILayoutDefinition) {
         this.layout = layout;
+
+        this.updateCanvasLayout();
     }
 
-    getCanvasLayout() {
-        return {
+    private updateCanvasLayout() {
+        this.canvasLayout = {
             bricks: this.layout.bricks.map((row) => {
                 return {
                     columns: row.columns.map((column) => {
@@ -41,13 +47,6 @@ export class LayoutStore {
     }
 
     addBrick(brickId: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
-        const brickTag = this.brickStore.getBrickTagById(brickId);
-
-        const brick = {
-            id: brickId,
-            component: this.brickRegistry.get(brickTag).component
-        };
-
         let row = this.layout.bricks[targetRowIndex];
         let column = row.columns[targetColumnIndex];
 
@@ -65,7 +64,36 @@ export class LayoutStore {
             }
         }
 
+        const brick = {
+            id: brickId
+        };
+
         column.bricks.splice(positionIndex, 0, brick);
+
+        this.updateCanvasLayout();
+    }
+
+    // TODO: create brick in  new row
+    addBrickAfter(siblingBrickId: string, brickId: string) {
+        const brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
+
+        this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
+    }
+
+    addBrickAtTheEnd(brickId: string) {
+        this.layout.bricks.push({
+            columns: [
+                {
+                    bricks: [
+                        {
+                            id: brickId
+                        }
+                    ]
+                }
+            ]
+        });
+
+        this.updateCanvasLayout();
     }
 
     removeBrick(brickId: string) {
@@ -83,14 +111,54 @@ export class LayoutStore {
 
             // remove row if there are no columns inside
             if (row.columns.length === 0) {
-                this.layout.bricks.splice(brickPosition.brickIndex, 1);
+                this.layout.bricks.splice(brickPosition.rowIndex, 1);
 
                 // if there are no rows, create default
-                this.layout.bricks.push({
-                    columns: [{
-                        bricks: []
-                    }]
-                });
+                if (this.layout.bricks.length === 0) {
+                    this.layout.bricks.push({
+                        columns: [{
+                            bricks: []
+                        }]
+                    });
+                }
+            }
+        }
+
+        this.updateCanvasLayout();
+    }
+
+    getLastBrickId() {
+        const lastRow = this.layout.bricks[this.layout.bricks.length - 1];
+
+        if (lastRow.columns.length === 1) {
+            const lastBrick = lastRow.columns[0].bricks[lastRow.columns[0].bricks.length - 1];
+
+            return lastBrick && lastBrick.id;
+        } else {
+            return null;
+        }
+    }
+
+    getBeforeBrickId(brickId: string) {
+        const brickPosition = this.getBrickPositionByBrickId(brickId);
+
+        if (brickPosition.brickIndex > 0) {
+            // take previous brick id in the same column
+            return this.layout.bricks[brickPosition.rowIndex].columns[brickPosition.columnIndex].bricks[brickPosition.brickIndex - 1].id;
+        } else {
+            if (brickPosition.rowIndex > 0) {
+                // try to take last brick id in previous row if there are only one column
+                const previousRow = this.layout.bricks[brickPosition.rowIndex - 1];
+
+                if (previousRow.columns.length === 1) {
+                    const onlySingleColumn = previousRow.columns[0];
+
+                    return onlySingleColumn.bricks[onlySingleColumn.bricks.length - 1].id;
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
             }
         }
     }

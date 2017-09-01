@@ -7,6 +7,7 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
+import { WallCanvasApi } from '../../wall-canvas.api';
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -19,7 +20,8 @@ export class WallCanvasBrickComponent implements OnInit {
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
     constructor(private injector: Injector,
-                private resolver: ComponentFactoryResolver) {
+                private resolver: ComponentFactoryResolver,
+                private wallCanvasApi: WallCanvasApi) {
     }
 
     ngOnInit() {
@@ -28,5 +30,7 @@ export class WallCanvasBrickComponent implements OnInit {
         const componentReference = this.container.createComponent(factory, null, this.injector);
 
         componentReference.instance['id'] = this.brick.id;
+
+        this.wallCanvasApi.core.registerBrickInstance(this.brick.id, componentReference.instance);
     }
 }

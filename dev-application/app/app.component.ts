@@ -38,6 +38,15 @@ export class AppComponent {
                         }
                     });
                 }
+            },
+            {
+                // example of adding plugins
+                initialize: function (wallApi: IWallApi) {
+                    // register new API which will be available for other plugins
+                    wallApi.core.subscribe((event: any) => {
+                        console.log(event);
+                    });
+                }
             }
         ]
     };
@@ -48,7 +57,7 @@ export class AppComponent {
                 id: '1',
                 tag: 'text',
                 data: {
-                    text: 'boo'
+                    text: 'First text block'
                 },
                 meta: {
                     comments: []
@@ -58,7 +67,7 @@ export class AppComponent {
                 id: '2',
                 tag: 'text',
                 data: {
-                    text: 'foo'
+                    text: 'Second text block'
                 },
                 meta: {}
             }
@@ -72,7 +81,15 @@ export class AppComponent {
                             bricks: [
                                 {
                                     id: '1'
-                                },
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    columns: [
+                        {
+                            bricks: [
                                 {
                                     id: '2'
                                 }
@@ -92,8 +109,6 @@ export class AppComponent {
 
         // subscribe to all core events
         wallApi.core.subscribe((event: any) => {
-            console.log(event);
-
             // update current plan
             this.plan = wallApi.core.getPlan();
         });
@@ -104,13 +119,5 @@ export class AppComponent {
         this.plan = wallApi.core.getPlan();
 
         this.changeDetectorRef.detectChanges();
-    }
-
-    addDefaultBrick() {
-        this.wallApi.core.addDefaultBrick();
-    }
-
-    addBrickToSeparateColumn() {
-        this.wallApi.core.addBrick('text', 0, 1, 0);
     }
 }
