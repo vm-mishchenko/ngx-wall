@@ -1,7 +1,7 @@
-import { Subject } from 'rxjs/Subject';
-import { WallModel } from './wall.model';
-import { IWallDefinition } from '../../wall.interfaces';
-import { Subscription } from 'rxjs/Subscription';
+import {Subject} from 'rxjs/Subject';
+import {WallModel} from './wall.model';
+import {IWallDefinition} from '../../wall.interfaces';
+import {Subscription} from 'rxjs/Subscription';
 
 // TODO: need to implement IWallCoreApi interface
 
@@ -23,8 +23,20 @@ export class WallCoreApi {
         return this.wallModel.addBrick(tag, targetRowIndex, targetColumnIndex, positionIndex);
     }
 
-    addBrickAfter(brickId: string, tag: string) {
-        return this.wallModel.addBrickAfter(brickId, tag);
+    addBrickToNewRow(tag: string, targetRowIndex: number) {
+        return this.wallModel.addBrickToNewRow(tag, targetRowIndex);
+    }
+
+    addBrickToNewColumn(tag: string, targetRowIndex: number, targetColumnIndex: number) {
+        return this.wallModel.addBrickToNewColumn(tag, targetRowIndex, targetColumnIndex);
+    }
+
+    addBrickAfterInSameColumn(brickId: string, tag: string) {
+        return this.wallModel.addBrickAfterInSameColumn(brickId, tag);
+    }
+
+    addBrickAfterInNewRow(brickId: string, tag: string) {
+        return this.wallModel.addBrickAfterInNewRow(brickId, tag);
     }
 
     removeBrick(brickId: string) {

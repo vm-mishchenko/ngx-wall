@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
-import { IWallApi, IWallDefinition } from 'wall';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {IWallApi, IWallDefinition} from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -119,5 +119,13 @@ export class AppComponent {
         this.plan = wallApi.core.getPlan();
 
         this.changeDetectorRef.detectChanges();
+    }
+
+    onNewRowIndexOne() {
+        this.wallApi.core.addBrickToNewRow('text', 1);
+    }
+
+    onNewColumnIndexOneInRowZero() {
+        this.wallApi.core.addBrickToNewColumn('text', 0, 23);
     }
 }

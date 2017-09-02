@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ILayoutDefinition } from '../../wall.interfaces';
-import { BrickRegistry } from '../../registry/brick-registry.service';
-import { BrickStore } from './brick-store.service';
+import {Injectable} from '@angular/core';
+import {ILayoutDefinition} from '../../wall.interfaces';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {BrickStore} from './brick-store.service';
 
 @Injectable()
 export class LayoutStore {
@@ -50,7 +50,10 @@ export class LayoutStore {
         let row = this.layout.bricks[targetRowIndex];
         let column = row.columns[targetColumnIndex];
 
-        if (!column) {
+
+        // column should already exist,  it's wall.model responsibility to check
+
+        /*if (!column) {
             positionIndex = 0;
 
             const siblingColumn = row.columns[targetColumnIndex - 1];
@@ -62,7 +65,7 @@ export class LayoutStore {
                     bricks: []
                 };
             }
-        }
+        }*/
 
         const brick = {
             id: brickId
@@ -73,27 +76,22 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
-    // TODO: create brick in  new row
-    addBrickAfter(siblingBrickId: string, brickId: string) {
+    addBrickToNewRow(brickId: string, targetRowIndex: number) {
+        this.createNewRow(targetRowIndex);
+
+        this.addBrick(brickId, targetRowIndex, 0, 0);
+    }
+
+    addBrickToNewColumn(brickId: string, targetRowIndex: number, targetColumnIndex: number) {
+        this.createNewColumn(targetRowIndex, targetColumnIndex);
+
+        this.addBrick(brickId, targetRowIndex, targetColumnIndex, 0);
+    }
+
+    addBrickAfterInSameColumn(siblingBrickId: string, brickId: string) {
         const brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
 
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
-    }
-
-    addBrickAtTheEnd(brickId: string) {
-        this.layout.bricks.push({
-            columns: [
-                {
-                    bricks: [
-                        {
-                            id: brickId
-                        }
-                    ]
-                }
-            ]
-        });
-
-        this.updateCanvasLayout();
     }
 
     removeBrick(brickId: string) {
@@ -127,6 +125,23 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
+    /*Helpers*/
+    isRowExists(targetRowIndex: number): boolean {
+        return Boolean(this.layout.bricks[targetRowIndex]);
+    }
+
+    isColumnExist(targetRowIndex: number, targetColumnIndex: number): boolean {
+        return this.isRowExists(targetRowIndex) && Boolean(this.layout.bricks[targetRowIndex].columns[targetColumnIndex]);
+    }
+
+    getRowCount() {
+        return this.layout.bricks.length;
+    }
+
+    getColumnCount(targetRowIndex: number): number {
+        return this.layout.bricks[targetRowIndex].columns.length;
+    }
+
     getLastBrickId() {
         const lastRow = this.layout.bricks[this.layout.bricks.length - 1];
 
@@ -139,6 +154,9 @@ export class LayoutStore {
         }
     }
 
+    /*
+    * return previous brick in the same column or try to return last brick id in previous row if there are only one column
+    * */
     getBeforeBrickId(brickId: string) {
         const brickPosition = this.getBrickPositionByBrickId(brickId);
 
@@ -163,7 +181,7 @@ export class LayoutStore {
         }
     }
 
-    private getBrickPositionByBrickId(brickId: string) {
+    getBrickPositionByBrickId(brickId: string) {
         const brickPosition = {
             rowIndex: null,
             columnIndex: null,
@@ -193,5 +211,27 @@ export class LayoutStore {
         }
 
         return brickPosition;
+    }
+
+    private createNewRow(targetRowIndex: number): void {
+        this.layout.bricks.splice(targetRowIndex, 0, this.initializeNewRow());
+    }
+
+    private createNewColumn(targetRowIndex: number, targetColumnIndex: number): void {
+        this.layout.bricks[targetRowIndex].columns.splice(targetColumnIndex, 0, this.initializeNewColumn());
+    }
+
+    private initializeNewRow() {
+        return {
+            columns: [
+                this.initializeNewColumn()
+            ]
+        };
+    }
+
+    private initializeNewColumn() {
+        return {
+            bricks: []
+        }
     }
 }

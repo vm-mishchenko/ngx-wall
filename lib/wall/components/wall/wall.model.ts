@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { WallApi } from './wall-api.service';
-import { IWallDefinition } from '../../wall.interfaces';
-import { WallCoreApi } from './wall-core-api.service';
-import { BrickStore } from './brick-store.service';
-import { LayoutStore } from './layout-store.service';
-import { AddBrickEvent } from './events/add-brick.event';
-import { RemoveBrickEvent } from './events/remove-brick.event';
+import {Injectable} from '@angular/core';
+import {WallApi} from './wall-api.service';
+import {IWallDefinition} from '../../wall.interfaces';
+import {WallCoreApi} from './wall-core-api.service';
+import {BrickStore} from './brick-store.service';
+import {LayoutStore} from './layout-store.service';
+import {AddBrickEvent} from './events/add-brick.event';
+import {RemoveBrickEvent} from './events/remove-brick.event';
 
 /**
  * @desc Responsible for storing wall state.
@@ -45,43 +45,86 @@ export class WallModel {
         return this.brickStore.getBrickStore(brickId);
     }
 
+    /* Add text brick to the bottom of wall in the new row */
     addDefaultBrick() {
         this.addBrickAtTheEnd('text');
     }
 
+    /* Add brick to existing row and existing column */
     addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
+        if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
+            const newBrick = this.brickStore.addBrick(tag);
+
+            this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
+
+            this.focusOnBrickId(newBrick.id);
+
+            this.api.core.events.next(new AddBrickEvent());
+        }
+    }
+
+    /* Create new row and and put brick to it */
+    addBrickToNewRow(tag: string, targetRowIndex: number) {
+        const totalRowCount = this.layoutStore.getRowCount();
+        const lastRowIndex = totalRowCount - 1;
+
+        // user cannot create row in position more than last row index + 1
+        if (targetRowIndex > (lastRowIndex + 1)) {
+            targetRowIndex = lastRowIndex + 1;
+        }
+
         const newBrick = this.brickStore.addBrick(tag);
 
-        this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
+        this.layoutStore.addBrickToNewRow(newBrick.id, targetRowIndex);
 
         this.focusOnBrickId(newBrick.id);
 
         this.api.core.events.next(new AddBrickEvent());
     }
 
-    addBrickAfter(brickId: string, tag: string) {
-        const newBrick = this.brickStore.addBrick(tag);
+    /* Create new column in existing row and put brick to it */
+    addBrickToNewColumn(tag: string, targetRowIndex: number, targetColumnIndex: number) {
+        if (this.layoutStore.isRowExists(targetRowIndex)) {
+            const totalColumnCount = this.layoutStore.getColumnCount(targetRowIndex);
+            const lastColumnIndex = totalColumnCount - 1;
 
-        this.layoutStore.addBrickAfter(brickId, newBrick.id);
+            // user cannot create column in position more than last column index + 1
+            if (targetColumnIndex > lastColumnIndex + 1) {
+                targetColumnIndex = lastColumnIndex + 1;
+            }
 
-        this.focusOnBrickId(newBrick.id);
+            const newBrick = this.brickStore.addBrick(tag);
 
-        this.api.core.events.next(new AddBrickEvent());
+            this.layoutStore.addBrickToNewColumn(newBrick.id, targetRowIndex, targetColumnIndex);
+
+            this.focusOnBrickId(newBrick.id);
+
+            this.api.core.events.next(new AddBrickEvent());
+        }
     }
 
+    addBrickAfterInSameColumn(brickId: string, tag: string) {
+        const brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
+
+        this.addBrick(tag, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
+    }
+
+    addBrickAfterInNewRow(brickId: string, tag: string) {
+        const brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
+
+        this.addBrickToNewRow(tag, brickPosition.rowIndex + 1);
+    }
+
+    /*
+    * Add brick to the new row in the bottom of whole wall
+    * */
     addBrickAtTheEnd(tag: string) {
         const isLastBrickEmptyText = this.isLastBrickEmptyText();
 
         if (tag === 'text' && isLastBrickEmptyText) {
             this.focusOnBrickId(isLastBrickEmptyText.id);
         } else {
-            const newBrick = this.brickStore.addBrick(tag);
-
-            this.layoutStore.addBrickAtTheEnd(newBrick.id);
-
-            this.focusOnBrickId(newBrick.id);
-
-            this.api.core.events.next(new AddBrickEvent());
+            this.addBrickToNewRow(tag, this.layoutStore.getRowCount());
         }
     }
 

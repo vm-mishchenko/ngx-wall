@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { WallApi } from '../../index';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {WallApi} from '../../index';
 
 @Component({
     selector: 'text-brick',
@@ -42,7 +42,7 @@ export class TextBrickComponent implements OnInit {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            this.wallApi.core.addBrickAfter(this.id, 'text');
+            this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
         }
 
         if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {

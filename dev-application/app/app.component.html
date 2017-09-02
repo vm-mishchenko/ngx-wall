@@ -1,5 +1,8 @@
 <div class="wrapper">
     <div class="panel">
+        <button (click)="onNewRowIndexOne()">Add new row with index 1</button>
+        <button (click)="onNewColumnIndexOneInRowZero()">Add new column with index 1 in row 0</button>
+
         <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
     </div>
     <div class="panel">
