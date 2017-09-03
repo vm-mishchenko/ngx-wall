@@ -1,14 +1,16 @@
-:host(text-brick) {
+:host(header-brick) {
   display: block;
 }
 
-.editor {
+h1 {
   word-break: break-all;
-  padding: 8px 10px;
 
-  transition: background 0.5s ease;
+  padding: 8px 10px;
+  margin: 20px 0 0 0;
 
   border-radius: 2px;
+
+  transition: background 0.5s ease;
 
   &:hover {
     background: #fafafa;

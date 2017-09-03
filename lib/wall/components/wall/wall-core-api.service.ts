@@ -15,6 +15,10 @@ export class WallCoreApi {
         return this.wallModel.getPlan();
     }
 
+    turnBrickInto(brickId: string, newTag: string) {
+        return this.wallModel.turnBrickInto(brickId, newTag);
+    }
+
     addDefaultBrick() {
         return this.wallModel.addDefaultBrick();
     }

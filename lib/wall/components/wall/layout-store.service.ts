@@ -21,7 +21,7 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
-    private updateCanvasLayout() {
+    updateCanvasLayout() {
         this.canvasLayout = {
             bricks: this.layout.bricks.map((row) => {
                 return {

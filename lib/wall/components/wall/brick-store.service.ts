@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { IBrickDefinition } from '../../wall.interfaces';
+import {Injectable} from '@angular/core';
+import {IBrickDefinition} from '../../wall.interfaces';
 
 // TODO: should implement IWallStore interface
 
@@ -57,6 +57,13 @@ export class BrickStore {
         });
 
         this.bricks.splice(brickIndex, 1);
+    }
+
+    turnBrickInto(brickId: string, newTag: string) {
+        const brick = this.getBrickById(brickId);
+
+        brick.tag = newTag;
+        brick.data = {};
     }
 
     getBricksCount() {

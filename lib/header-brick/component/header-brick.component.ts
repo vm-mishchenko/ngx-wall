@@ -2,11 +2,11 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {WallApi} from '../../index';
 
 @Component({
-    selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html',
-    styleUrls: ['./text-brick-component.component.scss']
+    selector: 'header-brick',
+    templateUrl: './header-brick-component.component.html',
+    styleUrls: ['./header-brick-component.component.scss']
 })
-export class TextBrickComponent implements OnInit {
+export class HeaderBrickComponent implements OnInit {
     @Input() id: string;
 
     @ViewChild('editor') editor: ElementRef;
@@ -42,11 +42,7 @@ export class TextBrickComponent implements OnInit {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.state.text === '/h' || this.state.text === '/header') {
-                this.wallApi.core.turnBrickInto(this.id, 'header');
-            } else {
-                this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
-            }
+            this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
         }
 
         if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {

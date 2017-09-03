@@ -45,6 +45,13 @@ export class WallModel {
         return this.brickStore.getBrickStore(brickId);
     }
 
+    turnBrickInto(brickId: string, newTag: string) {
+        this.brickStore.turnBrickInto(brickId, newTag);
+        this.layoutStore.updateCanvasLayout();
+
+        this.focusOnBrickId(brickId);
+    }
+
     /* Add text brick to the bottom of wall in the new row */
     addDefaultBrick() {
         this.addBrickAtTheEnd('text');
