@@ -6,16 +6,7 @@
   word-break: break-all;
   padding: 8px 10px;
 
-  transition: background 0.5s ease;
-
-  border-radius: 2px;
-
-  &:hover {
-    background: #fafafa;
-  }
-
   &:focus {
     outline: none;
-    background: #fafafa;
   }
 }

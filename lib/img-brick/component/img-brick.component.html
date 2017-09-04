@@ -1,0 +1,7 @@
+<div *ngIf="state.src">
+    <img [src]="state.src" alt="">
+</div>
+
+<div>
+    <input #src (keydown)="onKeyPress($event)" placeholder="Image src">
+</div>

@@ -52,46 +52,90 @@ export class AppComponent {
     };
 
     wallPlan: IWallDefinition = {
-        bricks: [
+        "bricks": [
             {
-                id: '1',
-                tag: 'text',
-                data: {
-                    text: 'First text block'
+                "id": "1",
+                "tag": "header",
+                "data": {
+                    "text": "Text brick"
                 },
-                meta: {
-                    comments: []
+                "meta": {
+                    "comments": []
                 }
             },
             {
-                id: '2',
-                tag: 'text',
-                data: {
-                    text: 'Second text block'
+                "id": "2",
+                "tag": "text",
+                "data": {
+                    "text": "Second text block"
                 },
-                meta: {}
+                "meta": {}
+            },
+            {
+                "id": "63c7741c-f95d-eb6c-8126-5cec5d55c6be",
+                "tag": "img",
+                "data": {},
+                "meta": {}
+            },
+            {
+                "id": "879f3d37-a4a6-1d67-cb56-2900bae5d8ff",
+                "tag": "text",
+                "data": {},
+                "meta": {}
+            },
+            {
+                "id": "27f357aa-f6e6-154e-c5de-8a95c04cdc49",
+                "tag": "header",
+                "data": {
+                    "text": "Image brick"
+                },
+                "meta": {}
             }
         ],
-
-        layout: {
-            bricks: [
+        "layout": {
+            "bricks": [
                 {
-                    columns: [
+                    "columns": [
                         {
-                            bricks: [
+                            "bricks": [
                                 {
-                                    id: '1'
+                                    "id": "1"
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    columns: [
+                    "columns": [
                         {
-                            bricks: [
+                            "bricks": [
                                 {
-                                    id: '2'
+                                    "id": "2"
+                                },
+                                {
+                                    "id": "27f357aa-f6e6-154e-c5de-8a95c04cdc49"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "63c7741c-f95d-eb6c-8126-5cec5d55c6be"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "879f3d37-a4a6-1d67-cb56-2900bae5d8ff"
                                 }
                             ]
                         }

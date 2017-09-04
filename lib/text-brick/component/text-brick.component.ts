@@ -70,6 +70,8 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
             if (this.state.text === '/h' || this.state.text === '/header') {
                 this.wallApi.core.turnBrickInto(this.id, 'header');
+            } else if (this.state.text === '/img') {
+                this.wallApi.core.turnBrickInto(this.id, 'img');
             } else {
                 this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
             }
