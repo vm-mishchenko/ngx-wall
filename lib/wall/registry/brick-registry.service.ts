@@ -3,17 +3,17 @@ import { IBrickRegistry, IBrickSpecification } from '../wall.interfaces';
 
 @Injectable()
 export class BrickRegistry implements IBrickRegistry {
-    private bricks: any = [];
+    private bricks: IBrickSpecification[] = [];
 
     register(brickConfiguration: IBrickSpecification) {
         this.bricks.push(brickConfiguration);
     }
 
-    get(tag: string) {
+    get(tag: string): IBrickSpecification {
         return this.bricks.find((brickConfiguration: IBrickSpecification) => brickConfiguration.tag === tag);
     }
 
-    getAll() {
+    getAll(): IBrickSpecification[] {
         return this.bricks;
     }
 }

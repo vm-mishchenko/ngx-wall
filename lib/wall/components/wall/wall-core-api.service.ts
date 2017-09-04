@@ -1,7 +1,7 @@
-import {Subject} from 'rxjs/Subject';
-import {WallModel} from './wall.model';
-import {IWallDefinition} from '../../wall.interfaces';
-import {Subscription} from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { WallModel } from './wall.model';
+import { IWallDefinition } from '../../wall.interfaces';
+import { Subscription } from 'rxjs/Subscription';
 
 // TODO: need to implement IWallCoreApi interface
 
@@ -49,6 +49,14 @@ export class WallCoreApi {
 
     getBrickStore(brickId: string) {
         return this.wallModel.getBrickStore(brickId);
+    }
+
+    focusOnPreviousTextBrick(brickId: string) {
+        this.wallModel.focusOnPreviousTextBrick(brickId);
+    }
+
+    focusOnNextTextBrick(brickId: string) {
+        this.wallModel.focusOnNextTextBrick(brickId);
     }
 
     subscribe(callback): Subscription {

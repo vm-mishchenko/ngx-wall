@@ -15,7 +15,8 @@ export class HeaderBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
             tag: 'header',
-            component: HeaderBrickComponent
+            component: HeaderBrickComponent,
+            supportText: true
         });
     }
 }

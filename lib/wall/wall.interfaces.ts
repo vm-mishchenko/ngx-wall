@@ -8,6 +8,7 @@ export const awesomeTypescriptLoaderBug = true;
 export interface IBrickSpecification {
     tag: string;
     component: any;
+    supportText?: true;
 }
 
 export interface IBrickRegistry {
@@ -107,4 +108,9 @@ export interface IBrickStore {
     set(data: any): void;
 
     get(data: any): void;
+}
+
+// Custom wall component interface
+export interface onWallFocus {
+    onWallFocus(): void;
 }

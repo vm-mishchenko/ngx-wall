@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {WallApi} from './wall-api.service';
-import {IWallDefinition} from '../../wall.interfaces';
-import {WallCoreApi} from './wall-core-api.service';
-import {BrickStore} from './brick-store.service';
-import {LayoutStore} from './layout-store.service';
-import {AddBrickEvent} from './events/add-brick.event';
-import {RemoveBrickEvent} from './events/remove-brick.event';
+import { Injectable } from '@angular/core';
+import { WallApi } from './wall-api.service';
+import { IWallDefinition } from '../../wall.interfaces';
+import { WallCoreApi } from './wall-core-api.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
+import { AddBrickEvent } from './events/add-brick.event';
+import { RemoveBrickEvent } from './events/remove-brick.event';
 
 /**
  * @desc Responsible for storing wall state.
@@ -163,6 +163,22 @@ export class WallModel {
         });
     }
 
+    focusOnPreviousTextBrick(brickId: string) {
+        const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
+
+        if (previousTextBrickId) {
+            this.focusOnBrickId(previousTextBrickId);
+        }
+    }
+
+    focusOnNextTextBrick(brickId: string) {
+        const nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
+
+        if (nextTextBrickId) {
+            this.focusOnBrickId(nextTextBrickId);
+        }
+    }
+
     private isOnlyOneBrickEmptyText() {
         const brickLength = this.brickStore.getBricksCount();
 
@@ -170,13 +186,18 @@ export class WallModel {
 
     }
 
+    // TODO: method should return boolean value
     private isLastBrickEmptyText() {
         const lastBrickId = this.layoutStore.getLastBrickId();
 
-        const lastBrick = this.brickStore.getBrickById(lastBrickId);
+        if (lastBrickId) {
+            const lastBrick = this.brickStore.getBrickById(lastBrickId);
 
-        if (lastBrick.tag === 'text' && !lastBrick.data['text']) {
-            return lastBrick;
+            if (lastBrick.tag === 'text' && !lastBrick.data['text']) {
+                return lastBrick;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

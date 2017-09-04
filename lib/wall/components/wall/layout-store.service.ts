@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {ILayoutDefinition} from '../../wall.interfaces';
-import {BrickRegistry} from '../../registry/brick-registry.service';
-import {BrickStore} from './brick-store.service';
+import { Injectable } from '@angular/core';
+import { ILayoutDefinition } from '../../wall.interfaces';
+import { BrickRegistry } from '../../registry/brick-registry.service';
+import { BrickStore } from './brick-store.service';
 
 @Injectable()
 export class LayoutStore {
@@ -125,6 +125,26 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
+    getPreviousTextBrick(brickId: string): string {
+        const textBrickSequence = this.getTextBrickSequence();
+
+        const currentTextBrickIndex = textBrickSequence.indexOf(brickId);
+
+        const nextTextBrickIndex = currentTextBrickIndex - 1;
+
+        return textBrickSequence[nextTextBrickIndex] || null;
+    }
+
+    getNextTextBrick(brickId: string): string {
+        const textBrickSequence = this.getTextBrickSequence();
+
+        const currentTextBrickIndex = textBrickSequence.indexOf(brickId);
+
+        const nextTextBrickIndex = currentTextBrickIndex + 1;
+
+        return textBrickSequence[nextTextBrickIndex] || null;
+    }
+
     /*Helpers*/
     isRowExists(targetRowIndex: number): boolean {
         return Boolean(this.layout.bricks[targetRowIndex]);
@@ -233,5 +253,29 @@ export class LayoutStore {
         return {
             bricks: []
         }
+    }
+
+    private getBrickSequence(predicate: Function): string[] {
+        const brickSequence = [];
+
+        this.layout.bricks.forEach((row) => {
+            row.columns.forEach((column) => {
+                column.bricks.forEach((brick) => {
+                    if (predicate(brick.id)) {
+                        brickSequence.push(brick.id);
+                    }
+                });
+            });
+        });
+
+        return brickSequence;
+    }
+
+    private getTextBrickSequence() {
+        return this.getBrickSequence((brickId: string) => {
+            const brickTag = this.brickStore.getBrickTagById(brickId);
+
+            return this.brickRegistry.get(brickTag).supportText;
+        });
     }
 }

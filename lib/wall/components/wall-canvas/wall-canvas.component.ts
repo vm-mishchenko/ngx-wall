@@ -1,6 +1,6 @@
-import {Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {WallCanvasApi} from './wall-canvas.api';
-import {WallCanvasController} from './wall-canvas.controller';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { WallCanvasApi } from './wall-canvas.api';
+import { WallCanvasController } from './wall-canvas.controller';
 
 @Component({
     selector: 'wall-canvas',
@@ -33,9 +33,6 @@ export class WallCanvasComponent implements OnChanges {
         }
 
         if (changes.layout && changes.layout.currentValue) {
-            console.log('Layout changed');
-            console.log(this.layout);
-
             this.wallCanvasController.clearBrickInstances();
         }
     }

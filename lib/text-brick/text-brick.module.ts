@@ -15,7 +15,8 @@ export class TextBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
             tag: 'text',
-            component: TextBrickComponent
+            component: TextBrickComponent,
+            supportText: true
         });
     }
 }

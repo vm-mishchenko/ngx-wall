@@ -1,12 +1,14 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {WallApi} from '../../index';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { WallApi } from '../../index';
+import { onWallFocus } from '../../wall/wall.interfaces';
+import { WALL } from '../../wall/wall.constant';
 
 @Component({
     selector: 'text-brick',
     templateUrl: './text-brick-component.component.html',
     styleUrls: ['./text-brick-component.component.scss']
 })
-export class TextBrickComponent implements OnInit {
+export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
 
     @ViewChild('editor') editor: ElementRef;
@@ -38,6 +40,32 @@ export class TextBrickComponent implements OnInit {
         const ENTER_KEY = 13;
         const DELETE_KEY = 46;
         const BACK_SPACE_KEY = 8;
+        const LEFT_KEY = 37;
+        const TOP_KEY = 38;
+        const RIGHT_KEY = 39;
+        const BOTTOM_KEY = 40;
+
+        if (e.keyCode === TOP_KEY) {
+            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+        }
+
+        if (e.keyCode === BOTTOM_KEY) {
+            this.wallApi.core.focusOnNextTextBrick(this.id);
+        }
+
+        if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
+            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+        }
+
+        if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
+            this.wallApi.core.focusOnNextTextBrick(this.id);
+        }
+
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+            e.preventDefault();
+
+            this.wallApi.core.removeBrick(this.id);
+        }
 
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
@@ -48,17 +76,14 @@ export class TextBrickComponent implements OnInit {
                 this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
             }
         }
-
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
-            e.preventDefault();
-
-            this.wallApi.core.removeBrick(this.id);
-        }
     }
 
-    onWallFocus() {
+    onWallFocus(focusDirection: any) {
         this.editor.nativeElement.focus();
+        this.placeCaretAtEnd();
+    }
 
+    placeCaretAtEnd() {
         // place caret at the end
         // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
         if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
@@ -72,6 +97,56 @@ export class TextBrickComponent implements OnInit {
             sel.removeAllRanges();
             sel.addRange(range);
         }
+    }
+
+    placeCaretAtStart() {
+        // place caret at the end
+        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
+        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
+            const range = document.createRange();
+
+            range.selectNodeContents(this.editor.nativeElement);
+            range.collapse(true);
+
+            const sel = window.getSelection();
+
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+
+    isCaretAtStart(): boolean {
+        let atStart = false;
+
+        const sel = window.getSelection();
+
+        if (sel.rangeCount) {
+            const selRange = sel.getRangeAt(0);
+            const testRange = selRange.cloneRange();
+
+            testRange.selectNodeContents(this.editor.nativeElement);
+            testRange.setEnd(selRange.startContainer, selRange.startOffset);
+            atStart = (testRange.toString() == '');
+        }
+
+        return atStart;
+    }
+
+    isCaretAtEnd(): boolean {
+        let atEnd = false;
+
+        const sel = window.getSelection();
+
+        if (sel.rangeCount) {
+            const selRange = sel.getRangeAt(0);
+            const testRange = selRange.cloneRange();
+
+            testRange.selectNodeContents(this.editor.nativeElement);
+            testRange.setStart(selRange.endContainer, selRange.endOffset);
+            atEnd = (testRange.toString() == '');
+        }
+
+        return atEnd;
     }
 
     save() {
