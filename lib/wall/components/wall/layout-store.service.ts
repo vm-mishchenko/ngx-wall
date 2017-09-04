@@ -174,33 +174,6 @@ export class LayoutStore {
         }
     }
 
-    /*
-    * return previous brick in the same column or try to return last brick id in previous row if there are only one column
-    * */
-    getBeforeBrickId(brickId: string) {
-        const brickPosition = this.getBrickPositionByBrickId(brickId);
-
-        if (brickPosition.brickIndex > 0) {
-            // take previous brick id in the same column
-            return this.layout.bricks[brickPosition.rowIndex].columns[brickPosition.columnIndex].bricks[brickPosition.brickIndex - 1].id;
-        } else {
-            if (brickPosition.rowIndex > 0) {
-                // try to take last brick id in previous row if there are only one column
-                const previousRow = this.layout.bricks[brickPosition.rowIndex - 1];
-
-                if (previousRow.columns.length === 1) {
-                    const onlySingleColumn = previousRow.columns[0];
-
-                    return onlySingleColumn.bricks[onlySingleColumn.bricks.length - 1].id;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
-        }
-    }
-
     getBrickPositionByBrickId(brickId: string) {
         const brickPosition = {
             rowIndex: null,

@@ -141,14 +141,19 @@ export class WallModel {
         if (isOnlyOneBrickEmptyText) {
             this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
         } else {
-            const isBeforeTextBrick = this.isBeforeTextBrick(brickId);
+            // should find next/prev brick before remove target brick
+            const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
+            const nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
 
             this.brickStore.removeBrick(brickId);
             this.layoutStore.removeBrick(brickId);
 
-            if (isBeforeTextBrick) {
-                this.focusOnBrickId(isBeforeTextBrick.id);
+            if (previousTextBrickId) {
+                this.focusOnBrickId(previousTextBrickId);
+            } else if (nextTextBrickId) {
+                this.focusOnBrickId(nextTextBrickId);
             }
+
 
             this.api.core.events.next(new RemoveBrickEvent());
         }
@@ -198,18 +203,6 @@ export class WallModel {
             } else {
                 return false;
             }
-        } else {
-            return false;
-        }
-    }
-
-    private isBeforeTextBrick(brickId: string) {
-        const beforeBrickId = this.layoutStore.getBeforeBrickId(brickId);
-
-        if (beforeBrickId) {
-            const beforeBrick = this.brickStore.getBrickById(beforeBrickId);
-
-            return beforeBrick.tag === 'text' && beforeBrick;
         } else {
             return false;
         }

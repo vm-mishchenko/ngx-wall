@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Component} from '@angular/core';
-import {IWallApi, IWallDefinition} from 'wall';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { IWallApi, IWallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',

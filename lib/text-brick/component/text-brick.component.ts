@@ -1,7 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { WallApi } from '../../index';
 import { onWallFocus } from '../../wall/wall.interfaces';
-import { WALL } from '../../wall/wall.constant';
 
 @Component({
     selector: 'text-brick',
@@ -12,7 +11,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
 
     @ViewChild('editor') editor: ElementRef;
-
     state: any = {};
 
     store: any = null;
@@ -78,7 +76,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         }
     }
 
-    onWallFocus(focusDirection: any) {
+    onWallFocus(): void {
         this.editor.nativeElement.focus();
         this.placeCaretAtEnd();
     }
