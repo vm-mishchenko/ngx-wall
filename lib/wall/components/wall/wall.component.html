@@ -1,6 +1,6 @@
-<h2>Wall</h2>
-
 <wall-canvas (canvasClick)="onCanvasClick()"
+             (onFocusedBrick)="onFocusedBrick($event)"
              [focusedBrickId]="wallController.wallModel.focusedBrickId"
+             [selectedBricks]="wallController.wallModel.selectedBricks"
              [layout]="wallController.wallModel.canvasLayout">
 </wall-canvas>

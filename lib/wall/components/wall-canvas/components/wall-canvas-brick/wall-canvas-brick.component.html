@@ -1,1 +1,3 @@
-<div #brickContainer></div>
+<div (click)="onFocused()" class="wrapper" [ngClass]="{'selected': selected}">
+    <div #brickContainer></div>
+</div>

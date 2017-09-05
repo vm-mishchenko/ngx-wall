@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { WallApi } from './wall-api.service';
 import { IWallDefinition } from '../../wall.interfaces';
 import { WallCoreApi } from './wall-core-api.service';
@@ -17,22 +18,106 @@ export class WallModel {
         return this.layoutStore.canvasLayout;
     }
 
+    doc: any = null;
+
     focusedBrickId: string = null;
 
+    selectedBricks: string[] = [];
+
     constructor(public api: WallApi,
+                @Inject(DOCUMENT) doc,
                 private brickStore: BrickStore,
                 private layoutStore: LayoutStore) {
+        this.doc = doc;
     }
 
     initialize(plan: IWallDefinition) {
+        // initialize core API
         this.api.core = new WallCoreApi(this);
 
-        // protect core API from extending
+        // protect API from extending
         Object.seal(this.api.core);
 
         this.brickStore.initialize(plan.bricks);
         this.layoutStore.initialize(plan.layout);
+
+        this.selectionPluginInitialize();
     }
+
+    //* SELECTION */
+    selectionPluginInitialize() {
+        this.doc.addEventListener('click', (e) => {
+            this.unSelectBricks();
+        });
+
+        this.doc.addEventListener('keydown', (e) => {
+            if (e.key === 'Delete' && this.selectedBricks.length) {
+                e.preventDefault();
+
+                const selectedBrickId = this.selectedBricks[0];
+
+                this.unSelectBricks();
+
+                this.removeBrick(selectedBrickId);
+            }
+
+            if (e.key === 'Enter' && this.selectedBricks.length) {
+                e.preventDefault();
+
+                this.focusOnBrickId(this.selectedBricks[0]);
+
+                this.unSelectBricks();
+            }
+
+            if (e.key === 'ArrowUp' && this.selectedBricks.length) {
+                e.preventDefault();
+
+                const previousBrickId = this.layoutStore.getPreviousBrickId(this.selectedBricks[0]);
+
+                if (previousBrickId) {
+                    this.selectBrick(previousBrickId);
+                }
+            }
+
+            if (e.key === 'ArrowDown' && this.selectedBricks.length) {
+                e.preventDefault();
+
+                const nextBrickId = this.layoutStore.getNextBrickId(this.selectedBricks[0]);
+
+                if (nextBrickId) {
+                    this.selectBrick(nextBrickId);
+                }
+            }
+
+            if (e.key === 'Escape' && this.focusedBrickId) {
+                e.preventDefault();
+
+                this.selectBrick(this.focusedBrickId);
+            }
+        });
+    }
+
+    addBrickToSelection(brickId: string) {
+        this.selectedBricks = this.selectedBricks.splice(0);
+        this.selectedBricks.push(brickId);
+    }
+
+    selectBrick(brickId: string) {
+        this.selectedBricks = [brickId];
+        this.focusedBrickId = null;
+    }
+
+    unSelectBricks() {
+        this.selectedBricks = [];
+    }
+
+    onFocusedBrick(brickId: string) {
+        this.focusedBrickId = brickId;
+
+        this.unSelectBricks();
+    }
+
+    //* SELECTION */
 
     getPlan(): IWallDefinition {
         return {

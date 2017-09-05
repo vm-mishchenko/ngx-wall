@@ -125,6 +125,22 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
+    getNextBrickId(brickId: string) {
+        const brickSequence = this.getBrickSequence(() => true);
+
+        const currentBrickIndex = brickSequence.indexOf(brickId);
+
+        return brickSequence[currentBrickIndex + 1];
+    }
+
+    getPreviousBrickId(brickId: string) {
+        const brickSequence = this.getBrickSequence(() => true);
+
+        const currentBrickIndex = brickSequence.indexOf(brickId);
+
+        return brickSequence[currentBrickIndex - 1];
+    }
+
     getPreviousTextBrick(brickId: string): string {
         const textBrickSequence = this.getTextBrickSequence();
 

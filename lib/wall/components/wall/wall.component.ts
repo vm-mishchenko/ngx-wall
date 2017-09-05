@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IWallConfiguration, IWallDefinition } from '../../wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
@@ -18,7 +18,7 @@ import { LayoutStore } from './layout-store.service';
         WallController
     ]
 })
-export class WallComponent implements OnInit, OnChanges {
+export class WallComponent implements OnInit {
     @Input() plan: IWallDefinition = null;
     @Input() configuration: IWallConfiguration = null;
 
@@ -29,26 +29,13 @@ export class WallComponent implements OnInit, OnChanges {
         this.wallController.wallModel.addDefaultBrick();
     }
 
+    // callback when user focused to some brick by mouse click
+    onFocusedBrick(brickId: string) {
+        this.wallController.wallModel.onFocusedBrick(brickId);
+    }
+
     ngOnInit() {
         // initialize plan
         this.wallController.initialize(this.plan, this.configuration);
-    }
-
-    ngOnChanges() {
-        class FooBrick {
-        }
-
-        const canvasConfig = {
-            bricks: [
-                {
-                    brick: FooBrick,
-                    id: '1'
-                },
-                {
-                    brick: FooBrick,
-                    id: '1'
-                }
-            ]
-        };
     }
 }

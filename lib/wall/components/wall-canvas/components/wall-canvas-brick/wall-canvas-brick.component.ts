@@ -11,11 +11,14 @@ import { WallCanvasApi } from '../../wall-canvas.api';
 
 @Component({
     selector: 'wall-canvas-brick',
-    templateUrl: './wall-canvas-brick.component.html'
+    templateUrl: './wall-canvas-brick.component.html',
+    styleUrls: ['./wall-canvas-brick.scss']
 })
 
 export class WallCanvasBrickComponent implements OnInit {
     @Input() brick: any;
+
+    private selected: boolean = false;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
@@ -31,6 +34,18 @@ export class WallCanvasBrickComponent implements OnInit {
 
         componentReference.instance['id'] = this.brick.id;
 
-        this.wallCanvasApi.core.registerBrickInstance(this.brick.id, componentReference.instance);
+        this.wallCanvasApi.core.registerCanvasBrickInstance(this.brick.id, this, componentReference.instance);
+    }
+
+    onFocused() {
+        this.wallCanvasApi.core.onFocused(this.brick.id);
+    }
+
+    select() {
+        this.selected = true;
+    }
+
+    unselect() {
+        this.selected = false;
     }
 }
