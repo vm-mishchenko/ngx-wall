@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { WallApi } from './wall-api.service';
 import { IWallDefinition } from '../../wall.interfaces';
 import { WallCoreApi } from './wall-core-api.service';
@@ -7,6 +6,7 @@ import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { AddBrickEvent } from './events/add-brick.event';
 import { RemoveBrickEvent } from './events/remove-brick.event';
+import { DOCUMENT } from '@angular/common';
 
 /**
  * @desc Responsible for storing wall state.
@@ -18,8 +18,6 @@ export class WallModel {
         return this.layoutStore.canvasLayout;
     }
 
-    doc: any = null;
-
     focusedBrickId: string = null;
 
     selectedBricks: string[] = [];
@@ -28,7 +26,6 @@ export class WallModel {
                 @Inject(DOCUMENT) doc,
                 private brickStore: BrickStore,
                 private layoutStore: LayoutStore) {
-        this.doc = doc;
     }
 
     initialize(plan: IWallDefinition) {
@@ -40,84 +37,52 @@ export class WallModel {
 
         this.brickStore.initialize(plan.bricks);
         this.layoutStore.initialize(plan.layout);
-
-        this.selectionPluginInitialize();
     }
 
-    //* SELECTION */
-    selectionPluginInitialize() {
-        this.doc.addEventListener('click', (e) => {
-            this.unSelectBricks();
-        });
+    /* SELECTION API */
 
-        this.doc.addEventListener('keydown', (e) => {
-            if (e.key === 'Delete' && this.selectedBricks.length) {
-                e.preventDefault();
-
-                const selectedBrickId = this.selectedBricks[0];
-
-                this.unSelectBricks();
-
-                this.removeBrick(selectedBrickId);
-            }
-
-            if (e.key === 'Enter' && this.selectedBricks.length) {
-                e.preventDefault();
-
-                this.focusOnBrickId(this.selectedBricks[0]);
-
-                this.unSelectBricks();
-            }
-
-            if (e.key === 'ArrowUp' && this.selectedBricks.length) {
-                e.preventDefault();
-
-                const previousBrickId = this.layoutStore.getPreviousBrickId(this.selectedBricks[0]);
-
-                if (previousBrickId) {
-                    this.selectBrick(previousBrickId);
-                }
-            }
-
-            if (e.key === 'ArrowDown' && this.selectedBricks.length) {
-                e.preventDefault();
-
-                const nextBrickId = this.layoutStore.getNextBrickId(this.selectedBricks[0]);
-
-                if (nextBrickId) {
-                    this.selectBrick(nextBrickId);
-                }
-            }
-
-            if (e.key === 'Escape' && this.focusedBrickId) {
-                e.preventDefault();
-
-                this.selectBrick(this.focusedBrickId);
-            }
-        });
-    }
-
-    addBrickToSelection(brickId: string) {
-        this.selectedBricks = this.selectedBricks.splice(0);
-        this.selectedBricks.push(brickId);
-    }
-
-    selectBrick(brickId: string) {
+    selectBrick(brickId: string): void {
         this.selectedBricks = [brickId];
         this.focusedBrickId = null;
     }
 
-    unSelectBricks() {
+    addBrickToSelection(brickId: string): void {
+        this.selectedBricks = this.selectedBricks.splice(0);
+        this.selectedBricks.push(brickId);
+    }
+
+    removeBrickFromSelection(brickId: string): void {
+        const brickIdIndex = this.selectedBricks.indexOf(brickId);
+
+        this.selectedBricks.splice(brickIdIndex, 1);
+
+        this.selectedBricks = this.selectedBricks.splice(0);
+    }
+
+    unSelectBricks(): void {
         this.selectedBricks = [];
     }
 
+    // callback for brick selected by user
     onFocusedBrick(brickId: string) {
         this.focusedBrickId = brickId;
 
         this.unSelectBricks();
     }
 
-    //* SELECTION */
+    getSelectedBrickIds(): string[] {
+        return this.selectedBricks;
+    }
+
+    getNextBrickId(brickId: string): string {
+        return this.layoutStore.getNextBrickId(brickId);
+    }
+
+    getPreviousBrickId(brickId: string) {
+        return this.layoutStore.getPreviousBrickId(brickId);
+    }
+
+    /* SELECTION API */
 
     getPlan(): IWallDefinition {
         return {
@@ -239,12 +204,46 @@ export class WallModel {
                 this.focusOnBrickId(nextTextBrickId);
             }
 
-
             this.api.core.events.next(new RemoveBrickEvent());
         }
     }
 
-    focusOnBrickId(brickId: string) {
+    removeBricks(brickIds): void {
+        const isOnlyOneBrickEmptyText = this.isOnlyOneBrickEmptyText();
+
+        if (isOnlyOneBrickEmptyText) {
+            this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
+        } else {
+            brickIds = this.layoutStore.sortBrickIds(brickIds);
+
+            // should find next/prev brick before remove target brick
+            const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickIds[0]);
+            const nextTextBrickId = this.layoutStore.getNextTextBrick(brickIds[brickIds.length - 1]);
+
+            brickIds.forEach((brickId) => {
+                this.brickStore.removeBrick(brickId);
+                this.layoutStore.removeBrick(brickId);
+            });
+
+            if (previousTextBrickId) {
+                this.focusOnBrickId(previousTextBrickId);
+            } else if (nextTextBrickId) {
+                this.focusOnBrickId(nextTextBrickId);
+            } else if (!this.brickStore.getBricksCount()) {
+                this.addBrick('text', 0, 0, 0);
+            }
+        }
+    }
+
+    isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean {
+        return this.layoutStore.isBrickAheadOf(firstBrickId, secondBrickId);
+    }
+
+    getFocusedBrickId() {
+        return this.focusedBrickId;
+    }
+
+    focusOnBrickId(brickId: string): void {
         this.focusedBrickId = null;
 
         // wait until new brick will be rendered

@@ -11,6 +11,37 @@ export class WallCoreApi {
     constructor(private wallModel: WallModel) {
     }
 
+    /* SELECTION API */
+    getSelectedBrickIds(): string[] {
+        return this.wallModel.getSelectedBrickIds();
+    }
+
+    selectBrick(brickId: string): void {
+        return this.wallModel.selectBrick(brickId);
+    }
+
+    unSelectBricks(): void {
+        return this.wallModel.unSelectBricks();
+    }
+
+    focusOnBrickId(brickId: string): void {
+        return this.wallModel.focusOnBrickId(brickId);
+    }
+
+    addBrickToSelection(brickId: string): void {
+        return this.wallModel.addBrickToSelection(brickId);
+    }
+
+    removeBrickFromSelection(brickId: string): void {
+        return this.wallModel.removeBrickFromSelection(brickId);
+    }
+
+    /* SELECTION API */
+
+    isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean {
+        return this.wallModel.isBrickAheadOf(firstBrickId, secondBrickId);
+    }
+
     getPlan(): IWallDefinition {
         return this.wallModel.getPlan();
     }
@@ -47,8 +78,24 @@ export class WallCoreApi {
         return this.wallModel.removeBrick(brickId);
     }
 
+    removeBricks(brickIds: string) {
+        return this.wallModel.removeBricks(brickIds);
+    }
+
+    getPreviousBrickId(brickId: string): string {
+        return this.wallModel.getPreviousBrickId(brickId);
+    }
+
+    getNextBrickId(brickId: string): string {
+        return this.wallModel.getNextBrickId(brickId);
+    }
+
     getBrickStore(brickId: string) {
         return this.wallModel.getBrickStore(brickId);
+    }
+
+    getFocusedBrickId(): string {
+        return this.wallModel.getFocusedBrickId();
     }
 
     focusOnPreviousTextBrick(brickId: string) {

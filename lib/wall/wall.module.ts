@@ -6,15 +6,19 @@ import { WallCanvasComponent } from './components/wall-canvas/wall-canvas.compon
 import { WallCanvasRowComponent } from './components/wall-canvas/components/wall-canvas-row/wall-canvas-row.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { WallCanvasBrickComponent } from './components/wall-canvas/components/wall-canvas-brick/wall-canvas-brick.component';
+import { WALL_PLUGIN } from './wall.tokens';
+import { SelectionPlugin } from './plugins/selection/selection';
 
 @NgModule({
     imports: [
         BrowserModule
     ],
     providers: [
-
         CommonModule,
-        BrickRegistry
+        BrickRegistry,
+        {
+            provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
+        }
     ],
     declarations: [
         WallComponent,

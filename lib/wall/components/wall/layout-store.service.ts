@@ -125,7 +125,7 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
-    getNextBrickId(brickId: string) {
+    getNextBrickId(brickId: string): string {
         const brickSequence = this.getBrickSequence(() => true);
 
         const currentBrickIndex = brickSequence.indexOf(brickId);
@@ -142,23 +142,37 @@ export class LayoutStore {
     }
 
     getPreviousTextBrick(brickId: string): string {
-        const textBrickSequence = this.getTextBrickSequence();
+        const previousTextBrick = this.findBrickIdBefore(brickId, (currentBrickId: string) => {
+            const brickTag = this.brickStore.getBrickTagById(currentBrickId);
 
-        const currentTextBrickIndex = textBrickSequence.indexOf(brickId);
+            return this.brickRegistry.get(brickTag).supportText;
+        });
 
-        const nextTextBrickIndex = currentTextBrickIndex - 1;
-
-        return textBrickSequence[nextTextBrickIndex] || null;
+        return previousTextBrick || null;
     }
 
     getNextTextBrick(brickId: string): string {
-        const textBrickSequence = this.getTextBrickSequence();
+        debugger;
 
-        const currentTextBrickIndex = textBrickSequence.indexOf(brickId);
+        const nextTextBrick = this.findBrickIdAfter(brickId, (currentBrickId: string) => {
+            const brickTag = this.brickStore.getBrickTagById(currentBrickId);
 
-        const nextTextBrickIndex = currentTextBrickIndex + 1;
+            return this.brickRegistry.get(brickTag).supportText;
+        });
 
-        return textBrickSequence[nextTextBrickIndex] || null;
+        return nextTextBrick || null;
+    }
+
+    isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean {
+        const brickSequence = this.getBrickSequence(() => true);
+
+        return brickSequence.indexOf(firstBrickId) < brickSequence.indexOf(secondBrickId);
+    }
+
+    sortBrickIds(brickIds: string[]): string[] {
+        return this.getBrickSequence((brickId) => {
+            return brickIds.indexOf(brickId) !== -1;
+        });
     }
 
     /*Helpers*/
@@ -260,11 +274,41 @@ export class LayoutStore {
         return brickSequence;
     }
 
-    private getTextBrickSequence() {
-        return this.getBrickSequence((brickId: string) => {
-            const brickTag = this.brickStore.getBrickTagById(brickId);
+    private findBrickIdBefore(brickId: string, predicate: Function) {
+        const brickSequence = this.getBrickSequence(() => true);
 
-            return this.brickRegistry.get(brickTag).supportText;
-        });
+        const currentBrickIdIndex = brickSequence.indexOf(brickId);
+
+        if (currentBrickIdIndex !== -1) {
+            const brickIdsBefore = brickSequence.splice(0, currentBrickIdIndex);
+
+            brickIdsBefore.reverse();
+
+            for (let i = 0; i < brickIdsBefore.length; i++) {
+                if (predicate(brickIdsBefore[i])) {
+                    return brickIdsBefore[i];
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private findBrickIdAfter(brickId: string, predicate: Function) {
+        const brickSequence = this.getBrickSequence(() => true);
+
+        const currentBrickIdIndex = brickSequence.indexOf(brickId);
+
+        if (currentBrickIdIndex !== -1) {
+            const brickIdsAfter = brickSequence.splice(currentBrickIdIndex + 1);
+
+            for (let i = 0; i < brickIdsAfter.length; i++) {
+                if (predicate(brickIdsAfter[i])) {
+                    return brickIdsAfter[i];
+                }
+            }
+        }
+
+        return null;
     }
 }
