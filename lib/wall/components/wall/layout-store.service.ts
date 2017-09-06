@@ -152,8 +152,6 @@ export class LayoutStore {
     }
 
     getNextTextBrick(brickId: string): string {
-        debugger;
-
         const nextTextBrick = this.findBrickIdAfter(brickId, (currentBrickId: string) => {
             const brickTag = this.brickStore.getBrickTagById(currentBrickId);
 

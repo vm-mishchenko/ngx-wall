@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { WallApi } from './wall-api.service';
 import { IWallDefinition } from '../../wall.interfaces';
 import { WallCoreApi } from './wall-core-api.service';
@@ -6,7 +6,6 @@ import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { AddBrickEvent } from './events/add-brick.event';
 import { RemoveBrickEvent } from './events/remove-brick.event';
-import { DOCUMENT } from '@angular/common';
 
 /**
  * @desc Responsible for storing wall state.
@@ -23,7 +22,6 @@ export class WallModel {
     selectedBricks: string[] = [];
 
     constructor(public api: WallApi,
-                @Inject(DOCUMENT) doc,
                 private brickStore: BrickStore,
                 private layoutStore: LayoutStore) {
     }

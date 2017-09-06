@@ -1,4 +1,15 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
+    ViewChild
+} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { WallCanvasApi } from './wall-canvas.api';
 import { WallCanvasController } from './wall-canvas.controller';
 
@@ -18,9 +29,14 @@ export class WallCanvasComponent implements OnChanges {
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
     @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
 
+    doc: any = null;
+
     @ViewChild('expander') expander: ElementRef;
 
-    constructor(private wallCanvasController: WallCanvasController) {
+    constructor(private wallCanvasController: WallCanvasController,
+                @Inject(DOCUMENT) doc) {
+        this.doc = doc;
+
         this.wallCanvasController.onFocusedEvent.subscribe((brickId: string) => {
             this.onFocusedBrick.next(brickId);
         });
@@ -34,9 +50,11 @@ export class WallCanvasComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.focusedBrickId) {
-            if(changes.focusedBrickId.currentValue){
+            if (changes.focusedBrickId.currentValue) {
                 this.wallCanvasController.focusBrickById(changes.focusedBrickId.currentValue);
-            } else{
+            } else {
+                this.doc.activeElement.blur();
+
                 this.wallCanvasController.clearFocusedBrickId();
             }
         }

@@ -49,18 +49,7 @@ export class WallCanvasController {
         }
     }
 
-    // TODO: Temporary solution, particular brick should not unfocus themself, wall component itself should done it
-    blurCurrentFocusedBrickId() {
-        if (this.canvasBrickInstances[this.currentlyFocusedBrickId]) {
-            if (this.canvasBrickInstances[this.currentlyFocusedBrickId].brickInstance.onWallUnFocus) {
-                this.canvasBrickInstances[this.currentlyFocusedBrickId].brickInstance.onWallUnFocus();
-            }
-        }
-    }
-
     clearFocusedBrickId() {
-        this.blurCurrentFocusedBrickId();
-
         this.currentlyFocusedBrickId = null;
     }
 
