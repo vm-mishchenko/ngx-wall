@@ -2,6 +2,7 @@
 
 const libraryConfig = require('./library.config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
@@ -32,6 +33,25 @@ module.exports = {
             {
                 test: /\.html$/,
                 loader: 'raw-loader'
+            },
+            {
+                test: /\.css/,
+                loaders: [
+                    'style-loader',
+                    'css-loader'
+                ]
+            },
+            {
+                test: /\.scss$/,
+                include: root('dev-application/app'),
+                loader: ExtractTextPlugin.extract({
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ],
+
+                    fallback: 'style-loader'
+                })
             }
         ]
     },
@@ -42,6 +62,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: root('dev-application/index.html')
         }),
+
+        new ExtractTextPlugin('styles.css'),
 
         new webpack.ContextReplacementPlugin(
             // The (\\|\/) piece accounts for path separators in *nix and Windows

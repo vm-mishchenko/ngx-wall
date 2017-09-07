@@ -4,8 +4,7 @@ import { onWallFocus } from '../../wall/wall.interfaces';
 
 @Component({
     selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html',
-    styleUrls: ['./text-brick-component.component.scss']
+    templateUrl: './text-brick-component.component.html'
 })
 export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;

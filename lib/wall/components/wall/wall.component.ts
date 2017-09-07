@@ -9,7 +9,6 @@ import { LayoutStore } from './layout-store.service';
 @Component({
     selector: 'wall',
     templateUrl: './wall.component.html',
-    styleUrls: ['./wall.component.scss'],
     providers: [
         WallApi,
         WallModel,

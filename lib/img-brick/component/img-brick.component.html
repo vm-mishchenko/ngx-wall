@@ -2,6 +2,23 @@
     <img [src]="state.src" alt="">
 </div>
 
-<div>
-    <input #src (keydown)="onKeyPress($event)" placeholder="Image src">
+<div *ngIf="!state.src" class="w-panel">
+    <!--<div class="w-panel__header">
+        <div class="w-header__tab w-header__tab-active">
+            <button type="button" class="btn btn-light btn-sm">Light</button>
+        </div>
+        <div class="w-header__tab">
+            <button type="button" class="btn btn-light btn-sm">Light</button>
+        </div>
+    </div>-->
+    <div class="w-panel__body">
+        <div class="form-group w-form-group">
+            <input #src (keydown)="onKeyPress($event)" type="email" class="form-control w-input"
+                   placeholder="Paste the image link">
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-primary btn-sm btn-block">Embed image</button>
+        </div>
+    </div>
 </div>

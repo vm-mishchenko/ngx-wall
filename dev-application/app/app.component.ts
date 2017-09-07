@@ -1,23 +1,9 @@
-import { ChangeDetectorRef, Component, Injectable } from '@angular/core';
-import { IWallApi, IWallDefinition, WALL_PLUGIN, WallApi } from 'wall';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { IWallApi, IWallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',
-    templateUrl: './app.component.html',
-    styles: [`
-        .wrapper {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .panel {
-            flex: 1;
-            padding: 0 20px;
-        }
-    `],
-
-    providers: [
-    ]
+    templateUrl: './app.component.html'
 })
 export class AppComponent {
     plan: any = null;
@@ -31,94 +17,11 @@ export class AppComponent {
     };
 
     wallPlan: IWallDefinition = {
-        'bricks': [
-            {
-                'id': '1',
-                'tag': 'header',
-                'data': {
-                    'text': 'Text brick'
-                },
-                'meta': {
-                    'comments': []
-                }
-            },
-            {
-                'id': '2',
-                'tag': 'text',
-                'data': {
-                    'text': 'Second text block'
-                },
-                'meta': {}
-            },
-            {
-                'id': '3',
-                'tag': 'img',
-                'data': {},
-                'meta': {}
-            },
-            {
-                'id': '4',
-                'tag': 'text',
-                'data': {},
-                'meta': {}
-            },
-            {
-                'id': '5',
-                'tag': 'header',
-                'data': {
-                    'text': 'Image brick'
-                },
-                'meta': {}
-            }
-        ],
+        'bricks': [],
         'layout': {
             'bricks': [
                 {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '1'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '2'
-                                },
-                                {
-                                    'id': '3'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '4'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '5'
-                                }
-                            ]
-                        }
-                    ]
+                    'columns': []
                 }
             ]
         }

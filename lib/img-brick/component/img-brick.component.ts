@@ -3,8 +3,7 @@ import { onWallFocus, WallApi } from '../../index';
 
 @Component({
     selector: 'img-brick',
-    templateUrl: './img-brick.component.html',
-    styleUrls: ['./img-brick.component.scss']
+    templateUrl: './img-brick.component.html'
 })
 export class ImgBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
@@ -23,9 +22,9 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
         this.state = this.store.get();
 
-        this.state.src = this.state.src || 'https://img1.exportersindia.com/product_images/bc-small/dir_36/1069853/elevation-wall-tiles-8023-175483.jpg';
+        this.state.src = this.state.src || '';
 
-        this.src.nativeElement.value = this.state.src;
+        // this.src.nativeElement.value = this.state.src;
     }
 
     onWallFocus(): void {

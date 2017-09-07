@@ -11,8 +11,7 @@ import { WallCanvasApi } from '../../wall-canvas.api';
 
 @Component({
     selector: 'wall-canvas-brick',
-    templateUrl: './wall-canvas-brick.component.html',
-    styleUrls: ['./wall-canvas-brick.scss']
+    templateUrl: './wall-canvas-brick.component.html'
 })
 
 export class WallCanvasBrickComponent implements OnInit {

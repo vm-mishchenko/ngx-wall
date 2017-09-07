@@ -16,7 +16,6 @@ import { WallCanvasController } from './wall-canvas.controller';
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html',
-    styleUrls: ['./wall-canvas.component.scss'],
     providers: [
         WallCanvasApi,
         WallCanvasController

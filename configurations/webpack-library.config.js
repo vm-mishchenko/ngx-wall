@@ -3,6 +3,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const libraryConfig = require('./library.config');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -46,11 +47,15 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: [
-                    'to-string-loader',
-                    'css-loader',
-                    'sass-loader'
-                ]
+                include: root('lib/resources'),
+                loader: ExtractTextPlugin.extract({
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ],
+
+                    fallback: 'style-loader'
+                })
             }
         ]
     },
@@ -60,6 +65,8 @@ module.exports = {
             include: /\.min\.js$/,
             sourceMap: true
         }),
+
+        new ExtractTextPlugin(`${libraryConfig.libraryName}.css`)
     ]
 };
 

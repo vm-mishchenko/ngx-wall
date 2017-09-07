@@ -3,8 +3,7 @@ import { WallApi } from '../../index';
 
 @Component({
     selector: 'header-brick',
-    templateUrl: './header-brick-component.component.html',
-    styleUrls: ['./header-brick-component.component.scss']
+    templateUrl: './header-brick-component.component.html'
 })
 export class HeaderBrickComponent implements OnInit {
     @Input() id: string;

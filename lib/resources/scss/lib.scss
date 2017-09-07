@@ -1,0 +1,104 @@
+.w-input {
+  padding: 0.3rem 0.65rem;
+}
+
+.w-form-group {
+  margin-bottom: 0.5rem;
+}
+
+.w-panel {
+  min-height: 50px;
+  border-radius: 3px;
+  background: white;
+  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;
+  position: relative;
+
+  .w-panel__header {
+    display: flex;
+    border-bottom: 1px solid rgb(231, 230, 229);
+    font-size: 13px;
+    justify-content: center;
+
+    .w-header__tab {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      margin: 0 4px;
+    }
+
+    .w-header__tab-active {
+      border-bottom: 2px solid black;
+      padding-bottom: 2px;
+    }
+  }
+
+  .w-panel__body {
+    display: flex;
+    justify-content: center;
+    padding: 10px 25%;
+    flex-direction: column;
+  }
+}
+
+wall-canvas {
+  display: block;
+  overflow: auto;
+
+  .editor {
+    min-height: 200px;
+    cursor: text;
+  }
+
+  .expander {
+    min-height: 300px;
+  }
+}
+
+wall-canvas-brick {
+  .wrapper {
+    transition: background-color 0.5s ease;
+  }
+
+  .selected {
+    background-color: #f2f2f2;
+  }
+}
+
+wall-canvas-row {
+  display: flex;
+
+  .column {
+    flex-grow: 1;
+  }
+}
+
+
+// text
+
+text-brick {
+  display: block;
+
+  .editor {
+    word-break: break-all;
+    padding: 8px 10px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// header
+header-brick {
+  display: block;
+
+  h1 {
+    word-break: break-all;
+
+    padding: 8px 10px;
+    margin: 20px 0 0 0;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
