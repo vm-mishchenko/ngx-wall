@@ -75,9 +75,11 @@ module.exports = {
     resolve: {
         alias: (() => {
             return {
-                [libraryConfig.libraryName]: root(`dist/${libraryConfig.libraryName}.umd.js`)
+                [libraryConfig.libraryName]: root(`dist`)
             }
         })(),
+
+        mainFiles: ['index', `${libraryConfig.libraryName}.umd`],
 
         modules: ['node_modules'],
 

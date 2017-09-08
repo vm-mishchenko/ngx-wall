@@ -14,6 +14,9 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
     store: any = null;
 
+    // ui
+    isShowImagePanel = false;
+
     constructor(private wallApi: WallApi) {
     }
 
@@ -24,7 +27,7 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
         this.state.src = this.state.src || '';
 
-        // this.src.nativeElement.value = this.state.src;
+        this.src.nativeElement.value = this.state.src;
     }
 
     onWallFocus(): void {
@@ -43,6 +46,10 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
             this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
         }
+    }
+
+    switchImagePanel() {
+        this.isShowImagePanel = !this.isShowImagePanel;
     }
 
     save() {

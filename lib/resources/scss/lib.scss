@@ -1,3 +1,7 @@
+$w-text-color: rgb(153, 153, 153);
+$w-background-color: #f7f6f5;
+$w-background-hover-color: #ecebea;
+
 .w-input {
   padding: 0.3rem 0.65rem;
 }
@@ -39,26 +43,38 @@
   }
 }
 
+.w-signboard {
+  color: $w-text-color;
+  background: $w-background-color;
+  padding: 15px;
+
+  &:hover {
+    background: $w-background-hover-color;
+    cursor: pointer;
+  }
+}
+
 wall-canvas {
   display: block;
   overflow: auto;
+  border: 1px solid silver;
 
-  .editor {
+  .wall-canvas__editor {
     min-height: 200px;
     cursor: text;
   }
 
-  .expander {
+  .wall-canvas__expander {
     min-height: 300px;
   }
 }
 
 wall-canvas-brick {
-  .wrapper {
+  .wall-canvas-brick__wrapper {
     transition: background-color 0.5s ease;
   }
 
-  .selected {
+  .wall-canvas-brick__selected {
     background-color: #f2f2f2;
   }
 }
@@ -66,18 +82,16 @@ wall-canvas-brick {
 wall-canvas-row {
   display: flex;
 
-  .column {
+  .wall-canvas-row__column {
     flex-grow: 1;
   }
 }
 
-
 // text
-
 text-brick {
   display: block;
 
-  .editor {
+  .text-brick__editor {
     word-break: break-all;
     padding: 8px 10px;
 
@@ -100,5 +114,26 @@ header-brick {
     &:focus {
       outline: none;
     }
+  }
+}
+
+// img
+
+img-brick {
+  .w-panel {
+    width: 80%;
+    position: absolute;
+    max-width: 450px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(12%, 0);
+    transition: visibility 0s linear 0.5s, opacity 0.5s linear, transform 0.3s linear;
+  }
+
+  .show {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+    transform: translate(12%, -10px);
   }
 }

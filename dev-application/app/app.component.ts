@@ -17,11 +17,29 @@ export class AppComponent {
     };
 
     wallPlan: IWallDefinition = {
-        'bricks': [],
-        'layout': {
-            'bricks': [
+        "bricks": [
+            {
+                "id": "95a8ed76-3bc5-96bc-9cc7-680d9ed14e75",
+                "tag": "img",
+                "data": {},
+                "meta": {}
+            }
+        ],
+        "layout": {
+            "bricks": [
                 {
-                    'columns': []
+                    "columns": []
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "95a8ed76-3bc5-96bc-9cc7-680d9ed14e75"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         }
