@@ -35,21 +35,43 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
     }
 
     onKeyPress(e: any) {
-        this.state.src = this.src.nativeElement.value;
-
-        this.save();
-
         const ENTER_KEY = 13;
 
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
+            this.applyImageSrc();
+
             this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+        }
+    }
+
+    onPanelActionClick() {
+        this.applyImageSrc();
+    }
+
+    applyImageSrc() {
+        this.state.src = this.src.nativeElement.value;
+
+        this.save();
+
+        if (this.state.src) {
+            this.hideImagePanel();
+        } else {
+            this.showImagePanel();
         }
     }
 
     switchImagePanel() {
         this.isShowImagePanel = !this.isShowImagePanel;
+    }
+
+    showImagePanel() {
+        this.isShowImagePanel = true;
+    }
+
+    hideImagePanel() {
+        this.isShowImagePanel = false;
     }
 
     save() {

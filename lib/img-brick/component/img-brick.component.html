@@ -1,4 +1,4 @@
-<div [hidden]="state.src">
+<div [hidden]="!state.src">
     <img [src]="state.src" alt="">
 </div>
 
@@ -7,22 +7,17 @@
 </div>
 
 <div [ngClass]="{show: isShowImagePanel}" class="w-panel">
-    <!--<div class="w-panel__header">
-        <div class="w-header__tab w-header__tab-active">
-            <button type="button" class="btn btn-light btn-sm">Light</button>
-        </div>
-        <div class="w-header__tab">
-            <button type="button" class="btn btn-light btn-sm">Light</button>
-        </div>
-    </div>-->
     <div class="w-panel__body">
-        <div class="form-group w-form-group">
-            <input #src (keydown)="onKeyPress($event)" type="text" class="form-control w-input"
-                   placeholder="Paste the image link">
-        </div>
+        <form>
+            <div class="form-group w-form-group">
+                <input #src (keydown)="onKeyPress($event)" type="text" class="form-control w-input"
+                       placeholder="Paste the image link">
+            </div>
+        </form>
 
         <div>
-            <button type="button" class="btn btn-primary btn-sm btn-block">Embed image</button>
+            <button (click)="onPanelActionClick()" type="button" class="btn btn-primary btn-sm btn-block">Embed image
+            </button>
         </div>
     </div>
 </div>

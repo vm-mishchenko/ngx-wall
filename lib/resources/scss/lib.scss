@@ -57,7 +57,6 @@ $w-background-hover-color: #ecebea;
 wall-canvas {
   display: block;
   overflow: auto;
-  border: 1px solid silver;
 
   .wall-canvas__editor {
     min-height: 200px;
@@ -70,12 +69,25 @@ wall-canvas {
 }
 
 wall-canvas-brick {
+  display: block;
+
   .wall-canvas-brick__wrapper {
     transition: background-color 0.5s ease;
   }
 
   .wall-canvas-brick__selected {
-    background-color: #f2f2f2;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0.5;
+      background-color: #bae6f3;
+    }
   }
 }
 
@@ -93,7 +105,7 @@ text-brick {
 
   .text-brick__editor {
     word-break: break-all;
-    padding: 8px 10px;
+    padding: 8px 2px;
 
     &:focus {
       outline: none;
@@ -120,14 +132,17 @@ header-brick {
 // img
 
 img-brick {
+  position: relative;
+  display: block;
+
   .w-panel {
     width: 80%;
     position: absolute;
     max-width: 450px;
     visibility: hidden;
     opacity: 0;
-    transform: translate(12%, 0);
-    transition: visibility 0s linear 0.5s, opacity 0.5s linear, transform 0.3s linear;
+    transform: translate(12%, -12px);
+    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear;
   }
 
   .show {
