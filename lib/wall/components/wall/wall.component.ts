@@ -22,6 +22,7 @@ export class WallComponent implements OnInit {
     @Input() configuration: IWallConfiguration = null;
 
     constructor(private wallController: WallController) {
+        console.log('Component created');
     }
 
     onCanvasClick() {

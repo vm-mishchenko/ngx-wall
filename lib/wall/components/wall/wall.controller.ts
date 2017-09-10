@@ -19,7 +19,7 @@ export class WallController {
         plugins.forEach((plugin) => pluginInjector.resolveAndInstantiate(plugin));
 
         // pass initialized API back to the client
-        if (configuration.onRegisterApi) {
+        if (configuration && configuration.onRegisterApi) {
             configuration.onRegisterApi(this.wallModel.api);
         }
     }

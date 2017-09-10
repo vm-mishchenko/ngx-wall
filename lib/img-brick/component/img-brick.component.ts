@@ -68,6 +68,13 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
         }
     }
 
+    onImageClick(e) {
+        // disable onFocus handler
+        e.stopPropagation();
+
+        this.wallApi.core.selectBrick(this.id);
+    }
+
     applyImageSrc() {
         const currentValue = this.getCurrentInputValue();
 

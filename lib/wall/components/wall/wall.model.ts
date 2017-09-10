@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { WallApi } from './wall-api.service';
-import { IWallDefinition } from '../../wall.interfaces';
-import { WallCoreApi } from './wall-core-api.service';
-import { BrickStore } from './brick-store.service';
-import { LayoutStore } from './layout-store.service';
-import { AddBrickEvent } from './events/add-brick.event';
-import { RemoveBrickEvent } from './events/remove-brick.event';
+import {Injectable} from '@angular/core';
+import {WallApi} from './wall-api.service';
+import {IWallDefinition} from '../../wall.interfaces';
+import {WallCoreApi} from './wall-core-api.service';
+import {BrickStore} from './brick-store.service';
+import {LayoutStore} from './layout-store.service';
+import {AddBrickEvent} from './events/add-brick.event';
+import {RemoveBrickEvent} from './events/remove-brick.event';
 
 /**
  * @desc Responsible for storing wall state.
@@ -102,7 +102,11 @@ export class WallModel {
 
     /* Add text brick to the bottom of wall in the new row */
     addDefaultBrick() {
-        this.addBrickAtTheEnd('text');
+        if (!this.brickStore.getBricksCount()) {
+            this.addBrick('text', 0, 0, 0);
+        } else {
+            this.addBrickAtTheEnd('text');
+        }
     }
 
     /* Add brick to existing row and existing column */

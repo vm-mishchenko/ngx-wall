@@ -1,5 +1,5 @@
-import { WallCanvasApi } from './wall-canvas.api';
-import { EventEmitter, Injectable } from '@angular/core';
+import {WallCanvasApi} from './wall-canvas.api';
+import {EventEmitter, Injectable} from '@angular/core';
 
 @Injectable()
 export class WallCanvasController {
@@ -18,8 +18,10 @@ export class WallCanvasController {
     selectBricks(brickIds: string[]) {
         this.unselectBricks();
 
-        brickIds.forEach((brickId) => {
-            this.canvasBrickInstances[brickId].canvasBrickInstance.select();
+        setTimeout(() => {
+            brickIds.forEach((brickId) => {
+                this.canvasBrickInstances[brickId].canvasBrickInstance.select();
+            });
         });
     }
 
