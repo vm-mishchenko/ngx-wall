@@ -82,10 +82,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         this.placeCaretAtEnd();
     }
 
-    onWallUnFocus() {
-        this.editor.nativeElement.blur();
-    }
-
     placeCaretAtEnd() {
         // place caret at the end
         // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser

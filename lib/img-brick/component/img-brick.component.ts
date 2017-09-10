@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { onWallFocus, WallApi } from '../../index';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {onWallFocus, WallApi} from '../../index';
 
 @Component({
     selector: 'img-brick',
@@ -10,12 +10,19 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
     @ViewChild('src') src: ElementRef;
 
+    // data
     state: any = {};
 
     store: any = null;
 
     // ui
-    isShowImagePanel = false;
+    uiStates: any = {
+        initial: 'initial',
+        pasteSrc: 'pasteSrc',
+        image: 'image'
+    };
+
+    uiState: string = this.uiStates.initial;
 
     constructor(private wallApi: WallApi) {
     }
@@ -27,54 +34,95 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
         this.state.src = this.state.src || '';
 
-        this.src.nativeElement.value = this.state.src;
-    }
+        if (this.state.src) {
+            this.src.nativeElement.value = this.state.src;
 
-    onWallFocus(): void {
-        this.src.nativeElement.focus();
-    }
-
-    onKeyPress(e: any) {
-        const ENTER_KEY = 13;
-
-        if (e.keyCode === ENTER_KEY) {
-            e.preventDefault();
-
-            this.applyImageSrc();
-
-            this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+            this.uiState = this.uiStates.image;
         }
     }
 
-    onPanelActionClick() {
-        this.applyImageSrc();
-    }
+    onWallFocus(): void {
+        console.log('onWallFocus');
 
-    applyImageSrc() {
-        this.state.src = this.src.nativeElement.value;
-
-        this.save();
-
-        if (this.state.src) {
-            this.hideImagePanel();
-        } else {
+        if (this.uiState === this.uiStates.initial) {
             this.showImagePanel();
         }
     }
 
+    onKeyPress(e: any) {
+        if (e.key === 'Escape') {
+            if (this.uiState === this.uiStates.pasteSrc) {
+                this.uiState = this.uiStates.initial;
+            }
+        }
+
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            this.applyImageSrc()
+                .then(() => {
+                    this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                }).catch(() => {
+                this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+            });
+        }
+    }
+
+    applyImageSrc() {
+        const currentValue = this.getCurrentInputValue();
+
+        this.uiState = this.uiStates.initial;
+
+        return this.isImage(currentValue)
+            .then(() => {
+                this.state.src = currentValue;
+
+                this.save();
+
+                this.uiState = this.uiStates.image;
+            })
+            .catch(() => {
+                alert('Please enter valid url');
+            });
+    }
+
     switchImagePanel() {
-        this.isShowImagePanel = !this.isShowImagePanel;
+        if (this.uiState === this.uiStates.initial) {
+            this.showImagePanel();
+        } else if (this.uiState === this.uiStates.pasteSrc) {
+            this.uiState = this.uiStates.initial;
+        }
     }
 
     showImagePanel() {
-        this.isShowImagePanel = true;
+        this.uiState = this.uiStates.pasteSrc;
+
+        setTimeout(() => {
+            this.src.nativeElement.focus();
+        });
     }
 
-    hideImagePanel() {
-        this.isShowImagePanel = false;
-    }
-
-    save() {
+    private save() {
         this.store.set(this.state);
+    }
+
+    private isImage(src): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+
+            img.onload = function () {
+                resolve();
+            };
+
+            img.onerror = function () {
+                reject();
+            };
+
+            img.src = src;
+        });
+    }
+
+    private getCurrentInputValue() {
+        return this.src.nativeElement.value;
     }
 }

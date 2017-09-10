@@ -1,22 +1,20 @@
-<div [hidden]="!state.src">
-    <img [src]="state.src" alt="">
-</div>
+<img [hidden]="uiState !== uiStates.image" [src]="state.src" alt="">
 
-<div [hidden]="state.src" class="w-signboard" (click)="switchImagePanel()">
+<div [hidden]="uiState === uiStates.image" class="w-signboard" (click)="switchImagePanel()">
     Add an Image
 </div>
 
-<div [ngClass]="{show: isShowImagePanel}" class="w-panel">
+<div [ngClass]="{show: uiState === uiStates.pasteSrc}" class="w-panel">
     <div class="w-panel__body">
         <form>
             <div class="form-group w-form-group">
-                <input #src (keydown)="onKeyPress($event)" type="text" class="form-control w-input"
+                <input #src (keydown)="onKeyPress($event)" class="form-control w-input"
                        placeholder="Paste the image link">
             </div>
         </form>
 
         <div>
-            <button (click)="onPanelActionClick()" type="button" class="btn btn-primary btn-sm btn-block">Embed image
+            <button (click)="applyImageSrc()" type="button" class="btn btn-primary btn-sm btn-block">Embed image
             </button>
         </div>
     </div>
