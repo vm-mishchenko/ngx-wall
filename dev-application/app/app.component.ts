@@ -49,6 +49,30 @@ export class AppComponent {
                     "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
                 },
                 "meta": {}
+            },
+            {
+                "id": "4f3ce9ed-bebc-17e7-c23a-2cc64027ed09",
+                "tag": "header",
+                "data": {
+                    "text": "Roadmap"
+                },
+                "meta": {}
+            },
+            {
+                "id": "4b089695-bad3-06eb-f782-239c340864f3",
+                "tag": "text",
+                "data": {
+                    "text": "- drag'n'drop support"
+                },
+                "meta": {}
+            },
+            {
+                "id": "878eca6b-5c7b-0cfa-c9ad-71481879d3e3",
+                "tag": "text",
+                "data": {
+                    "text": "- support few editors on the page"
+                },
+                "meta": {}
             }
         ],
         "layout": {
@@ -62,6 +86,15 @@ export class AppComponent {
                                 },
                                 {
                                     "id": "13e25e42-ae37-0ee6-8bf2-fd7f78bf8762"
+                                },
+                                {
+                                    "id": "4f3ce9ed-bebc-17e7-c23a-2cc64027ed09"
+                                },
+                                {
+                                    "id": "4b089695-bad3-06eb-f782-239c340864f3"
+                                },
+                                {
+                                    "id": "878eca6b-5c7b-0cfa-c9ad-71481879d3e3"
                                 },
                                 {
                                     "id": "89399ff0-2d1a-bbd3-68ae-a55045571c4b"
@@ -79,7 +112,6 @@ export class AppComponent {
 
     documentationWallPlan: IWallDefinition = {
         "bricks": [
-
             {
                 "id": "4b72280e-1b98-d62c-51c3-525552b64f1c",
                 "tag": "header",
@@ -116,7 +148,7 @@ export class AppComponent {
                 "id": "585853cc-230c-ef25-7d4e-b29e7d128367",
                 "tag": "text",
                 "data": {
-                    "text": "Press Escape to Enter to Selection mode"
+                    "text": "Press Escape to enable Selection mode"
                 },
                 "meta": {}
             },
@@ -124,7 +156,7 @@ export class AppComponent {
                 "id": "7ce6c9b8-4445-28b0-4a99-887d481aac6c",
                 "tag": "text",
                 "data": {
-                    "text": "Press Shift in selection mode to select few bricks"
+                    "text": "Press Shift to select few bricks"
                 },
                 "meta": {}
             },
