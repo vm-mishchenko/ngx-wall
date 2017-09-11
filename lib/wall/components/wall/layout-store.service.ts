@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ILayoutDefinition } from '../../wall.interfaces';
+import { ILayoutDefinition } from './wall.interfaces';
 import { BrickRegistry } from '../../registry/brick-registry.service';
 import { BrickStore } from './brick-store.service';
 

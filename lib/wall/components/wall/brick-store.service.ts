@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IBrickDefinition } from '../../wall.interfaces';
+import { IBrickDefinition } from './wall.interfaces';
 
 // TODO: should implement IWallStore interface
 

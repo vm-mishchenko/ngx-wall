@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { IWallApi, IWallDefinition, WALL } from 'wall';
+import { IWallConfiguration, IWallDefinition, WALL, WallApi } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -8,9 +8,9 @@ import { IWallApi, IWallDefinition, WALL } from 'wall';
 export class AppComponent {
     plan: any = null;
 
-    wallApi: IWallApi = null;
+    wallApi: WallApi = null;
 
-    wallConfiguration = {
+    wallConfiguration: IWallConfiguration = {
         mode: WALL.MODES.EDIT,
 
         onRegisterApi: this.onRegisterApi.bind(this)
@@ -222,7 +222,7 @@ export class AppComponent {
     constructor(private changeDetectorRef: ChangeDetectorRef) {
     }
 
-    onRegisterApi(wallApi: IWallApi) {
+    onRegisterApi(wallApi: WallApi) {
         this.wallApi = wallApi;
 
         // subscribe to all core events

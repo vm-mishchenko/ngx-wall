@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { IBrickRegistry, IBrickSpecification } from '../wall.interfaces';
+import { IBrickSpecification } from '../wall.interfaces';
 
 @Injectable()
-export class BrickRegistry implements IBrickRegistry {
+export class BrickRegistry {
     private bricks: IBrickSpecification[] = [];
 
     register(brickConfiguration: IBrickSpecification) {

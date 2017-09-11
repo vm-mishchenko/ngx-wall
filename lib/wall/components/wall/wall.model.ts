@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { WallApi } from './wall-api.service';
-import { IWallDefinition } from '../../wall.interfaces';
-import { WallCoreApi } from './wall-core-api.service';
 import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { AddBrickEvent } from './events/add-brick.event';
 import { RemoveBrickEvent } from './events/remove-brick.event';
-import { IWallConfiguration } from '../../../../dist/wall/wall.interfaces';
 import { WALL } from './wall.constant';
 import { WallEditorRegistry } from '../../wall-editor.registry';
+import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * @desc Responsible for storing wall state.
@@ -17,6 +16,8 @@ import { WallEditorRegistry } from '../../wall-editor.registry';
 @Injectable()
 export class WallModel {
     id: string = String(Math.random());
+
+    events: Subject<any> = new Subject();
 
     get canvasLayout(): boolean {
         return this.layoutStore.canvasLayout;
@@ -43,7 +44,35 @@ export class WallModel {
         }
 
         // initialize core API
-        this.api.core = new WallCoreApi(this);
+        [
+            'getSelectedBrickIds',
+            'selectBrick',
+            'unSelectBricks',
+            'focusOnBrickId',
+            'addBrickToSelection',
+            'removeBrickFromSelection',
+            'isBrickAheadOf',
+            'getPlan',
+            'getMode',
+            'turnBrickInto',
+            'addDefaultBrick',
+            'addBrick',
+            'addBrickToNewRow',
+            'addBrickToNewColumn',
+            'addBrickAfterInSameColumn',
+            'addBrickAfterInNewRow',
+            'removeBrick',
+            'removeBricks',
+            'getPreviousBrickId',
+            'getNextBrickId',
+            'getBrickStore',
+            'getFocusedBrickId',
+            'focusOnPreviousTextBrick',
+            'focusOnNextTextBrick',
+            'subscribe'
+        ].forEach((methodName) => {
+            this.api.registerCoreApi(methodName, this[methodName].bind(this));
+        });
 
         // protect API from extending
         Object.seal(this.api.core);
@@ -125,7 +154,7 @@ export class WallModel {
     }
 
     /* Add text brick to the bottom of wall in the new row */
-    addDefaultBrick() {
+    addDefaultBrick(): void {
         if (!this.brickStore.getBricksCount()) {
             this.addBrick('text', 0, 0, 0);
         } else {
@@ -142,7 +171,7 @@ export class WallModel {
 
             this.focusOnBrickId(newBrick.id);
 
-            this.api.core.events.next(new AddBrickEvent());
+            this.events.next(new AddBrickEvent());
         }
     }
 
@@ -162,7 +191,7 @@ export class WallModel {
 
         this.focusOnBrickId(newBrick.id);
 
-        this.api.core.events.next(new AddBrickEvent());
+        this.events.next(new AddBrickEvent());
     }
 
     /* Create new column in existing row and put brick to it */
@@ -182,7 +211,7 @@ export class WallModel {
 
             this.focusOnBrickId(newBrick.id);
 
-            this.api.core.events.next(new AddBrickEvent());
+            this.events.next(new AddBrickEvent());
         }
     }
 
@@ -230,7 +259,7 @@ export class WallModel {
                 this.focusOnBrickId(nextTextBrickId);
             }
 
-            this.api.core.events.next(new RemoveBrickEvent());
+            this.events.next(new RemoveBrickEvent());
         }
     }
 
@@ -265,7 +294,7 @@ export class WallModel {
         return this.layoutStore.isBrickAheadOf(firstBrickId, secondBrickId);
     }
 
-    getFocusedBrickId() {
+    getFocusedBrickId(): string {
         return this.focusedBrickId;
     }
 
@@ -296,6 +325,10 @@ export class WallModel {
 
     isFocusedEditor() {
         return this.wallEditorRegistry.isFocusedEditor(this.id);
+    }
+
+    subscribe(callback: any) {
+        return this.events.subscribe(callback);
     }
 
     private isOnlyOneBrickEmptyText() {

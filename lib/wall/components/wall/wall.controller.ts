@@ -1,7 +1,7 @@
 import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
-import { IWallConfiguration, IWallDefinition } from '../../wall.interfaces';
 import { WallModel } from './wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
+import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
 
 @Injectable()
 export class WallController {
