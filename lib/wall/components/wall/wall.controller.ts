@@ -10,7 +10,7 @@ export class WallController {
 
     initialize(plan: IWallDefinition, configuration: IWallConfiguration) {
         // initialize core functionality
-        this.wallModel.initialize(plan);
+        this.wallModel.initialize(plan, configuration);
 
         // initialize plugins
         const plugins = this.injector.get(WALL_PLUGIN);

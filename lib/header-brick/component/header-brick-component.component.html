@@ -1,6 +1,9 @@
 <h3 #editor
-     (keydown)="onKeyPress($event)"
-     (keyup)="onTextChanged()"
-     class="editor"
-     contenteditable="true">
+    [hidden]="mode === modes.READ"
+    (keydown)="onKeyPress($event)"
+    (keyup)="onTextChanged()"
+    class="editor"
+    contenteditable="true">
 </h3>
+
+<h3 [innerHTML]="state.text" [hidden]="mode === modes.EDIT"></h3>

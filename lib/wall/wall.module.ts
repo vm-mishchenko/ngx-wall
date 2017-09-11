@@ -8,6 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { WallCanvasBrickComponent } from './components/wall-canvas/components/wall-canvas-brick/wall-canvas-brick.component';
 import { WALL_PLUGIN } from './wall.tokens';
 import { SelectionPlugin } from './plugins/selection/selection';
+import { WallEditorRegistry } from './wall-editor.registry';
 
 @NgModule({
     imports: [
@@ -15,6 +16,7 @@ import { SelectionPlugin } from './plugins/selection/selection';
     ],
     providers: [
         CommonModule,
+        WallEditorRegistry,
         BrickRegistry,
         {
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true

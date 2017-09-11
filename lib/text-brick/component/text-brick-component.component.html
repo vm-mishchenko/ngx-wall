@@ -1,6 +1,9 @@
 <div #editor
+     [hidden]="mode === modes.READ"
      (keydown)="onKeyPress($event)"
      (keyup)="onTextChanged()"
      class="text-brick__editor"
      contenteditable="true">
 </div>
+
+<div [innerHTML]="state.text" [hidden]="mode === modes.EDIT"></div>

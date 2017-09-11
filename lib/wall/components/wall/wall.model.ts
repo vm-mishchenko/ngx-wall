@@ -1,11 +1,14 @@
-import {Injectable} from '@angular/core';
-import {WallApi} from './wall-api.service';
-import {IWallDefinition} from '../../wall.interfaces';
-import {WallCoreApi} from './wall-core-api.service';
-import {BrickStore} from './brick-store.service';
-import {LayoutStore} from './layout-store.service';
-import {AddBrickEvent} from './events/add-brick.event';
-import {RemoveBrickEvent} from './events/remove-brick.event';
+import { Injectable } from '@angular/core';
+import { WallApi } from './wall-api.service';
+import { IWallDefinition } from '../../wall.interfaces';
+import { WallCoreApi } from './wall-core-api.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
+import { AddBrickEvent } from './events/add-brick.event';
+import { RemoveBrickEvent } from './events/remove-brick.event';
+import { IWallConfiguration } from '../../../../dist/wall/wall.interfaces';
+import { WALL } from './wall.constant';
+import { WallEditorRegistry } from '../../wall-editor.registry';
 
 /**
  * @desc Responsible for storing wall state.
@@ -13,20 +16,32 @@ import {RemoveBrickEvent} from './events/remove-brick.event';
  * */
 @Injectable()
 export class WallModel {
+    id: string = String(Math.random());
+
     get canvasLayout(): boolean {
         return this.layoutStore.canvasLayout;
     }
 
+    mode: string = WALL.MODES.EDIT;
+
+    // UI
     focusedBrickId: string = null;
 
     selectedBricks: string[] = [];
 
     constructor(public api: WallApi,
                 private brickStore: BrickStore,
+                private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
     }
 
-    initialize(plan: IWallDefinition) {
+    initialize(plan: IWallDefinition, configuration: IWallConfiguration) {
+        this.wallEditorRegistry.registerEditor(this.id, this);
+
+        if (configuration && configuration.mode) {
+            this.mode = configuration.mode;
+        }
+
         // initialize core API
         this.api.core = new WallCoreApi(this);
 
@@ -40,8 +55,10 @@ export class WallModel {
     /* SELECTION API */
 
     selectBrick(brickId: string): void {
-        this.selectedBricks = [brickId];
-        this.focusedBrickId = null;
+        if (this.isFocusedEditor()) {
+            this.selectedBricks = [brickId];
+            this.focusedBrickId = null;
+        }
     }
 
     addBrickToSelection(brickId: string): void {
@@ -63,6 +80,8 @@ export class WallModel {
 
     // callback for brick selected by user
     onFocusedBrick(brickId: string) {
+        this.wallEditorRegistry.setFocusedEditor(this.id);
+
         this.focusedBrickId = brickId;
 
         this.unSelectBricks();
@@ -87,6 +106,11 @@ export class WallModel {
             bricks: this.brickStore.serialize(),
             layout: this.layoutStore.serialize()
         }
+    }
+
+
+    getMode() {
+        return this.mode;
     }
 
     getBrickStore(brickId: string) {
@@ -268,6 +292,10 @@ export class WallModel {
         if (nextTextBrickId) {
             this.focusOnBrickId(nextTextBrickId);
         }
+    }
+
+    isFocusedEditor() {
+        return this.wallEditorRegistry.isFocusedEditor(this.id);
     }
 
     private isOnlyOneBrickEmptyText() {

@@ -46,6 +46,10 @@ export class WallCoreApi {
         return this.wallModel.getPlan();
     }
 
+    getMode(): string {
+        return this.wallModel.getMode();
+    }
+
     turnBrickInto(brickId: string, newTag: string) {
         return this.wallModel.turnBrickInto(brickId, newTag);
     }
