@@ -95,7 +95,8 @@ wall-canvas-row {
   display: flex;
 
   .wall-canvas-row__column {
-    flex-grow: 1;
+    flex: 1;
+    margin: 0 10px;
   }
 }
 

@@ -9,10 +9,12 @@ import { WallCanvasBrickComponent } from './components/wall-canvas/components/wa
 import { WALL_PLUGIN } from './wall.tokens';
 import { SelectionPlugin } from './plugins/selection/selection';
 import { WallEditorRegistry } from './wall-editor.registry';
+import { SelectionModule } from '../selection/selection.module';
 
 @NgModule({
     imports: [
-        BrowserModule
+        BrowserModule,
+        SelectionModule
     ],
     providers: [
         CommonModule,

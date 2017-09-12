@@ -1,11 +1,13 @@
-<div class="wrapper">
-    <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
+<div selection-area>
+    <div class="wrapper">
+        <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
 
-    <br>
-    <hr>
-    <br>
+        <br>
+        <hr>
+        <br>
 
-    <pre>
+        <pre>
         {{plan | json}}
     </pre>
+    </div>
 </div>

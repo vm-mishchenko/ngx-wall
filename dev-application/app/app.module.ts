@@ -2,7 +2,15 @@ import { Injectable, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { HeaderBrickModule, ImgBrickModule, TextBrickModule, WALL_PLUGIN, WallApi, WallModule } from 'wall';
+import {
+    HeaderBrickModule,
+    ImgBrickModule,
+    SelectionModule,
+    TextBrickModule,
+    WALL_PLUGIN,
+    WallApi,
+    WallModule
+} from 'wall';
 
 @Injectable()
 class LoggerPlugin {
@@ -26,6 +34,7 @@ class EventLoggerPlugin {
 
 @NgModule({
     imports: [
+        SelectionModule,
         WallModule,
         TextBrickModule,
         HeaderBrickModule,
