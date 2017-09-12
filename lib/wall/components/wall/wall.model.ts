@@ -44,7 +44,7 @@ export class WallModel {
         }
 
         // initialize core API
-        [
+        const coreApi = [
             'getSelectedBrickIds',
             'selectBrick',
             'unSelectBricks',
@@ -70,9 +70,13 @@ export class WallModel {
             'focusOnPreviousTextBrick',
             'focusOnNextTextBrick',
             'subscribe'
-        ].forEach((methodName) => {
-            this.api.registerCoreApi(methodName, this[methodName].bind(this));
-        });
+        ].reduce((result, methodName) => {
+            result[methodName] = this[methodName].bind(this);
+
+            return result;
+        }, {});
+
+        this.api.registerCoreApi(coreApi);
 
         // protect API from extending
         Object.seal(this.api.core);
@@ -128,15 +132,12 @@ export class WallModel {
         return this.layoutStore.getPreviousBrickId(brickId);
     }
 
-    /* SELECTION API */
-
     getPlan(): IWallDefinition {
         return {
             bricks: this.brickStore.serialize(),
             layout: this.layoutStore.serialize()
         }
     }
-
 
     getMode() {
         return this.mode;
