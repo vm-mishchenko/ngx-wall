@@ -91,7 +91,7 @@ export class WallModel {
     }
 
     addBrickToSelection(brickId: string): void {
-        this.selectedBricks = this.selectedBricks.splice(0);
+        this.selectedBricks = this.selectedBricks.slice(0);
         this.selectedBricks.push(brickId);
     }
 
@@ -100,7 +100,7 @@ export class WallModel {
 
         this.selectedBricks.splice(brickIdIndex, 1);
 
-        this.selectedBricks = this.selectedBricks.splice(0);
+        this.selectedBricks = this.selectedBricks.slice(0);
     }
 
     unSelectBricks(): void {
