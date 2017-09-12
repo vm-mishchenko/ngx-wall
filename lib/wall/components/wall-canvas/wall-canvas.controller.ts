@@ -1,10 +1,13 @@
-import {WallCanvasApi} from './wall-canvas.api';
-import {EventEmitter, Injectable} from '@angular/core';
+import { WallCanvasApi } from './wall-canvas.api';
+import { EventEmitter, Injectable } from '@angular/core';
 
 @Injectable()
 export class WallCanvasController {
     private canvasBrickInstances: any = {};
+
     private currentlyFocusedBrickId: string = null;
+
+    private selectedBrickIds: string[] = [];
 
     onFocusedEvent: EventEmitter<any> = new EventEmitter();
 
@@ -16,7 +19,17 @@ export class WallCanvasController {
     }
 
     selectBricks(brickIds: string[]) {
-        this.unselectBricks();
+        const unSelectBrickIds = [];
+
+        this.selectedBrickIds.forEach((brickId) => {
+            if (brickIds.indexOf(brickId) === -1) {
+                unSelectBrickIds.push(brickId);
+            }
+        });
+
+        this.selectedBrickIds = brickIds.slice(0);
+
+        this.unselecBrickIds(unSelectBrickIds);
 
         setTimeout(() => {
             brickIds.forEach((brickId) => {
@@ -25,7 +38,19 @@ export class WallCanvasController {
         });
     }
 
+    unselecBrickIds(brickIds) {
+        setTimeout(() => {
+            for (let brickId in this.canvasBrickInstances) {
+                if (brickIds.indexOf(brickId) !== -1) {
+                    this.canvasBrickInstances[brickId].canvasBrickInstance.unselect();
+                }
+            }
+        });
+    }
+
     unselectBricks() {
+        this.selectedBrickIds = [];
+
         for (let brickId in this.canvasBrickInstances) {
             this.canvasBrickInstances[brickId].canvasBrickInstance.unselect();
         }

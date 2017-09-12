@@ -1,42 +1,11 @@
-<div class="app-wrapper">
-    <div class="panel">
-        <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
-    </div>
-    <div class="panel">
-        <wall [plan]="documentationWallPlan" [configuration]="documentationWallConfiguration"></wall>
+<div class="wrapper">
+    <wall [configuration]="wallConfiguration" [plan]="wallPlan"></wall>
 
-        <br>
-        <hr>
-        <br>
+    <br>
+    <hr>
+    <br>
 
-        <div class="w-panel">
-            <div class="w-panel__header">
-                <div class="w-header__tab w-header__tab-active">
-                    <button type="button" class="btn btn-light btn-sm">Tab 1</button>
-                </div>
-                <div class="w-header__tab">
-                    <button type="button" class="btn btn-light btn-sm">Tab 2</button>
-                </div>
-            </div>
-            <div class="w-panel__body">
-                <div class="form-group w-form-group">
-                    <input type="email" class="form-control w-input" placeholder="Paste the image link">
-                </div>
-
-                <div>
-                    <button type="button" class="btn btn-primary btn-sm btn-block">Embed image</button>
-                </div>
-            </div>
-        </div>
-
-        <br>
-        <hr>
-        <br>
-
-        <h2>Plan</h2>
-
-        <pre>
-            {{plan | json}}
-        </pre>
-    </div>
+    <pre>
+        {{plan | json}}
+    </pre>
 </div>
