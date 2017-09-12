@@ -24921,7 +24921,7 @@ webpackEmptyAsyncContext.id = 93;
 		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/platform-browser"), require("@angular/common"), require("rxjs/Subject")) : factory(root["@angular/core"], root["@angular/platform-browser"], root["@angular/common"], root["rxjs/Subject"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_45__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_24__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -25004,9 +25004,9 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(20));
-__export(__webpack_require__(11));
+__export(__webpack_require__(34));
 __export(__webpack_require__(6));
-__export(__webpack_require__(33));
+__export(__webpack_require__(35));
 __export(__webpack_require__(5));
 
 
@@ -25248,9 +25248,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(19);
 __export(__webpack_require__(1));
-__export(__webpack_require__(35));
-__export(__webpack_require__(38));
-__export(__webpack_require__(41));
+__export(__webpack_require__(36));
+__export(__webpack_require__(39));
+__export(__webpack_require__(42));
 
 
 /***/ }),
@@ -25270,7 +25270,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_interfaces_1 = __webpack_require__(34);
+var wall_interfaces_1 = __webpack_require__(11);
 var wall_controller_1 = __webpack_require__(21);
 var wall_api_service_1 = __webpack_require__(2);
 var wall_model_1 = __webpack_require__(12);
@@ -25304,7 +25304,7 @@ var WallComponent = (function () {
     WallComponent = __decorate([
         core_1.Component({
             selector: 'wall',
-            template: __webpack_require__(24),
+            template: __webpack_require__(25),
             providers: [
                 wall_api_service_1.WallApi,
                 wall_model_1.WallModel,
@@ -25329,7 +25329,7 @@ exports.WallComponent = WallComponent;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
-exports.awesomeTypescriptLoaderBug2 = true;
+exports.awesomeTypescriptLoaderBug = true;
 
 
 /***/ }),
@@ -25356,7 +25356,7 @@ var add_brick_event_1 = __webpack_require__(22);
 var remove_brick_event_1 = __webpack_require__(23);
 var wall_constant_1 = __webpack_require__(14);
 var wall_editor_registry_1 = __webpack_require__(15);
-var Subject_1 = __webpack_require__(45);
+var Subject_1 = __webpack_require__(24);
 /**
  * @desc Responsible for storing wall state.
  * Provide core functionality
@@ -25905,9 +25905,10 @@ var LayoutStore = (function () {
     };
     LayoutStore = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [brick_registry_service_1.BrickRegistry, brick_store_service_1.BrickStore])
+        __metadata("design:paramtypes", [typeof (_a = typeof brick_registry_service_1.BrickRegistry !== "undefined" && brick_registry_service_1.BrickRegistry) === "function" && _a || Object, typeof (_b = typeof brick_store_service_1.BrickStore !== "undefined" && brick_store_service_1.BrickStore) === "function" && _b || Object])
     ], LayoutStore);
     return LayoutStore;
+    var _a, _b;
 }());
 exports.LayoutStore = LayoutStore;
 
@@ -26106,7 +26107,7 @@ var TextBrickComponent = (function () {
     TextBrickComponent = __decorate([
         core_1.Component({
             selector: 'text-brick',
-            template: __webpack_require__(37)
+            template: __webpack_require__(38)
         }),
         __metadata("design:paramtypes", [typeof (_b = typeof wall_1.WallApi !== "undefined" && wall_1.WallApi) === "function" && _b || Object])
     ], TextBrickComponent);
@@ -26251,7 +26252,7 @@ var HeaderBrickComponent = (function () {
     HeaderBrickComponent = __decorate([
         core_1.Component({
             selector: 'header-brick',
-            template: __webpack_require__(40)
+            template: __webpack_require__(41)
         }),
         __metadata("design:paramtypes", [typeof (_b = typeof wall_1.WallApi !== "undefined" && wall_1.WallApi) === "function" && _b || Object])
     ], HeaderBrickComponent);
@@ -26388,7 +26389,7 @@ var ImgBrickComponent = (function () {
     ImgBrickComponent = __decorate([
         core_1.Component({
             selector: 'img-brick',
-            template: __webpack_require__(43)
+            template: __webpack_require__(44)
         }),
         __metadata("design:paramtypes", [typeof (_b = typeof index_1.WallApi !== "undefined" && index_1.WallApi) === "function" && _b || Object])
     ], ImgBrickComponent);
@@ -26421,12 +26422,12 @@ var core_1 = __webpack_require__(0);
 var wall_component_1 = __webpack_require__(10);
 var brick_registry_service_1 = __webpack_require__(5);
 var common_1 = __webpack_require__(7);
-var wall_canvas_component_1 = __webpack_require__(25);
-var wall_canvas_row_component_1 = __webpack_require__(28);
+var wall_canvas_component_1 = __webpack_require__(26);
+var wall_canvas_row_component_1 = __webpack_require__(29);
 var platform_browser_1 = __webpack_require__(3);
-var wall_canvas_brick_component_1 = __webpack_require__(30);
+var wall_canvas_brick_component_1 = __webpack_require__(31);
 var wall_tokens_1 = __webpack_require__(6);
-var selection_1 = __webpack_require__(32);
+var selection_1 = __webpack_require__(33);
 var wall_editor_registry_1 = __webpack_require__(15);
 var WallModule = (function () {
     function WallModule() {
@@ -26540,10 +26541,16 @@ exports.RemoveBrickEvent = RemoveBrickEvent;
 /* 24 */
 /***/ (function(module, exports) {
 
-module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\r\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\r\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\r\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\r\n             [layout]=\"wallController.wallModel.canvasLayout\">\r\n</wall-canvas>"
+module.exports = __WEBPACK_EXTERNAL_MODULE_24__;
 
 /***/ }),
 /* 25 */
+/***/ (function(module, exports) {
+
+module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\r\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\r\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\r\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\r\n             [layout]=\"wallController.wallModel.canvasLayout\">\r\n</wall-canvas>"
+
+/***/ }),
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26564,7 +26571,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(7);
 var wall_canvas_api_1 = __webpack_require__(8);
-var wall_canvas_controller_1 = __webpack_require__(26);
+var wall_canvas_controller_1 = __webpack_require__(27);
 var WallCanvasComponent = (function () {
     function WallCanvasComponent(wallCanvasController, doc) {
         var _this = this;
@@ -26634,7 +26641,7 @@ var WallCanvasComponent = (function () {
     WallCanvasComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas',
-            template: __webpack_require__(27),
+            template: __webpack_require__(28),
             providers: [
                 wall_canvas_api_1.WallCanvasApi,
                 wall_canvas_controller_1.WallCanvasController
@@ -26650,7 +26657,7 @@ exports.WallCanvasComponent = WallCanvasComponent;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26731,13 +26738,13 @@ exports.WallCanvasController = WallCanvasController;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\r\n    <wall-canvas-row [row]=\"row\" *ngFor=\"let row of layout.bricks\"></wall-canvas-row>\r\n\r\n    <div #expander class=\"wall-canvas__expander\"></div>\r\n</div>"
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26765,7 +26772,7 @@ var WallCanvasRowComponent = (function () {
     WallCanvasRowComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-row',
-            template: __webpack_require__(29)
+            template: __webpack_require__(30)
         }),
         __metadata("design:paramtypes", [])
     ], WallCanvasRowComponent);
@@ -26775,13 +26782,13 @@ exports.WallCanvasRowComponent = WallCanvasRowComponent;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns\">\r\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks\"></wall-canvas-brick>\r\n</div>"
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26831,7 +26838,7 @@ var WallCanvasBrickComponent = (function () {
     WallCanvasBrickComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-brick',
-            template: __webpack_require__(31)
+            template: __webpack_require__(32)
         }),
         __metadata("design:paramtypes", [typeof (_b = typeof core_1.Injector !== "undefined" && core_1.Injector) === "function" && _b || Object, typeof (_c = typeof core_1.ComponentFactoryResolver !== "undefined" && core_1.ComponentFactoryResolver) === "function" && _c || Object, typeof (_d = typeof wall_canvas_api_1.WallCanvasApi !== "undefined" && wall_canvas_api_1.WallCanvasApi) === "function" && _d || Object])
     ], WallCanvasBrickComponent);
@@ -26842,13 +26849,13 @@ exports.WallCanvasBrickComponent = WallCanvasBrickComponent;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = "<div (click)=\"onFocused()\" class=\"wall-canvas-brick__wrapper\" [ngClass]=\"{'wall-canvas-brick__selected': selected}\">\r\n    <div #brickContainer></div>\r\n</div>"
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26952,27 +26959,12 @@ var SelectionPlugin = (function () {
     SelectionPlugin = __decorate([
         core_1.Injectable(),
         __param(1, core_1.Inject(common_1.DOCUMENT)),
-        __metadata("design:paramtypes", [wall_api_service_1.WallApi, Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof wall_api_service_1.WallApi !== "undefined" && wall_api_service_1.WallApi) === "function" && _a || Object, Object])
     ], SelectionPlugin);
     return SelectionPlugin;
+    var _a;
 }());
 exports.SelectionPlugin = SelectionPlugin;
-
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(2));
-__export(__webpack_require__(10));
-__export(__webpack_require__(14));
-__export(__webpack_require__(34));
 
 
 /***/ }),
@@ -26983,7 +26975,7 @@ __export(__webpack_require__(34));
 
 Object.defineProperty(exports, "__esModule", { value: true });
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
-exports.awesomeTypescriptLoaderBug = true;
+exports.awesomeTypescriptLoaderBug2 = true;
 
 
 /***/ }),
@@ -26996,12 +26988,28 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(36));
-__export(__webpack_require__(16));
+__export(__webpack_require__(2));
+__export(__webpack_require__(10));
+__export(__webpack_require__(14));
+__export(__webpack_require__(11));
 
 
 /***/ }),
 /* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(37));
+__export(__webpack_require__(16));
+
+
+/***/ }),
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27047,13 +27055,13 @@ exports.TextBrickModule = TextBrickModule;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor\r\n     [hidden]=\"mode === modes.READ\"\r\n     (keydown)=\"onKeyPress($event)\"\r\n     (keyup)=\"onTextChanged()\"\r\n     class=\"text-brick__editor\"\r\n     contenteditable=\"true\">\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27062,12 +27070,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(39));
+__export(__webpack_require__(40));
 __export(__webpack_require__(17));
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27113,13 +27121,13 @@ exports.HeaderBrickModule = HeaderBrickModule;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = "<h3 #editor\r\n    [hidden]=\"mode === modes.READ\"\r\n    (keydown)=\"onKeyPress($event)\"\r\n    (keyup)=\"onTextChanged()\"\r\n    class=\"editor\"\r\n    contenteditable=\"true\">\r\n</h3>\r\n\r\n<h3 [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></h3>"
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27128,12 +27136,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(42));
+__export(__webpack_require__(43));
 __export(__webpack_require__(18));
 
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27178,17 +27186,10 @@ exports.ImgBrickModule = ImgBrickModule;
 
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\r\n\r\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\r\n    Add an Image\r\n</div>\r\n\r\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\r\n    <div class=\"w-panel__body\">\r\n        <form>\r\n            <div class=\"form-group w-form-group\">\r\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\r\n                       placeholder=\"Paste the image link\">\r\n            </div>\r\n        </form>\r\n\r\n        <div>\r\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>"
-
-/***/ }),
-/* 44 */,
-/* 45 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_45__;
 
 /***/ })
 /******/ ]);
