@@ -13,7 +13,7 @@ module.exports = {
     },
 
     output: {
-        path: root('dev-application-dist'),
+        path: root('/'),
         filename: '[name].bundle.js'
     },
 
@@ -96,9 +96,7 @@ module.exports = {
         }
     },
 
-    stats: 'errors-only',
-
-    devtool: 'cheap-source-map'
+    stats: 'errors-only'
 };
 
 function root(p) {
