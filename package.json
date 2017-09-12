@@ -10,6 +10,7 @@
     "angular"
   ],
   "scripts": {
+    "updateGithubPage": "webpack --config=./configurations/webpack-dev-application.config.js",
     "explorer": "source-map-explorer ./dist/wall.umd.js",
     "build:umd:watch": "webpack --watch --config=./configurations/webpack-library.config.js",
     "dev:server": "webpack-dev-server --config=./configurations/webpack-dev-application.config.js",
