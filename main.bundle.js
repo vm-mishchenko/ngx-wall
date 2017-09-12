@@ -57062,8 +57062,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(31);
 var wall_1 = __webpack_require__(94);
 var AppComponent = (function () {
-    function AppComponent(changeDetectorRef) {
-        this.changeDetectorRef = changeDetectorRef;
+    function AppComponent() {
         this.plan = null;
         this.wallApi = null;
         this.wallConfiguration = {
@@ -57084,7 +57083,7 @@ var AppComponent = (function () {
                     'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762',
                     'tag': 'text',
                     'data': {
-                        'text': 'Extensible editor based on Angular 2+'
+                        'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
                     },
                     'meta': {}
                 },
@@ -57127,6 +57126,62 @@ var AppComponent = (function () {
                         'text': '- support few editors on the page'
                     },
                     'meta': {}
+                },
+                {
+                    'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'Supported tags'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': '4cf44a15-d08e-399d-38ba-c051a36f6574',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/h header brick'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': '56be0630-1cd8-4997-b69c-e40421cf79da',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/img image brick'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'Navigation'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1',
+                    'tag': 'text',
+                    'data': {
+                        'text': 'Press `Escape` to enter to Selection mode'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': 'f6333894-7e4d-2759-c425-9b7feda57801',
+                    'tag': 'text',
+                    'data': {
+                        'text': 'Press Shift to select few bricks'
+                    },
+                    'meta': {}
+                },
+                {
+                    'id': '94339d03-f539-cded-bb5a-4273d05898d5',
+                    'tag': 'text',
+                    'data': {
+                        'text': '- support readonly mode'
+                    },
+                    'meta': {}
                 }
             ],
             'layout': {
@@ -57142,6 +57197,24 @@ var AppComponent = (function () {
                                         'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762'
                                     },
                                     {
+                                        'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4'
+                                    },
+                                    {
+                                        'id': '4cf44a15-d08e-399d-38ba-c051a36f6574'
+                                    },
+                                    {
+                                        'id': '56be0630-1cd8-4997-b69c-e40421cf79da'
+                                    },
+                                    {
+                                        'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced'
+                                    },
+                                    {
+                                        'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1'
+                                    },
+                                    {
+                                        'id': 'f6333894-7e4d-2759-c425-9b7feda57801'
+                                    },
+                                    {
                                         'id': '4f3ce9ed-bebc-17e7-c23a-2cc64027ed09'
                                     },
                                     {
@@ -57149,6 +57222,9 @@ var AppComponent = (function () {
                                     },
                                     {
                                         'id': '878eca6b-5c7b-0cfa-c9ad-71481879d3e3'
+                                    },
+                                    {
+                                        'id': '94339d03-f539-cded-bb5a-4273d05898d5'
                                     },
                                     {
                                         'id': '89399ff0-2d1a-bbd3-68ae-a55045571c4b'
@@ -57163,135 +57239,25 @@ var AppComponent = (function () {
                 ]
             }
         };
-        this.documentationWallConfiguration = {
-            mode: wall_1.WALL.MODES.READ,
-        };
-        this.documentationWallPlan = {
-            'bricks': [
-                {
-                    'id': '4b72280e-1b98-d62c-51c3-525552b64f1c',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Support tags'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': 'bab06a7e-f19a-9133-1cbc-46f7888a450c',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- /h - header'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '20d86ae4-02b8-3fbf-52ec-aea4f3cef846',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- /img - image'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '9bb9e2d7-c03f-4c04-00f9-8b663f9a527e',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Navigation'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '585853cc-230c-ef25-7d4e-b29e7d128367',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press Escape to enable Selection mode'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '7ce6c9b8-4445-28b0-4a99-887d481aac6c',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press Shift to select few bricks'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '0950f1bf-9767-9473-be03-8d13a90b1eb3',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Mode'
-                    },
-                    'meta': {}
-                },
-                {
-                    'id': '7b6bf245-d1f1-3f46-55db-dc09549c3517',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press Escape to Enter to Selection mode\n\nPress Shift in selection mode to select few bricks\n'
-                    },
-                    'meta': {}
-                }
-            ],
-            'layout': {
-                'bricks': [
-                    {
-                        'columns': [
-                            {
-                                'bricks': [
-                                    {
-                                        'id': '4b72280e-1b98-d62c-51c3-525552b64f1c'
-                                    },
-                                    {
-                                        'id': 'bab06a7e-f19a-9133-1cbc-46f7888a450c'
-                                    },
-                                    {
-                                        'id': '20d86ae4-02b8-3fbf-52ec-aea4f3cef846'
-                                    },
-                                    {
-                                        'id': '9bb9e2d7-c03f-4c04-00f9-8b663f9a527e'
-                                    },
-                                    {
-                                        'id': '585853cc-230c-ef25-7d4e-b29e7d128367'
-                                    },
-                                    {
-                                        'id': '7ce6c9b8-4445-28b0-4a99-887d481aac6c'
-                                    },
-                                    {
-                                        'id': '0950f1bf-9767-9473-be03-8d13a90b1eb3'
-                                    },
-                                    {
-                                        'id': '7b6bf245-d1f1-3f46-55db-dc09549c3517'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            }
-        };
     }
     AppComponent.prototype.onRegisterApi = function (wallApi) {
         var _this = this;
         this.wallApi = wallApi;
+        this.plan = wallApi.core.getPlan();
         // subscribe to all core events
         wallApi.core.subscribe(function (event) {
             // update current plan
             _this.plan = wallApi.core.getPlan();
         });
-        // use logger feature provided by Logger plugin
-        wallApi.features.logger.log('Use Logger plugin');
-        this.plan = wallApi.core.getPlan();
     };
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
             template: __webpack_require__(154)
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof core_1.ChangeDetectorRef !== "undefined" && core_1.ChangeDetectorRef) === "function" && _a || Object])
+        __metadata("design:paramtypes", [])
     ], AppComponent);
     return AppComponent;
-    var _a;
 }());
 exports.AppComponent = AppComponent;
 
@@ -57300,7 +57266,7 @@ exports.AppComponent = AppComponent;
 /* 154 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"app-wrapper\">\r\n    <div class=\"panel\">\r\n        <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\r\n    </div>\r\n    <div class=\"panel\">\r\n        <wall [plan]=\"documentationWallPlan\" [configuration]=\"documentationWallConfiguration\"></wall>\r\n\r\n        <br>\r\n        <hr>\r\n        <br>\r\n\r\n        <div class=\"w-panel\">\r\n            <div class=\"w-panel__header\">\r\n                <div class=\"w-header__tab w-header__tab-active\">\r\n                    <button type=\"button\" class=\"btn btn-light btn-sm\">Tab 1</button>\r\n                </div>\r\n                <div class=\"w-header__tab\">\r\n                    <button type=\"button\" class=\"btn btn-light btn-sm\">Tab 2</button>\r\n                </div>\r\n            </div>\r\n            <div class=\"w-panel__body\">\r\n                <div class=\"form-group w-form-group\">\r\n                    <input type=\"email\" class=\"form-control w-input\" placeholder=\"Paste the image link\">\r\n                </div>\r\n\r\n                <div>\r\n                    <button type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image</button>\r\n                </div>\r\n            </div>\r\n        </div>\r\n\r\n        <br>\r\n        <hr>\r\n        <br>\r\n\r\n        <h2>Plan</h2>\r\n\r\n        <pre>\r\n            {{plan | json}}\r\n        </pre>\r\n    </div>\r\n</div>"
+module.exports = "<div class=\"wrapper\">\r\n    <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\r\n\r\n    <br>\r\n    <hr>\r\n    <br>\r\n\r\n    <pre>\r\n        {{plan | json}}\r\n    </pre>\r\n</div>"
 
 /***/ }),
 /* 155 */
