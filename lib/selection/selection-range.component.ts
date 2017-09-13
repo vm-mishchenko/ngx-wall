@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { RangeModelOnDestroy, SelectionRangeModel } from './selection-area.directive';
 
 @Component({
     selector: 'selection-range',
-    templateUrl: './selection-range.component.html',
-    style: [`
-        .selection-range {
-            position: absolute;
-            top: 0
-        }
-    `]
+    templateUrl: './selection-range.component.html'
 })
+export class SelectionRange {
+    selectionRangeModel: SelectionRangeModel = null;
 
-export class SelectionRange implements OnInit {
-    constructor() {
-    }
+    initialize(selectionRangeModel: SelectionRangeModel) {
+        this.selectionRangeModel = selectionRangeModel;
 
-    ngOnInit() {
+        const subscription = this.selectionRangeModel.subscribe((e: any) => {
+            if (e instanceof RangeModelOnDestroy) {
+                subscription.unsubscribe();
+            }
+        });
     }
 }

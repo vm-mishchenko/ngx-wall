@@ -19,18 +19,29 @@ export class WallCanvasController {
     }
 
     selectBricks(brickIds: string[]) {
-        const unSelectBrickIds = [];
+        console.log(brickIds);
 
-        this.selectedBrickIds.forEach((brickId) => {
-            if (brickIds.indexOf(brickId) === -1) {
-                unSelectBrickIds.push(brickId);
+        const bricksForSelect = [];
+        brickIds.forEach((brickId) => {
+            if (this.selectedBrickIds.indexOf(brickId) === -1) {
+                bricksForSelect.push(brickId);
             }
         });
 
+        const bricksForUnSelect = [];
+        this.selectedBrickIds.forEach((brickId) => {
+            if (brickIds.indexOf(brickId) === -1) {
+                bricksForUnSelect.push(brickId);
+            }
+        });
+
+        this._selectBrickIds(bricksForSelect);
+        this.unselecBrickIds(bricksForUnSelect);
+
         this.selectedBrickIds = brickIds.slice(0);
+    }
 
-        this.unselecBrickIds(unSelectBrickIds);
-
+    _selectBrickIds(brickIds) {
         setTimeout(() => {
             brickIds.forEach((brickId) => {
                 this.canvasBrickInstances[brickId].canvasBrickInstance.select();

@@ -1,12 +1,14 @@
 import { Inject, Injectable } from '@angular/core';
 import { WallApi } from '../../components/wall/wall-api.service';
 import { DOCUMENT } from '@angular/common';
+import { SelectionRegister } from '../../../selection';
 
 @Injectable()
 export class SelectionPlugin {
     doc: any = null;
 
     constructor(private wallApi: WallApi,
+                private selectionRegister: SelectionRegister,
                 @Inject(DOCUMENT) doc) {
         this.doc = doc;
 
@@ -88,6 +90,16 @@ export class SelectionPlugin {
                 if (focusedBrickId) {
                     this.wallApi.core.selectBrick(focusedBrickId);
                 }
+            }
+        });
+
+        this.selectionRegister.itemsSelected.subscribe((ids) => {
+            if (ids.length) {
+                ids.forEach((id) => {
+                    this.wallApi.core.addBrickToSelection(id);
+                });
+            } else {
+                this.wallApi.core.unSelectBricks();
             }
         });
     }

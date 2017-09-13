@@ -1,4 +1,4 @@
-<div (click)="onFocused()" class="wall-canvas-brick__wrapper"
+<div [selection-item]="brick.id" (click)="onFocused()" class="wall-canvas-brick__wrapper"
      [ngClass]="{'wall-canvas-brick__selected': selected}">
     <div #brickContainer></div>
 </div>

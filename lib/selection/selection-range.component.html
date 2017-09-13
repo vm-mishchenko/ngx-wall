@@ -1,3 +1,11 @@
-<div class="selection-range">
-
+<div *ngIf="selectionRangeModel"
+     [style.left.px]="selectionRangeModel.x"
+     [style.top.px]="selectionRangeModel.y"
+     [style.width.px]="selectionRangeModel.width"
+     [style.height.px]="selectionRangeModel.height"
+     class="selection-range">
+    {{selectionRangeModel.x}}
+    {{selectionRangeModel.y}}
+    {{selectionRangeModel.width}}
+    {{selectionRangeModel.height}}
 </div>

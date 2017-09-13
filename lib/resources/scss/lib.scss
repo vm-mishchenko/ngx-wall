@@ -1,4 +1,4 @@
-$w-text-color: rgb(153, 153, 153);
+$w-text-color: rgb(200, 200, 200);
 $w-background-color: #f7f6f5;
 $w-background-hover-color: #ecebea;
 
@@ -161,5 +161,15 @@ img-brick {
     visibility: visible;
     transition-delay: 0s;
     transform: translate(12%, -10px);
+  }
+}
+
+// selection range
+
+selection-range {
+  .selection-range {
+    opacity: 0.5;
+    position: fixed;
+    background-color: $w-text-color;
   }
 }
