@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs/Subscription';
 export const awesomeTypescriptLoaderBug = true;
 
 
-
 // Serialized Wall Definition
 export interface IWallDefinition {
     bricks: IBrickDefinition[];
@@ -39,6 +38,8 @@ export interface IWallCoreApi {
     getSelectedBrickIds(): string[];
 
     selectBrick(brickId: string): void;
+
+    selectBricks(brickIds: string[]): void;
 
     unSelectBricks(): void;
 

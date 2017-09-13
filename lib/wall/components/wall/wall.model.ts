@@ -47,6 +47,7 @@ export class WallModel {
         const coreApi = [
             'getSelectedBrickIds',
             'selectBrick',
+            'selectBricks',
             'unSelectBricks',
             'focusOnBrickId',
             'addBrickToSelection',
@@ -92,6 +93,10 @@ export class WallModel {
             this.selectedBricks = [brickId];
             this.focusedBrickId = null;
         }
+    }
+
+    selectBricks(brickIds: string[]) {
+        this.selectedBricks = brickIds;
     }
 
     addBrickToSelection(brickId: string): void {

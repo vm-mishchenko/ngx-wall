@@ -94,13 +94,7 @@ export class SelectionPlugin {
         });
 
         this.selectionRegister.itemsSelected.subscribe((ids) => {
-            if (ids.length) {
-                ids.forEach((id) => {
-                    this.wallApi.core.addBrickToSelection(id);
-                });
-            } else {
-                this.wallApi.core.unSelectBricks();
-            }
+            this.wallApi.core.selectBricks(ids);
         });
     }
 
