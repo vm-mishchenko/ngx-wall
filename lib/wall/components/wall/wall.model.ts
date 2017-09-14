@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
-import { WallApi } from './wall-api.service';
-import { BrickStore } from './brick-store.service';
-import { LayoutStore } from './layout-store.service';
-import { AddBrickEvent } from './events/add-brick.event';
-import { RemoveBrickEvent } from './events/remove-brick.event';
-import { WALL } from './wall.constant';
-import { WallEditorRegistry } from '../../wall-editor.registry';
-import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
-import { Subject } from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {WallApi} from './wall-api.service';
+import {BrickStore} from './brick-store.service';
+import {LayoutStore} from './layout-store.service';
+import {WALL} from './wall.constant';
+import {WallEditorRegistry} from '../../wall-editor.registry';
+import {IWallConfiguration, IWallDefinition} from './wall.interfaces';
+import {Subject} from 'rxjs/Subject';
+import {AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent} from "./wall.events";
+import {Subscription} from "rxjs/Subscription";
 
 /**
  * @desc Responsible for storing wall state.
@@ -177,7 +177,7 @@ export class WallModel {
 
             this.focusOnBrickId(newBrick.id);
 
-            this.events.next(new AddBrickEvent());
+            this.events.next(new AddBrickEvent(newBrick.id));
         }
     }
 
@@ -197,7 +197,7 @@ export class WallModel {
 
         this.focusOnBrickId(newBrick.id);
 
-        this.events.next(new AddBrickEvent());
+        this.events.next(new AddBrickEvent(newBrick.id));
     }
 
     /* Create new column in existing row and put brick to it */
@@ -217,7 +217,7 @@ export class WallModel {
 
             this.focusOnBrickId(newBrick.id);
 
-            this.events.next(new AddBrickEvent());
+            this.events.next(new AddBrickEvent(newBrick.id));
         }
     }
 
@@ -265,7 +265,7 @@ export class WallModel {
                 this.focusOnBrickId(nextTextBrickId);
             }
 
-            this.events.next(new RemoveBrickEvent());
+            this.events.next(new RemoveBrickEvent(brickId));
         }
     }
 
@@ -293,6 +293,8 @@ export class WallModel {
             } else if (!this.brickStore.getBricksCount()) {
                 this.addBrick('text', 0, 0, 0);
             }
+
+            this.events.next(new RemoveBricksEvent(brickIds));
         }
     }
 
@@ -333,7 +335,7 @@ export class WallModel {
         return this.wallEditorRegistry.isFocusedEditor(this.id);
     }
 
-    subscribe(callback: any) {
+    subscribe(callback: any): Subscription {
         return this.events.subscribe(callback);
     }
 

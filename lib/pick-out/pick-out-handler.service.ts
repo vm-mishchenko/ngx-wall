@@ -1,36 +1,32 @@
-import { Injectable } from '@angular/core';
-import { EndPickOut, PickOutItems, StartPickOut } from './pick-out.events';
-import { Subject } from 'rxjs/Subject';
+import {Subject} from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {EndPickOut, PickOutItems, StartPickOut} from './pick-out.events';
 
 @Injectable()
 export class PickOutHandlerService {
     changes: Subject<any> = new Subject();
 
-    private pickOutItems: any[] = [];
+    private pickOutItems: Map<string, any> = new Map();
 
     registerPickOutItem(config: any) {
-        console.log(config);
+        this.pickOutItems.set(config.id, config);
+    }
 
-        this.pickOutItems.push(config);
+    unRegisterPickOutItem(id: string) {
+        this.pickOutItems.delete(id);
     }
 
     startPickOut() {
-        console.log('startPickOut');
-
         this.changes.next(new StartPickOut());
     }
 
     pickOutChanged(range) {
-        console.log('pickOutChanged');
-
         const selectedItems = this.getSelectedItemIds(range);
 
         this.changes.next(new PickOutItems(selectedItems));
     }
 
     endPickOut() {
-        console.log('endPickOut');
-
         this.changes.next(new EndPickOut());
     }
 

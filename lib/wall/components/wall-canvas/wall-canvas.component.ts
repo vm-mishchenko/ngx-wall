@@ -4,14 +4,14 @@ import {
     EventEmitter,
     Inject,
     Input,
-    OnChanges,
+    OnChanges, OnInit,
     Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { WallCanvasApi } from './wall-canvas.api';
-import { WallCanvasController } from './wall-canvas.controller';
+import {DOCUMENT} from '@angular/common';
+import {WallCanvasApi} from './wall-canvas.api';
+import {WallCanvasController} from './wall-canvas.controller';
 
 @Component({
     selector: 'wall-canvas',
@@ -21,7 +21,7 @@ import { WallCanvasController } from './wall-canvas.controller';
         WallCanvasController
     ]
 })
-export class WallCanvasComponent implements OnChanges {
+export class WallCanvasComponent implements OnInit, OnChanges {
     @Input() layout: any = {bricks: []};
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrickId: string = null;
@@ -45,6 +45,10 @@ export class WallCanvasComponent implements OnChanges {
         if (e.target === this.expander.nativeElement) {
             this.canvasClick.next();
         }
+    }
+
+    ngOnInit(){
+        this.wallCanvasController.initialize()
     }
 
     ngOnChanges(changes: SimpleChanges) {

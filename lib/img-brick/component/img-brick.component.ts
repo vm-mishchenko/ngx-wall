@@ -42,8 +42,6 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
     }
 
     onWallFocus(): void {
-        console.log('onWallFocus');
-
         if (this.uiState === this.uiStates.initial) {
             this.showImagePanel();
         }

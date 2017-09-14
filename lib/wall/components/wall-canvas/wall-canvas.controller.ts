@@ -1,9 +1,11 @@
-import { WallCanvasApi } from './wall-canvas.api';
-import { EventEmitter, Injectable } from '@angular/core';
+import {WallCanvasApi} from './wall-canvas.api';
+import {EventEmitter, Injectable} from '@angular/core';
+import {RemoveBrickEvent, WallApi} from "../wall";
+import {RemoveBricksEvent} from "../wall/wall.events";
 
 @Injectable()
 export class WallCanvasController {
-    private canvasBrickInstances: any = {};
+    private canvasBrickInstances: Map<string, any> = new Map();
 
     private currentlyFocusedBrickId: string = null;
 
@@ -11,17 +13,32 @@ export class WallCanvasController {
 
     onFocusedEvent: EventEmitter<any> = new EventEmitter();
 
-    constructor(private wallCanvasApi: WallCanvasApi) {
+    constructor(private wallCanvasApi: WallCanvasApi,
+                private wallApi: WallApi) {
+    }
+
+    initialize() {
         this.wallCanvasApi.core = {
             onFocused: this.onFocused.bind(this),
             registerCanvasBrickInstance: this.registerCanvasBrickInstance.bind(this)
         };
+
+        this.wallApi.core.subscribe((e) => {
+            if (e instanceof RemoveBrickEvent) {
+                this.removeCanvasBrickInstance(e.brickId);
+            }
+
+            if (e instanceof RemoveBricksEvent) {
+                e.brickIds.forEach((brickId) => {
+                    this.removeCanvasBrickInstance(brickId);
+                });
+            }
+        });
     }
 
     selectBricks(brickIds: string[]) {
-        console.log(brickIds);
-
         const bricksForSelect = [];
+
         brickIds.forEach((brickId) => {
             if (this.selectedBrickIds.indexOf(brickId) === -1) {
                 bricksForSelect.push(brickId);
@@ -44,27 +61,27 @@ export class WallCanvasController {
     _selectBrickIds(brickIds) {
         setTimeout(() => {
             brickIds.forEach((brickId) => {
-                this.canvasBrickInstances[brickId].canvasBrickInstance.select();
+                this.canvasBrickInstances.get(brickId).canvasBrickInstance.select();
             });
         });
     }
 
     unselecBrickIds(brickIds) {
         setTimeout(() => {
-            for (let brickId in this.canvasBrickInstances) {
+            this.canvasBrickInstances.forEach((canvasBrickInstance, brickId) => {
                 if (brickIds.indexOf(brickId) !== -1) {
-                    this.canvasBrickInstances[brickId].canvasBrickInstance.unselect();
+                    canvasBrickInstance.canvasBrickInstance.unselect();
                 }
-            }
+            });
         });
     }
 
     unselectBricks() {
         this.selectedBrickIds = [];
 
-        for (let brickId in this.canvasBrickInstances) {
-            this.canvasBrickInstances[brickId].canvasBrickInstance.unselect();
-        }
+        this.canvasBrickInstances.forEach((canvasBrickInstance, brickId) => {
+            canvasBrickInstance.canvasBrickInstance.unselect();
+        });
     }
 
     /*
@@ -81,8 +98,8 @@ export class WallCanvasController {
         if (this.currentlyFocusedBrickId !== brickId) {
             this.currentlyFocusedBrickId = brickId;
 
-            if (this.canvasBrickInstances[brickId].brickInstance.onWallFocus) {
-                this.canvasBrickInstances[brickId].brickInstance.onWallFocus();
+            if (this.canvasBrickInstances.get(brickId).brickInstance.onWallFocus) {
+                this.canvasBrickInstances.get(brickId).brickInstance.onWallFocus();
             }
         }
     }
@@ -92,13 +109,17 @@ export class WallCanvasController {
     }
 
     clearBrickInstances() {
-        this.canvasBrickInstances = {};
+        this.canvasBrickInstances = new Map();
     }
 
     registerCanvasBrickInstance(brickId: string, canvasBrickInstance: any, brickInstance: any) {
-        this.canvasBrickInstances[brickId] = {
+        this.canvasBrickInstances.set(brickId, {
             brickInstance: brickInstance,
             canvasBrickInstance: canvasBrickInstance
-        };
+        });
+    }
+
+    removeCanvasBrickInstance(brickId: string) {
+        this.canvasBrickInstances.delete(brickId);
     }
 }

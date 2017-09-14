@@ -92,7 +92,6 @@ export interface IWallCoreApi {
 export interface IWallConfiguration {
     mode?: string;
     onRegisterApi?: Function;
-    plugins: any[]
 }
 
 // Custom wall component interface

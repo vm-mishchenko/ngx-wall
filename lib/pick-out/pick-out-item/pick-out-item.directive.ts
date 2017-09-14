@@ -1,10 +1,10 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
-import { PickOutHandlerService } from '../pick-out-handler.service';
+import {Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {PickOutHandlerService} from '../pick-out-handler.service';
 
 @Directive({
     selector: '[pick-out-item]'
 })
-export class PickOutItemDirective implements OnInit {
+export class PickOutItemDirective implements OnInit, OnDestroy {
     @Input('pick-out-item') id;
 
     constructor(private pickOutHandlerService: PickOutHandlerService,
@@ -24,6 +24,10 @@ export class PickOutItemDirective implements OnInit {
                 width: this.el.nativeElement.offsetWidth,
                 height: this.el.nativeElement.offsetHeight
             });
-        })
+        });
+    }
+
+    ngOnDestroy() {
+        this.pickOutHandlerService.unRegisterPickOutItem(this.id);
     }
 }

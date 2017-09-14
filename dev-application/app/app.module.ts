@@ -1,7 +1,7 @@
-import { Injectable, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { AppComponent } from './app.component';
+import {Injectable, NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {BrowserModule} from '@angular/platform-browser';
+import {AppComponent} from './app.component';
 import {
     HeaderBrickModule,
     ImgBrickModule,
@@ -9,9 +9,9 @@ import {
     TextBrickModule,
     WALL_PLUGIN,
     WallApi,
+    PickOutModule,
     WallModule
 } from 'wall';
-import { PickOutModule } from '../../lib/pick-out/pick-out.module';
 
 @Injectable()
 class LoggerPlugin {
@@ -35,8 +35,8 @@ class EventLoggerPlugin {
 
 @NgModule({
     imports: [
-        PickOutModule,
         WallModule,
+        PickOutModule,
         TextBrickModule,
         HeaderBrickModule,
         ImgBrickModule,

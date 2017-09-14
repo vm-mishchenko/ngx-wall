@@ -18,8 +18,8 @@ import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
     ],
 
     providers: [
-        PickOutNotifier,
-        PickOutHandlerService
+        PickOutHandlerService,
+        PickOutNotifier
     ],
 
     exports: [
@@ -33,5 +33,4 @@ import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
 })
 
 export class PickOutModule {
-
 }

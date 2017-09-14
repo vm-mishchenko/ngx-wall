@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { WallApi } from '../../components/wall/wall-api.service';
 import { DOCUMENT } from '@angular/common';
+import { WallApi } from '../../components/wall/wall-api.service';
 import { EndPickOut, PickOutItems, PickOutNotifier, StartPickOut } from '../../../pick-out';
 
 @Injectable()
@@ -18,8 +18,6 @@ export class SelectionPlugin {
     }
 
     initialize() {
-        console.log('initialize selection');
-
         this.doc.addEventListener('click', (e) => {
             if (this.isMouseSelection) {
                 this.isMouseSelection = false;
@@ -102,8 +100,6 @@ export class SelectionPlugin {
         });
 
         this.pickOutNotifier.changes.subscribe((e) => {
-            console.log('this.pickOutNotifier');
-
             if (e instanceof PickOutItems) {
                 this.wallApi.core.selectBricks(e.ids);
             }
