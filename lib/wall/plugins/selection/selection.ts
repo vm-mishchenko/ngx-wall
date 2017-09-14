@@ -1,14 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { WallApi } from '../../components/wall/wall-api.service';
 import { DOCUMENT } from '@angular/common';
-import { SelectionRegister } from '../../../selection';
+import { EndPickOut, PickOutItems, PickOutNotifier, StartPickOut } from '../../../pick-out';
 
 @Injectable()
 export class SelectionPlugin {
     doc: any = null;
 
+    isMouseSelection: boolean = false;
+
     constructor(private wallApi: WallApi,
-                private selectionRegister: SelectionRegister,
+                private pickOutNotifier: PickOutNotifier,
                 @Inject(DOCUMENT) doc) {
         this.doc = doc;
 
@@ -16,8 +18,14 @@ export class SelectionPlugin {
     }
 
     initialize() {
+        console.log('initialize selection');
+
         this.doc.addEventListener('click', (e) => {
-            this.wallApi.core.unSelectBricks();
+            if (this.isMouseSelection) {
+                this.isMouseSelection = false;
+            } else {
+                this.wallApi.core.unSelectBricks();
+            }
         });
 
         this.doc.addEventListener('keydown', (e) => {
@@ -93,8 +101,20 @@ export class SelectionPlugin {
             }
         });
 
-        this.selectionRegister.itemsSelected.subscribe((ids) => {
-            this.wallApi.core.selectBricks(ids);
+        this.pickOutNotifier.changes.subscribe((e) => {
+            console.log('this.pickOutNotifier');
+
+            if (e instanceof PickOutItems) {
+                this.wallApi.core.selectBricks(e.ids);
+            }
+
+            if (e instanceof StartPickOut) {
+                this.isMouseSelection = true;
+            }
+
+            if (e instanceof EndPickOut) {
+
+            }
         });
     }
 

@@ -11,6 +11,7 @@ import {
     WallApi,
     WallModule
 } from 'wall';
+import { PickOutModule } from '../../lib/pick-out/pick-out.module';
 
 @Injectable()
 class LoggerPlugin {
@@ -34,7 +35,7 @@ class EventLoggerPlugin {
 
 @NgModule({
     imports: [
-        SelectionModule,
+        PickOutModule,
         WallModule,
         TextBrickModule,
         HeaderBrickModule,

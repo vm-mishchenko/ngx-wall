@@ -166,10 +166,8 @@ img-brick {
 
 // selection range
 
-selection-range {
-  .selection-range {
-    opacity: 0.5;
-    position: fixed;
-    background-color: $w-text-color;
-  }
+.pick-out-area {
+  opacity: 0.5;
+  position: fixed;
+  background-color: $w-text-color;
 }

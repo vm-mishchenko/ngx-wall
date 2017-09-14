@@ -22,7 +22,7 @@ export class AppComponent {
                 'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2',
                 'tag': 'header',
                 'data': {
-                    'text': 'Wall editor'
+                    'text': ''
                 },
                 'meta': {}
             },

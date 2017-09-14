@@ -9,13 +9,14 @@ import { WallCanvasBrickComponent } from './components/wall-canvas/components/wa
 import { WALL_PLUGIN } from './wall.tokens';
 import { SelectionPlugin } from './plugins/selection/selection';
 import { WallEditorRegistry } from './wall-editor.registry';
-import { SelectionModule } from '../selection/selection.module';
+import { PickOutModule } from '../pick-out/pick-out.module';
 
 @NgModule({
     imports: [
         BrowserModule,
-        SelectionModule
+        PickOutModule
     ],
+
     providers: [
         CommonModule,
         WallEditorRegistry,
@@ -24,6 +25,7 @@ import { SelectionModule } from '../selection/selection.module';
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
         }
     ],
+
     declarations: [
         WallComponent,
         WallCanvasComponent,
