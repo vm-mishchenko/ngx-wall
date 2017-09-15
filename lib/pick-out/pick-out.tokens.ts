@@ -1,3 +1,3 @@
 import { InjectionToken } from '@angular/core';
 
-export const Window = new InjectionToken('Window');
+export const WindowReference = new InjectionToken('Window');

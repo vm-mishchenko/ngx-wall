@@ -5,3 +5,4 @@ export * from './text-brick';
 export * from './header-brick';
 export * from './img-brick';
 export * from './pick-out';
+export * from './tow';

@@ -12,7 +12,7 @@ import { DOCUMENT } from '@angular/common';
 import { PickOutAreaModel } from './pick-out-area.model';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutHandlerService } from '../pick-out-handler.service';
-import { Window } from '../pick-out.tokens';
+import { WindowReference } from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-area]'
@@ -113,7 +113,7 @@ export class PickOutAreaDirective {
     }
 
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(Window) private _window: any,
+                @Inject(WindowReference) private _window: any,
                 private pickOutHandlerService: PickOutHandlerService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,

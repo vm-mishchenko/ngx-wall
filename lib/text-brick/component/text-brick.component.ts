@@ -104,22 +104,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         }
     }
 
-    placeCaretAtStart() {
-        // place caret at the end
-        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
-        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
-            const range = document.createRange();
-
-            range.selectNodeContents(this.editor.nativeElement);
-            range.collapse(true);
-
-            const sel = window.getSelection();
-
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }
-
     isCaretAtStart(): boolean {
         let atStart = false;
 

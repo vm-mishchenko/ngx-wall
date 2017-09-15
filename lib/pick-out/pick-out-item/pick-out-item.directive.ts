@@ -1,7 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { PickOutHandlerService } from '../pick-out-handler.service';
-import { DOCUMENT } from '@angular/common';
-import { Window } from '../pick-out.tokens';
+import { WindowReference } from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-item]'
@@ -9,15 +8,11 @@ import { Window } from '../pick-out.tokens';
 export class PickOutItemDirective implements OnInit, OnDestroy {
     @Input('pick-out-item') id;
 
-    private doc;
-
     private window;
 
     constructor(private pickOutHandlerService: PickOutHandlerService,
-                @Inject(DOCUMENT) doc,
-                @Inject(Window) private _window: any,
+                @Inject(WindowReference) private _window: any,
                 private el: ElementRef) {
-        this.doc = doc;
         this.window = _window;
     }
 
@@ -26,11 +21,6 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
         // TODO: check this unclear behaviour
         setTimeout(() => {
             const offsets = this.el.nativeElement.getBoundingClientRect();
-
-            /*const d = this.doc.createElement('DIV');
-            d.innerText =offsets.top + this.window.pageYOffset
-
-            this.el.nativeElement.appendChild(d);*/
 
             this.pickOutHandlerService.registerPickOutItem({
                 id: this.id,
