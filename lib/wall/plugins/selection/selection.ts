@@ -1,12 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
-import { WallApi } from '../../components/wall/wall-api.service';
 import { DOCUMENT } from '@angular/common';
+import { WallApi } from '../../components/wall/wall-api.service';
+import { EndPickOut, PickOutItems, PickOutNotifier, StartPickOut } from '../../../pick-out';
 
 @Injectable()
 export class SelectionPlugin {
     doc: any = null;
 
+    isMouseSelection: boolean = false;
+
     constructor(private wallApi: WallApi,
+                private pickOutNotifier: PickOutNotifier,
                 @Inject(DOCUMENT) doc) {
         this.doc = doc;
 
@@ -15,7 +19,11 @@ export class SelectionPlugin {
 
     initialize() {
         this.doc.addEventListener('click', (e) => {
-            this.wallApi.core.unSelectBricks();
+            if (this.isMouseSelection) {
+                this.isMouseSelection = false;
+            } else {
+                this.wallApi.core.unSelectBricks();
+            }
         });
 
         this.doc.addEventListener('keydown', (e) => {
@@ -88,6 +96,20 @@ export class SelectionPlugin {
                 if (focusedBrickId) {
                     this.wallApi.core.selectBrick(focusedBrickId);
                 }
+            }
+        });
+
+        this.pickOutNotifier.changes.subscribe((e) => {
+            if (e instanceof PickOutItems) {
+                this.wallApi.core.selectBricks(e.ids);
+            }
+
+            if (e instanceof StartPickOut) {
+                this.isMouseSelection = true;
+            }
+
+            if (e instanceof EndPickOut) {
+
             }
         });
     }

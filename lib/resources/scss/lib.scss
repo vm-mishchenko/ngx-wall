@@ -1,4 +1,4 @@
-$w-text-color: rgb(153, 153, 153);
+$w-text-color: rgb(200, 200, 200);
 $w-background-color: #f7f6f5;
 $w-background-hover-color: #ecebea;
 
@@ -95,7 +95,8 @@ wall-canvas-row {
   display: flex;
 
   .wall-canvas-row__column {
-    flex-grow: 1;
+    flex: 1;
+    margin: 0 10px;
   }
 }
 
@@ -161,4 +162,12 @@ img-brick {
     transition-delay: 0s;
     transform: translate(12%, -10px);
   }
+}
+
+// selection range
+
+.pick-out-area {
+  opacity: 0.5;
+  position: fixed;
+  background-color: $w-text-color;
 }

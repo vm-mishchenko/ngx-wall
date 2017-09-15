@@ -22,7 +22,7 @@ export class AppComponent {
                 'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2',
                 'tag': 'header',
                 'data': {
-                    'text': 'Wall editor'
+                    'text': 'WALL'
                 },
                 'meta': {}
             },
@@ -144,15 +144,6 @@ export class AppComponent {
                                     'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762'
                                 },
                                 {
-                                    'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4'
-                                },
-                                {
-                                    'id': '4cf44a15-d08e-399d-38ba-c051a36f6574'
-                                },
-                                {
-                                    'id': '56be0630-1cd8-4997-b69c-e40421cf79da'
-                                },
-                                {
                                     'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced'
                                 },
                                 {
@@ -178,6 +169,15 @@ export class AppComponent {
                                 },
                                 {
                                     'id': 'cf7a2e00-5016-8b6d-b238-78c4b83b4468'
+                                },
+                                {
+                                    'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4'
+                                },
+                                {
+                                    'id': '4cf44a15-d08e-399d-38ba-c051a36f6574'
+                                },
+                                {
+                                    'id': '56be0630-1cd8-4997-b69c-e40421cf79da'
                                 }
                             ]
                         }

@@ -5,12 +5,12 @@ import { IWallCoreApi } from './wall.interfaces';
 
 @Injectable()
 export class WallApi {
-    core: IWallCoreApi | any = {};
+    core: IWallCoreApi = null;
 
     features: any = {};
 
-    registerCoreApi(methodName: string, method: any) {
-        this.core[methodName] = method;
+    registerCoreApi(coreApi: any) {
+        this.core = coreApi;
     }
 
     registerFeatureApi(featureName: string, api: any) {
