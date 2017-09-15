@@ -5,6 +5,7 @@ import { PickOutAreaDirective } from './pick-out-area/pick-out-area.directive';
 import { PickOutNotifier } from './pick-out-notifier.service';
 import { PickOutHandlerService } from './pick-out-handler.service';
 import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
+import { Window } from './pick-out.tokens';
 
 @NgModule({
     imports: [
@@ -19,7 +20,11 @@ import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
 
     providers: [
         PickOutHandlerService,
-        PickOutNotifier
+        PickOutNotifier,
+        {
+            provide: Window,
+            useValue: window
+        }
     ],
 
     exports: [

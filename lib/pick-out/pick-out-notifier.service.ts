@@ -1,6 +1,6 @@
-import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs/Subject';
-import {PickOutHandlerService} from './pick-out-handler.service';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { PickOutHandlerService } from './pick-out-handler.service';
 
 @Injectable()
 export class PickOutNotifier {

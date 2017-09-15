@@ -12,12 +12,17 @@ import { DOCUMENT } from '@angular/common';
 import { PickOutAreaModel } from './pick-out-area.model';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutHandlerService } from '../pick-out-handler.service';
+import { Window } from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-area]'
 })
 export class PickOutAreaDirective {
     doc: any = null;
+
+    window: any = null;
+
+    currentYScrollPosition = 0;
 
     minimumMoveDistance = 5;
 
@@ -41,9 +46,11 @@ export class PickOutAreaDirective {
             this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
 
             if (this.selectionProcessStarted) {
+                event.preventDefault();
+
                 this.pickOutHandlerService.pickOutChanged({
                     x: this.pickOutAreaModel.x,
-                    y: this.pickOutAreaModel.y,
+                    y: this.pickOutAreaModel.y + this.currentYScrollPosition,
                     width: this.pickOutAreaModel.width,
                     height: this.pickOutAreaModel.height
                 });
@@ -63,7 +70,7 @@ export class PickOutAreaDirective {
         }
     }
 
-    mouseUp() {
+    mouseUp(e) {
         if (this.pickOutAreaModel) {
             this.pickOutAreaModel.onDestroy();
 
@@ -106,18 +113,24 @@ export class PickOutAreaDirective {
     }
 
     constructor(@Inject(DOCUMENT) doc,
+                @Inject(Window) private _window: any,
                 private pickOutHandlerService: PickOutHandlerService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
                 private injector: Injector) {
         this.doc = doc;
+        this.window = _window;
 
         this.doc.addEventListener('mousemove', (e) => {
             this.mouseMove(e);
         });
 
         this.doc.addEventListener('mouseup', (e) => {
-            this.mouseUp();
+            this.mouseUp(e);
+        });
+
+        this.window.addEventListener('scroll', (e) => {
+            this.currentYScrollPosition = this.window.scrollY;
         });
     }
 }

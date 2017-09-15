@@ -1,6 +1,6 @@
-import {Subject} from 'rxjs/Subject';
-import {Injectable} from '@angular/core';
-import {EndPickOut, PickOutItems, StartPickOut} from './pick-out.events';
+import { Subject } from 'rxjs/Subject';
+import { Injectable } from '@angular/core';
+import { EndPickOut, PickOutItems, StartPickOut } from './pick-out.events';
 
 @Injectable()
 export class PickOutHandlerService {
@@ -8,6 +8,7 @@ export class PickOutHandlerService {
 
     private pickOutItems: Map<string, any> = new Map();
 
+    // TODO: add well defined config type
     registerPickOutItem(config: any) {
         this.pickOutItems.set(config.id, config);
     }
