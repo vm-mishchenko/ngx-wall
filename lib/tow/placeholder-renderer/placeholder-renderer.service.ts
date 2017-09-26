@@ -6,7 +6,7 @@ import {
     Injectable,
     Injector
 } from '@angular/core';
-import { PlaceholderComponent } from './component/placeholder.component';
+import {PlaceholderComponent} from './component/placeholder.component';
 
 @Injectable()
 export class PlaceholderRenderer {
@@ -19,7 +19,7 @@ export class PlaceholderRenderer {
 
     render(x: number, y: number, size: number, isHorizontal: boolean = true) {
         if (!this.placeholderComponentRef) {
-            this.renderPlaceholderComponent(x, y, size, isHorizontal);
+            this.renderPlaceholderComponent();
         }
 
         this.setCoordinate(x, y, size, isHorizontal);
@@ -31,12 +31,10 @@ export class PlaceholderRenderer {
         }
     }
 
-    private renderPlaceholderComponent(x: number, y: number, size: number, isHorizontal: boolean) {
+    private renderPlaceholderComponent() {
         this.placeholderComponentRef = this.componentFactoryResolver
             .resolveComponentFactory(PlaceholderComponent)
             .create(this.injector);
-
-        this.placeholderComponentRef.instance.setCoordinate(x, y, size, isHorizontal);
 
         // 2. Attach component to the appRef so that it's inside the ng component tree
         this.appRef.attachView(this.placeholderComponentRef.hostView);
@@ -52,6 +50,8 @@ export class PlaceholderRenderer {
     private removePlaceholderComponent() {
         this.appRef.detachView(this.placeholderComponentRef.hostView);
         this.placeholderComponentRef.destroy();
+
+        this.placeholderComponentRef = null;
     }
 
     private setCoordinate(x: number, y: number, size: number, isHorizontal: boolean) {

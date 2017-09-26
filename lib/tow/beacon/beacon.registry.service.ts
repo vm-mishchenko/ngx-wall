@@ -1,19 +1,38 @@
-import { Injectable } from '@angular/core';
-import { BeaconConfig } from './beacon.interface';
+import {Injectable} from '@angular/core';
+import {Beacon, BeaconConfig} from './beacon.interface';
 
 @Injectable()
 export class BeaconRegistry {
-    private beacons: Map<string, BeaconConfig> = new Map();
+    private beaconConfigs: Map<string, BeaconConfig> = new Map();
+    private beacons: Map<string, Beacon> = new Map();
 
     register(beaconConfig: BeaconConfig) {
-        this.beacons.set(beaconConfig.id, beaconConfig);
+        this.beaconConfigs.set(beaconConfig.id, beaconConfig);
+
+        this.updateBeaconPositions();
     }
 
     unRegister(id: string) {
-        this.beacons.delete(id);
+        this.beaconConfigs.delete(id);
     }
 
     getBeacons() {
         return this.beacons;
+    }
+
+    updateBeaconPositions() {
+        this.beacons = new Map();
+
+        this.beaconConfigs.forEach((beacon, id) => {
+            const position = beacon.api.getPosition();
+
+            this.beacons.set(id, {
+                id: id,
+                x: position.x,
+                y: position.y,
+                width: position.width,
+                height: position.height
+            });
+        });
     }
 }

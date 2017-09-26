@@ -1,6 +1,6 @@
-import { Directive, ElementRef, Inject, Input, OnInit } from '@angular/core';
-import { BeaconRegistry } from './beacon.registry.service';
-import { WindowReference } from '../tow.tokens';
+import {Directive, ElementRef, Inject, Input, OnInit} from '@angular/core';
+import {BeaconRegistry} from './beacon.registry.service';
+import {WindowReference} from '../tow.tokens';
 
 @Directive({selector: '[beacon]'})
 export class BeaconDirective implements OnInit {
@@ -15,16 +15,22 @@ export class BeaconDirective implements OnInit {
     }
 
     ngOnInit() {
-        setTimeout(() => {
-            const offsets = this.el.nativeElement.getBoundingClientRect();
-
-            this.beaconRegistry.register({
-                id: this.id,
-                x: offsets.left + this.window.pageXOffset,
-                y: offsets.top + this.window.scrollY,
-                width: this.el.nativeElement.offsetWidth,
-                height: this.el.nativeElement.offsetHeight
-            });
+        this.beaconRegistry.register({
+            id: this.id,
+            api: {
+                getPosition: this.getPosition.bind(this)
+            }
         });
+    }
+
+    private getPosition() {
+        const offsets = this.el.nativeElement.getBoundingClientRect();
+
+        return {
+            x: offsets.left + this.window.pageXOffset,
+            y: offsets.top + this.window.pageYOffset,
+            width: this.el.nativeElement.offsetWidth,
+            height: this.el.nativeElement.offsetHeight
+        };
     }
 }

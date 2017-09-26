@@ -1,8 +1,9 @@
 <div [pick-out-item]="brick.id"
      [beacon]="brick.id"
-     [tow-slave]="brick.id"
      (click)="onFocused()"
      class="wall-canvas-brick__wrapper"
      [ngClass]="{'wall-canvas-brick__selected': selected}">
+    <p [tow-slave]="brick.id">DRAGGABLE PICKER</p>
+
     <div #brickContainer></div>
 </div>

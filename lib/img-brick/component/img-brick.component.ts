@@ -32,13 +32,15 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
         this.state = this.store.get();
 
-        this.state.src = this.state.src || '';
+        setTimeout(() => {
+            this.state.src = this.state.src || '';
 
-        if (this.state.src) {
-            this.src.nativeElement.value = this.state.src;
+            if (this.state.src) {
+                this.src.nativeElement.value = this.state.src;
 
-            this.uiState = this.uiStates.image;
-        }
+                this.uiState = this.uiStates.image;
+            }
+        }, 2000);
     }
 
     onWallFocus(): void {

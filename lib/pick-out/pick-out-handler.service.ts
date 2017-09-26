@@ -1,15 +1,32 @@
-import { Subject } from 'rxjs/Subject';
-import { Injectable } from '@angular/core';
-import { EndPickOut, PickOutItems, StartPickOut } from './pick-out.events';
+import {Subject} from 'rxjs/Subject';
+import {Injectable} from '@angular/core';
+import {EndPickOut, PickOutItems, StartPickOut} from './pick-out.events';
+
+export class PickItemPosition {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
+export interface PickItemApi {
+    getPosition(): PickItemPosition;
+}
+
+export interface PickOutItemConfig {
+    id: string;
+    api: PickItemApi;
+}
 
 @Injectable()
 export class PickOutHandlerService {
     changes: Subject<any> = new Subject();
 
-    private pickOutItems: Map<string, any> = new Map();
+    private pickOutItems: Map<string, PickOutItemConfig> = new Map();
 
-    // TODO: add well defined config type
-    registerPickOutItem(config: any) {
+    private pickOutItemPositions: Map<string, PickItemPosition> = new Map();
+
+    registerPickOutItem(config: PickOutItemConfig) {
         this.pickOutItems.set(config.id, config);
     }
 
@@ -18,6 +35,8 @@ export class PickOutHandlerService {
     }
 
     startPickOut() {
+        this.updatePickOutItemPositions();
+
         this.changes.next(new StartPickOut());
     }
 
@@ -31,15 +50,24 @@ export class PickOutHandlerService {
         this.changes.next(new EndPickOut());
     }
 
+    private updatePickOutItemPositions() {
+        this.pickOutItemPositions = new Map();
+
+        this.pickOutItems.forEach((pickItem) => {
+            this.pickOutItemPositions.set(pickItem.id, pickItem.api.getPosition());
+        });
+    }
+
     private getSelectedItemIds(range) {
         const ids = [];
 
-        this.pickOutItems.forEach((si) => {
+        this.pickOutItemPositions.forEach((si, id) => {
             if (range.x < (si.x + si.width) &&
                 (range.x + range.width) > si.x &&
                 (range.y + range.height) > si.y &&
                 range.y < (si.y + si.height)) {
-                ids.push(si.id);
+
+                ids.push(id);
             }
         });
 

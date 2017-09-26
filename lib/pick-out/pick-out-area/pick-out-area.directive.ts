@@ -8,11 +8,11 @@ import {
     Inject,
     Injector
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { PickOutAreaModel } from './pick-out-area.model';
-import { PickOutAreaComponent } from './pick-out-area.component';
-import { PickOutHandlerService } from '../pick-out-handler.service';
-import { WindowReference } from '../pick-out.tokens';
+import {DOCUMENT} from '@angular/common';
+import {PickOutAreaModel} from './pick-out-area.model';
+import {PickOutAreaComponent} from './pick-out-area.component';
+import {PickOutHandlerService} from '../pick-out-handler.service';
+import {WindowReference} from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-area]'
