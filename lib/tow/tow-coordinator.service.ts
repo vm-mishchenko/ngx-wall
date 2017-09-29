@@ -1,48 +1,29 @@
-import {Inject, Injectable} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {WindowReference} from './tow.tokens';
-import {BeaconDetector} from './beacon-detector/beacon-detector.service';
-import {PlaceholderRenderer} from './placeholder-renderer/placeholder-renderer.service';
-import {Beacon} from './beacon/beacon.interface';
-import {BeaconRegistry} from "./beacon/beacon.registry.service";
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { WindowReference } from './tow.tokens';
+import { BeaconDetector } from './beacon-detector/beacon-detector.service';
+import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
+import { Beacon } from './beacon/beacon.interface';
+import { BeaconRegistry } from './beacon/beacon.registry.service';
+import { Subject } from 'rxjs/Subject';
+import { StartWorkingEvent } from './events/start-working.event';
+import { WorkInProgressEvent } from './events/work-in-progress.event';
+import { StopWorkingEvent } from './events/stop-working.event';
+import { DropEvent } from './events/drop.event';
 
 @Injectable()
 export class TowCoordinator {
+    events: Subject<any> = new Subject();
+
     private currentYScrollPosition = 0;
 
     private trackingPossibleBeacons = false;
 
-    previousNearestBeacon: Beacon = null;
-
     private doc;
+
     private window;
 
-    private mousemoveHandler(event) {
-        this.beaconRegistry.updateBeaconPositions();
-
-        if (this.trackingPossibleBeacons) {
-            const xViewportPosition = event.clientX;
-            const yViewportPosition = event.clientY;
-
-            const yPosition = yViewportPosition + this.currentYScrollPosition;
-
-            const nearestBeacon = this.beaconDetector.getNearestBeacon(xViewportPosition, yPosition);
-
-            if (nearestBeacon) {
-                if (!this.previousNearestBeacon || this.previousNearestBeacon.id !== nearestBeacon.id) {
-                    this.previousNearestBeacon = nearestBeacon;
-                    this.placeholderRenderer.render(nearestBeacon.x, nearestBeacon.y + nearestBeacon.height - this.currentYScrollPosition, nearestBeacon.width);
-                }
-            } else {
-                this.placeholderRenderer.clear();
-            }
-        }
-    }
-
-    private mouseUpHandler(event) {
-        this.stopHighlightPossibleBeacons();
-        this.placeholderRenderer.clear();
-    }
+    private previousNearestBeacon: Beacon = null;
 
     constructor(@Inject(DOCUMENT) doc,
                 @Inject(WindowReference) private _window: any,
@@ -52,20 +33,14 @@ export class TowCoordinator {
         this.doc = doc;
         this.window = _window;
 
-        this.doc.addEventListener('dragstart', (e) => {
-            this.mousemoveHandler(e);
-        });
+        this.doc.addEventListener('dragover', (event: DragEvent) => {
+            if (this.trackingPossibleBeacons) {
+                event.preventDefault();
 
-        this.doc.addEventListener('drag', (e) => {
-            this.mousemoveHandler(e);
-        });
+                event.dataTransfer.dropEffect = 'move';
 
-        this.doc.addEventListener('dragend', (e) => {
-            this.mouseUpHandler(e);
-        });
-
-        this.doc.addEventListener('mouseup', (e) => {
-            this.mouseUpHandler(e);
+                this.slaveWorkProgress(event.x, event.y);
+            }
         });
 
         this.window.addEventListener('scroll', () => {
@@ -78,17 +53,43 @@ export class TowCoordinator {
     }
 
     slaveStartWorking(id: string) {
-        console.log(`${id} slave start working`);
+        this.startHighlightPossibleBeacons();
 
+        this.events.next(new StartWorkingEvent());
+    }
+
+    slaveWorkProgress(xViewportPosition: number, yViewportPosition: number) {
         this.beaconRegistry.updateBeaconPositions();
 
-        this.startHighlightPossibleBeacons();
+        const beacons = this.beaconRegistry.getBeacons();
+
+        const yPosition = yViewportPosition + this.currentYScrollPosition;
+
+        const nearestBeacon = this.beaconDetector.getNearestBeacon(beacons, xViewportPosition, yPosition);
+
+        if (nearestBeacon) {
+            if (!this.previousNearestBeacon || this.previousNearestBeacon.id !== nearestBeacon.id) {
+                this.previousNearestBeacon = nearestBeacon;
+
+                this.placeholderRenderer.render(nearestBeacon.x, nearestBeacon.y + nearestBeacon.height - this.currentYScrollPosition, nearestBeacon.width);
+            }
+        } else {
+            this.placeholderRenderer.clear();
+        }
+
+        this.events.next(new WorkInProgressEvent());
     }
 
     slaveStopWorking(id) {
-        console.log(`${id} slave stop working`);
-
         this.stopHighlightPossibleBeacons();
+        this.placeholderRenderer.clear();
+        this.events.next(new StopWorkingEvent());
+
+        if (this.previousNearestBeacon) {
+            this.events.next(new DropEvent(this.previousNearestBeacon.id, id));
+        }
+
+        this.previousNearestBeacon = null;
     }
 
     startHighlightPossibleBeacons() {

@@ -50,23 +50,6 @@ export class LayoutStore {
         let row = this.layout.bricks[targetRowIndex];
         let column = row.columns[targetColumnIndex];
 
-
-        // column should already exist,  it's wall.model responsibility to check
-
-        /*if (!column) {
-            positionIndex = 0;
-
-            const siblingColumn = row.columns[targetColumnIndex - 1];
-
-            if (siblingColumn.bricks.length === 0) {
-                column = siblingColumn;
-            } else {
-                column = row.columns[row.columns.length] = {
-                    bricks: []
-                };
-            }
-        }*/
-
         const brick = {
             id: brickId
         };
@@ -94,6 +77,11 @@ export class LayoutStore {
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
     }
 
+    moveBrick(targetBrickId: string, beforeBrickId: string) {
+        this.addBrickAfterInSameColumn(targetBrickId, beforeBrickId);
+        this.removeBrick(beforeBrickId);
+    }
+
     removeBrick(brickId: string) {
         const brickPosition = this.getBrickPositionByBrickId(brickId);
 
@@ -101,7 +89,7 @@ export class LayoutStore {
         const column = row.columns[brickPosition.columnIndex];
 
         // remove brick
-        column.bricks.splice(brickPosition.brickIndex, 1);
+        const removedBrick = column.bricks.splice(brickPosition.brickIndex, 1);
 
         // remove column if there are no bricks inside
         if (column.bricks.length === 0) {
@@ -123,6 +111,8 @@ export class LayoutStore {
         }
 
         this.updateCanvasLayout();
+
+        return removedBrick[0];
     }
 
     getNextBrickId(brickId: string): string {

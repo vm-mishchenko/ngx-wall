@@ -1,9 +1,9 @@
-import {Directive, ElementRef, Inject, Input, OnInit} from '@angular/core';
-import {BeaconRegistry} from './beacon.registry.service';
-import {WindowReference} from '../tow.tokens';
+import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { BeaconRegistry } from './beacon.registry.service';
+import { WindowReference } from '../tow.tokens';
 
 @Directive({selector: '[beacon]'})
-export class BeaconDirective implements OnInit {
+export class BeaconDirective implements OnInit, OnDestroy {
     @Input('beacon') id;
 
     private window;
@@ -21,6 +21,10 @@ export class BeaconDirective implements OnInit {
                 getPosition: this.getPosition.bind(this)
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.beaconRegistry.unRegister(this.id);
     }
 
     private getPosition() {

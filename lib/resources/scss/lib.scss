@@ -56,7 +56,6 @@ $w-background-hover-color: #ecebea;
 
 wall-canvas {
   display: block;
-  overflow: auto;
 
   .wall-canvas__editor {
     min-height: 200px;
@@ -72,7 +71,14 @@ wall-canvas-brick {
   display: block;
 
   .wall-canvas-brick__wrapper {
+    position: relative;
     transition: background-color 0.5s ease;
+  }
+
+  .wall-canvas-brick__draggable-handler {
+    position: absolute;
+    left: -50px;
+    top: 0;
   }
 
   .wall-canvas-brick__selected {

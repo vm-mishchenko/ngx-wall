@@ -1,6 +1,6 @@
-import {Subject} from 'rxjs/Subject';
-import {Injectable} from '@angular/core';
-import {EndPickOut, PickOutItems, StartPickOut} from './pick-out.events';
+import { Subject } from 'rxjs/Subject';
+import { Injectable } from '@angular/core';
+import { EndPickOut, PickOutItems, StartPickOut, StopPickOut } from './pick-out.events';
 
 export class PickItemPosition {
     x: number;
@@ -26,12 +26,30 @@ export class PickOutHandlerService {
 
     private pickOutItemPositions: Map<string, PickItemPosition> = new Map();
 
+    private isPickOutAllowed: boolean = true;
+
     registerPickOutItem(config: PickOutItemConfig) {
         this.pickOutItems.set(config.id, config);
     }
 
     unRegisterPickOutItem(id: string) {
         this.pickOutItems.delete(id);
+    }
+
+    disablePickOut() {
+        this.isPickOutAllowed = false;
+    }
+
+    enablePickOut() {
+        this.isPickOutAllowed = true;
+    }
+
+    stopPickOut() {
+        this.changes.next(new StopPickOut());
+    }
+
+    canPickOut(): boolean {
+        return this.isPickOutAllowed;
     }
 
     startPickOut() {

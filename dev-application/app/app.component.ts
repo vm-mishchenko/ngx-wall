@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IWallConfiguration, IWallDefinition, PlaceholderRenderer, WALL, WallApi } from 'wall';
+import { IWallConfiguration, IWallDefinition, WALL, WallApi } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -186,9 +186,6 @@ export class AppComponent {
             ]
         }
     };
-
-    constructor(private placeholderRenderer: PlaceholderRenderer) {
-    }
 
     onRegisterApi(wallApi: WallApi) {
         this.wallApi = wallApi;

@@ -69,6 +69,8 @@ export interface IWallCoreApi {
 
     addBrickAfterInNewRow(brickId: string, tag: string)
 
+    moveBrick(targetBrickId: string, beforeBrickId: string)
+
     removeBrick(brickId: string)
 
     removeBricks(brickIds): void

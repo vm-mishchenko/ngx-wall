@@ -1,16 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BeaconRegistry} from '../beacon/beacon.registry.service';
-import {Beacon} from '../beacon/beacon.interface';
+import { Injectable } from '@angular/core';
+import { Beacon } from '../beacon/beacon.interface';
 
 @Injectable()
 export class BeaconDetector {
-    constructor(private beaconRegistry: BeaconRegistry) {
-    }
 
-    getNearestBeacon(x: number, y: number): Beacon {
+    getNearestBeacon(beacons: Beacon[], x: number, y: number): Beacon {
         let nearestBeacon: Beacon = null;
-
-        const beacons = this.beaconRegistry.getBeacons();
 
         beacons.forEach((beacon) => {
             if (!nearestBeacon) {

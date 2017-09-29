@@ -1,13 +1,13 @@
-import {Injectable} from '@angular/core';
-import {WallApi} from './wall-api.service';
-import {BrickStore} from './brick-store.service';
-import {LayoutStore} from './layout-store.service';
-import {WALL} from './wall.constant';
-import {WallEditorRegistry} from '../../wall-editor.registry';
-import {IWallConfiguration, IWallDefinition} from './wall.interfaces';
-import {Subject} from 'rxjs/Subject';
-import {AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent} from "./wall.events";
-import {Subscription} from "rxjs/Subscription";
+import { Injectable } from '@angular/core';
+import { WallApi } from './wall-api.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
+import { WALL } from './wall.constant';
+import { WallEditorRegistry } from '../../wall-editor.registry';
+import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
+import { Subject } from 'rxjs/Subject';
+import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * @desc Responsible for storing wall state.
@@ -62,6 +62,7 @@ export class WallModel {
             'addBrickToNewColumn',
             'addBrickAfterInSameColumn',
             'addBrickAfterInNewRow',
+            'moveBrick',
             'removeBrick',
             'removeBricks',
             'getPreviousBrickId',
@@ -244,6 +245,11 @@ export class WallModel {
         } else {
             this.addBrickToNewRow(tag, this.layoutStore.getRowCount());
         }
+    }
+
+    // TODO: switch between each other
+    moveBrick(targetBrickId: string, beforeBrickId: string) {
+        this.layoutStore.moveBrick(targetBrickId, beforeBrickId);
     }
 
     removeBrick(brickId: string) {

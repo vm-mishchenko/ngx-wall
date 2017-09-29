@@ -3,7 +3,7 @@
      (click)="onFocused()"
      class="wall-canvas-brick__wrapper"
      [ngClass]="{'wall-canvas-brick__selected': selected}">
-    <p [tow-slave]="brick.id">DRAGGABLE PICKER</p>
+    <p class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">DRAG</p>
 
     <div #brickContainer></div>
 </div>

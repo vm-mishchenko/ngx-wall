@@ -6,18 +6,21 @@ import {
     EmbeddedViewRef,
     HostListener,
     Inject,
-    Injector
+    Injector,
+    OnDestroy
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {PickOutAreaModel} from './pick-out-area.model';
-import {PickOutAreaComponent} from './pick-out-area.component';
-import {PickOutHandlerService} from '../pick-out-handler.service';
-import {WindowReference} from '../pick-out.tokens';
+import { DOCUMENT } from '@angular/common';
+import { PickOutAreaModel } from './pick-out-area.model';
+import { PickOutAreaComponent } from './pick-out-area.component';
+import { PickOutHandlerService } from '../pick-out-handler.service';
+import { WindowReference } from '../pick-out.tokens';
+import { StopPickOut } from '../pick-out.events';
+import { Subscription } from 'rxjs/Subscription';
 
 @Directive({
     selector: '[pick-out-area]'
 })
-export class PickOutAreaDirective {
+export class PickOutAreaDirective implements OnDestroy {
     doc: any = null;
 
     window: any = null;
@@ -32,58 +35,86 @@ export class PickOutAreaDirective {
 
     selectionRangeComponentRef: ComponentRef<PickOutAreaComponent> = null;
 
+    pickOutServiceSubscription: Subscription;
+
+    constructor(@Inject(DOCUMENT) doc,
+                @Inject(WindowReference) private _window: any,
+                private pickOutHandlerService: PickOutHandlerService,
+                private componentFactoryResolver: ComponentFactoryResolver,
+                private appRef: ApplicationRef,
+                private injector: Injector) {
+        this.doc = doc;
+        this.window = _window;
+
+        this.doc.addEventListener('mousemove', (e) => {
+            this.mouseMove(e);
+        });
+
+        this.doc.addEventListener('mouseup', (e) => {
+            this.mouseUp();
+        });
+
+        this.window.addEventListener('scroll', (e) => {
+            this.currentYScrollPosition = this.window.scrollY;
+        });
+
+        this.pickOutServiceSubscription = this.pickOutHandlerService.changes.subscribe((e) => {
+            if (e instanceof StopPickOut) {
+                this.stopPickOut();
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.pickOutServiceSubscription.unsubscribe();
+    }
+
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        this.selectionProcessStarted = false;
+        if (this.isUserAllowPickOut()) {
+            this.selectionProcessStarted = false;
 
-        this.pickOutAreaModel = new PickOutAreaModel();
+            this.pickOutAreaModel = new PickOutAreaModel();
 
-        this.pickOutAreaModel.setInitialPosition(event.clientX, event.clientY);
+            this.pickOutAreaModel.setInitialPosition(event.clientX, event.clientY);
+        }
     }
 
     mouseMove(event: MouseEvent) {
-        if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
+        if (this.isUserAllowPickOut()) {
+            if (this.pickOutAreaModel) {
+                this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
 
-            if (this.selectionProcessStarted) {
-                event.preventDefault();
+                if (this.selectionProcessStarted) {
+                    event.preventDefault();
 
-                this.pickOutHandlerService.pickOutChanged({
-                    x: this.pickOutAreaModel.x,
-                    y: this.pickOutAreaModel.y + this.currentYScrollPosition,
-                    width: this.pickOutAreaModel.width,
-                    height: this.pickOutAreaModel.height
-                });
+                    this.pickOutHandlerService.pickOutChanged({
+                        x: this.pickOutAreaModel.x,
+                        y: this.pickOutAreaModel.y + this.currentYScrollPosition,
+                        width: this.pickOutAreaModel.width,
+                        height: this.pickOutAreaModel.height
+                    });
 
-                // create UI selection if it's not exist
-                if (!this.selectionRangeComponentRef) {
-                    this.appendSelectionRangeComponent();
-                }
-            } else {
-                // user drags mouse enough to show UI and start selection process
-                if (this.pickOutAreaModel.width > this.minimumMoveDistance || this.pickOutAreaModel.height > this.minimumMoveDistance) {
-                    this.pickOutHandlerService.startPickOut();
+                    // create UI selection if it's not exist
+                    if (!this.selectionRangeComponentRef) {
+                        this.appendSelectionRangeComponent();
+                    }
+                } else {
+                    // user drags mouse enough to show UI and start selection process
+                    if (this.isMouseMoveEnough()) {
+                        this.pickOutHandlerService.startPickOut();
 
-                    this.selectionProcessStarted = true;
+                        this.selectionProcessStarted = true;
+                    }
                 }
             }
+        } else {
+            this.stopPickOut();
         }
     }
 
-    mouseUp(e) {
-        if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.onDestroy();
-
-            if (this.selectionRangeComponentRef) {
-                this.removeSelectionRangeComponent();
-
-                this.selectionRangeComponentRef = null;
-            }
-
-            this.pickOutAreaModel = null;
-
-            this.pickOutHandlerService.endPickOut();
-        }
+    mouseUp() {
+        this.stopPickOut();
     }
 
     appendSelectionRangeComponent() {
@@ -112,25 +143,29 @@ export class PickOutAreaDirective {
         this.selectionRangeComponentRef.destroy();
     }
 
-    constructor(@Inject(DOCUMENT) doc,
-                @Inject(WindowReference) private _window: any,
-                private pickOutHandlerService: PickOutHandlerService,
-                private componentFactoryResolver: ComponentFactoryResolver,
-                private appRef: ApplicationRef,
-                private injector: Injector) {
-        this.doc = doc;
-        this.window = _window;
-
-        this.doc.addEventListener('mousemove', (e) => {
-            this.mouseMove(e);
-        });
-
-        this.doc.addEventListener('mouseup', (e) => {
-            this.mouseUp(e);
-        });
-
-        this.window.addEventListener('scroll', (e) => {
-            this.currentYScrollPosition = this.window.scrollY;
-        });
+    isMouseMoveEnough(): boolean {
+        return this.pickOutAreaModel.width > this.minimumMoveDistance || this.pickOutAreaModel.height > this.minimumMoveDistance;
     }
+
+    isUserAllowPickOut() {
+        return this.pickOutHandlerService.canPickOut();
+    }
+
+    stopPickOut() {
+        if (this.pickOutAreaModel) {
+            this.pickOutAreaModel.onDestroy();
+
+            if (this.selectionRangeComponentRef) {
+                this.removeSelectionRangeComponent();
+
+                this.selectionRangeComponentRef = null;
+            }
+
+            this.pickOutHandlerService.endPickOut();
+        }
+
+        this.pickOutAreaModel = null;
+    }
+
+
 }

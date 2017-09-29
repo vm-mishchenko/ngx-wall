@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Beacon, BeaconConfig} from './beacon.interface';
+import { Injectable } from '@angular/core';
+import { Beacon, BeaconConfig } from './beacon.interface';
 
 @Injectable()
 export class BeaconRegistry {
@@ -17,7 +17,7 @@ export class BeaconRegistry {
     }
 
     getBeacons() {
-        return this.beacons;
+        return Array.from(this.beacons).map((beaconArray) => beaconArray[1]);
     }
 
     updateBeaconPositions() {

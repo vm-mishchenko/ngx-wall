@@ -8,6 +8,7 @@ import { BeaconDirective } from './beacon/beacon.directive';
 import { BeaconDetector } from './beacon-detector/beacon-detector.service';
 import { TowCoordinator } from './tow-coordinator.service';
 import { TowSlaveDirective } from './tow-slave/tow-slave.directive';
+import { TowService } from './tow.service';
 
 @NgModule({
     imports: [
@@ -30,6 +31,7 @@ import { TowSlaveDirective } from './tow-slave/tow-slave.directive';
     ],
 
     providers: [
+        TowService,
         BeaconDetector,
         BeaconRegistry,
         TowCoordinator,

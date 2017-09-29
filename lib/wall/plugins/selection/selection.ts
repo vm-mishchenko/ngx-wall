@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { WallApi } from '../../components/wall/wall-api.service';
-import { EndPickOut, PickOutItems, PickOutNotifier, StartPickOut } from '../../../pick-out';
+import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../pick-out';
+import { DropEvent, StartWorkingEvent, StopWorkingEvent, TowService } from '../../../tow';
 
 @Injectable()
 export class SelectionPlugin {
@@ -10,7 +11,8 @@ export class SelectionPlugin {
     isMouseSelection: boolean = false;
 
     constructor(private wallApi: WallApi,
-                private pickOutNotifier: PickOutNotifier,
+                private pickOutService: PickOutService,
+                private towService: TowService,
                 @Inject(DOCUMENT) doc) {
         this.doc = doc;
 
@@ -99,7 +101,7 @@ export class SelectionPlugin {
             }
         });
 
-        this.pickOutNotifier.changes.subscribe((e) => {
+        this.pickOutService.subscribe((e) => {
             if (e instanceof PickOutItems) {
                 this.wallApi.core.selectBricks(e.ids);
             }
@@ -109,7 +111,21 @@ export class SelectionPlugin {
             }
 
             if (e instanceof EndPickOut) {
+            }
+        });
 
+        this.towService.subscribe((e) => {
+            if (e instanceof StartWorkingEvent) {
+                this.pickOutService.disablePickOut();
+                this.pickOutService.stopPickOut();
+            }
+
+            if (e instanceof StopWorkingEvent) {
+                this.pickOutService.enablePickOut();
+            }
+
+            if (e instanceof DropEvent) {
+                this.wallApi.core.moveBrick(e.targetId, e.beforeId);
             }
         });
     }
