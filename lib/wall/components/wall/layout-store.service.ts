@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { ILayoutDefinition } from './wall.interfaces';
-import { BrickRegistry } from '../../registry/brick-registry.service';
-import { BrickStore } from './brick-store.service';
+import {Injectable} from '@angular/core';
+import {ILayoutDefinition} from './wall.interfaces';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {BrickStore} from './brick-store.service';
 
 @Injectable()
 export class LayoutStore {
@@ -78,8 +78,8 @@ export class LayoutStore {
     }
 
     moveBrick(targetBrickId: string, beforeBrickId: string) {
-        this.addBrickAfterInSameColumn(targetBrickId, beforeBrickId);
-        this.removeBrick(beforeBrickId);
+        this.removeBrick(targetBrickId);
+        this.addBrickAfterInSameColumn(beforeBrickId, targetBrickId);
     }
 
     removeBrick(brickId: string) {

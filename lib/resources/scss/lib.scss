@@ -70,15 +70,39 @@ wall-canvas {
 wall-canvas-brick {
   display: block;
 
+  &:hover {
+    .wall-canvas-brick__draggable-handler {
+      display: block;
+    }
+  }
+
   .wall-canvas-brick__wrapper {
     position: relative;
     transition: background-color 0.5s ease;
   }
 
+  .wall-canvas-brick__draggable-box {
+    width: 23px;
+    height: 26px;
+    padding: 4px;
+    border-radius: 3px;
+  }
+
   .wall-canvas-brick__draggable-handler {
+    display: none;
     position: absolute;
-    left: -50px;
+    left: -40px;
     top: 0;
+    padding: 5px 20px 20px 5px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 3px;
+
+    &:hover {
+      .wall-canvas-brick__draggable-box {
+        background: #f5f5f5;
+      }
+    }
   }
 
   .wall-canvas-brick__selected {

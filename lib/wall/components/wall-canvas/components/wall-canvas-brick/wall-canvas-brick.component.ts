@@ -1,19 +1,18 @@
 import {
     Component,
-    ComponentFactoryResolver,
+    ComponentFactoryResolver, ElementRef,
     Injector,
     Input,
     OnInit,
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { WallCanvasApi } from '../../wall-canvas.api';
+import {WallCanvasApi} from '../../wall-canvas.api';
 
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html'
 })
-
 export class WallCanvasBrickComponent implements OnInit {
     @Input() brick: any;
 

@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
-import { TowCoordinator } from '../tow-coordinator.service';
+import {Directive, ElementRef, HostListener, Input, OnInit, Renderer2} from '@angular/core';
+import {TowCoordinator} from '../tow-coordinator.service';
 
 @Directive({selector: '[tow-slave]'})
 export class TowSlaveDirective implements OnInit {
@@ -22,7 +22,10 @@ export class TowSlaveDirective implements OnInit {
     }
 
     @HostListener('dragend', ['$event'])
-    dragEnd() {
+    dragEnd(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
         this.towCoordinator.slaveStopWorking(this.id);
     }
 

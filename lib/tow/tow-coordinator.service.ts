@@ -1,15 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { WindowReference } from './tow.tokens';
-import { BeaconDetector } from './beacon-detector/beacon-detector.service';
-import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
-import { Beacon } from './beacon/beacon.interface';
-import { BeaconRegistry } from './beacon/beacon.registry.service';
-import { Subject } from 'rxjs/Subject';
-import { StartWorkingEvent } from './events/start-working.event';
-import { WorkInProgressEvent } from './events/work-in-progress.event';
-import { StopWorkingEvent } from './events/stop-working.event';
-import { DropEvent } from './events/drop.event';
+import {Inject, Injectable} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {WindowReference} from './tow.tokens';
+import {BeaconDetector} from './beacon-detector/beacon-detector.service';
+import {PlaceholderRenderer} from './placeholder-renderer/placeholder-renderer.service';
+import {Beacon} from './beacon/beacon.interface';
+import {BeaconRegistry} from './beacon/beacon.registry.service';
+import {Subject} from 'rxjs/Subject';
+import {StartWorkingEvent} from './events/start-working.event';
+import {WorkInProgressEvent} from './events/work-in-progress.event';
+import {StopWorkingEvent} from './events/stop-working.event';
+import {DropEvent} from './events/drop.event';
 
 @Injectable()
 export class TowCoordinator {
@@ -86,7 +86,10 @@ export class TowCoordinator {
         this.events.next(new StopWorkingEvent());
 
         if (this.previousNearestBeacon) {
-            this.events.next(new DropEvent(this.previousNearestBeacon.id, id));
+            const draggableId = id;
+            const dropBeforeId = this.previousNearestBeacon.id;
+
+            this.events.next(new DropEvent(draggableId, dropBeforeId));
         }
 
         this.previousNearestBeacon = null;
