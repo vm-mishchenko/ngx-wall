@@ -82,6 +82,23 @@ export class LayoutStore {
         this.addBrickAfterInSameColumn(beforeBrickId, targetBrickId);
     }
 
+    moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string) {
+        this.removeBrick(targetBrickId);
+
+        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+
+        const rowIndex = beforeBrickPosition.rowIndex;
+        let columnIndex;
+
+        if (side === 'left') {
+            columnIndex = beforeBrickPosition.columnIndex === 0 ? 0 : beforeBrickPosition.columnIndex - 1;
+        } else if (side === 'right') {
+            columnIndex = beforeBrickPosition.columnIndex + 1;
+        }
+
+        this.addBrickToNewColumn(targetBrickId, rowIndex, columnIndex);
+    }
+
     removeBrick(brickId: string) {
         const brickPosition = this.getBrickPositionByBrickId(brickId);
 

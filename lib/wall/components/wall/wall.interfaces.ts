@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs/Subscription';
+import {Subscription} from 'rxjs/Subscription';
 
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
 export const awesomeTypescriptLoaderBug = true;
@@ -69,7 +69,9 @@ export interface IWallCoreApi {
 
     addBrickAfterInNewRow(brickId: string, tag: string)
 
-    moveBrick(targetBrickId: string, beforeBrickId: string)
+    moveBrick(targetBrickId: string, beforeBrickId: string);
+
+    moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string);
 
     removeBrick(brickId: string)
 

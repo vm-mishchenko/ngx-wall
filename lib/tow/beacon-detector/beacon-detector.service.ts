@@ -1,28 +1,44 @@
-import { Injectable } from '@angular/core';
-import { Beacon } from '../beacon/beacon.interface';
+import {Injectable} from '@angular/core';
+import {Beacon} from '../beacon/beacon.interface';
+import {DetectedBeacon} from "./detected-beacon";
 
 @Injectable()
 export class BeaconDetector {
 
-    getNearestBeacon(beacons: Beacon[], x: number, y: number): Beacon {
-        let nearestBeacon: Beacon = null;
+    getNearestBeacon(beacons: Beacon[], x: number, y: number): DetectedBeacon {
+        let detected = new DetectedBeacon();
 
+        // TODO: need to support columns for defining nearest beacon
         beacons.forEach((beacon) => {
-            if (!nearestBeacon) {
-                nearestBeacon = beacon;
+            if (!detected.beacon) {
+                detected.beacon = beacon;
             } else {
                 const distanceToTop = Math.abs(y - beacon.y - beacon.height);
-                // const distanceToBottom = Math.abs(y - beaconConfig.y + beaconConfig.height);
 
-                const distanceToNearestTop = Math.abs(y - nearestBeacon.y - nearestBeacon.height);
-                // const distanceToNearestBottom = Math.abs(y - nearestBeacon.y + nearestBeacon.height);
+                const distanceToNearestTop = Math.abs(y - detected.beacon.y - detected.beacon.height);
 
-                if (distanceToTop < distanceToNearestTop/* || distanceToBottom < distanceToNearestBottom*/) {
-                    nearestBeacon = beacon;
+                if (distanceToTop < distanceToNearestTop) {
+                    detected.beacon = beacon;
                 }
             }
         });
 
-        return nearestBeacon;
+        if (detected.beacon) {
+            if (x < detected.beacon.x) {
+                detected.type = 'vertical';
+                detected.side = 'left';
+            }
+
+            if (x > detected.beacon.x + detected.beacon.width) {
+                detected.type = 'vertical';
+                detected.side = 'right';
+            }
+
+            if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
+                detected.type = 'horizontal';
+            }
+        }
+
+        return detected;
     }
 }

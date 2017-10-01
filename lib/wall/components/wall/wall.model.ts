@@ -63,6 +63,7 @@ export class WallModel {
             'addBrickAfterInSameColumn',
             'addBrickAfterInNewRow',
             'moveBrick',
+            'moveBrickToNewColumn',
             'removeBrick',
             'removeBricks',
             'getPreviousBrickId',
@@ -207,7 +208,7 @@ export class WallModel {
             const totalColumnCount = this.layoutStore.getColumnCount(targetRowIndex);
             const lastColumnIndex = totalColumnCount - 1;
 
-            // user cannot create column in position more than last column index + 1
+            // user cannot create column in position more than  + 1
             if (targetColumnIndex > lastColumnIndex + 1) {
                 targetColumnIndex = lastColumnIndex + 1;
             }
@@ -250,6 +251,13 @@ export class WallModel {
     moveBrick(targetBrickId: string, beforeBrickId: string) {
         if (targetBrickId !== beforeBrickId) {
             this.layoutStore.moveBrick(targetBrickId, beforeBrickId);
+        }
+    }
+
+    // TODO: create new row which will contain targetBrickId and beforeBrickId
+    moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string) {
+        if (targetBrickId !== beforeBrickId) {
+            this.layoutStore.moveBrickToNewColumn(targetBrickId, beforeBrickId, side);
         }
     }
 

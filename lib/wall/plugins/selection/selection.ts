@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { WallApi } from '../../components/wall/wall-api.service';
-import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../pick-out';
-import { DropEvent, StartWorkingEvent, StopWorkingEvent, TowService } from '../../../tow';
+import {Inject, Injectable} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {WallApi} from '../../components/wall/wall-api.service';
+import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../pick-out';
+import {TOW, DropEvent, StartWorkingEvent, StopWorkingEvent, TowService} from '../../../tow';
 
 @Injectable()
 export class SelectionPlugin {
@@ -125,7 +125,19 @@ export class SelectionPlugin {
             }
 
             if (e instanceof DropEvent) {
-                this.wallApi.core.moveBrick(e.targetId, e.beforeId);
+                if (e.dropType === TOW.dropTypes.horizontal) {
+                    this.wallApi.core.moveBrick(e.targetId, e.beforeId);
+                }
+
+                if (e.dropType === TOW.dropTypes.vertical) {
+                    if (e.dropSide === TOW.dropSides.left) {
+                        this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, TOW.dropSides.left);
+                    }
+
+                    if (e.dropSide === TOW.dropSides.right) {
+                        this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, TOW.dropSides.right);
+                    }
+                }
             }
         });
     }
