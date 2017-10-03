@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IBrickDefinition } from './wall.interfaces';
 
-// TODO: should implement IWallStore interface
-
 
 // Simple naive implementation
 class BrickItemStore {

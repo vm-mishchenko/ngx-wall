@@ -69,6 +69,7 @@ wall-canvas {
 
 wall-canvas-brick {
   display: block;
+  margin: 0 0 2px;
 
   &:hover {
     .wall-canvas-brick__draggable-handler {
@@ -78,8 +79,7 @@ wall-canvas-brick {
 
   .wall-canvas-brick__wrapper {
     position: relative;
-    transition: background-color 0.5s ease;
-    border: 1px solid red;
+    transition: background-color 0.3s ease;
   }
 
   .wall-canvas-brick__draggable-box {
@@ -107,18 +107,7 @@ wall-canvas-brick {
   }
 
   .wall-canvas-brick__selected {
-    position: relative;
-
-    &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      opacity: 0.5;
-      background-color: #bae6f3;
-    }
+    background-color: #ddf2f9;
   }
 }
 

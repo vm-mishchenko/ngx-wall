@@ -250,8 +250,6 @@ export class WallModel {
         }
     }
 
-
-    // TODO: create new row which will contain targetBrickId and beforeBrickId
     moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string) {
         if (targetBrickId !== beforeBrickId) {
             this.layoutStore.moveBrickToNewColumn(targetBrickId, beforeBrickId, side);

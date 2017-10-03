@@ -10,8 +10,6 @@ export class BeaconRegistry {
         this.beaconConfigs.set(beaconConfig.id, beaconConfig);
 
         this.updateBeaconPositions();
-
-        console.log(`${this.getBeacons().length} beacons`);
     }
 
     unRegister(id: string) {

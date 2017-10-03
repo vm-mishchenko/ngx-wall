@@ -1,42 +1,27 @@
 import {Injectable} from '@angular/core';
 import {Beacon} from '../beacon/beacon.interface';
 import {DetectedBeacon} from "./detected-beacon";
+import {TOW} from "../tow.constant";
 
 @Injectable()
 export class BeaconDetector {
     getNearestBeacon(beacons: Beacon[], x: number, y: number): DetectedBeacon {
         let detected = new DetectedBeacon();
 
-        beacons.forEach((beacon) => {
+        beacons.forEach((currentBeacon) => {
             if (!detected.beacon) {
-                detected.beacon = beacon;
+                // initialize first beacon
+                detected.beacon = currentBeacon;
             } else {
-                //const minimalDistanceToBeacon = this.getMinimumDistance(beacon, x, y);
-                //const minimalDistanceToPreviousBeacon = this.getMinimumDistance(detected.beacon, x, y);
-
-                const beaconPosition = this.getMinimumDistance(beacon, x, y);
+                const currentBeaconPosition = this.getMinimumDistance(currentBeacon, x, y);
                 const previousBeaconPosition = this.getMinimumDistance(detected.beacon, x, y);
 
-                if (!previousBeaconPosition.inSide) {
-                    if (beaconPosition.inSide) {
-                        console.log('inside')
-                        console.log(beacon.height);
-                        detected.beacon = beacon;
+                if (!previousBeaconPosition.pointInsideBeacon) {
+                    if (currentBeaconPosition.pointInsideBeacon) {
+                        detected.beacon = currentBeacon;
                     } else {
-                        if (beaconPosition.distances[0] < previousBeaconPosition.distances[0]) {
-                            detected.beacon = beacon;
-                        }
-
-                        if (beaconPosition.distances[0] === previousBeaconPosition.distances[0]) {
-                            if (beaconPosition.distances[1] === previousBeaconPosition.distances[1]) {
-                                if (beaconPosition.isCrossBeacon) {
-                                    detected.beacon = beacon;
-                                }
-                            }
-
-                            if (beaconPosition.distances[1] < previousBeaconPosition.distances[1]) {
-                                detected.beacon = beacon;
-                            }
+                        if (currentBeaconPosition.minDistanceToBeacon < previousBeaconPosition.minDistanceToBeacon) {
+                            detected.beacon = currentBeacon;
                         }
                     }
                 }
@@ -45,71 +30,55 @@ export class BeaconDetector {
 
         if (detected.beacon) {
             if (x < detected.beacon.x) {
-                detected.type = 'vertical';
-                detected.side = 'left';
+                detected.type = TOW.dropTypes.vertical;
+                detected.side = TOW.dropSides.left;
             }
 
             if (x > detected.beacon.x + detected.beacon.width) {
-                detected.type = 'vertical';
-                detected.side = 'right';
+                detected.type = TOW.dropTypes.vertical;
+                detected.side = TOW.dropSides.right;
             }
 
             if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
-                detected.type = 'horizontal';
+                detected.type = TOW.dropTypes.horizontal;
             }
         }
-
-        console.log(detected.beacon.height)
 
         return detected;
     }
 
     private getMinimumDistance(beacon: Beacon, x: number, y: number) {
         const position = {
-            distances: [],
-            isCrossBeacon: false,
-            inSide: false
+            minDistanceToBeacon: null,
+            pointInsideBeacon: false
         };
 
-        position.distances.push(Math.min.apply(null, [Math.abs(beacon.y - y), Math.abs((beacon.y + beacon.height) - y)]));
-        position.distances.push(Math.min.apply(null, [Math.abs(beacon.x - x), Math.abs((beacon.x + beacon.width) - x)]));
+        // distances to horizontal lines
+        const distanceToLine12 = Math.abs(beacon.y - y);
+        const distanceToLine43 = Math.abs((beacon.y + beacon.height) - y);
 
-        /*position.distances.push(Math.abs(beacon.y - y)); // line 1-2
-        position.distances.push(Math.abs((beacon.y + beacon.height) - y)); // line 4-3
-        position.distances.push(Math.abs(beacon.x - x)); // line 1-4
-        position.distances.push(Math.abs((beacon.x + beacon.width) - x)); // line 2-3*/
+        // distances to vertical lines
+        const distanceToLine14 = Math.abs(beacon.x - x);
+        const distanceToLine23 = Math.abs((beacon.x + beacon.width) - x);
 
+        const minDistanceToHorizontalLine = Math.min.apply(null, [distanceToLine12, distanceToLine43]);
+        const minDistanceToVerticalLine = Math.min.apply(null, [distanceToLine14, distanceToLine23]);
 
         if ((x > beacon.x) && (x < beacon.x + beacon.width)) {
-            position.isCrossBeacon = true;
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToHorizontalLine;
+        } else if ((y > beacon.y) && (y < beacon.y + beacon.height)) {
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToVerticalLine;
+        } else {
+            // point doesn't cross beacon, calculate shortest distance to beacon
+            position.minDistanceToBeacon = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
         }
-
-        if ((y > beacon.y) && (y < beacon.y + beacon.height)) {
-            position.isCrossBeacon = true;
-        }
-
 
         if ((x > beacon.x) && (x < beacon.x + beacon.width) && (y > beacon.y) && (y < beacon.y + beacon.height)) {
-            position.inSide = true;
+            position.pointInsideBeacon = true;
         }
 
-        /*
-                const topLeft = [beacon.x, beacon.y];
-                const topRight = [beacon.x + beacon.width, beacon.y];
-                const bottomLeft = [beacon.x, beacon.y + beacon.height];
-                const bottomRight = [beacon.x + beacon.width, beacon.y + beacon.height];
-
-                distances.push(this.calculateDistanceToPoint(topLeft[0], topLeft[1], x, y));
-                distances.push(this.calculateDistanceToPoint(topRight[0], topRight[1], x, y));
-                distances.push(this.calculateDistanceToPoint(bottomLeft[0], bottomLeft[1], x, y));
-                distances.push(this.calculateDistanceToPoint(bottomRight[0], bottomRight[1], x, y));*/
-
         return position;
-
-        // return Math.min.apply(null, distances);
-    }
-
-    private calculateDistanceToPoint(beaconX, beaconY, x, y) {
-        return Math.sqrt(Math.abs(beaconX - x) * Math.abs(beaconX - x) + Math.abs(beaconY - y) * Math.abs(beaconY - y));
     }
 }

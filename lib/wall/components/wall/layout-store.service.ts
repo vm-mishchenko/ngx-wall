@@ -59,7 +59,6 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
-
     // TODO: remove this method, instead use addBrickToNewRowByBeforeBrickId
     addBrickToNewRow(brickId: string, targetRowIndex: number) {
         this.createNewRow(targetRowIndex);
@@ -103,7 +102,7 @@ export class LayoutStore {
         let columnIndex;
 
         if (side === 'left') {
-            columnIndex = beforeBrickPosition.columnIndex === 0 ? 0 : beforeBrickPosition.columnIndex - 1;
+            columnIndex = beforeBrickPosition.columnIndex;
         } else if (side === 'right') {
             columnIndex = beforeBrickPosition.columnIndex + 1;
         }
