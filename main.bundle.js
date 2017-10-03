@@ -24997,7 +24997,83 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 /* 1 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
 
 /***/ }),
 /* 2 */
@@ -25010,7 +25086,7 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(43));
-__export(__webpack_require__(62));
+__export(__webpack_require__(64));
 __export(__webpack_require__(11));
 __export(__webpack_require__(27));
 __export(__webpack_require__(9));
@@ -25042,7 +25118,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-// TODO: need to implement IWallApi interface
 var WallApi = (function () {
     function WallApi() {
         this.core = null;
@@ -25214,7 +25289,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-// TODO: should implement IWallStore interface
 // Simple naive implementation
 var BrickItemStore = (function () {
     function BrickItemStore(brick) {
@@ -25480,6 +25554,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(58));
 __export(__webpack_require__(38));
+__export(__webpack_require__(63));
 __export(__webpack_require__(34));
 __export(__webpack_require__(36));
 __export(__webpack_require__(35));
@@ -25582,26 +25657,78 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
+var detected_beacon_1 = __webpack_require__(61);
+var tow_constant_1 = __webpack_require__(63);
 var BeaconDetector = (function () {
     function BeaconDetector() {
     }
     BeaconDetector.prototype.getNearestBeacon = function (beacons, x, y) {
-        var nearestBeacon = null;
-        beacons.forEach(function (beacon) {
-            if (!nearestBeacon) {
-                nearestBeacon = beacon;
+        var _this = this;
+        var detected = new detected_beacon_1.DetectedBeacon();
+        beacons.forEach(function (currentBeacon) {
+            if (!detected.beacon) {
+                // initialize first beacon
+                detected.beacon = currentBeacon;
             }
             else {
-                var distanceToTop = Math.abs(y - beacon.y - beacon.height);
-                // const distanceToBottom = Math.abs(y - beaconConfig.y + beaconConfig.height);
-                var distanceToNearestTop = Math.abs(y - nearestBeacon.y - nearestBeacon.height);
-                // const distanceToNearestBottom = Math.abs(y - nearestBeacon.y + nearestBeacon.height);
-                if (distanceToTop < distanceToNearestTop /* || distanceToBottom < distanceToNearestBottom*/) {
-                    nearestBeacon = beacon;
+                var currentBeaconPosition = _this.getMinimumDistance(currentBeacon, x, y);
+                var previousBeaconPosition = _this.getMinimumDistance(detected.beacon, x, y);
+                if (!previousBeaconPosition.pointInsideBeacon) {
+                    if (currentBeaconPosition.pointInsideBeacon) {
+                        detected.beacon = currentBeacon;
+                    }
+                    else {
+                        if (currentBeaconPosition.minDistanceToBeacon < previousBeaconPosition.minDistanceToBeacon) {
+                            detected.beacon = currentBeacon;
+                        }
+                    }
                 }
             }
         });
-        return nearestBeacon;
+        if (detected.beacon) {
+            if (x < detected.beacon.x) {
+                detected.type = tow_constant_1.TOW.dropTypes.vertical;
+                detected.side = tow_constant_1.TOW.dropSides.left;
+            }
+            if (x > detected.beacon.x + detected.beacon.width) {
+                detected.type = tow_constant_1.TOW.dropTypes.vertical;
+                detected.side = tow_constant_1.TOW.dropSides.right;
+            }
+            if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
+                detected.type = tow_constant_1.TOW.dropTypes.horizontal;
+            }
+        }
+        return detected;
+    };
+    BeaconDetector.prototype.getMinimumDistance = function (beacon, x, y) {
+        var position = {
+            minDistanceToBeacon: null,
+            pointInsideBeacon: false
+        };
+        // distances to horizontal lines
+        var distanceToLine12 = Math.abs(beacon.y - y);
+        var distanceToLine43 = Math.abs((beacon.y + beacon.height) - y);
+        // distances to vertical lines
+        var distanceToLine14 = Math.abs(beacon.x - x);
+        var distanceToLine23 = Math.abs((beacon.x + beacon.width) - x);
+        var minDistanceToHorizontalLine = Math.min.apply(null, [distanceToLine12, distanceToLine43]);
+        var minDistanceToVerticalLine = Math.min.apply(null, [distanceToLine14, distanceToLine23]);
+        if ((x > beacon.x) && (x < beacon.x + beacon.width)) {
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToHorizontalLine;
+        }
+        else if ((y > beacon.y) && (y < beacon.y + beacon.height)) {
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToVerticalLine;
+        }
+        else {
+            // point doesn't cross beacon, calculate shortest distance to beacon
+            position.minDistanceToBeacon = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
+        }
+        if ((x > beacon.x) && (x < beacon.x + beacon.width) && (y > beacon.y) && (y < beacon.y + beacon.height)) {
+            position.pointInsideBeacon = true;
+        }
+        return position;
     };
     BeaconDetector = __decorate([
         core_1.Injectable()
@@ -25651,7 +25778,7 @@ var TowCoordinator = (function () {
         this.events = new Subject_1.Subject();
         this.currentYScrollPosition = 0;
         this.trackingPossibleBeacons = false;
-        this.previousNearestBeacon = null;
+        this.previouslyNearestBeacon = null;
         this.doc = doc;
         this.window = _window;
         this.doc.addEventListener('dragover', function (event) {
@@ -25662,7 +25789,7 @@ var TowCoordinator = (function () {
             }
         });
         this.window.addEventListener('scroll', function () {
-            _this.previousNearestBeacon = null;
+            _this.previouslyNearestBeacon = null;
             _this.currentYScrollPosition = _this.window.pageYOffset;
             _this.placeholderRenderer.clear();
         });
@@ -25674,12 +25801,13 @@ var TowCoordinator = (function () {
     TowCoordinator.prototype.slaveWorkProgress = function (xViewportPosition, yViewportPosition) {
         this.beaconRegistry.updateBeaconPositions();
         var beacons = this.beaconRegistry.getBeacons();
+        // respect window scroll position
         var yPosition = yViewportPosition + this.currentYScrollPosition;
-        var nearestBeacon = this.beaconDetector.getNearestBeacon(beacons, xViewportPosition, yPosition);
-        if (nearestBeacon) {
-            if (!this.previousNearestBeacon || this.previousNearestBeacon.id !== nearestBeacon.id) {
-                this.previousNearestBeacon = nearestBeacon;
-                this.placeholderRenderer.render(nearestBeacon.x, nearestBeacon.y + nearestBeacon.height - this.currentYScrollPosition, nearestBeacon.width);
+        var detectedBeacon = this.beaconDetector.getNearestBeacon(beacons, xViewportPosition, yPosition);
+        if (detectedBeacon) {
+            if (this.isSameDetectedBeacon(detectedBeacon)) {
+                this.previouslyNearestBeacon = detectedBeacon;
+                this.renderPlaceholder();
             }
         }
         else {
@@ -25691,18 +25819,49 @@ var TowCoordinator = (function () {
         this.stopHighlightPossibleBeacons();
         this.placeholderRenderer.clear();
         this.events.next(new stop_working_event_1.StopWorkingEvent());
-        if (this.previousNearestBeacon) {
+        if (this.previouslyNearestBeacon) {
             var draggableId = id;
-            var dropBeforeId = this.previousNearestBeacon.id;
-            this.events.next(new drop_event_1.DropEvent(draggableId, dropBeforeId));
+            var dropBeforeId = this.previouslyNearestBeacon.beacon.id;
+            var dropEvent = new drop_event_1.DropEvent(draggableId, dropBeforeId, this.previouslyNearestBeacon.type, this.previouslyNearestBeacon.side);
+            this.events.next(dropEvent);
         }
-        this.previousNearestBeacon = null;
+        this.previouslyNearestBeacon = null;
     };
     TowCoordinator.prototype.startHighlightPossibleBeacons = function () {
         this.trackingPossibleBeacons = true;
     };
     TowCoordinator.prototype.stopHighlightPossibleBeacons = function () {
         this.trackingPossibleBeacons = false;
+    };
+    TowCoordinator.prototype.isSameDetectedBeacon = function (detectedBeacon) {
+        return !this.previouslyNearestBeacon ||
+            this.previouslyNearestBeacon.beacon.id !== detectedBeacon.beacon.id ||
+            this.previouslyNearestBeacon.type !== detectedBeacon.type ||
+            this.previouslyNearestBeacon.side !== detectedBeacon.side;
+    };
+    TowCoordinator.prototype.renderPlaceholder = function () {
+        var placeholderX;
+        var placeholderY;
+        var placeholderSize;
+        var placeholderIsHorizontal;
+        if (this.previouslyNearestBeacon.type === 'horizontal') {
+            placeholderX = this.previouslyNearestBeacon.beacon.x;
+            placeholderY = this.previouslyNearestBeacon.beacon.y + this.previouslyNearestBeacon.beacon.height - this.currentYScrollPosition;
+            placeholderSize = this.previouslyNearestBeacon.beacon.width;
+            placeholderIsHorizontal = true;
+        }
+        if (this.previouslyNearestBeacon.type === 'vertical') {
+            placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition;
+            placeholderSize = this.previouslyNearestBeacon.beacon.height;
+            placeholderIsHorizontal = false;
+            if (this.previouslyNearestBeacon.side === 'left') {
+                placeholderX = this.previouslyNearestBeacon.beacon.x;
+            }
+            if (this.previouslyNearestBeacon.side === 'right') {
+                placeholderX = this.previouslyNearestBeacon.beacon.x + this.previouslyNearestBeacon.beacon.width;
+            }
+        }
+        this.placeholderRenderer.render(placeholderX, placeholderY, placeholderSize, placeholderIsHorizontal);
     };
     TowCoordinator = __decorate([
         core_1.Injectable(),
@@ -25729,9 +25888,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(42);
 __export(__webpack_require__(2));
-__export(__webpack_require__(63));
-__export(__webpack_require__(66));
-__export(__webpack_require__(69));
+__export(__webpack_require__(65));
+__export(__webpack_require__(68));
+__export(__webpack_require__(71));
 __export(__webpack_require__(13));
 __export(__webpack_require__(16));
 
@@ -25875,7 +26034,10 @@ var WallModel = (function () {
             'addBrickToNewColumn',
             'addBrickAfterInSameColumn',
             'addBrickAfterInNewRow',
-            'moveBrick',
+            'moveBrickAfterBrickId',
+            'moveBrickAfterInSameColumn',
+            'moveBrickToNewColumn',
+            'moveBrickAfterInNewRow',
             'removeBrick',
             'removeBricks',
             'getPreviousBrickId',
@@ -25985,7 +26147,7 @@ var WallModel = (function () {
         if (this.layoutStore.isRowExists(targetRowIndex)) {
             var totalColumnCount = this.layoutStore.getColumnCount(targetRowIndex);
             var lastColumnIndex = totalColumnCount - 1;
-            // user cannot create column in position more than last column index + 1
+            // user cannot create column in position more than  + 1
             if (targetColumnIndex > lastColumnIndex + 1) {
                 targetColumnIndex = lastColumnIndex + 1;
             }
@@ -26015,9 +26177,29 @@ var WallModel = (function () {
             this.addBrickToNewRow(tag, this.layoutStore.getRowCount());
         }
     };
-    WallModel.prototype.moveBrick = function (targetBrickId, beforeBrickId) {
+    WallModel.prototype.moveBrickToNewColumn = function (targetBrickId, beforeBrickId, side) {
         if (targetBrickId !== beforeBrickId) {
-            this.layoutStore.moveBrick(targetBrickId, beforeBrickId);
+            this.layoutStore.moveBrickToNewColumn(targetBrickId, beforeBrickId, side);
+        }
+    };
+    WallModel.prototype.moveBrickAfterInNewRow = function (targetBrickId, beforeBrickId) {
+        if (targetBrickId !== beforeBrickId) {
+            this.layoutStore.moveBrickAfterInNewRow(targetBrickId, beforeBrickId);
+        }
+    };
+    WallModel.prototype.moveBrickAfterInSameColumn = function (targetBrickId, beforeBrickId) {
+        if (targetBrickId !== beforeBrickId) {
+            this.layoutStore.moveBrickAfterInSameColumn(targetBrickId, beforeBrickId);
+        }
+    };
+    WallModel.prototype.moveBrickAfterBrickId = function (targetBrickId, beforeBrickId) {
+        var brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+        var columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+        if (columnCount === 1) {
+            this.moveBrickAfterInNewRow(targetBrickId, beforeBrickId);
+        }
+        else {
+            this.moveBrickAfterInSameColumn(targetBrickId, beforeBrickId);
         }
     };
     WallModel.prototype.removeBrick = function (brickId) {
@@ -26195,9 +26377,16 @@ var LayoutStore = (function () {
         column.bricks.splice(positionIndex, 0, brick);
         this.updateCanvasLayout();
     };
+    // TODO: remove this method, instead use addBrickToNewRowByBeforeBrickId
     LayoutStore.prototype.addBrickToNewRow = function (brickId, targetRowIndex) {
         this.createNewRow(targetRowIndex);
         this.addBrick(brickId, targetRowIndex, 0, 0);
+    };
+    LayoutStore.prototype.addBrickToNewRowByBeforeBrickId = function (targetBrickId, beforeBrickId) {
+        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+        var newRowIndex = beforeBrickPosition.rowIndex + 1;
+        this.createNewRow(newRowIndex);
+        this.addBrick(targetBrickId, newRowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickToNewColumn = function (brickId, targetRowIndex, targetColumnIndex) {
         this.createNewColumn(targetRowIndex, targetColumnIndex);
@@ -26207,9 +26396,26 @@ var LayoutStore = (function () {
         var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
     };
-    LayoutStore.prototype.moveBrick = function (targetBrickId, beforeBrickId) {
+    LayoutStore.prototype.moveBrickAfterInSameColumn = function (targetBrickId, beforeBrickId) {
         this.removeBrick(targetBrickId);
         this.addBrickAfterInSameColumn(beforeBrickId, targetBrickId);
+    };
+    LayoutStore.prototype.moveBrickToNewColumn = function (targetBrickId, beforeBrickId, side) {
+        this.removeBrick(targetBrickId);
+        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+        var rowIndex = beforeBrickPosition.rowIndex;
+        var columnIndex;
+        if (side === 'left') {
+            columnIndex = beforeBrickPosition.columnIndex;
+        }
+        else if (side === 'right') {
+            columnIndex = beforeBrickPosition.columnIndex + 1;
+        }
+        this.addBrickToNewColumn(targetBrickId, rowIndex, columnIndex);
+    };
+    LayoutStore.prototype.moveBrickAfterInNewRow = function (targetBrickId, beforeBrickId) {
+        this.removeBrick(targetBrickId);
+        this.addBrickToNewRowByBeforeBrickId(targetBrickId, beforeBrickId);
     };
     LayoutStore.prototype.removeBrick = function (brickId) {
         var brickPosition = this.getBrickPositionByBrickId(brickId);
@@ -26868,9 +27074,11 @@ exports.StopWorkingEvent = StopWorkingEvent;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var DropEvent = (function () {
-    function DropEvent(targetId, beforeId) {
+    function DropEvent(targetId, beforeId, dropType, dropSide) {
         this.targetId = targetId;
         this.beforeId = beforeId;
+        this.dropType = dropType;
+        this.dropSide = dropSide;
     }
     return DropEvent;
 }());
@@ -26987,7 +27195,7 @@ var TextBrickComponent = (function () {
                 this.wallApi.core.turnBrickInto(this.id, 'img');
             }
             else {
-                this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
+                this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
             }
         }
     };
@@ -27045,7 +27253,7 @@ var TextBrickComponent = (function () {
     TextBrickComponent = __decorate([
         core_1.Component({
             selector: 'text-brick',
-            template: __webpack_require__(65)
+            template: __webpack_require__(67)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], TextBrickComponent);
@@ -27189,7 +27397,7 @@ var HeaderBrickComponent = (function () {
     HeaderBrickComponent = __decorate([
         core_1.Component({
             selector: 'header-brick',
-            template: __webpack_require__(68)
+            template: __webpack_require__(70)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], HeaderBrickComponent);
@@ -27326,7 +27534,7 @@ var ImgBrickComponent = (function () {
     ImgBrickComponent = __decorate([
         core_1.Component({
             selector: 'img-brick',
-            template: __webpack_require__(71)
+            template: __webpack_require__(73)
         }),
         __metadata("design:paramtypes", [index_1.WallApi])
     ], ImgBrickComponent);
@@ -27942,7 +28150,17 @@ var SelectionPlugin = (function () {
                 _this.pickOutService.enablePickOut();
             }
             if (e instanceof tow_1.DropEvent) {
-                _this.wallApi.core.moveBrick(e.targetId, e.beforeId);
+                if (e.dropType === tow_1.TOW.dropTypes.horizontal) {
+                    _this.wallApi.core.moveBrickAfterBrickId(e.targetId, e.beforeId);
+                }
+                if (e.dropType === tow_1.TOW.dropTypes.vertical) {
+                    if (e.dropSide === tow_1.TOW.dropSides.left) {
+                        _this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, tow_1.TOW.dropSides.left);
+                    }
+                    if (e.dropSide === tow_1.TOW.dropSides.right) {
+                        _this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, tow_1.TOW.dropSides.right);
+                    }
+                }
             }
         });
     };
@@ -28094,7 +28312,7 @@ var tow_tokens_1 = __webpack_require__(18);
 var beacon_directive_1 = __webpack_require__(60);
 var beacon_detector_service_1 = __webpack_require__(19);
 var tow_coordinator_service_1 = __webpack_require__(20);
-var tow_slave_directive_1 = __webpack_require__(61);
+var tow_slave_directive_1 = __webpack_require__(62);
 var tow_service_1 = __webpack_require__(38);
 var TowModule = (function () {
     function TowModule() {
@@ -28210,6 +28428,21 @@ exports.BeaconDirective = BeaconDirective;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+var DetectedBeacon = (function () {
+    function DetectedBeacon() {
+    }
+    return DetectedBeacon;
+}());
+exports.DetectedBeacon = DetectedBeacon;
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28279,7 +28512,26 @@ exports.TowSlaveDirective = TowSlaveDirective;
 
 
 /***/ }),
-/* 62 */
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TOW = {
+    dropTypes: {
+        horizontal: 'horizontal',
+        vertical: 'vertical'
+    },
+    dropSides: {
+        left: 'left',
+        right: 'right'
+    }
+};
+
+
+/***/ }),
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28290,7 +28542,7 @@ exports.awesomeTypescriptLoaderBug2 = true;
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28299,12 +28551,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(64));
+__export(__webpack_require__(66));
 __export(__webpack_require__(39));
 
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28349,13 +28601,13 @@ exports.TextBrickModule = TextBrickModule;
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor\n     [hidden]=\"mode === modes.READ\"\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"text-brick__editor\"\n     contenteditable=\"true\">\n</div>\n\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28364,12 +28616,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(67));
+__export(__webpack_require__(69));
 __export(__webpack_require__(40));
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28414,13 +28666,13 @@ exports.HeaderBrickModule = HeaderBrickModule;
 
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports) {
 
 module.exports = "<h3 #editor\n    [hidden]=\"mode === modes.READ\"\n    (keydown)=\"onKeyPress($event)\"\n    (keyup)=\"onTextChanged()\"\n    class=\"editor\"\n    contenteditable=\"true\">\n</h3>\n\n<h3 [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></h3>"
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28429,12 +28681,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(70));
+__export(__webpack_require__(72));
 __export(__webpack_require__(41));
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28478,7 +28730,7 @@ exports.ImgBrickModule = ImgBrickModule;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\n\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\n    Add an Image\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the image link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\n            </button>\n        </div>\n    </div>\n</div>"
@@ -58307,6 +58559,7 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [
+                wall_1.TowModule,
                 wall_1.WallModule,
                 wall_1.PickOutModule,
                 wall_1.TextBrickModule,
@@ -58348,9 +58601,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(31);
 var wall_1 = __webpack_require__(94);
@@ -58363,167 +58613,228 @@ var AppComponent = (function () {
             onRegisterApi: this.onRegisterApi.bind(this)
         };
         this.wallPlan = {
-            'bricks': [
+            "bricks": [
                 {
-                    'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'WALL'
+                    "id": "46d291d5-b057-8798-00af-ed9ba015fcda",
+                    "tag": "header",
+                    "data": {
+                        "text": "WALL"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
+                    "id": "5cb0d4dd-24fa-de29-8785-619747830add",
+                    "tag": "text",
+                    "data": {
+                        "text": "The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components."
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '89399ff0-2d1a-bbd3-68ae-a55045571c4b',
-                    'tag': 'text',
-                    'data': {
-                        'text': ''
+                    "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f",
+                    "tag": "header",
+                    "data": {
+                        "text": "Navigation\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'cf7a2e00-5016-8b6d-b238-78c4b83b4468',
-                    'tag': 'img',
-                    'data': {
-                        'src': 'https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg'
+                    "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743",
+                    "tag": "text",
+                    "data": {
+                        "text": "Press `Escape` to enter to Selection mode"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4f3ce9ed-bebc-17e7-c23a-2cc64027ed09',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Roadmap'
+                    "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e",
+                    "tag": "text",
+                    "data": {
+                        "text": "Press Shift to select few bricks"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4b089695-bad3-06eb-f782-239c340864f3',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- drag\'n\'drop support'
+                    "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d",
+                    "tag": "header",
+                    "data": {
+                        "text": "Roadmap\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '878eca6b-5c7b-0cfa-c9ad-71481879d3e3',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- support few editors on the page'
+                    "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
+                    "tag": "text",
+                    "data": {
+                        "text": "- improve drag and drop handler"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Supported tags'
+                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
+                    "tag": "text",
+                    "data": {
+                        "text": "- support few editors on the page"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4cf44a15-d08e-399d-38ba-c051a36f6574',
-                    'tag': 'text',
-                    'data': {
-                        'text': '/h header brick'
+                    "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2",
+                    "tag": "text",
+                    "data": {
+                        "text": "- support readonly mode"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '56be0630-1cd8-4997-b69c-e40421cf79da',
-                    'tag': 'text',
-                    'data': {
-                        'text': '/img image brick'
+                    "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d",
+                    "tag": "header",
+                    "data": {
+                        "text": "Supported tags\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Navigation'
+                    "id": "a587554d-5698-8988-0039-ae1db771695e",
+                    "tag": "text",
+                    "data": {
+                        "text": "/h header brick"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press `Escape` to enter to Selection mode'
+                    "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb",
+                    "tag": "text",
+                    "data": {
+                        "text": "/img image brick"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f6333894-7e4d-2759-c425-9b7feda57801',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press Shift to select few bricks'
+                    "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211",
+                    "tag": "img",
+                    "data": {
+                        "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
                     },
-                    'meta': {}
-                },
-                {
-                    'id': '94339d03-f539-cded-bb5a-4273d05898d5',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- support readonly mode'
-                    },
-                    'meta': {}
+                    "meta": {}
                 }
             ],
-            'layout': {
-                'bricks': [
+            "layout": {
+                "bricks": [
                     {
-                        'columns': [
+                        "columns": [
                             {
-                                'bricks': [
+                                "bricks": [
                                     {
-                                        'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2'
+                                        "id": "46d291d5-b057-8798-00af-ed9ba015fcda"
                                     },
                                     {
-                                        'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762'
+                                        "id": "5cb0d4dd-24fa-de29-8785-619747830add"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
                                     },
                                     {
-                                        'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced'
+                                        "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
                                     },
                                     {
-                                        'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1'
-                                    },
+                                        "id": "a587554d-5698-8988-0039-ae1db771695e"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': 'f6333894-7e4d-2759-c425-9b7feda57801'
-                                    },
+                                        "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '4f3ce9ed-bebc-17e7-c23a-2cc64027ed09'
-                                    },
-                                    {
-                                        'id': '4b089695-bad3-06eb-f782-239c340864f3'
-                                    },
-                                    {
-                                        'id': '878eca6b-5c7b-0cfa-c9ad-71481879d3e3'
-                                    },
-                                    {
-                                        'id': '94339d03-f539-cded-bb5a-4273d05898d5'
-                                    },
-                                    {
-                                        'id': '89399ff0-2d1a-bbd3-68ae-a55045571c4b'
-                                    },
-                                    {
-                                        'id': 'cf7a2e00-5016-8b6d-b238-78c4b83b4468'
-                                    },
-                                    {
-                                        'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4'
-                                    },
-                                    {
-                                        'id': '4cf44a15-d08e-399d-38ba-c051a36f6574'
-                                    },
-                                    {
-                                        'id': '56be0630-1cd8-4997-b69c-e40421cf79da'
+                                        "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
                                     }
                                 ]
                             }
@@ -58547,8 +58858,7 @@ var AppComponent = (function () {
         core_1.Component({
             selector: 'my-app',
             template: __webpack_require__(154)
-        }),
-        __metadata("design:paramtypes", [])
+        })
     ], AppComponent);
     return AppComponent;
 }());
@@ -58747,7 +59057,7 @@ exports = module.exports = __webpack_require__(95)(undefined);
 
 
 // module
-exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 300px; }\n\nwall-canvas-brick {\n  display: block; }\n  wall-canvas-brick:hover .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.5s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -40px;\n    top: 0;\n    padding: 5px 20px 20px 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      opacity: 0.5;\n      background-color: #bae6f3; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 8px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick h3 {\n    word-break: break-all;\n    padding: 8px 2px;\n    margin: 20px 0 0 0; }\n    header-brick h3:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
+exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick:hover .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -40px;\n    top: 0;\n    padding: 5px 20px 20px 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    background-color: #ddf2f9; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 8px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick h3 {\n    word-break: break-all;\n    padding: 8px 2px;\n    margin: 20px 0 0 0; }\n    header-brick h3:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
 
 // exports
 
