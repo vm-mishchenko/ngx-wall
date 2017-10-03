@@ -69,7 +69,11 @@ export interface IWallCoreApi {
 
     addBrickAfterInNewRow(brickId: string, tag: string)
 
-    moveBrick(targetBrickId: string, beforeBrickId: string);
+    moveBrickAfterInSameColumn(targetBrickId: string, beforeBrickId: string)
+
+    moveBrickAfterInNewRow(targetBrickId: string, beforeBrickId: string);
+
+    moveBrickAfterBrickId(targetBrickId: string, beforeBrickId: string);
 
     moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string);
 

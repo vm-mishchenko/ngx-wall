@@ -59,10 +59,22 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
+
+    // TODO: remove this method, instead use addBrickToNewRowByBeforeBrickId
     addBrickToNewRow(brickId: string, targetRowIndex: number) {
         this.createNewRow(targetRowIndex);
 
         this.addBrick(brickId, targetRowIndex, 0, 0);
+    }
+
+    addBrickToNewRowByBeforeBrickId(targetBrickId, beforeBrickId) {
+        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+
+        const newRowIndex = beforeBrickPosition.rowIndex + 1;
+
+        this.createNewRow(newRowIndex);
+
+        this.addBrick(targetBrickId, newRowIndex, 0, 0);
     }
 
     addBrickToNewColumn(brickId: string, targetRowIndex: number, targetColumnIndex: number) {
@@ -77,7 +89,7 @@ export class LayoutStore {
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
     }
 
-    moveBrick(targetBrickId: string, beforeBrickId: string) {
+    moveBrickAfterInSameColumn(targetBrickId: string, beforeBrickId: string) {
         this.removeBrick(targetBrickId);
         this.addBrickAfterInSameColumn(beforeBrickId, targetBrickId);
     }
@@ -97,6 +109,12 @@ export class LayoutStore {
         }
 
         this.addBrickToNewColumn(targetBrickId, rowIndex, columnIndex);
+    }
+
+    moveBrickAfterInNewRow(targetBrickId: string, beforeBrickId: string) {
+        this.removeBrick(targetBrickId);
+
+        this.addBrickToNewRowByBeforeBrickId(targetBrickId, beforeBrickId);
     }
 
     removeBrick(brickId: string) {

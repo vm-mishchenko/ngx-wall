@@ -126,7 +126,7 @@ export class SelectionPlugin {
 
             if (e instanceof DropEvent) {
                 if (e.dropType === TOW.dropTypes.horizontal) {
-                    this.wallApi.core.moveBrick(e.targetId, e.beforeId);
+                    this.wallApi.core.moveBrickAfterBrickId(e.targetId, e.beforeId);
                 }
 
                 if (e.dropType === TOW.dropTypes.vertical) {
