@@ -10,14 +10,14 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
 
     private window;
 
-    constructor(private pickOutHandlerService: PickOutCoordinator,
+    constructor(private pickOutCoordinator: PickOutCoordinator,
                 @Inject(WindowReference) private _window: any,
                 private el: ElementRef) {
         this.window = _window;
     }
 
     ngOnInit() {
-        this.pickOutHandlerService.registerPickOutItem({
+        this.pickOutCoordinator.registerPickOutItem({
             id: this.id,
             api: {
                 getPosition: this.getPosition.bind(this)
@@ -26,7 +26,7 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.pickOutHandlerService.unRegisterPickOutItem(this.id);
+        this.pickOutCoordinator.unRegisterPickOutItem(this.id);
     }
 
     private getPosition() {

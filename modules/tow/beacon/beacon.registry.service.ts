@@ -17,7 +17,7 @@ export class BeaconRegistry {
     }
 
     getBeacons() {
-        return Array.from(this.beacons).map((beaconArray) => beaconArray[1]);
+        return Array.from(this.beacons.values());
     }
 
     updateBeaconPositions() {

@@ -21,6 +21,7 @@ module.exports = {
 
     externals: [
         'rxjs/Subject',
+        'rxjs/Rx',
         '@angular/core',
         '@angular/common',
         '@angular/platform-browser'
