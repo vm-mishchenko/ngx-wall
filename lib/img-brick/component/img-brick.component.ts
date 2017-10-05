@@ -61,9 +61,9 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
             this.applyImageSrc()
                 .then(() => {
-                    this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }).catch(() => {
-                this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             });
         }
     }

@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {WallApi} from './wall-api.service';
-import {BrickStore} from './brick-store.service';
-import {LayoutStore} from './layout-store.service';
-import {WALL} from './wall.constant';
-import {WallEditorRegistry} from '../../wall-editor.registry';
-import {IWallConfiguration, IWallDefinition} from './wall.interfaces';
-import {Subject} from 'rxjs/Subject';
-import {AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent} from './wall.events';
-import {Subscription} from 'rxjs/Subscription';
+import { Injectable } from '@angular/core';
+import { WallApi } from './wall-api.service';
+import { BrickStore } from './brick-store.service';
+import { LayoutStore } from './layout-store.service';
+import { WALL } from './wall.constant';
+import { WallEditorRegistry } from '../../wall-editor.registry';
+import { WallConfiguration } from './wall.interfaces';
+import { Subject } from 'rxjs/Subject';
+import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
+import { Subscription } from 'rxjs/Subscription';
+import { WallDefinition } from "./interfaces/wall-definition.interface";
 
 /**
  * @desc Responsible for storing wall state.
@@ -36,7 +37,7 @@ export class WallModel {
                 private layoutStore: LayoutStore) {
     }
 
-    initialize(plan: IWallDefinition, configuration: IWallConfiguration) {
+    initialize(plan: WallDefinition, configuration: WallConfiguration) {
         this.wallEditorRegistry.registerEditor(this.id, this);
 
         if (configuration && configuration.mode) {
@@ -45,36 +46,45 @@ export class WallModel {
 
         // initialize core API
         const coreApi = [
+            // SELECTION
             'getSelectedBrickIds',
             'selectBrick',
             'selectBricks',
-            'unSelectBricks',
-            'focusOnBrickId',
             'addBrickToSelection',
             'removeBrickFromSelection',
-            'isBrickAheadOf',
-            'getPlan',
-            'getMode',
-            'turnBrickInto',
-            'addDefaultBrick',
-            'addBrick',
-            'addBrickToNewRow',
-            'addBrickToNewColumn',
-            'addBrickAfterInSameColumn',
-            'addBrickAfterInNewRow',
-            'moveBrickAfterBrickId',
-            'moveBrickAfterInSameColumn',
-            'moveBrickToNewColumn',
-            'moveBrickAfterInNewRow',
-            'removeBrick',
-            'removeBricks',
-            'getPreviousBrickId',
-            'getNextBrickId',
-            'getBrickStore',
+            'unSelectBricks',
+
+            // FOCUS
+            'focusOnBrickId',
             'getFocusedBrickId',
             'focusOnPreviousTextBrick',
             'focusOnNextTextBrick',
-            'subscribe'
+
+            // ADD BRICK
+            'addBrickAfterBrickId',
+
+            // MOVE BRICK
+            'moveBrickAfterBrickId',
+            'moveBrickToNewColumn',
+
+            // REMOVE BRICK
+            'removeBrick',
+            'removeBricks',
+
+            // NAVIGATION
+            'getPreviousBrickId',
+            'getNextBrickId',
+            'isBrickAheadOf',
+
+            // CLIENT
+            'getPlan',
+            'getMode',
+            'subscribe',
+
+            // BRICk
+            'turnBrickInto',
+            'getBrickStore'
+
         ].reduce((result, methodName) => {
             result[methodName] = this[methodName].bind(this);
 
@@ -141,7 +151,7 @@ export class WallModel {
         return this.layoutStore.getPreviousBrickId(brickId);
     }
 
-    getPlan(): IWallDefinition {
+    getPlan(): WallDefinition {
         return {
             bricks: this.brickStore.serialize(),
             layout: this.layoutStore.serialize()
@@ -164,7 +174,7 @@ export class WallModel {
     }
 
     /* Add text brick to the bottom of wall in the new row */
-    addDefaultBrick(): void {
+    addDefaultBrick() {
         if (!this.brickStore.getBricksCount()) {
             this.addBrick('text', 0, 0, 0);
         } else {
@@ -204,27 +214,6 @@ export class WallModel {
         this.events.next(new AddBrickEvent(newBrick.id));
     }
 
-    /* Create new column in existing row and put brick to it */
-    addBrickToNewColumn(tag: string, targetRowIndex: number, targetColumnIndex: number) {
-        if (this.layoutStore.isRowExists(targetRowIndex)) {
-            const totalColumnCount = this.layoutStore.getColumnCount(targetRowIndex);
-            const lastColumnIndex = totalColumnCount - 1;
-
-            // user cannot create column in position more than  + 1
-            if (targetColumnIndex > lastColumnIndex + 1) {
-                targetColumnIndex = lastColumnIndex + 1;
-            }
-
-            const newBrick = this.brickStore.addBrick(tag);
-
-            this.layoutStore.addBrickToNewColumn(newBrick.id, targetRowIndex, targetColumnIndex);
-
-            this.focusOnBrickId(newBrick.id);
-
-            this.events.next(new AddBrickEvent(newBrick.id));
-        }
-    }
-
     addBrickAfterInSameColumn(brickId: string, tag: string) {
         const brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
 
@@ -235,6 +224,20 @@ export class WallModel {
         const brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
 
         this.addBrickToNewRow(tag, brickPosition.rowIndex + 1);
+    }
+
+    /**
+     * @public
+     * */
+    addBrickAfterBrickId(brickId: string, tag: string) {
+        const brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
+        const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+
+        if (columnCount === 1) {
+            this.addBrickAfterInNewRow(brickId, tag);
+        } else if (columnCount > 1) {
+            this.addBrickAfterInSameColumn(brickId, tag);
+        }
     }
 
     /*

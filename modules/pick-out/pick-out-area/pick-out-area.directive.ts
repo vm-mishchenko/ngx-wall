@@ -12,10 +12,10 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { PickOutAreaModel } from './pick-out-area.model';
 import { PickOutAreaComponent } from './pick-out-area.component';
-import { PickOutHandlerService } from '../pick-out-handler.service';
 import { WindowReference } from '../pick-out.tokens';
 import { StopPickOut } from '../pick-out.events';
 import { Subscription } from 'rxjs/Subscription';
+import { PickOutCoordinator } from "../pick-out-coordinator.service";
 
 @Directive({
     selector: '[pick-out-area]'
@@ -39,7 +39,7 @@ export class PickOutAreaDirective implements OnDestroy {
 
     constructor(@Inject(DOCUMENT) doc,
                 @Inject(WindowReference) private _window: any,
-                private pickOutHandlerService: PickOutHandlerService,
+                private pickOutHandlerService: PickOutCoordinator,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
                 private injector: Injector) {

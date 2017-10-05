@@ -1,8 +1,8 @@
 import {Inject, Injectable} from '@angular/core';
 import {DOCUMENT} from '@angular/common';
 import {WallApi} from '../../components/wall/wall-api.service';
-import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../pick-out';
-import {TOW, DropEvent, StartWorkingEvent, StopWorkingEvent, TowService} from '../../../tow';
+import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../../modules/pick-out';
+import {TOW, DropEvent, StartWorkingEvent, StopWorkingEvent, TowService} from '../../../../modules/tow';
 
 @Injectable()
 export class SelectionPlugin {

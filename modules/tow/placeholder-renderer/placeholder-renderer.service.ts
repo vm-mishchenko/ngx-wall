@@ -6,7 +6,7 @@ import {
     Injectable,
     Injector
 } from '@angular/core';
-import {PlaceholderComponent} from './component/placeholder.component';
+import { PlaceholderComponent } from './component/placeholder.component';
 
 @Injectable()
 export class PlaceholderRenderer {
