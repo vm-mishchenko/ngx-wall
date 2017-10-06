@@ -21,7 +21,10 @@ module.exports = {
 
     externals: [
         'rxjs/Subject',
-        'rxjs/Rx',
+        'rxjs/Subscription',
+        'rxjs/Observable',
+        'rxjs/add/observable/fromEvent',
+        'rxjs/add/operator/throttleTime',
         '@angular/core',
         '@angular/common',
         '@angular/platform-browser'
@@ -29,7 +32,8 @@ module.exports = {
 
     resolve: {
         extensions: [
-            '.ts'
+            '.ts',
+            '.js'
         ]
     },
 

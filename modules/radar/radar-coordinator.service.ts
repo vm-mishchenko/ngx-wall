@@ -3,8 +3,10 @@ import { SpotDirective } from "./directive/radar.directive";
 import { Subject } from "rxjs/Subject";
 import { DOCUMENT } from "@angular/common";
 import { Subscription } from "rxjs/Subscription";
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/throttleTime';
 import { SpotModel } from "./spot.model";
-import { Observable } from 'rxjs/Rx';
 import { WindowReference } from "./radar.tokens";
 import { LocationUpdatedEvent } from "./events/location-updated.event";
 import { DistanceToSpot } from "./interfaces/distance-to-spot.interface";
@@ -17,7 +19,7 @@ export class RadarCoordinator {
 
     private moveObservable: Observable<MouseEvent>;
 
-    private throttleMouseTime = 70;
+    private throttleMouseTime = 30;
 
     constructor(@Inject(DOCUMENT) doc,
                 @Inject(WindowReference) _window: any) {

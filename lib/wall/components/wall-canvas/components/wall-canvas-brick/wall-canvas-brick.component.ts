@@ -23,6 +23,8 @@ export class WallCanvasBrickComponent implements OnInit {
 
     private isMouseNear: boolean = false;
 
+    private minimalDistanceToMouse = 250;
+
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
@@ -36,7 +38,7 @@ export class WallCanvasBrickComponent implements OnInit {
 
         this.radar.subscribe((e) => {
             if (e instanceof LocationUpdatedEvent) {
-                this.isMouseNear = e.spots[0].data === this.brick.id;
+                this.isMouseNear = e.spots[0].data === this.brick.id && e.spots[0].distance < this.minimalDistanceToMouse;
             }
         });
     }
