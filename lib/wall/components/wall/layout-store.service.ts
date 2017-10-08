@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ILayoutDefinition} from './wall.interfaces';
+import {LayoutDefinition} from './wall.interfaces';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {BrickStore} from './brick-store.service';
 
@@ -9,13 +9,13 @@ export class LayoutStore {
 
     }
 
-    layout: ILayoutDefinition = null;
+    layout: LayoutDefinition = null;
 
     canvasLayout: any = {
         bricks: []
     };
 
-    initialize(layout: ILayoutDefinition) {
+    initialize(layout: LayoutDefinition) {
         this.layout = layout;
 
         this.updateCanvasLayout();

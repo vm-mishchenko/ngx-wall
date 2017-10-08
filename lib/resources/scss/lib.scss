@@ -71,7 +71,7 @@ wall-canvas-brick {
   display: block;
   margin: 0 0 2px;
 
-  &:hover {
+  .wall-canvas-brick__mouse-near {
     .wall-canvas-brick__draggable-handler {
       display: block;
     }
@@ -94,7 +94,7 @@ wall-canvas-brick {
     position: absolute;
     left: -40px;
     top: 0;
-    padding: 5px 20px 20px 5px;
+    padding: 5px;
     margin: 0;
     cursor: pointer;
     border-radius: 3px;
@@ -126,7 +126,7 @@ text-brick {
 
   .text-brick__editor {
     word-break: break-all;
-    padding: 8px 2px;
+    padding: 6px 2px;
 
     &:focus {
       outline: none;
@@ -138,11 +138,11 @@ text-brick {
 header-brick {
   display: block;
 
-  h3 {
+  h4 {
     word-break: break-all;
 
-    padding: 8px 2px;
-    margin: 20px 0 0 0;
+    padding: 16px 2px 8px 2px;
+    margin: 0;
 
     &:focus {
       outline: none;

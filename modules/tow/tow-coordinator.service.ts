@@ -3,7 +3,6 @@ import {DOCUMENT} from '@angular/common';
 import {WindowReference} from './tow.tokens';
 import {BeaconDetector} from './beacon-detector/beacon-detector.service';
 import {PlaceholderRenderer} from './placeholder-renderer/placeholder-renderer.service';
-import {Beacon} from './beacon/beacon.interface';
 import {BeaconRegistry} from './beacon/beacon.registry.service';
 import {Subject} from 'rxjs/Subject';
 import {StartWorkingEvent} from './events/start-working.event';

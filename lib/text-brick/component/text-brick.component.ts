@@ -1,5 +1,5 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {onWallFocus, WALL, WallApi} from '../../wall';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { onWallFocus, WALL, WallApi } from '../../wall';
 
 @Component({
     selector: 'text-brick',
@@ -78,7 +78,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             } else if (this.state.text === '/img') {
                 this.wallApi.core.turnBrickInto(this.id, 'img');
             } else {
-                this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             }
         }
     }

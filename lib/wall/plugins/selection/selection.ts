@@ -1,8 +1,8 @@
-import {Inject, Injectable} from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {WallApi} from '../../components/wall/wall-api.service';
-import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../pick-out';
-import {TOW, DropEvent, StartWorkingEvent, StopWorkingEvent, TowService} from '../../../tow';
+import { Inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { WallApi } from '../../components/wall/wall-api.service';
+import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../../modules/pick-out';
+import { DropEvent, StartWorkingEvent, StopWorkingEvent, TOW, TowService } from '../../../../modules/tow';
 
 @Injectable()
 export class SelectionPlugin {
@@ -26,6 +26,11 @@ export class SelectionPlugin {
             } else {
                 this.wallApi.core.unSelectBricks();
             }
+        });
+
+        this.doc.addEventListener('mouseup', (e) => {
+            // during text selection pickOutService was disable, enable it again
+            this.pickOutService.enablePickOut();
         });
 
         this.doc.addEventListener('keydown', (e) => {
@@ -101,6 +106,15 @@ export class SelectionPlugin {
             }
         });
 
+        this.doc.addEventListener('selectionchange', (e) => {
+            // selection event triggers when user select some text and then just click by the document
+            // we should disabele pick out service only when user really starts select something
+            if (this.doc.getSelection().anchorNode) {
+                this.pickOutService.disablePickOut();
+                this.pickOutService.stopPickOut();
+            }
+        });
+
         this.pickOutService.subscribe((e) => {
             if (e instanceof PickOutItems) {
                 this.wallApi.core.selectBricks(e.ids);
@@ -117,6 +131,7 @@ export class SelectionPlugin {
         this.towService.subscribe((e) => {
             if (e instanceof StartWorkingEvent) {
                 this.pickOutService.disablePickOut();
+
                 this.pickOutService.stopPickOut();
             }
 

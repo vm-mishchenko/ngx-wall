@@ -2,11 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PickOutItemDirective } from './pick-out-item/pick-out-item.directive';
 import { PickOutAreaDirective } from './pick-out-area/pick-out-area.directive';
-
-import { PickOutHandlerService } from './pick-out-handler.service';
 import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
 import { WindowReference } from './pick-out.tokens';
 import { PickOutService } from './pick-out.service';
+import { PickOutCoordinator } from "./pick-out-coordinator.service";
 
 @NgModule({
     imports: [
@@ -21,7 +20,7 @@ import { PickOutService } from './pick-out.service';
 
     providers: [
         PickOutService,
-        PickOutHandlerService,
+        PickOutCoordinator,
         {
             provide: WindowReference,
             useValue: window

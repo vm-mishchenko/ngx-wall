@@ -1,12 +1,13 @@
 <div [pick-out-item]="brick.id"
      [beacon]="brick.id"
+     [spot]="brick.id"
      (click)="onFocused()"
      class="wall-canvas-brick__wrapper"
-     [ngClass]="{'wall-canvas-brick__selected': selected}">
+     [ngClass]="{'wall-canvas-brick__selected': selected, 'wall-canvas-brick__mouse-near': isMouseNear}">
 
     <div class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">
         <div class="wall-canvas-brick__draggable-box">
-			<svg xmlns="http://www.w3.org/2000/svg" x version="1.1" width="15px" height="15px" viewBox="0 0 612 612" xml:space="preserve">
+            <svg xmlns="http://www.w3.org/2000/svg" x version="1.1" width="15px" height="15px" viewBox="0 0 612 612" xml:space="preserve">
 <g>
 	<g>
 		<circle cx="69.545" cy="528.545" r="69.545" fill="#cfcfcf"/>
@@ -21,8 +22,8 @@
 	</g>
 </g>
 </svg>
-		</div>
+        </div>
     </div>
 
-	<div #brickContainer></div>
+    <div #brickContainer></div>
 </div>

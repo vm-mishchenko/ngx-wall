@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IBrickDefinition } from './wall.interfaces';
+import { BrickDefinition } from './wall.interfaces';
 
 
 // Simple naive implementation
@@ -26,9 +26,9 @@ class BrickItemStore {
  * */
 @Injectable()
 export class BrickStore {
-    bricks: IBrickDefinition[];
+    bricks: BrickDefinition[];
 
-    initialize(bricks: IBrickDefinition[]) {
+    initialize(bricks: BrickDefinition[]) {
         this.bricks = bricks;
     }
 
@@ -68,7 +68,7 @@ export class BrickStore {
         return this.bricks.length;
     }
 
-    getBrickById(brickId: string): IBrickDefinition {
+    getBrickById(brickId: string): BrickDefinition {
         return this.bricks.find((brick) => {
             return brick.id === brickId;
         });

@@ -1,25 +1,11 @@
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
 import { EndPickOut, PickOutItems, StartPickOut, StopPickOut } from './pick-out.events';
-
-export class PickItemPosition {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
-export interface PickItemApi {
-    getPosition(): PickItemPosition;
-}
-
-export interface PickOutItemConfig {
-    id: string;
-    api: PickItemApi;
-}
+import { PickOutItemConfig } from "./interfaces/pick-out-item-config.interface";
+import { PickItemPosition } from "./interfaces/pick-item-posiiton";
 
 @Injectable()
-export class PickOutHandlerService {
+export class PickOutCoordinator {
     changes: Subject<any> = new Subject();
 
     private pickOutItems: Map<string, PickOutItemConfig> = new Map();

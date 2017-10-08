@@ -1,6 +1,6 @@
-import {Directive, ElementRef, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {PickOutHandlerService} from '../pick-out-handler.service';
-import {WindowReference} from '../pick-out.tokens';
+import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { WindowReference } from '../pick-out.tokens';
+import { PickOutCoordinator } from "../pick-out-coordinator.service";
 
 @Directive({
     selector: '[pick-out-item]'
@@ -10,14 +10,14 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
 
     private window;
 
-    constructor(private pickOutHandlerService: PickOutHandlerService,
+    constructor(private pickOutCoordinator: PickOutCoordinator,
                 @Inject(WindowReference) private _window: any,
                 private el: ElementRef) {
         this.window = _window;
     }
 
     ngOnInit() {
-        this.pickOutHandlerService.registerPickOutItem({
+        this.pickOutCoordinator.registerPickOutItem({
             id: this.id,
             api: {
                 getPosition: this.getPosition.bind(this)
@@ -26,7 +26,7 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.pickOutHandlerService.unRegisterPickOutItem(this.id);
+        this.pickOutCoordinator.unRegisterPickOutItem(this.id);
     }
 
     private getPosition() {

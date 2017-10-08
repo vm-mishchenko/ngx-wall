@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {Beacon} from '../beacon/beacon.interface';
-import {DetectedBeacon} from "./detected-beacon";
-import {TOW} from "../tow.constant";
+import { Injectable } from '@angular/core';
+import { Beacon } from '../beacon/beacon.interface';
+import { DetectedBeacon } from "./detected-beacon";
+import { TOW } from "../tow.constant";
 
 @Injectable()
 export class BeaconDetector {

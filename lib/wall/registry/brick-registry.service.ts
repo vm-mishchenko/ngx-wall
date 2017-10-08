@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
-import { IBrickSpecification } from '../wall.interfaces';
+import { BrickSpecification } from '../wall.interfaces';
 
 @Injectable()
 export class BrickRegistry {
-    private bricks: IBrickSpecification[] = [];
+    private bricks: BrickSpecification[] = [];
 
-    register(brickConfiguration: IBrickSpecification) {
+    register(brickConfiguration: BrickSpecification) {
         this.bricks.push(brickConfiguration);
     }
 
-    get(tag: string): IBrickSpecification {
-        return this.bricks.find((brickConfiguration: IBrickSpecification) => brickConfiguration.tag === tag);
+    get(tag: string): BrickSpecification {
+        return this.bricks.find((brickConfiguration: BrickSpecification) => brickConfiguration.tag === tag);
     }
 
-    getAll(): IBrickSpecification[] {
+    getAll(): BrickSpecification[] {
         return this.bricks;
     }
 }
