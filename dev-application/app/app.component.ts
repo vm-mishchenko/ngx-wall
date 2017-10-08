@@ -131,7 +131,15 @@ export class AppComponent {
                             "bricks": [
                                 {
                                     "id": "46d291d5-b057-8798-00af-ed9ba015fcda"
-                                },
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
                                 {
                                     "id": "5cb0d4dd-24fa-de29-8785-619747830add"
                                 }

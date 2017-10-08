@@ -47,4 +47,11 @@ export class SpotModel {
 
         return minimalDistance;
     }
+
+    getDistanceToTopLeftPoint(x: number, y: number) {
+        const a = Math.abs(this.x - x);
+        const b = Math.abs(this.y - y);
+
+        return Math.sqrt(a * a + b * b);
+    }
 }

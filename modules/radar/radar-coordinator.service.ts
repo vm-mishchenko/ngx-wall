@@ -10,6 +10,7 @@ import { SpotModel } from "./spot.model";
 import { WindowReference } from "./radar.tokens";
 import { LocationUpdatedEvent } from "./events/location-updated.event";
 import { DistanceToSpot } from "./interfaces/distance-to-spot.interface";
+import { LocationToTopLeftPointEvent } from "./events/location-to-top-left-point.event";
 
 @Injectable()
 export class RadarCoordinator {
@@ -30,9 +31,11 @@ export class RadarCoordinator {
             .subscribe((event) => {
                 this.updateSpotPosition();
 
-                // TODO: move to separete method
-                const sortedSpots = this.getSortedSpotsByDistanceToPoint(event.x, event.y + _window.pageYOffset);
-                this.events.next(new LocationUpdatedEvent(sortedSpots));
+                const x = event.x;
+                const y = event.y + _window.pageYOffset;
+
+                this.updateLocationPosition(x, y);
+                this.updateLocationToLeftTopPoint(x, y);
             });
     }
 
@@ -48,14 +51,47 @@ export class RadarCoordinator {
         return this.events.subscribe(fn);
     }
 
+    private updateLocationPosition(x: number, y: number) {
+        const sortedSpots = this.getSortedSpotsByDistanceToPoint(x, y);
+
+        this.events.next(new LocationUpdatedEvent(sortedSpots));
+    }
+
+    private updateLocationToLeftTopPoint(x: number, y: number) {
+        const sortedSpots = this.getSortedSpotsByDistanceToTopLeftPoint(x, y);
+
+        this.events.next(new LocationToTopLeftPointEvent(sortedSpots));
+    }
+
     private getSortedSpotsByDistanceToPoint(x: number, y: number): DistanceToSpot[] {
         const sortedSpots: DistanceToSpot[] = [];
 
-        // TODO: improve algorithm - current implementation doesn't work for columns
-        // maybe calculate nearest point to top left corner
         this.spots.forEach((spot) => {
             sortedSpots.push({
                 distance: spot.getMinimalDistanceToPoint(x, y),
+                data: spot.instance.data
+            });
+        });
+
+        sortedSpots.sort((a: any, b: any) => {
+            if (a.distance < b.distance) {
+                return -1;
+            } else if (a.distance > b.distance) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        return sortedSpots;
+    }
+
+    private getSortedSpotsByDistanceToTopLeftPoint(x: number, y: number): DistanceToSpot[] {
+        const sortedSpots: DistanceToSpot[] = [];
+
+        this.spots.forEach((spot) => {
+            sortedSpots.push({
+                distance: spot.getDistanceToTopLeftPoint(x, y),
                 data: spot.instance.data
             });
         });

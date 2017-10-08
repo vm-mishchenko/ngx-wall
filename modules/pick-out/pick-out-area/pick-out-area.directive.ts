@@ -141,6 +141,7 @@ export class PickOutAreaDirective implements OnDestroy {
     removeSelectionRangeComponent() {
         this.appRef.detachView(this.selectionRangeComponentRef.hostView);
         this.selectionRangeComponentRef.destroy();
+        this.selectionRangeComponentRef = null;
     }
 
     isMouseMoveEnough(): boolean {
@@ -152,14 +153,12 @@ export class PickOutAreaDirective implements OnDestroy {
     }
 
     stopPickOut() {
+        if (this.selectionRangeComponentRef) {
+            this.removeSelectionRangeComponent();
+        }
+
         if (this.pickOutAreaModel) {
             this.pickOutAreaModel.onDestroy();
-
-            if (this.selectionRangeComponentRef) {
-                this.removeSelectionRangeComponent();
-
-                this.selectionRangeComponentRef = null;
-            }
 
             this.pickOutHandlerService.endPickOut();
         }
