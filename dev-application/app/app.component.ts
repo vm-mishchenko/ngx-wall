@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IWallConfiguration, IWallDefinition, WALL, WallApi} from 'wall';
+import { Component } from '@angular/core';
+import { IWallConfiguration, IWallDefinition, WALL, WallApi } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -186,7 +186,15 @@ export class AppComponent {
                             "bricks": [
                                 {
                                     "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
-                                },
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
                                 {
                                     "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
                                 }
@@ -222,7 +230,15 @@ export class AppComponent {
                             "bricks": [
                                 {
                                     "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
-                                },
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
                                 {
                                     "id": "a587554d-5698-8988-0039-ae1db771695e"
                                 }
