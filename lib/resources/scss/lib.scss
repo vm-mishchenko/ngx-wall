@@ -138,11 +138,16 @@ text-brick {
 header-brick {
   display: block;
 
-  h4 {
+  div {
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: -0.002em;
+    line-height: 1.2;
+
     word-break: break-all;
 
-    padding: 16px 2px 8px 2px;
-    margin: 0;
+    padding: 6px 2px;
+    margin: 8px 0 0 0;
 
     &:focus {
       outline: none;

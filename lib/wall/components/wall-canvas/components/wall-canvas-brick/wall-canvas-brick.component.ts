@@ -8,7 +8,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import { WallCanvasApi } from '../../wall-canvas.api';
-import { LocationToTopLeftPointEvent, Radar } from "../../../../../../modules/radar";
+import { LocationToLeftCenterPointEvent, Radar } from "../../../../../../modules/radar";
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -38,7 +38,7 @@ export class WallCanvasBrickComponent implements OnInit {
 
         // todo maybe move it to model API?
         this.radar.subscribe((e) => {
-            if (e instanceof LocationToTopLeftPointEvent) {
+            if (e instanceof LocationToLeftCenterPointEvent) {
                 this.isMouseNear = e.spots[0].data === this.brick.id && e.spots[0].distance < this.minimalDistanceToMouse;
             }
         });

@@ -54,4 +54,11 @@ export class SpotModel {
 
         return Math.sqrt(a * a + b * b);
     }
+
+    getDistanceToLeftCenterPoint(x: number, y: number) {
+        const a = Math.abs(this.x - x);
+        const b = Math.abs(this.y + (this.height / 2) - y);
+
+        return Math.sqrt(a * a + b * b);
+    }
 }

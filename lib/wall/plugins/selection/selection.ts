@@ -20,7 +20,7 @@ export class SelectionPlugin {
     }
 
     initialize() {
-        this.doc.addEventListener('click', (e) => {
+        this.doc.addEventListener('click', () => {
             if (this.isMouseSelection) {
                 this.isMouseSelection = false;
             } else {
@@ -28,7 +28,7 @@ export class SelectionPlugin {
             }
         });
 
-        this.doc.addEventListener('mouseup', (e) => {
+        this.doc.addEventListener('mouseup', () => {
             // during text selection pickOutService was disable, enable it again
             this.pickOutService.enablePickOut();
         });
@@ -106,7 +106,7 @@ export class SelectionPlugin {
             }
         });
 
-        this.doc.addEventListener('selectionchange', (e) => {
+        this.doc.addEventListener('selectionchange', () => {
             // selection event triggers when user select some text and then just click by the document
             // we should disabele pick out service only when user really starts select something
             if (this.doc.getSelection().anchorNode) {
@@ -140,17 +140,26 @@ export class SelectionPlugin {
             }
 
             if (e instanceof DropEvent) {
+                let movedBrickIds = [];
+
+                const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
+                if (selectedBrickIds.length > 1) {
+                    movedBrickIds = movedBrickIds.concat(selectedBrickIds);
+                } else {
+                    movedBrickIds.push(e.targetId);
+                }
+
                 if (e.dropType === TOW.dropTypes.horizontal) {
-                    this.wallApi.core.moveBrickAfterBrickId(e.targetId, e.beforeId);
+                    this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
                 }
 
                 if (e.dropType === TOW.dropTypes.vertical) {
                     if (e.dropSide === TOW.dropSides.left) {
-                        this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, TOW.dropSides.left);
+                        this.wallApi.core.moveBrickToNewColumn(movedBrickIds, e.beforeId, TOW.dropSides.left);
                     }
 
                     if (e.dropSide === TOW.dropSides.right) {
-                        this.wallApi.core.moveBrickToNewColumn(e.targetId, e.beforeId, TOW.dropSides.right);
+                        this.wallApi.core.moveBrickToNewColumn(movedBrickIds, e.beforeId, TOW.dropSides.right);
                     }
                 }
             }

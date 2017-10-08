@@ -1,19 +1,18 @@
-import {Injectable} from '@angular/core';
-import {LayoutDefinition} from './wall.interfaces';
-import {BrickRegistry} from '../../registry/brick-registry.service';
-import {BrickStore} from './brick-store.service';
+import { Injectable } from '@angular/core';
+import { LayoutDefinition } from './wall.interfaces';
+import { BrickRegistry } from '../../registry/brick-registry.service';
+import { BrickStore } from './brick-store.service';
 
 @Injectable()
 export class LayoutStore {
-    constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
-
-    }
-
     layout: LayoutDefinition = null;
-
     canvasLayout: any = {
         bricks: []
     };
+
+    constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
+
+    }
 
     initialize(layout: LayoutDefinition) {
         this.layout = layout;
@@ -88,13 +87,19 @@ export class LayoutStore {
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
     }
 
-    moveBrickAfterInSameColumn(targetBrickId: string, beforeBrickId: string) {
-        this.removeBrick(targetBrickId);
-        this.addBrickAfterInSameColumn(beforeBrickId, targetBrickId);
+    moveBrickAfterInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.reverse();
+
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+            this.addBrickAfterInSameColumn(brickId, beforeBrickId);
+        });
     }
 
-    moveBrickToNewColumn(targetBrickId: string, beforeBrickId: string, side: string) {
-        this.removeBrick(targetBrickId);
+    moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+        });
 
         const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
 
@@ -107,13 +112,21 @@ export class LayoutStore {
             columnIndex = beforeBrickPosition.columnIndex + 1;
         }
 
-        this.addBrickToNewColumn(targetBrickId, rowIndex, columnIndex);
+        this.createNewColumn(rowIndex, columnIndex);
+
+        targetBrickIds.forEach((brickId, index) => {
+            this.addBrick(brickId, rowIndex, columnIndex, index);
+        });
     }
 
-    moveBrickAfterInNewRow(targetBrickId: string, beforeBrickId: string) {
-        this.removeBrick(targetBrickId);
+    moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.reverse();
 
-        this.addBrickToNewRowByBeforeBrickId(targetBrickId, beforeBrickId);
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+
+            this.addBrickToNewRowByBeforeBrickId(brickId, beforeBrickId);
+        });
     }
 
     removeBrick(brickId: string) {
