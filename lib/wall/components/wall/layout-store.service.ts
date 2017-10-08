@@ -92,7 +92,7 @@ export class LayoutStore {
 
         targetBrickIds.forEach((brickId) => {
             this.removeBrick(brickId);
-            this.addBrickAfterInSameColumn(brickId, beforeBrickId);
+            this.addBrickAfterInSameColumn(beforeBrickId, brickId);
         });
     }
 

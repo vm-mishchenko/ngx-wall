@@ -3,18 +3,20 @@ import {
     ComponentFactoryResolver,
     Injector,
     Input,
+    OnDestroy,
     OnInit,
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
 import { WallCanvasApi } from '../../wall-canvas.api';
-import { LocationToLeftCenterPointEvent, Radar } from "../../../../../../modules/radar";
+import { LocationUpdatedEvent, Radar } from "../../../../../../modules/radar";
+import { Subscription } from "rxjs/Subscription";
 
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html'
 })
-export class WallCanvasBrickComponent implements OnInit {
+export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     @Input() brick: any;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
@@ -24,6 +26,8 @@ export class WallCanvasBrickComponent implements OnInit {
     private isMouseNear: boolean = false;
 
     private minimalDistanceToMouse = 250;
+
+    private radarSubscription: Subscription;
 
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
@@ -37,11 +41,23 @@ export class WallCanvasBrickComponent implements OnInit {
         this.wallCanvasApi.core.registerCanvasBrickInstance(this.brick.id, this, componentReference.instance);
 
         // todo maybe move it to model API?
-        this.radar.subscribe((e) => {
-            if (e instanceof LocationToLeftCenterPointEvent) {
-                this.isMouseNear = e.spots[0].data === this.brick.id && e.spots[0].distance < this.minimalDistanceToMouse;
+        this.radarSubscription = this.radar.subscribe((e) => {
+            if (e instanceof LocationUpdatedEvent) {
+                const currentSpot = e.spots.find((spot) => {
+                    return spot.data === this.brick.id;
+                });
+
+                if (currentSpot.isCross13Line) {
+                    this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse
+                } else {
+                    this.isMouseNear = false;
+                }
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.radarSubscription.unsubscribe();
     }
 
     onFocused() {

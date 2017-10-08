@@ -3,7 +3,7 @@
      (keydown)="onKeyPress($event)"
      (keyup)="onTextChanged()"
      class="text-brick__editor"
-     contenteditable="true">
+     contenteditable>
 </div>
 
 <div [innerHTML]="state.text" [hidden]="mode === modes.EDIT"></div>

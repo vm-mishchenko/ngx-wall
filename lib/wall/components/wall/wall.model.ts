@@ -253,25 +253,26 @@ export class WallModel {
     /**
      * @public
      * */
-    moveBrickAfterBrickId(targetBrickId: string | string[], beforeBrickId: string) {
-        const brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
-        const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+    moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            const brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
 
-        const movedBricks = Array.isArray(targetBrickId) ? targetBrickId : [targetBrickId];
-
-        if (columnCount === 1) {
-            this.moveBrickAfterInNewRow(movedBricks, beforeBrickId);
-        } else {
-            this.moveBrickAfterInSameColumn(movedBricks, beforeBrickId);
+            if (columnCount === 1) {
+                this.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
+            } else {
+                this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+            }
         }
     }
-
 
     /**
      * @public
      * */
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
-        this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+        }
     }
 
     removeBrick(brickId: string) {

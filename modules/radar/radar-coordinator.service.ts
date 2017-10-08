@@ -10,8 +10,6 @@ import { SpotModel } from "./spot.model";
 import { WindowReference } from "./radar.tokens";
 import { LocationUpdatedEvent } from "./events/location-updated.event";
 import { DistanceToSpot } from "./interfaces/distance-to-spot.interface";
-import { LocationToTopLeftPointEvent } from "./events/location-to-top-left-point.event";
-import { LocationToLeftCenterPointEvent } from "./events/location-to-left-center-point.event";
 
 @Injectable()
 export class RadarCoordinator {
@@ -36,8 +34,6 @@ export class RadarCoordinator {
                 const y = event.y + _window.pageYOffset;
 
                 this.updateLocationPosition(x, y);
-                this.updateLocationToLeftTopPoint(x, y);
-                this.updateLocationToLeftCenterPoint(x, y);
             });
     }
 
@@ -54,91 +50,26 @@ export class RadarCoordinator {
     }
 
     private updateLocationPosition(x: number, y: number) {
-        const sortedSpots = this.getSortedSpotsByDistanceToPoint(x, y);
+        const sortedSpots: DistanceToSpot[] = [];
+
+        this.spots.forEach((spot) => {
+            const minimalDistance = spot.getMinimalDistanceToPoint(x, y);
+            const topLeftPointDistance = spot.getDistanceToTopLeftPoint(x, y);
+            const bottomLeftPointDistance = spot.getDistanceToBottomLeftPoint(x, y);
+            const centerLeftPointDistance = spot.getDistanceToLeftCenterPoint(x, y);
+            const isCross13Line = spot.isCross13Line(y);
+
+            sortedSpots.push({
+                minimalDistance: minimalDistance,
+                topLeftPointDistance: topLeftPointDistance,
+                bottomLeftPointDistance: bottomLeftPointDistance,
+                centerLeftPointDistance: centerLeftPointDistance,
+                isCross13Line: isCross13Line,
+                data: spot.instance.data
+            });
+        });
 
         this.events.next(new LocationUpdatedEvent(sortedSpots));
-    }
-
-    private updateLocationToLeftTopPoint(x: number, y: number) {
-        const sortedSpots = this.getSortedSpotsByDistanceToTopLeftPoint(x, y);
-
-        this.events.next(new LocationToTopLeftPointEvent(sortedSpots));
-    }
-
-    private updateLocationToLeftCenterPoint(x: number, y: number) {
-        const sortedSpots = this.getSortedSpotsByDistanceToLeftCenterPoint(x, y);
-
-        this.events.next(new LocationToLeftCenterPointEvent(sortedSpots));
-    }
-
-    // todo refactor below methods
-    private getSortedSpotsByDistanceToPoint(x: number, y: number): DistanceToSpot[] {
-        const sortedSpots: DistanceToSpot[] = [];
-
-        this.spots.forEach((spot) => {
-            sortedSpots.push({
-                distance: spot.getMinimalDistanceToPoint(x, y),
-                data: spot.instance.data
-            });
-        });
-
-        sortedSpots.sort((a: any, b: any) => {
-            if (a.distance < b.distance) {
-                return -1;
-            } else if (a.distance > b.distance) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        return sortedSpots;
-    }
-
-    private getSortedSpotsByDistanceToTopLeftPoint(x: number, y: number): DistanceToSpot[] {
-        const sortedSpots: DistanceToSpot[] = [];
-
-        this.spots.forEach((spot) => {
-            sortedSpots.push({
-                distance: spot.getDistanceToTopLeftPoint(x, y),
-                data: spot.instance.data
-            });
-        });
-
-        sortedSpots.sort((a: any, b: any) => {
-            if (a.distance < b.distance) {
-                return -1;
-            } else if (a.distance > b.distance) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        return sortedSpots;
-    }
-
-    private getSortedSpotsByDistanceToLeftCenterPoint(x: number, y: number): DistanceToSpot[] {
-        const sortedSpots: DistanceToSpot[] = [];
-
-        this.spots.forEach((spot) => {
-            sortedSpots.push({
-                distance: spot.getDistanceToLeftCenterPoint(x, y),
-                data: spot.instance.data
-            });
-        });
-
-        sortedSpots.sort((a: any, b: any) => {
-            if (a.distance < b.distance) {
-                return -1;
-            } else if (a.distance > b.distance) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-
-        return sortedSpots;
     }
 
     private updateSpotPosition() {

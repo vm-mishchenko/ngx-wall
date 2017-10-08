@@ -71,7 +71,7 @@ wall-canvas-brick {
   display: block;
   margin: 0 0 2px;
 
-  .wall-canvas-brick__mouse-near {
+  .wall-canvas-brick__draggable {
     .wall-canvas-brick__draggable-handler {
       display: block;
     }
@@ -92,7 +92,7 @@ wall-canvas-brick {
   .wall-canvas-brick__draggable-handler {
     display: none;
     position: absolute;
-    left: -40px;
+    left: -35px;
     top: 0;
     padding: 5px;
     margin: 0;
@@ -182,6 +182,7 @@ img-brick {
   }
 
   .show {
+    z-index: 10;
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;

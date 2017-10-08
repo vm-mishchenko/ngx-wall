@@ -20,6 +20,10 @@ export class SpotModel {
         this.height = spotPosition.height;
     }
 
+    isCross13Line(y) {
+        return (y > this.y) && (y < this.y + this.height);
+    }
+
     getMinimalDistanceToPoint(x: number, y: number) {
         let minimalDistance = null;
 
@@ -51,6 +55,13 @@ export class SpotModel {
     getDistanceToTopLeftPoint(x: number, y: number) {
         const a = Math.abs(this.x - x);
         const b = Math.abs(this.y - y);
+
+        return Math.sqrt(a * a + b * b);
+    }
+
+    getDistanceToBottomLeftPoint(x: number, y: number) {
+        const a = Math.abs(this.x - x);
+        const b = Math.abs(this.y + this.height - y);
 
         return Math.sqrt(a * a + b * b);
     }
