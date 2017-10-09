@@ -26405,6 +26405,7 @@ var WallModel = (function () {
             else {
                 this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
             }
+            this.unSelectBricks();
         }
     };
     /**
@@ -26420,6 +26421,7 @@ var WallModel = (function () {
             else {
                 this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
             }
+            this.unSelectBricks();
         }
     };
     /**
@@ -26428,6 +26430,7 @@ var WallModel = (function () {
     WallModel.prototype.moveBrickToNewColumn = function (targetBrickIds, beforeBrickId, side) {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+            this.unSelectBricks();
         }
     };
     WallModel.prototype.removeBrick = function (brickId) {
@@ -26623,24 +26626,15 @@ var LayoutStore = (function () {
         this.addBrick(brickId, targetRowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickToNewRowAfterBrickId = function (targetBrickId, afterBrickId) {
-        console.log('addBrickToNewRowAfterBrickId');
         var afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
         var newRowIndex = afterBrickPosition.rowIndex + 1;
         this.createNewRow(newRowIndex);
         this.addBrick(targetBrickId, newRowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickToNewRowBeforeBrickId = function (brickId, beforeBrickId) {
-        console.log('addBrickToNewRowBeforeBrickId');
         var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
-        var newRowIndex;
-        if (beforeBrickPosition.rowIndex === 0) {
-            newRowIndex = 0;
-        }
-        else {
-            newRowIndex = beforeBrickPosition.rowIndex - 1;
-        }
-        this.createNewRow(newRowIndex);
-        this.addBrick(brickId, newRowIndex, 0, 0);
+        this.createNewRow(beforeBrickPosition.rowIndex);
+        this.addBrick(brickId, beforeBrickPosition.rowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickAfterInSameColumn = function (siblingBrickId, brickId) {
         var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
