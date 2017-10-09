@@ -60,18 +60,29 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 128);
+/******/ 	return __webpack_require__(__webpack_require__.s = 131);
 /******/ })
 /************************************************************************/
-/******/ (Array(26).concat([
-/* 26 */
+/******/ ([
+/* 0 */,
+/* 1 */,
+/* 2 */,
+/* 3 */,
+/* 4 */,
+/* 5 */,
+/* 6 */,
+/* 7 */,
+/* 8 */,
+/* 9 */,
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var root_1 = __webpack_require__(44);
-var toSubscriber_1 = __webpack_require__(131);
-var observable_1 = __webpack_require__(91);
+var root_1 = __webpack_require__(37);
+var toSubscriber_1 = __webpack_require__(134);
+var observable_1 = __webpack_require__(92);
 /**
  * A representation of any set of values over any amount of time. This is the most basic building block
  * of RxJS.
@@ -326,6 +337,21 @@ exports.Observable = Observable;
 //# sourceMappingURL=Observable.js.map
 
 /***/ }),
+/* 12 */,
+/* 13 */,
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */,
 /* 27 */,
 /* 28 */,
 /* 29 */,
@@ -529,10 +555,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return makeParamDecorator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵt", function() { return _def; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵu", function() { return DebugContext; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__ = __webpack_require__(147);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_share__);
@@ -6183,7 +6209,7 @@ var SystemJsNgModuleLoader = (function () {
         if (exportName === undefined) {
             exportName = 'default';
         }
-        return __webpack_require__(93)(module)
+        return __webpack_require__(96)(module)
             .then(function (module) { return module[exportName]; })
             .then(function (type) { return checkNotEmpty(type, module, exportName); })
             .then(function (type) { return _this._compiler.compileModuleAsync(type); });
@@ -6199,7 +6225,7 @@ var SystemJsNgModuleLoader = (function () {
             exportName = 'default';
             factoryClassSuffix = '';
         }
-        return __webpack_require__(93)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
+        return __webpack_require__(96)(this._config.factoryPathPrefix + module + this._config.factoryPathSuffix)
             .then(function (module) { return module[exportName + factoryClassSuffix]; })
             .then(function (factory) { return checkNotEmpty(factory, module, exportName); });
     };
@@ -15332,7 +15358,7 @@ function transition$$1(stateChangeExpr, steps) {
 
 //# sourceMappingURL=core.es5.js.map
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(51)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(52)))
 
 /***/ }),
 /* 32 */,
@@ -15340,196 +15366,7 @@ function transition$$1(stateChangeExpr, steps) {
 /* 34 */,
 /* 35 */,
 /* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = __extends;
-/* unused harmony export __assign */
-/* unused harmony export __rest */
-/* unused harmony export __decorate */
-/* unused harmony export __param */
-/* unused harmony export __metadata */
-/* unused harmony export __awaiter */
-/* unused harmony export __generator */
-/* unused harmony export __exportStar */
-/* unused harmony export __values */
-/* unused harmony export __read */
-/* unused harmony export __spread */
-/* unused harmony export __await */
-/* unused harmony export __asyncGenerator */
-/* unused harmony export __asyncDelegator */
-/* unused harmony export __asyncValues */
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-/* global Reflect, Promise */
-
-var extendStatics = Object.setPrototypeOf ||
-    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-
-function __extends(d, b) {
-    extendStatics(d, b);
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-
-var __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-        s = arguments[i];
-        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
-    return t;
-}
-
-function __rest(s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
-            t[p[i]] = s[p[i]];
-    return t;
-}
-
-function __decorate(decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-
-function __param(paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-}
-
-function __metadata(metadataKey, metadataValue) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
-}
-
-function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-}
-
-function __generator(thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [0, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-}
-
-function __exportStar(m, exports) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-
-function __values(o) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
-    if (m) return m.call(o);
-    return {
-        next: function () {
-            if (o && i >= o.length) o = void 0;
-            return { value: o && o[i++], done: !o };
-        }
-    };
-}
-
-function __read(o, n) {
-    var m = typeof Symbol === "function" && o[Symbol.iterator];
-    if (!m) return o;
-    var i = m.call(o), r, ar = [], e;
-    try {
-        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
-    }
-    catch (error) { e = { error: error }; }
-    finally {
-        try {
-            if (r && !r.done && (m = i["return"])) m.call(i);
-        }
-        finally { if (e) throw e.error; }
-    }
-    return ar;
-}
-
-function __spread() {
-    for (var ar = [], i = 0; i < arguments.length; i++)
-        ar = ar.concat(__read(arguments[i]));
-    return ar;
-}
-
-function __await(v) {
-    return this instanceof __await ? (this.v = v, this) : new __await(v);
-}
-
-function __asyncGenerator(thisArg, _arguments, generator) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var g = generator.apply(thisArg, _arguments || []), i, q = [];
-    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
-    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
-    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
-    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
-    function fulfill(value) { resume("next", value); }
-    function reject(value) { resume("throw", value); }
-    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
-}
-
-function __asyncDelegator(o) {
-    var i, p;
-    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
-    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
-}
-
-function __asyncValues(o) {
-    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
-    var m = o[Symbol.asyncIterator];
-    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
-}
-
-/***/ }),
-/* 44 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15552,10 +15389,10 @@ exports.root = _root;
     }
 })();
 //# sourceMappingURL=root.js.map
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(51)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(52)))
 
 /***/ }),
-/* 45 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15565,10 +15402,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var isFunction_1 = __webpack_require__(87);
-var Subscription_1 = __webpack_require__(52);
-var Observer_1 = __webpack_require__(90);
-var rxSubscriber_1 = __webpack_require__(64);
+var isFunction_1 = __webpack_require__(64);
+var Subscription_1 = __webpack_require__(39);
+var Observer_1 = __webpack_require__(91);
+var rxSubscriber_1 = __webpack_require__(66);
 /**
  * Implements the {@link Observer} interface and extends the
  * {@link Subscription} class. While the {@link Observer} is the public API for
@@ -15825,49 +15662,17 @@ var SafeSubscriber = (function (_super) {
 //# sourceMappingURL=Subscriber.js.map
 
 /***/ }),
-/* 46 */,
-/* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 52 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var isArray_1 = __webpack_require__(132);
-var isObject_1 = __webpack_require__(88);
-var isFunction_1 = __webpack_require__(87);
-var tryCatch_1 = __webpack_require__(133);
-var errorObject_1 = __webpack_require__(89);
-var UnsubscriptionError_1 = __webpack_require__(134);
+var isArray_1 = __webpack_require__(135);
+var isObject_1 = __webpack_require__(89);
+var isFunction_1 = __webpack_require__(64);
+var tryCatch_1 = __webpack_require__(90);
+var errorObject_1 = __webpack_require__(65);
+var UnsubscriptionError_1 = __webpack_require__(136);
 /**
  * Represents a disposable resource, such as the execution of an Observable. A
  * Subscription has one important method, `unsubscribe`, that takes no argument
@@ -16056,6 +15861,227 @@ function flattenUnsubscriptionErrors(errors) {
 //# sourceMappingURL=Subscription.js.map
 
 /***/ }),
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = __extends;
+/* unused harmony export __assign */
+/* unused harmony export __rest */
+/* unused harmony export __decorate */
+/* unused harmony export __param */
+/* unused harmony export __metadata */
+/* unused harmony export __awaiter */
+/* unused harmony export __generator */
+/* unused harmony export __exportStar */
+/* unused harmony export __values */
+/* unused harmony export __read */
+/* unused harmony export __spread */
+/* unused harmony export __await */
+/* unused harmony export __asyncGenerator */
+/* unused harmony export __asyncDelegator */
+/* unused harmony export __asyncValues */
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
+
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
+
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
+/* global Reflect, Promise */
+
+var extendStatics = Object.setPrototypeOf ||
+    ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+    function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+
+function __extends(d, b) {
+    extendStatics(d, b);
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+
+var __assign = Object.assign || function __assign(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+    return t;
+}
+
+function __rest(s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) if (e.indexOf(p[i]) < 0)
+            t[p[i]] = s[p[i]];
+    return t;
+}
+
+function __decorate(decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+
+function __param(paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+}
+
+function __metadata(metadataKey, metadataValue) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
+}
+
+function __awaiter(thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+}
+
+function __generator(thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+}
+
+function __exportStar(m, exports) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+
+function __values(o) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator], i = 0;
+    if (m) return m.call(o);
+    return {
+        next: function () {
+            if (o && i >= o.length) o = void 0;
+            return { value: o && o[i++], done: !o };
+        }
+    };
+}
+
+function __read(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+        while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    }
+    catch (error) { e = { error: error }; }
+    finally {
+        try {
+            if (r && !r.done && (m = i["return"])) m.call(i);
+        }
+        finally { if (e) throw e.error; }
+    }
+    return ar;
+}
+
+function __spread() {
+    for (var ar = [], i = 0; i < arguments.length; i++)
+        ar = ar.concat(__read(arguments[i]));
+    return ar;
+}
+
+function __await(v) {
+    return this instanceof __await ? (this.v = v, this) : new __await(v);
+}
+
+function __asyncGenerator(thisArg, _arguments, generator) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var g = generator.apply(thisArg, _arguments || []), i, q = [];
+    return i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i;
+    function verb(n) { if (g[n]) i[n] = function (v) { return new Promise(function (a, b) { q.push([n, v, a, b]) > 1 || resume(n, v); }); }; }
+    function resume(n, v) { try { step(g[n](v)); } catch (e) { settle(q[0][3], e); } }
+    function step(r) { r.value instanceof __await ? Promise.resolve(r.value.v).then(fulfill, reject) : settle(q[0][2], r);  }
+    function fulfill(value) { resume("next", value); }
+    function reject(value) { resume("throw", value); }
+    function settle(f, v) { if (f(v), q.shift(), q.length) resume(q[0][0], q[0][1]); }
+}
+
+function __asyncDelegator(o) {
+    var i, p;
+    return i = {}, verb("next"), verb("throw", function (e) { throw e; }), verb("return"), i[Symbol.iterator] = function () { return this; }, i;
+    function verb(n, f) { if (o[n]) i[n] = function (v) { return (p = !p) ? { value: __await(o[n](v)), done: n === "return" } : f ? f(v) : v; }; }
+}
+
+function __asyncValues(o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator];
+    return m ? m.call(o) : typeof __values === "function" ? __values(o) : o[Symbol.iterator]();
+}
+
+/***/ }),
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
 /* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -16066,12 +16092,12 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1 = __webpack_require__(26);
-var Subscriber_1 = __webpack_require__(45);
-var Subscription_1 = __webpack_require__(52);
+var Observable_1 = __webpack_require__(11);
+var Subscriber_1 = __webpack_require__(38);
+var Subscription_1 = __webpack_require__(39);
 var ObjectUnsubscribedError_1 = __webpack_require__(150);
 var SubjectSubscription_1 = __webpack_require__(151);
-var rxSubscriber_1 = __webpack_require__(64);
+var rxSubscriber_1 = __webpack_require__(66);
 /**
  * @class SubjectSubscriber<T>
  */
@@ -16284,7 +16310,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return Location; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return COMMON_DIRECTIVES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return COMMON_PIPES; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
 
 /**
@@ -20279,7 +20305,29 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.3.4'
 
 "use strict";
 
-var root_1 = __webpack_require__(44);
+function isFunction(x) {
+    return typeof x === 'function';
+}
+exports.isFunction = isFunction;
+//# sourceMappingURL=isFunction.js.map
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// typeof any so that it we don't have to cast when comparing a result to the error object
+exports.errorObject = { e: {} };
+//# sourceMappingURL=errorObject.js.map
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var root_1 = __webpack_require__(37);
 var Symbol = root_1.root.Symbol;
 exports.rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
     Symbol.for('rxSubscriber') : '@@rxSubscriber';
@@ -20290,7 +20338,7 @@ exports.$$rxSubscriber = exports.rxSubscriber;
 //# sourceMappingURL=rxSubscriber.js.map
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20339,7 +20387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return _createNgProbe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return EventManagerPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return DomSanitizerImpl; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
 
@@ -24780,8 +24828,6 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.3.4'
 
 
 /***/ }),
-/* 66 */,
-/* 67 */,
 /* 68 */,
 /* 69 */,
 /* 70 */,
@@ -24801,19 +24847,9 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.3.4'
 /* 84 */,
 /* 85 */,
 /* 86 */,
-/* 87 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function isFunction(x) {
-    return typeof x === 'function';
-}
-exports.isFunction = isFunction;
-//# sourceMappingURL=isFunction.js.map
-
-/***/ }),
-/* 88 */
+/* 87 */,
+/* 88 */,
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24825,17 +24861,32 @@ exports.isObject = isObject;
 //# sourceMappingURL=isObject.js.map
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-// typeof any so that it we don't have to cast when comparing a result to the error object
-exports.errorObject = { e: {} };
-//# sourceMappingURL=errorObject.js.map
+var errorObject_1 = __webpack_require__(65);
+var tryCatchTarget;
+function tryCatcher() {
+    try {
+        return tryCatchTarget.apply(this, arguments);
+    }
+    catch (e) {
+        errorObject_1.errorObject.e = e;
+        return errorObject_1.errorObject;
+    }
+}
+function tryCatch(fn) {
+    tryCatchTarget = fn;
+    return tryCatcher;
+}
+exports.tryCatch = tryCatch;
+;
+//# sourceMappingURL=tryCatch.js.map
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24849,12 +24900,12 @@ exports.empty = {
 //# sourceMappingURL=Observer.js.map
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var root_1 = __webpack_require__(44);
+var root_1 = __webpack_require__(37);
 function getSymbolObservable(context) {
     var $$observable;
     var Symbol = context.Symbol;
@@ -24881,7 +24932,7 @@ exports.$$observable = exports.observable;
 //# sourceMappingURL=observable.js.map
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24893,7 +24944,127 @@ exports.isScheduler = isScheduler;
 //# sourceMappingURL=isScheduler.js.map
 
 /***/ }),
-/* 93 */
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscriber_1 = __webpack_require__(38);
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var OuterSubscriber = (function (_super) {
+    __extends(OuterSubscriber, _super);
+    function OuterSubscriber() {
+        _super.apply(this, arguments);
+    }
+    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.destination.next(innerValue);
+    };
+    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
+        this.destination.error(error);
+    };
+    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
+        this.destination.complete();
+    };
+    return OuterSubscriber;
+}(Subscriber_1.Subscriber));
+exports.OuterSubscriber = OuterSubscriber;
+//# sourceMappingURL=OuterSubscriber.js.map
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var root_1 = __webpack_require__(37);
+var isArrayLike_1 = __webpack_require__(143);
+var isPromise_1 = __webpack_require__(144);
+var isObject_1 = __webpack_require__(89);
+var Observable_1 = __webpack_require__(11);
+var iterator_1 = __webpack_require__(145);
+var InnerSubscriber_1 = __webpack_require__(146);
+var observable_1 = __webpack_require__(92);
+function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
+    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
+    if (destination.closed) {
+        return null;
+    }
+    if (result instanceof Observable_1.Observable) {
+        if (result._isScalar) {
+            destination.next(result.value);
+            destination.complete();
+            return null;
+        }
+        else {
+            return result.subscribe(destination);
+        }
+    }
+    else if (isArrayLike_1.isArrayLike(result)) {
+        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
+            destination.next(result[i]);
+        }
+        if (!destination.closed) {
+            destination.complete();
+        }
+    }
+    else if (isPromise_1.isPromise(result)) {
+        result.then(function (value) {
+            if (!destination.closed) {
+                destination.next(value);
+                destination.complete();
+            }
+        }, function (err) { return destination.error(err); })
+            .then(null, function (err) {
+            // Escaping the Promise trap: globally throw unhandled errors
+            root_1.root.setTimeout(function () { throw err; });
+        });
+        return destination;
+    }
+    else if (result && typeof result[iterator_1.iterator] === 'function') {
+        var iterator = result[iterator_1.iterator]();
+        do {
+            var item = iterator.next();
+            if (item.done) {
+                destination.complete();
+                break;
+            }
+            destination.next(item.value);
+            if (destination.closed) {
+                break;
+            }
+        } while (true);
+    }
+    else if (result && typeof result[observable_1.observable] === 'function') {
+        var obs = result[observable_1.observable]();
+        if (typeof obs.subscribe !== 'function') {
+            destination.error(new TypeError('Provided object does not correctly implement Symbol.observable'));
+        }
+        else {
+            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
+        }
+    }
+    else {
+        var value = isObject_1.isObject(result) ? 'an invalid object' : "'" + result + "'";
+        var msg = ("You provided " + value + " where a stream was expected.")
+            + ' You can provide an Observable, Promise, Array, or Iterable.';
+        destination.error(new TypeError(msg));
+    }
+    return null;
+}
+exports.subscribeToResult = subscribeToResult;
+//# sourceMappingURL=subscribeToResult.js.map
+
+/***/ }),
+/* 96 */
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -24906,22 +25077,22 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 93;
+webpackEmptyAsyncContext.id = 96;
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(31), __webpack_require__(54), __webpack_require__(65), __webpack_require__(53));
+		module.exports = factory(__webpack_require__(31), __webpack_require__(54), __webpack_require__(53), __webpack_require__(67), __webpack_require__(11), __webpack_require__(154), __webpack_require__(157));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/common", "@angular/platform-browser", "rxjs/Subject"], factory);
+		define(["@angular/core", "@angular/common", "rxjs/Subject", "@angular/platform-browser", "rxjs/Observable", "rxjs/add/observable/fromEvent", "rxjs/add/operator/throttleTime"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("@angular/platform-browser"), require("rxjs/Subject")) : factory(root["@angular/core"], root["@angular/common"], root["@angular/platform-browser"], root["rxjs/Subject"]);
+		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("rxjs/Subject"), require("@angular/platform-browser"), require("rxjs/Observable"), require("rxjs/add/observable/fromEvent"), require("rxjs/add/operator/throttleTime")) : factory(root["@angular/core"], root["@angular/common"], root["rxjs/Subject"], root["@angular/platform-browser"], root["rxjs/Observable"], root["rxjs/add/observable/fromEvent"], root["rxjs/add/operator/throttleTime"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_62__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -24984,7 +25155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -24995,20 +25166,9 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(31));
-__export(__webpack_require__(46));
-__export(__webpack_require__(10));
-__export(__webpack_require__(20));
-__export(__webpack_require__(8));
-
+module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
 /***/ }),
 /* 2 */
@@ -25018,12 +25178,25 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(50));
+
 
 /***/ }),
 /* 4 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+
+/***/ }),
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25036,7 +25209,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-// TODO: need to implement IWallApi interface
 var WallApi = (function () {
     function WallApi() {
         this.core = null;
@@ -25059,12 +25231,6 @@ exports.WallApi = WallApi;
 
 
 /***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25077,49 +25243,70 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Subject_1 = __webpack_require__(5);
+var Subject_1 = __webpack_require__(2);
 var core_1 = __webpack_require__(0);
-var pick_out_events_1 = __webpack_require__(22);
-var PickOutHandlerService = (function () {
-    function PickOutHandlerService() {
+var pick_out_events_1 = __webpack_require__(17);
+var PickOutCoordinator = (function () {
+    function PickOutCoordinator() {
         this.changes = new Subject_1.Subject();
         this.pickOutItems = new Map();
+        this.pickOutItemPositions = new Map();
+        this.isPickOutAllowed = true;
     }
-    // TODO: add well defined config type
-    PickOutHandlerService.prototype.registerPickOutItem = function (config) {
+    PickOutCoordinator.prototype.registerPickOutItem = function (config) {
         this.pickOutItems.set(config.id, config);
     };
-    PickOutHandlerService.prototype.unRegisterPickOutItem = function (id) {
+    PickOutCoordinator.prototype.unRegisterPickOutItem = function (id) {
         this.pickOutItems.delete(id);
     };
-    PickOutHandlerService.prototype.startPickOut = function () {
+    PickOutCoordinator.prototype.disablePickOut = function () {
+        this.isPickOutAllowed = false;
+    };
+    PickOutCoordinator.prototype.enablePickOut = function () {
+        this.isPickOutAllowed = true;
+    };
+    PickOutCoordinator.prototype.stopPickOut = function () {
+        this.changes.next(new pick_out_events_1.StopPickOut());
+    };
+    PickOutCoordinator.prototype.canPickOut = function () {
+        return this.isPickOutAllowed;
+    };
+    PickOutCoordinator.prototype.startPickOut = function () {
+        this.updatePickOutItemPositions();
         this.changes.next(new pick_out_events_1.StartPickOut());
     };
-    PickOutHandlerService.prototype.pickOutChanged = function (range) {
+    PickOutCoordinator.prototype.pickOutChanged = function (range) {
         var selectedItems = this.getSelectedItemIds(range);
         this.changes.next(new pick_out_events_1.PickOutItems(selectedItems));
     };
-    PickOutHandlerService.prototype.endPickOut = function () {
+    PickOutCoordinator.prototype.endPickOut = function () {
         this.changes.next(new pick_out_events_1.EndPickOut());
     };
-    PickOutHandlerService.prototype.getSelectedItemIds = function (range) {
+    PickOutCoordinator.prototype.updatePickOutItemPositions = function () {
+        var _this = this;
+        this.pickOutItemPositions = new Map();
+        this.pickOutItems.forEach(function (pickItem) {
+            _this.pickOutItemPositions.set(pickItem.id, pickItem.api.getPosition());
+        });
+    };
+    PickOutCoordinator.prototype.getSelectedItemIds = function (range) {
         var ids = [];
-        this.pickOutItems.forEach(function (si) {
+        this.pickOutItemPositions.forEach(function (si, id) {
             if (range.x < (si.x + si.width) &&
                 (range.x + range.width) > si.x &&
                 (range.y + range.height) > si.y &&
                 range.y < (si.y + si.height)) {
-                ids.push(si.id);
+                ids.push(id);
             }
         });
         return ids;
     };
-    PickOutHandlerService = __decorate([
+    PickOutCoordinator = __decorate([
         core_1.Injectable()
-    ], PickOutHandlerService);
-    return PickOutHandlerService;
+    ], PickOutCoordinator);
+    return PickOutCoordinator;
 }());
-exports.PickOutHandlerService = PickOutHandlerService;
+exports.PickOutCoordinator = PickOutCoordinator;
 
 
 /***/ }),
@@ -25136,7 +25323,57 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-// TODO: should implement IWallStore interface
+var BeaconRegistry = (function () {
+    function BeaconRegistry() {
+        this.beaconConfigs = new Map();
+        this.beacons = new Map();
+    }
+    BeaconRegistry.prototype.register = function (beaconConfig) {
+        this.beaconConfigs.set(beaconConfig.id, beaconConfig);
+        this.updateBeaconPositions();
+    };
+    BeaconRegistry.prototype.unRegister = function (id) {
+        this.beaconConfigs.delete(id);
+    };
+    BeaconRegistry.prototype.getBeacons = function () {
+        return Array.from(this.beacons.values());
+    };
+    BeaconRegistry.prototype.updateBeaconPositions = function () {
+        var _this = this;
+        this.beacons = new Map();
+        this.beaconConfigs.forEach(function (beacon, id) {
+            var position = beacon.api.getPosition();
+            _this.beacons.set(id, {
+                id: id,
+                x: position.x,
+                y: position.y,
+                width: position.width,
+                height: position.height
+            });
+        });
+    };
+    BeaconRegistry = __decorate([
+        core_1.Injectable()
+    ], BeaconRegistry);
+    return BeaconRegistry;
+}());
+exports.BeaconRegistry = BeaconRegistry;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
 // Simple naive implementation
 var BrickItemStore = (function () {
     function BrickItemStore(brick) {
@@ -25228,7 +25465,7 @@ exports.BrickStore = BrickStore;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25263,7 +25500,7 @@ exports.BrickRegistry = BrickRegistry;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25293,7 +25530,7 @@ exports.AddBrickEvent = AddBrickEvent;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25304,7 +25541,7 @@ exports.WALL_PLUGIN = new core_1.InjectionToken('Wall plugin');
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25329,31 +25566,91 @@ exports.WallCanvasApi = WallCanvasApi;
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(43));
-__export(__webpack_require__(22));
-__export(__webpack_require__(26));
-__export(__webpack_require__(23));
-__export(__webpack_require__(21));
-
-
-/***/ }),
 /* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-exports.Window = new core_1.InjectionToken('Window');
+var Subject_1 = __webpack_require__(2);
+var common_1 = __webpack_require__(1);
+var Observable_1 = __webpack_require__(62);
+__webpack_require__(63);
+__webpack_require__(64);
+var spot_model_1 = __webpack_require__(65);
+var radar_tokens_1 = __webpack_require__(14);
+var location_updated_event_1 = __webpack_require__(33);
+var RadarCoordinator = (function () {
+    function RadarCoordinator(doc, _window) {
+        var _this = this;
+        this.spots = new Map();
+        this.events = new Subject_1.Subject();
+        this.throttleMouseTime = 30;
+        this.moveObservable = Observable_1.Observable.fromEvent(doc, 'mousemove');
+        this.moveObservable
+            .throttleTime(this.throttleMouseTime)
+            .subscribe(function (event) {
+            _this.updateSpotPosition();
+            var x = event.x;
+            var y = event.y + _window.pageYOffset;
+            _this.updateLocationPosition(x, y);
+        });
+    }
+    RadarCoordinator.prototype.register = function (spotInstance) {
+        this.spots.set(spotInstance, new spot_model_1.SpotModel(spotInstance));
+    };
+    RadarCoordinator.prototype.unRegister = function (spotInstance) {
+        this.spots.delete(spotInstance);
+    };
+    RadarCoordinator.prototype.subscribe = function (fn) {
+        return this.events.subscribe(fn);
+    };
+    RadarCoordinator.prototype.updateLocationPosition = function (x, y) {
+        var sortedSpots = [];
+        this.spots.forEach(function (spot) {
+            var minimalDistance = spot.getMinimalDistanceToPoint(x, y);
+            var topLeftPointDistance = spot.getDistanceToTopLeftPoint(x, y);
+            var bottomLeftPointDistance = spot.getDistanceToBottomLeftPoint(x, y);
+            var centerLeftPointDistance = spot.getDistanceToLeftCenterPoint(x, y);
+            var isCross13Line = spot.isCross13Line(y);
+            sortedSpots.push({
+                minimalDistance: minimalDistance,
+                topLeftPointDistance: topLeftPointDistance,
+                bottomLeftPointDistance: bottomLeftPointDistance,
+                centerLeftPointDistance: centerLeftPointDistance,
+                isCross13Line: isCross13Line,
+                data: spot.instance.data
+            });
+        });
+        this.events.next(new location_updated_event_1.LocationUpdatedEvent(sortedSpots));
+    };
+    RadarCoordinator.prototype.updateSpotPosition = function () {
+        this.spots.forEach(function (spot) {
+            spot.updatePosition();
+        });
+    };
+    RadarCoordinator = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(common_1.DOCUMENT)),
+        __param(1, core_1.Inject(radar_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [Object, Object])
+    ], RadarCoordinator);
+    return RadarCoordinator;
+}());
+exports.RadarCoordinator = RadarCoordinator;
 
 
 /***/ }),
@@ -25362,20 +25659,97 @@ exports.Window = new core_1.InjectionToken('Window');
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(30);
-__export(__webpack_require__(1));
-__export(__webpack_require__(47));
-__export(__webpack_require__(50));
-__export(__webpack_require__(53));
-__export(__webpack_require__(12));
+var core_1 = __webpack_require__(0);
+exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
 /* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(70));
+__export(__webpack_require__(17));
+__export(__webpack_require__(39));
+__export(__webpack_require__(36));
+__export(__webpack_require__(35));
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+exports.WindowReference = new core_1.InjectionToken('Window');
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PickOutItems = (function () {
+    function PickOutItems(ids) {
+        this.ids = ids;
+    }
+    return PickOutItems;
+}());
+exports.PickOutItems = PickOutItems;
+var StartPickOut = (function () {
+    function StartPickOut() {
+    }
+    return StartPickOut;
+}());
+exports.StartPickOut = StartPickOut;
+var EndPickOut = (function () {
+    function EndPickOut() {
+    }
+    return EndPickOut;
+}());
+exports.EndPickOut = EndPickOut;
+var StopPickOut = (function () {
+    function StopPickOut() {
+    }
+    return StopPickOut;
+}());
+exports.StopPickOut = StopPickOut;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(73));
+__export(__webpack_require__(45));
+__export(__webpack_require__(22));
+__export(__webpack_require__(41));
+__export(__webpack_require__(43));
+__export(__webpack_require__(42));
+__export(__webpack_require__(44));
+__export(__webpack_require__(21));
+__export(__webpack_require__(7));
+__export(__webpack_require__(19));
+
+
+/***/ }),
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25391,11 +25765,373 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_controller_1 = __webpack_require__(32);
-var wall_api_service_1 = __webpack_require__(4);
-var wall_model_1 = __webpack_require__(16);
-var brick_store_service_1 = __webpack_require__(7);
-var layout_store_service_1 = __webpack_require__(17);
+var placeholder_component_1 = __webpack_require__(40);
+var PlaceholderRenderer = (function () {
+    function PlaceholderRenderer(componentFactoryResolver, appRef, injector) {
+        this.componentFactoryResolver = componentFactoryResolver;
+        this.appRef = appRef;
+        this.injector = injector;
+        this.placeholderComponentRef = null;
+    }
+    PlaceholderRenderer.prototype.render = function (x, y, size, isHorizontal) {
+        if (isHorizontal === void 0) { isHorizontal = true; }
+        if (!this.placeholderComponentRef) {
+            this.renderPlaceholderComponent();
+        }
+        this.setCoordinate(x, y, size, isHorizontal);
+    };
+    PlaceholderRenderer.prototype.clear = function () {
+        if (this.placeholderComponentRef) {
+            this.removePlaceholderComponent();
+        }
+    };
+    PlaceholderRenderer.prototype.renderPlaceholderComponent = function () {
+        this.placeholderComponentRef = this.componentFactoryResolver
+            .resolveComponentFactory(placeholder_component_1.PlaceholderComponent)
+            .create(this.injector);
+        // 2. Attach component to the appRef so that it's inside the ng component tree
+        this.appRef.attachView(this.placeholderComponentRef.hostView);
+        // 3. Get DOM element from component
+        var domElem = this.placeholderComponentRef.hostView
+            .rootNodes[0];
+        // 4. Append DOM element to the body
+        document.body.appendChild(domElem);
+    };
+    PlaceholderRenderer.prototype.removePlaceholderComponent = function () {
+        this.appRef.detachView(this.placeholderComponentRef.hostView);
+        this.placeholderComponentRef.destroy();
+        this.placeholderComponentRef = null;
+    };
+    PlaceholderRenderer.prototype.setCoordinate = function (x, y, size, isHorizontal) {
+        this.placeholderComponentRef.instance.setCoordinate(x, y, size, isHorizontal);
+    };
+    PlaceholderRenderer = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [core_1.ComponentFactoryResolver,
+            core_1.ApplicationRef,
+            core_1.Injector])
+    ], PlaceholderRenderer);
+    return PlaceholderRenderer;
+}());
+exports.PlaceholderRenderer = PlaceholderRenderer;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+exports.WindowReference = new core_1.InjectionToken('Window');
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var detected_beacon_1 = __webpack_require__(76);
+var tow_constant_1 = __webpack_require__(22);
+var BeaconDetector = (function () {
+    function BeaconDetector() {
+    }
+    BeaconDetector.prototype.getNearestBeacon = function (beacons, x, y) {
+        var _this = this;
+        var detected = new detected_beacon_1.DetectedBeacon();
+        beacons.forEach(function (currentBeacon) {
+            if (!detected.beacon) {
+                // initialize first beacon
+                detected.beacon = currentBeacon;
+            }
+            else {
+                var currentBeaconPosition = _this.getMinimumDistance(currentBeacon, x, y);
+                var previousBeaconPosition = _this.getMinimumDistance(detected.beacon, x, y);
+                if (!previousBeaconPosition.pointInsideBeacon) {
+                    if (currentBeaconPosition.pointInsideBeacon) {
+                        detected.beacon = currentBeacon;
+                    }
+                    else {
+                        if (currentBeaconPosition.minDistanceToBeacon < previousBeaconPosition.minDistanceToBeacon) {
+                            detected.beacon = currentBeacon;
+                        }
+                    }
+                }
+            }
+        });
+        if (detected.beacon) {
+            if (x < detected.beacon.x) {
+                detected.type = tow_constant_1.TOW.dropTypes.vertical;
+                detected.side = tow_constant_1.TOW.dropSides.left;
+            }
+            if (x > detected.beacon.x + detected.beacon.width) {
+                detected.type = tow_constant_1.TOW.dropTypes.vertical;
+                detected.side = tow_constant_1.TOW.dropSides.right;
+            }
+            if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
+                detected.type = tow_constant_1.TOW.dropTypes.horizontal;
+                var centerYPosition = detected.beacon.y + (detected.beacon.height / 2);
+                detected.side = y < centerYPosition ? tow_constant_1.TOW.dropSides.top : tow_constant_1.TOW.dropSides.bottom;
+            }
+        }
+        return detected;
+    };
+    BeaconDetector.prototype.getMinimumDistance = function (beacon, x, y) {
+        var position = {
+            minDistanceToBeacon: null,
+            pointInsideBeacon: false
+        };
+        // distances to horizontal lines
+        var distanceToLine12 = Math.abs(beacon.y - y);
+        var distanceToLine43 = Math.abs((beacon.y + beacon.height) - y);
+        // distances to vertical lines
+        var distanceToLine14 = Math.abs(beacon.x - x);
+        var distanceToLine23 = Math.abs((beacon.x + beacon.width) - x);
+        var minDistanceToHorizontalLine = Math.min.apply(null, [distanceToLine12, distanceToLine43]);
+        var minDistanceToVerticalLine = Math.min.apply(null, [distanceToLine14, distanceToLine23]);
+        if ((x > beacon.x) && (x < beacon.x + beacon.width)) {
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToHorizontalLine;
+        }
+        else if ((y > beacon.y) && (y < beacon.y + beacon.height)) {
+            // point directly cross the beacon
+            position.minDistanceToBeacon = minDistanceToVerticalLine;
+        }
+        else {
+            // point doesn't cross beacon, calculate shortest distance to beacon
+            position.minDistanceToBeacon = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
+        }
+        if ((x > beacon.x) && (x < beacon.x + beacon.width) && (y > beacon.y) && (y < beacon.y + beacon.height)) {
+            position.pointInsideBeacon = true;
+        }
+        return position;
+    };
+    BeaconDetector = __decorate([
+        core_1.Injectable()
+    ], BeaconDetector);
+    return BeaconDetector;
+}());
+exports.BeaconDetector = BeaconDetector;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TOW = {
+    dropTypes: {
+        horizontal: 'horizontal',
+        vertical: 'vertical'
+    },
+    dropSides: {
+        left: 'left',
+        right: 'right',
+        top: 'top',
+        bottom: 'bottom'
+    }
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var common_1 = __webpack_require__(1);
+var tow_tokens_1 = __webpack_require__(20);
+var beacon_detector_service_1 = __webpack_require__(21);
+var placeholder_renderer_service_1 = __webpack_require__(19);
+var beacon_registry_service_1 = __webpack_require__(7);
+var Subject_1 = __webpack_require__(2);
+var start_working_event_1 = __webpack_require__(41);
+var work_in_progress_event_1 = __webpack_require__(42);
+var stop_working_event_1 = __webpack_require__(43);
+var drop_event_1 = __webpack_require__(44);
+var tow_constant_1 = __webpack_require__(22);
+var TowCoordinator = (function () {
+    function TowCoordinator(doc, _window, placeholderRenderer, beaconDetector, beaconRegistry) {
+        var _this = this;
+        this._window = _window;
+        this.placeholderRenderer = placeholderRenderer;
+        this.beaconDetector = beaconDetector;
+        this.beaconRegistry = beaconRegistry;
+        this.events = new Subject_1.Subject();
+        this.currentYScrollPosition = 0;
+        this.trackingPossibleBeacons = false;
+        this.previouslyNearestBeacon = null;
+        this.placeholderHeight = 2;
+        this.doc = doc;
+        this.window = _window;
+        this.doc.addEventListener('dragover', function (event) {
+            if (_this.trackingPossibleBeacons) {
+                event.preventDefault();
+                event.dataTransfer.dropEffect = 'move';
+                _this.slaveWorkProgress(event.x, event.y);
+            }
+        });
+        this.window.addEventListener('scroll', function () {
+            _this.previouslyNearestBeacon = null;
+            _this.currentYScrollPosition = _this.window.pageYOffset;
+            _this.placeholderRenderer.clear();
+        });
+    }
+    TowCoordinator.prototype.slaveStartWorking = function (id) {
+        this.startHighlightPossibleBeacons();
+        this.events.next(new start_working_event_1.StartWorkingEvent());
+    };
+    TowCoordinator.prototype.slaveWorkProgress = function (xViewportPosition, yViewportPosition) {
+        this.beaconRegistry.updateBeaconPositions();
+        var beacons = this.beaconRegistry.getBeacons();
+        // respect window scroll position
+        var yPosition = yViewportPosition + this.currentYScrollPosition;
+        var detectedBeacon = this.beaconDetector.getNearestBeacon(beacons, xViewportPosition, yPosition);
+        if (detectedBeacon) {
+            if (this.isSameDetectedBeacon(detectedBeacon)) {
+                this.previouslyNearestBeacon = detectedBeacon;
+                this.renderPlaceholder();
+            }
+        }
+        else {
+            this.placeholderRenderer.clear();
+        }
+        this.events.next(new work_in_progress_event_1.WorkInProgressEvent());
+    };
+    TowCoordinator.prototype.slaveStopWorking = function (id) {
+        this.stopHighlightPossibleBeacons();
+        this.placeholderRenderer.clear();
+        this.events.next(new stop_working_event_1.StopWorkingEvent());
+        if (this.previouslyNearestBeacon) {
+            var draggableId = id;
+            var dropBeforeId = this.previouslyNearestBeacon.beacon.id;
+            var dropEvent = new drop_event_1.DropEvent(draggableId, dropBeforeId, this.previouslyNearestBeacon.type, this.previouslyNearestBeacon.side);
+            this.events.next(dropEvent);
+        }
+        this.previouslyNearestBeacon = null;
+    };
+    TowCoordinator.prototype.startHighlightPossibleBeacons = function () {
+        this.trackingPossibleBeacons = true;
+    };
+    TowCoordinator.prototype.stopHighlightPossibleBeacons = function () {
+        this.trackingPossibleBeacons = false;
+    };
+    TowCoordinator.prototype.isSameDetectedBeacon = function (detectedBeacon) {
+        return !this.previouslyNearestBeacon ||
+            this.previouslyNearestBeacon.beacon.id !== detectedBeacon.beacon.id ||
+            this.previouslyNearestBeacon.type !== detectedBeacon.type ||
+            this.previouslyNearestBeacon.side !== detectedBeacon.side;
+    };
+    TowCoordinator.prototype.renderPlaceholder = function () {
+        var placeholderX;
+        var placeholderY;
+        var placeholderSize;
+        var placeholderIsHorizontal;
+        console.log(this.previouslyNearestBeacon);
+        if (this.previouslyNearestBeacon.type === tow_constant_1.TOW.dropTypes.horizontal) {
+            placeholderX = this.previouslyNearestBeacon.beacon.x;
+            placeholderSize = this.previouslyNearestBeacon.beacon.width;
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.top) {
+                placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition - this.placeholderHeight;
+            }
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.bottom) {
+                placeholderY = this.previouslyNearestBeacon.beacon.y + this.previouslyNearestBeacon.beacon.height - this.currentYScrollPosition;
+            }
+            placeholderIsHorizontal = true;
+        }
+        if (this.previouslyNearestBeacon.type === tow_constant_1.TOW.dropTypes.vertical) {
+            placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition;
+            placeholderSize = this.previouslyNearestBeacon.beacon.height;
+            placeholderIsHorizontal = false;
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.left) {
+                placeholderX = this.previouslyNearestBeacon.beacon.x;
+            }
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.right) {
+                placeholderX = this.previouslyNearestBeacon.beacon.x + this.previouslyNearestBeacon.beacon.width;
+            }
+        }
+        this.placeholderRenderer.render(placeholderX, placeholderY, placeholderSize, placeholderIsHorizontal);
+    };
+    TowCoordinator = __decorate([
+        core_1.Injectable(),
+        __param(0, core_1.Inject(common_1.DOCUMENT)),
+        __param(1, core_1.Inject(tow_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [Object, Object, placeholder_renderer_service_1.PlaceholderRenderer,
+            beacon_detector_service_1.BeaconDetector,
+            beacon_registry_service_1.BeaconRegistry])
+    ], TowCoordinator);
+    return TowCoordinator;
+}());
+exports.TowCoordinator = TowCoordinator;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(49);
+__export(__webpack_require__(3));
+__export(__webpack_require__(79));
+__export(__webpack_require__(82));
+__export(__webpack_require__(85));
+__export(__webpack_require__(15));
+__export(__webpack_require__(18));
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var wall_controller_1 = __webpack_require__(52);
+var wall_api_service_1 = __webpack_require__(5);
+var wall_model_1 = __webpack_require__(26);
+var brick_store_service_1 = __webpack_require__(8);
+var layout_store_service_1 = __webpack_require__(27);
 var WallComponent = (function () {
     function WallComponent(wallController) {
         this.wallController = wallController;
@@ -25424,7 +26160,7 @@ var WallComponent = (function () {
     WallComponent = __decorate([
         core_1.Component({
             selector: 'wall',
-            template: __webpack_require__(33),
+            template: __webpack_require__(53),
             providers: [
                 wall_api_service_1.WallApi,
                 wall_model_1.WallModel,
@@ -25441,7 +26177,7 @@ exports.WallComponent = WallComponent;
 
 
 /***/ }),
-/* 16 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25457,13 +26193,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_api_service_1 = __webpack_require__(4);
-var brick_store_service_1 = __webpack_require__(7);
-var layout_store_service_1 = __webpack_require__(17);
-var wall_constant_1 = __webpack_require__(18);
-var wall_editor_registry_1 = __webpack_require__(19);
-var Subject_1 = __webpack_require__(5);
-var wall_events_1 = __webpack_require__(9);
+var wall_api_service_1 = __webpack_require__(5);
+var brick_store_service_1 = __webpack_require__(8);
+var layout_store_service_1 = __webpack_require__(27);
+var wall_constant_1 = __webpack_require__(28);
+var wall_editor_registry_1 = __webpack_require__(29);
+var Subject_1 = __webpack_require__(2);
+var wall_events_1 = __webpack_require__(10);
 /**
  * @desc Responsible for storing wall state.
  * Provide core functionality
@@ -25496,32 +26232,38 @@ var WallModel = (function () {
         }
         // initialize core API
         var coreApi = [
+            // SELECTION
             'getSelectedBrickIds',
             'selectBrick',
             'selectBricks',
-            'unSelectBricks',
-            'focusOnBrickId',
             'addBrickToSelection',
             'removeBrickFromSelection',
-            'isBrickAheadOf',
-            'getPlan',
-            'getMode',
-            'turnBrickInto',
-            'addDefaultBrick',
-            'addBrick',
-            'addBrickToNewRow',
-            'addBrickToNewColumn',
-            'addBrickAfterInSameColumn',
-            'addBrickAfterInNewRow',
-            'removeBrick',
-            'removeBricks',
-            'getPreviousBrickId',
-            'getNextBrickId',
-            'getBrickStore',
+            'unSelectBricks',
+            // FOCUS
+            'focusOnBrickId',
             'getFocusedBrickId',
             'focusOnPreviousTextBrick',
             'focusOnNextTextBrick',
-            'subscribe'
+            // ADD BRICK
+            'addBrickAfterBrickId',
+            // MOVE BRICK
+            'moveBrickAfterBrickId',
+            'moveBrickBeforeBrickId',
+            'moveBrickToNewColumn',
+            // REMOVE BRICK
+            'removeBrick',
+            'removeBricks',
+            // NAVIGATION
+            'getPreviousBrickId',
+            'getNextBrickId',
+            'isBrickAheadOf',
+            // CLIENT
+            'getPlan',
+            'getMode',
+            'subscribe',
+            // BRICk
+            'turnBrickInto',
+            'getBrickStore'
         ].reduce(function (result, methodName) {
             result[methodName] = _this[methodName].bind(_this);
             return result;
@@ -25617,21 +26359,6 @@ var WallModel = (function () {
         this.focusOnBrickId(newBrick.id);
         this.events.next(new wall_events_1.AddBrickEvent(newBrick.id));
     };
-    /* Create new column in existing row and put brick to it */
-    WallModel.prototype.addBrickToNewColumn = function (tag, targetRowIndex, targetColumnIndex) {
-        if (this.layoutStore.isRowExists(targetRowIndex)) {
-            var totalColumnCount = this.layoutStore.getColumnCount(targetRowIndex);
-            var lastColumnIndex = totalColumnCount - 1;
-            // user cannot create column in position more than last column index + 1
-            if (targetColumnIndex > lastColumnIndex + 1) {
-                targetColumnIndex = lastColumnIndex + 1;
-            }
-            var newBrick = this.brickStore.addBrick(tag);
-            this.layoutStore.addBrickToNewColumn(newBrick.id, targetRowIndex, targetColumnIndex);
-            this.focusOnBrickId(newBrick.id);
-            this.events.next(new wall_events_1.AddBrickEvent(newBrick.id));
-        }
-    };
     WallModel.prototype.addBrickAfterInSameColumn = function (brickId, tag) {
         var brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
         this.addBrick(tag, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
@@ -25639,6 +26366,19 @@ var WallModel = (function () {
     WallModel.prototype.addBrickAfterInNewRow = function (brickId, tag) {
         var brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
         this.addBrickToNewRow(tag, brickPosition.rowIndex + 1);
+    };
+    /**
+     * @public
+     * */
+    WallModel.prototype.addBrickAfterBrickId = function (brickId, tag) {
+        var brickPosition = this.layoutStore.getBrickPositionByBrickId(brickId);
+        var columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+        if (columnCount === 1) {
+            this.addBrickAfterInNewRow(brickId, tag);
+        }
+        else if (columnCount > 1) {
+            this.addBrickAfterInSameColumn(brickId, tag);
+        }
     };
     /*
     * Add brick to the new row in the bottom of whole wall
@@ -25650,6 +26390,44 @@ var WallModel = (function () {
         }
         else {
             this.addBrickToNewRow(tag, this.layoutStore.getRowCount());
+        }
+    };
+    /**
+     * @public
+     * */
+    WallModel.prototype.moveBrickAfterBrickId = function (targetBrickIds, beforeBrickId) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            var brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            var columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+            if (columnCount === 1) {
+                this.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
+            }
+            else {
+                this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+            }
+        }
+    };
+    /**
+     * @public
+     * */
+    WallModel.prototype.moveBrickBeforeBrickId = function (targetBrickIds, beforeBrickId) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            var brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            var columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+            if (columnCount === 1) {
+                this.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+            }
+            else {
+                this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
+            }
+        }
+    };
+    /**
+     * @public
+     * */
+    WallModel.prototype.moveBrickToNewColumn = function (targetBrickIds, beforeBrickId, side) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
         }
     };
     WallModel.prototype.removeBrick = function (brickId) {
@@ -25731,6 +26509,18 @@ var WallModel = (function () {
     WallModel.prototype.subscribe = function (callback) {
         return this.events.subscribe(callback);
     };
+    WallModel.prototype.moveBrickAfterInNewRow = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
+    };
+    WallModel.prototype.moveBrickBeforeInNewRow = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+    };
+    WallModel.prototype.moveBrickAfterInSameColumn = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+    };
+    WallModel.prototype.moveBrickBeforeInSameColumn = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
+    };
     WallModel.prototype.isOnlyOneBrickEmptyText = function () {
         var brickLength = this.brickStore.getBricksCount();
         return brickLength === 1 ? this.isLastBrickEmptyText() : null;
@@ -25764,7 +26554,7 @@ exports.WallModel = WallModel;
 
 
 /***/ }),
-/* 17 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25780,8 +26570,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var brick_registry_service_1 = __webpack_require__(8);
-var brick_store_service_1 = __webpack_require__(7);
+var brick_registry_service_1 = __webpack_require__(9);
+var brick_store_service_1 = __webpack_require__(8);
 var LayoutStore = (function () {
     function LayoutStore(brickRegistry, brickStore) {
         this.brickRegistry = brickRegistry;
@@ -25821,44 +26611,105 @@ var LayoutStore = (function () {
     LayoutStore.prototype.addBrick = function (brickId, targetRowIndex, targetColumnIndex, positionIndex) {
         var row = this.layout.bricks[targetRowIndex];
         var column = row.columns[targetColumnIndex];
-        // column should already exist,  it's wall.model responsibility to check
-        /*if (!column) {
-            positionIndex = 0;
-
-            const siblingColumn = row.columns[targetColumnIndex - 1];
-
-            if (siblingColumn.bricks.length === 0) {
-                column = siblingColumn;
-            } else {
-                column = row.columns[row.columns.length] = {
-                    bricks: []
-                };
-            }
-        }*/
         var brick = {
             id: brickId
         };
         column.bricks.splice(positionIndex, 0, brick);
         this.updateCanvasLayout();
     };
+    // TODO: remove this method, instead use addBrickToNewRowAfterBrickId
     LayoutStore.prototype.addBrickToNewRow = function (brickId, targetRowIndex) {
         this.createNewRow(targetRowIndex);
         this.addBrick(brickId, targetRowIndex, 0, 0);
     };
-    LayoutStore.prototype.addBrickToNewColumn = function (brickId, targetRowIndex, targetColumnIndex) {
-        this.createNewColumn(targetRowIndex, targetColumnIndex);
-        this.addBrick(brickId, targetRowIndex, targetColumnIndex, 0);
+    LayoutStore.prototype.addBrickToNewRowAfterBrickId = function (targetBrickId, afterBrickId) {
+        console.log('addBrickToNewRowAfterBrickId');
+        var afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
+        var newRowIndex = afterBrickPosition.rowIndex + 1;
+        this.createNewRow(newRowIndex);
+        this.addBrick(targetBrickId, newRowIndex, 0, 0);
+    };
+    LayoutStore.prototype.addBrickToNewRowBeforeBrickId = function (brickId, beforeBrickId) {
+        console.log('addBrickToNewRowBeforeBrickId');
+        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+        var newRowIndex;
+        if (beforeBrickPosition.rowIndex === 0) {
+            newRowIndex = 0;
+        }
+        else {
+            newRowIndex = beforeBrickPosition.rowIndex - 1;
+        }
+        this.createNewRow(newRowIndex);
+        this.addBrick(brickId, newRowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickAfterInSameColumn = function (siblingBrickId, brickId) {
         var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
+    };
+    LayoutStore.prototype.addBrickBeforeInSameColumn = function (siblingBrickId, brickId) {
+        var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
+        this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex);
+    };
+    LayoutStore.prototype.moveBrickAfterInSameColumn = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.reverse();
+        targetBrickIds.forEach(function (brickId) {
+            _this.removeBrick(brickId);
+            _this.addBrickAfterInSameColumn(beforeBrickId, brickId);
+        });
+    };
+    LayoutStore.prototype.moveBrickBeforeInSameColumn = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.forEach(function (brickId) {
+            _this.removeBrick(brickId);
+            _this.addBrickBeforeInSameColumn(beforeBrickId, brickId);
+        });
+    };
+    LayoutStore.prototype.moveBrickToNewColumn = function (targetBrickIds, beforeBrickId, side) {
+        var _this = this;
+        targetBrickIds.forEach(function (brickId) {
+            _this.removeBrick(brickId);
+        });
+        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+        var rowIndex = beforeBrickPosition.rowIndex;
+        var columnIndex;
+        if (side === 'left') {
+            columnIndex = beforeBrickPosition.columnIndex;
+        }
+        else if (side === 'right') {
+            columnIndex = beforeBrickPosition.columnIndex + 1;
+        }
+        this.createNewColumn(rowIndex, columnIndex);
+        targetBrickIds.forEach(function (brickId, index) {
+            _this.addBrick(brickId, rowIndex, columnIndex, index);
+        });
+    };
+    LayoutStore.prototype.moveBrickAfterInNewRow = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.reverse();
+        targetBrickIds.forEach(function (brickId) {
+            _this.removeBrick(brickId);
+            _this.addBrickToNewRowAfterBrickId(brickId, beforeBrickId);
+        });
+    };
+    LayoutStore.prototype.moveBrickBeforeInNewRow = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.forEach(function (brickId, index) {
+            _this.removeBrick(brickId);
+            if (index === 0) {
+                _this.addBrickToNewRowBeforeBrickId(brickId, beforeBrickId);
+            }
+            else {
+                _this.addBrickToNewRowAfterBrickId(brickId, targetBrickIds[index - 1]);
+            }
+        });
     };
     LayoutStore.prototype.removeBrick = function (brickId) {
         var brickPosition = this.getBrickPositionByBrickId(brickId);
         var row = this.layout.bricks[brickPosition.rowIndex];
         var column = row.columns[brickPosition.columnIndex];
         // remove brick
-        column.bricks.splice(brickPosition.brickIndex, 1);
+        var removedBrick = column.bricks.splice(brickPosition.brickIndex, 1);
         // remove column if there are no bricks inside
         if (column.bricks.length === 0) {
             row.columns.splice(brickPosition.columnIndex, 1);
@@ -25876,6 +26727,7 @@ var LayoutStore = (function () {
             }
         }
         this.updateCanvasLayout();
+        return removedBrick[0];
     };
     LayoutStore.prototype.getNextBrickId = function (brickId) {
         var brickSequence = this.getBrickSequence(function () { return true; });
@@ -26028,7 +26880,7 @@ exports.LayoutStore = LayoutStore;
 
 
 /***/ }),
-/* 18 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26043,7 +26895,7 @@ exports.WALL = {
 
 
 /***/ }),
-/* 19 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26082,7 +26934,7 @@ exports.WallEditorRegistry = WallEditorRegistry;
 
 
 /***/ }),
-/* 20 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26091,15 +26943,92 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(4));
-__export(__webpack_require__(15));
-__export(__webpack_require__(9));
-__export(__webpack_require__(18));
-__export(__webpack_require__(36));
+__export(__webpack_require__(5));
+__export(__webpack_require__(25));
+__export(__webpack_require__(10));
+__export(__webpack_require__(28));
+__export(__webpack_require__(56));
 
 
 /***/ }),
-/* 21 */
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var radar_module_1 = __webpack_require__(61);
+exports.RadarModule = radar_module_1.RadarModule;
+var radar_service_1 = __webpack_require__(32);
+exports.Radar = radar_service_1.Radar;
+var radar_directive_1 = __webpack_require__(34);
+exports.SpotDirective = radar_directive_1.SpotDirective;
+var location_updated_event_1 = __webpack_require__(33);
+exports.LocationUpdatedEvent = location_updated_event_1.LocationUpdatedEvent;
+var location_to_top_left_point_event_1 = __webpack_require__(66);
+exports.LocationToTopLeftPointEvent = location_to_top_left_point_event_1.LocationToTopLeftPointEvent;
+var location_to_left_center_point_event_1 = __webpack_require__(67);
+exports.LocationToLeftCenterPointEvent = location_to_left_center_point_event_1.LocationToLeftCenterPointEvent;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var radar_coordinator_service_1 = __webpack_require__(13);
+var Subject_1 = __webpack_require__(2);
+var Radar = (function () {
+    function Radar(radarCoordinator) {
+        var _this = this;
+        this.radarCoordinator = radarCoordinator;
+        this.events = new Subject_1.Subject();
+        this.radarCoordinator.subscribe(function (event) {
+            _this.events.next(event);
+        });
+    }
+    Radar.prototype.subscribe = function (fn) {
+        return this.events.subscribe(fn);
+    };
+    Radar = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [radar_coordinator_service_1.RadarCoordinator])
+    ], Radar);
+    return Radar;
+}());
+exports.Radar = Radar;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var LocationUpdatedEvent = (function () {
+    function LocationUpdatedEvent(spots) {
+        this.spots = spots;
+    }
+    return LocationUpdatedEvent;
+}());
+exports.LocationUpdatedEvent = LocationUpdatedEvent;
+
+
+/***/ }),
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26118,38 +27047,94 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_handler_service_1 = __webpack_require__(6);
-var common_1 = __webpack_require__(2);
-var pick_out_tokens_1 = __webpack_require__(13);
+var radar_tokens_1 = __webpack_require__(14);
+var radar_coordinator_service_1 = __webpack_require__(13);
+var SpotDirective = (function () {
+    function SpotDirective(radarCoordinator, el, _window) {
+        this.radarCoordinator = radarCoordinator;
+        this.el = el;
+        this._window = _window;
+        this.data = null;
+        this.radarCoordinator.register(this);
+        this.window = _window;
+    }
+    SpotDirective.prototype.ngOnDestroy = function () {
+        this.radarCoordinator.unRegister(this);
+    };
+    // disadvantage of public 'getPosition' method instead of regestering public api
+    // in radarCoordinate that host component could get spot instance and call all public methods
+    SpotDirective.prototype.getPosition = function () {
+        var offsets = this.el.nativeElement.getBoundingClientRect();
+        return {
+            x: offsets.left + this.window.pageXOffset,
+            y: offsets.top + this.window.pageYOffset,
+            width: this.el.nativeElement.offsetWidth,
+            height: this.el.nativeElement.offsetHeight
+        };
+    };
+    __decorate([
+        core_1.Input('spot'),
+        __metadata("design:type", Object)
+    ], SpotDirective.prototype, "data", void 0);
+    SpotDirective = __decorate([
+        core_1.Directive({ selector: '[spot]' }),
+        __param(2, core_1.Inject(radar_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [radar_coordinator_service_1.RadarCoordinator,
+            core_1.ElementRef, Object])
+    ], SpotDirective);
+    return SpotDirective;
+}());
+exports.SpotDirective = SpotDirective;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var pick_out_tokens_1 = __webpack_require__(16);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutItemDirective = (function () {
-    function PickOutItemDirective(pickOutHandlerService, doc, _window, el) {
-        this.pickOutHandlerService = pickOutHandlerService;
+    function PickOutItemDirective(pickOutCoordinator, _window, el) {
+        this.pickOutCoordinator = pickOutCoordinator;
         this._window = _window;
         this.el = el;
-        this.doc = doc;
         this.window = _window;
     }
     PickOutItemDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        // wait until all style will be apply
-        // TODO: check this unclear behaviour
-        setTimeout(function () {
-            var offsets = _this.el.nativeElement.getBoundingClientRect();
-            /*const d = this.doc.createElement('DIV');
-            d.innerText =offsets.top + this.window.pageYOffset
-
-            this.el.nativeElement.appendChild(d);*/
-            _this.pickOutHandlerService.registerPickOutItem({
-                id: _this.id,
-                x: offsets.left + _this.window.pageXOffset,
-                y: offsets.top + _this.window.pageYOffset,
-                width: _this.el.nativeElement.offsetWidth,
-                height: _this.el.nativeElement.offsetHeight
-            });
+        this.pickOutCoordinator.registerPickOutItem({
+            id: this.id,
+            api: {
+                getPosition: this.getPosition.bind(this)
+            }
         });
     };
     PickOutItemDirective.prototype.ngOnDestroy = function () {
-        this.pickOutHandlerService.unRegisterPickOutItem(this.id);
+        this.pickOutCoordinator.unRegisterPickOutItem(this.id);
+    };
+    PickOutItemDirective.prototype.getPosition = function () {
+        var offsets = this.el.nativeElement.getBoundingClientRect();
+        return {
+            x: offsets.left + this.window.pageXOffset,
+            y: offsets.top + this.window.pageYOffset,
+            width: this.el.nativeElement.offsetWidth,
+            height: this.el.nativeElement.offsetHeight
+        };
     };
     __decorate([
         core_1.Input('pick-out-item'),
@@ -26159,9 +27144,8 @@ var PickOutItemDirective = (function () {
         core_1.Directive({
             selector: '[pick-out-item]'
         }),
-        __param(1, core_1.Inject(common_1.DOCUMENT)),
-        __param(2, core_1.Inject(pick_out_tokens_1.Window)),
-        __metadata("design:paramtypes", [pick_out_handler_service_1.PickOutHandlerService, Object, Object, core_1.ElementRef])
+        __param(1, core_1.Inject(pick_out_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [pick_out_coordinator_service_1.PickOutCoordinator, Object, core_1.ElementRef])
     ], PickOutItemDirective);
     return PickOutItemDirective;
 }());
@@ -26169,35 +27153,7 @@ exports.PickOutItemDirective = PickOutItemDirective;
 
 
 /***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var PickOutItems = (function () {
-    function PickOutItems(ids) {
-        this.ids = ids;
-    }
-    return PickOutItems;
-}());
-exports.PickOutItems = PickOutItems;
-var StartPickOut = (function () {
-    function StartPickOut() {
-    }
-    return StartPickOut;
-}());
-exports.StartPickOut = StartPickOut;
-var EndPickOut = (function () {
-    function EndPickOut() {
-    }
-    return EndPickOut;
-}());
-exports.EndPickOut = EndPickOut;
-
-
-/***/ }),
-/* 23 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26216,11 +27172,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var pick_out_area_model_1 = __webpack_require__(44);
-var pick_out_area_component_1 = __webpack_require__(25);
-var pick_out_handler_service_1 = __webpack_require__(6);
-var pick_out_tokens_1 = __webpack_require__(13);
+var common_1 = __webpack_require__(1);
+var pick_out_area_model_1 = __webpack_require__(71);
+var pick_out_area_component_1 = __webpack_require__(38);
+var pick_out_tokens_1 = __webpack_require__(16);
+var pick_out_events_1 = __webpack_require__(17);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutAreaDirective = (function () {
     function PickOutAreaDirective(doc, _window, pickOutHandlerService, componentFactoryResolver, appRef, injector) {
         var _this = this;
@@ -26242,52 +27199,59 @@ var PickOutAreaDirective = (function () {
             _this.mouseMove(e);
         });
         this.doc.addEventListener('mouseup', function (e) {
-            _this.mouseUp(e);
+            _this.mouseUp();
         });
         this.window.addEventListener('scroll', function (e) {
             _this.currentYScrollPosition = _this.window.scrollY;
         });
+        this.pickOutServiceSubscription = this.pickOutHandlerService.changes.subscribe(function (e) {
+            if (e instanceof pick_out_events_1.StopPickOut) {
+                _this.stopPickOut();
+            }
+        });
     }
+    PickOutAreaDirective.prototype.ngOnDestroy = function () {
+        this.pickOutServiceSubscription.unsubscribe();
+    };
     PickOutAreaDirective.prototype.mouseDown = function (event) {
-        this.selectionProcessStarted = false;
-        this.pickOutAreaModel = new pick_out_area_model_1.PickOutAreaModel();
-        this.pickOutAreaModel.setInitialPosition(event.clientX, event.clientY);
+        if (this.isUserAllowPickOut()) {
+            this.selectionProcessStarted = false;
+            this.pickOutAreaModel = new pick_out_area_model_1.PickOutAreaModel();
+            this.pickOutAreaModel.setInitialPosition(event.clientX, event.clientY);
+        }
     };
     PickOutAreaDirective.prototype.mouseMove = function (event) {
-        if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
-            if (this.selectionProcessStarted) {
-                event.preventDefault();
-                this.pickOutHandlerService.pickOutChanged({
-                    x: this.pickOutAreaModel.x,
-                    y: this.pickOutAreaModel.y + this.currentYScrollPosition,
-                    width: this.pickOutAreaModel.width,
-                    height: this.pickOutAreaModel.height
-                });
-                // create UI selection if it's not exist
-                if (!this.selectionRangeComponentRef) {
-                    this.appendSelectionRangeComponent();
+        if (this.isUserAllowPickOut()) {
+            if (this.pickOutAreaModel) {
+                this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
+                if (this.selectionProcessStarted) {
+                    event.preventDefault();
+                    this.pickOutHandlerService.pickOutChanged({
+                        x: this.pickOutAreaModel.x,
+                        y: this.pickOutAreaModel.y + this.currentYScrollPosition,
+                        width: this.pickOutAreaModel.width,
+                        height: this.pickOutAreaModel.height
+                    });
+                    // create UI selection if it's not exist
+                    if (!this.selectionRangeComponentRef) {
+                        this.appendSelectionRangeComponent();
+                    }
+                }
+                else {
+                    // user drags mouse enough to show UI and start selection process
+                    if (this.isMouseMoveEnough()) {
+                        this.pickOutHandlerService.startPickOut();
+                        this.selectionProcessStarted = true;
+                    }
                 }
             }
-            else {
-                // user drags mouse enough to show UI and start selection process
-                if (this.pickOutAreaModel.width > this.minimumMoveDistance || this.pickOutAreaModel.height > this.minimumMoveDistance) {
-                    this.pickOutHandlerService.startPickOut();
-                    this.selectionProcessStarted = true;
-                }
-            }
+        }
+        else {
+            this.stopPickOut();
         }
     };
-    PickOutAreaDirective.prototype.mouseUp = function (e) {
-        if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.onDestroy();
-            if (this.selectionRangeComponentRef) {
-                this.removeSelectionRangeComponent();
-                this.selectionRangeComponentRef = null;
-            }
-            this.pickOutAreaModel = null;
-            this.pickOutHandlerService.endPickOut();
-        }
+    PickOutAreaDirective.prototype.mouseUp = function () {
+        this.stopPickOut();
     };
     PickOutAreaDirective.prototype.appendSelectionRangeComponent = function () {
         // https://medium.com/@caroso1222/angular-pro-tip-how-to-dynamically-create-components-in-body-ba200cc289e6
@@ -26307,6 +27271,23 @@ var PickOutAreaDirective = (function () {
     PickOutAreaDirective.prototype.removeSelectionRangeComponent = function () {
         this.appRef.detachView(this.selectionRangeComponentRef.hostView);
         this.selectionRangeComponentRef.destroy();
+        this.selectionRangeComponentRef = null;
+    };
+    PickOutAreaDirective.prototype.isMouseMoveEnough = function () {
+        return this.pickOutAreaModel.width > this.minimumMoveDistance || this.pickOutAreaModel.height > this.minimumMoveDistance;
+    };
+    PickOutAreaDirective.prototype.isUserAllowPickOut = function () {
+        return this.pickOutHandlerService.canPickOut();
+    };
+    PickOutAreaDirective.prototype.stopPickOut = function () {
+        if (this.selectionRangeComponentRef) {
+            this.removeSelectionRangeComponent();
+        }
+        if (this.pickOutAreaModel) {
+            this.pickOutAreaModel.onDestroy();
+            this.pickOutHandlerService.endPickOut();
+        }
+        this.pickOutAreaModel = null;
     };
     __decorate([
         core_1.HostListener('mousedown', ['$event']),
@@ -26319,8 +27300,8 @@ var PickOutAreaDirective = (function () {
             selector: '[pick-out-area]'
         }),
         __param(0, core_1.Inject(common_1.DOCUMENT)),
-        __param(1, core_1.Inject(pick_out_tokens_1.Window)),
-        __metadata("design:paramtypes", [Object, Object, pick_out_handler_service_1.PickOutHandlerService,
+        __param(1, core_1.Inject(pick_out_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [Object, Object, pick_out_coordinator_service_1.PickOutCoordinator,
             core_1.ComponentFactoryResolver,
             core_1.ApplicationRef,
             core_1.Injector])
@@ -26331,7 +27312,7 @@ exports.PickOutAreaDirective = PickOutAreaDirective;
 
 
 /***/ }),
-/* 24 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26346,7 +27327,7 @@ exports.PickOutModelDestroyEvent = PickOutModelDestroyEvent;
 
 
 /***/ }),
-/* 25 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26359,7 +27340,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_model_destroy_event_1 = __webpack_require__(24);
+var pick_out_model_destroy_event_1 = __webpack_require__(37);
 var PickOutAreaComponent = (function () {
     function PickOutAreaComponent() {
         this.pickOutAreaModel = null;
@@ -26374,7 +27355,7 @@ var PickOutAreaComponent = (function () {
     };
     PickOutAreaComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__(45)
+            template: __webpack_require__(72)
         })
     ], PickOutAreaComponent);
     return PickOutAreaComponent;
@@ -26383,7 +27364,7 @@ exports.PickOutAreaComponent = PickOutAreaComponent;
 
 
 /***/ }),
-/* 26 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26399,28 +27380,137 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var Subject_1 = __webpack_require__(5);
-var pick_out_handler_service_1 = __webpack_require__(6);
-var PickOutNotifier = (function () {
-    function PickOutNotifier(pickOutHandlerService) {
+var Subject_1 = __webpack_require__(2);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
+var PickOutService = (function () {
+    function PickOutService(pickOutHandlerService) {
         var _this = this;
         this.pickOutHandlerService = pickOutHandlerService;
-        this.changes = new Subject_1.Subject();
+        this.events = new Subject_1.Subject();
         this.pickOutHandlerService.changes.subscribe(function (e) {
-            _this.changes.next(e);
+            _this.events.next(e);
         });
     }
-    PickOutNotifier = __decorate([
+    PickOutService.prototype.enablePickOut = function () {
+        this.pickOutHandlerService.enablePickOut();
+    };
+    PickOutService.prototype.disablePickOut = function () {
+        this.pickOutHandlerService.disablePickOut();
+    };
+    PickOutService.prototype.stopPickOut = function () {
+        this.pickOutHandlerService.stopPickOut();
+    };
+    PickOutService.prototype.subscribe = function (fn) {
+        return this.events.subscribe(fn);
+    };
+    PickOutService = __decorate([
         core_1.Injectable(),
-        __metadata("design:paramtypes", [pick_out_handler_service_1.PickOutHandlerService])
-    ], PickOutNotifier);
-    return PickOutNotifier;
+        __metadata("design:paramtypes", [pick_out_coordinator_service_1.PickOutCoordinator])
+    ], PickOutService);
+    return PickOutService;
 }());
-exports.PickOutNotifier = PickOutNotifier;
+exports.PickOutService = PickOutService;
 
 
 /***/ }),
-/* 27 */
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var PlaceholderComponent = (function () {
+    function PlaceholderComponent() {
+    }
+    PlaceholderComponent.prototype.setCoordinate = function (x, y, size, isHorizontal) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.isHorizontal = isHorizontal;
+    };
+    PlaceholderComponent = __decorate([
+        core_1.Component({
+            template: __webpack_require__(74)
+        })
+    ], PlaceholderComponent);
+    return PlaceholderComponent;
+}());
+exports.PlaceholderComponent = PlaceholderComponent;
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var StartWorkingEvent = (function () {
+    function StartWorkingEvent() {
+    }
+    return StartWorkingEvent;
+}());
+exports.StartWorkingEvent = StartWorkingEvent;
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var WorkInProgressEvent = (function () {
+    function WorkInProgressEvent() {
+    }
+    return WorkInProgressEvent;
+}());
+exports.WorkInProgressEvent = WorkInProgressEvent;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var StopWorkingEvent = (function () {
+    function StopWorkingEvent() {
+    }
+    return StopWorkingEvent;
+}());
+exports.StopWorkingEvent = StopWorkingEvent;
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var DropEvent = (function () {
+    function DropEvent(targetId, beforeId, dropType, dropSide) {
+        this.targetId = targetId;
+        this.beforeId = beforeId;
+        this.dropType = dropType;
+        this.dropSide = dropSide;
+    }
+    return DropEvent;
+}());
+exports.DropEvent = DropEvent;
+
+
+/***/ }),
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26436,7 +27526,47 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(1);
+var Subject_1 = __webpack_require__(2);
+var tow_coordinator_service_1 = __webpack_require__(23);
+var TowService = (function () {
+    function TowService(towCoordinator) {
+        var _this = this;
+        this.towCoordinator = towCoordinator;
+        this.events = new Subject_1.Subject();
+        this.towCoordinator.events.subscribe(function (e) {
+            _this.events.next(e);
+        });
+    }
+    TowService.prototype.subscribe = function (fn) {
+        return this.events.subscribe(fn);
+    };
+    TowService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [tow_coordinator_service_1.TowCoordinator])
+    ], TowService);
+    return TowService;
+}());
+exports.TowService = TowService;
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var wall_1 = __webpack_require__(3);
 var TextBrickComponent = (function () {
     function TextBrickComponent(wallApi) {
         this.wallApi = wallApi;
@@ -26489,7 +27619,7 @@ var TextBrickComponent = (function () {
                 this.wallApi.core.turnBrickInto(this.id, 'img');
             }
             else {
-                this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             }
         }
     };
@@ -26504,18 +27634,6 @@ var TextBrickComponent = (function () {
             var range = document.createRange();
             range.selectNodeContents(this.editor.nativeElement);
             range.collapse(false);
-            var sel = window.getSelection();
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    };
-    TextBrickComponent.prototype.placeCaretAtStart = function () {
-        // place caret at the end
-        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
-        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
-            var range = document.createRange();
-            range.selectNodeContents(this.editor.nativeElement);
-            range.collapse(true);
             var sel = window.getSelection();
             sel.removeAllRanges();
             sel.addRange(range);
@@ -26559,7 +27677,7 @@ var TextBrickComponent = (function () {
     TextBrickComponent = __decorate([
         core_1.Component({
             selector: 'text-brick',
-            template: __webpack_require__(49)
+            template: __webpack_require__(81)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], TextBrickComponent);
@@ -26569,7 +27687,7 @@ exports.TextBrickComponent = TextBrickComponent;
 
 
 /***/ }),
-/* 28 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26585,7 +27703,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(1);
+var wall_1 = __webpack_require__(3);
 var HeaderBrickComponent = (function () {
     function HeaderBrickComponent(wallApi) {
         this.wallApi = wallApi;
@@ -26631,7 +27749,7 @@ var HeaderBrickComponent = (function () {
         }
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
-            this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
+            this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
         }
     };
     HeaderBrickComponent.prototype.onWallFocus = function () {
@@ -26703,7 +27821,7 @@ var HeaderBrickComponent = (function () {
     HeaderBrickComponent = __decorate([
         core_1.Component({
             selector: 'header-brick',
-            template: __webpack_require__(52)
+            template: __webpack_require__(84)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], HeaderBrickComponent);
@@ -26713,7 +27831,7 @@ exports.HeaderBrickComponent = HeaderBrickComponent;
 
 
 /***/ }),
-/* 29 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26729,7 +27847,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var index_1 = __webpack_require__(14);
+var index_1 = __webpack_require__(24);
 var ImgBrickComponent = (function () {
     function ImgBrickComponent(wallApi) {
         this.wallApi = wallApi;
@@ -26746,12 +27864,14 @@ var ImgBrickComponent = (function () {
     }
     ImgBrickComponent.prototype.ngOnInit = function () {
         this.store = this.wallApi.core.getBrickStore(this.id);
-        this.state = this.store.get();
-        this.state.src = this.state.src || '';
+        this.updateState(this.store.get());
         if (this.state.src) {
             this.src.nativeElement.value = this.state.src;
             this.uiState = this.uiStates.image;
         }
+    };
+    ImgBrickComponent.prototype.updateState = function (newState) {
+        Object.assign(this.state, newState);
     };
     ImgBrickComponent.prototype.onWallFocus = function () {
         if (this.uiState === this.uiStates.initial) {
@@ -26769,9 +27889,9 @@ var ImgBrickComponent = (function () {
             e.preventDefault();
             this.applyImageSrc()
                 .then(function () {
-                _this.wallApi.core.addBrickAfterInNewRow(_this.id, 'text');
+                _this.wallApi.core.addBrickAfterBrickId(_this.id, 'text');
             }).catch(function () {
-                _this.wallApi.core.addBrickAfterInNewRow(_this.id, 'text');
+                _this.wallApi.core.addBrickAfterBrickId(_this.id, 'text');
             });
         }
     };
@@ -26838,7 +27958,7 @@ var ImgBrickComponent = (function () {
     ImgBrickComponent = __decorate([
         core_1.Component({
             selector: 'img-brick',
-            template: __webpack_require__(55)
+            template: __webpack_require__(87)
         }),
         __metadata("design:paramtypes", [index_1.WallApi])
     ], ImgBrickComponent);
@@ -26848,13 +27968,30 @@ exports.ImgBrickComponent = ImgBrickComponent;
 
 
 /***/ }),
-/* 30 */
+/* 49 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 31 */
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(51));
+__export(__webpack_require__(78));
+__export(__webpack_require__(11));
+__export(__webpack_require__(30));
+__export(__webpack_require__(9));
+
+
+/***/ }),
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26867,17 +28004,19 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var platform_browser_1 = __webpack_require__(3);
-var wall_component_1 = __webpack_require__(15);
-var brick_registry_service_1 = __webpack_require__(8);
-var wall_canvas_component_1 = __webpack_require__(34);
-var wall_canvas_row_component_1 = __webpack_require__(38);
-var wall_canvas_brick_component_1 = __webpack_require__(40);
-var wall_tokens_1 = __webpack_require__(10);
-var selection_1 = __webpack_require__(42);
-var wall_editor_registry_1 = __webpack_require__(19);
-var pick_out_1 = __webpack_require__(12);
+var common_1 = __webpack_require__(1);
+var platform_browser_1 = __webpack_require__(4);
+var wall_component_1 = __webpack_require__(25);
+var brick_registry_service_1 = __webpack_require__(9);
+var wall_canvas_component_1 = __webpack_require__(54);
+var wall_canvas_row_component_1 = __webpack_require__(58);
+var wall_canvas_brick_component_1 = __webpack_require__(60);
+var wall_tokens_1 = __webpack_require__(11);
+var selection_1 = __webpack_require__(69);
+var wall_editor_registry_1 = __webpack_require__(29);
+var pick_out_1 = __webpack_require__(15);
+var tow_1 = __webpack_require__(18);
+var radar_1 = __webpack_require__(31);
 var WallModule = (function () {
     function WallModule() {
     }
@@ -26886,7 +28025,9 @@ var WallModule = (function () {
             imports: [
                 platform_browser_1.BrowserModule,
                 common_1.CommonModule,
-                pick_out_1.PickOutModule
+                pick_out_1.PickOutModule,
+                tow_1.TowModule,
+                radar_1.RadarModule
             ],
             providers: [
                 wall_editor_registry_1.WallEditorRegistry,
@@ -26912,7 +28053,7 @@ exports.WallModule = WallModule;
 
 
 /***/ }),
-/* 32 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26928,8 +28069,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_model_1 = __webpack_require__(16);
-var wall_tokens_1 = __webpack_require__(10);
+var wall_model_1 = __webpack_require__(26);
+var wall_tokens_1 = __webpack_require__(11);
 var WallController = (function () {
     function WallController(wallModel, injector) {
         this.wallModel = wallModel;
@@ -26957,13 +28098,13 @@ exports.WallController = WallController;
 
 
 /***/ }),
-/* 33 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\r\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\r\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\r\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\r\n             [layout]=\"wallController.wallModel.canvasLayout\">\r\n</wall-canvas>"
 
 /***/ }),
-/* 34 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26982,9 +28123,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var wall_canvas_api_1 = __webpack_require__(11);
-var wall_canvas_controller_1 = __webpack_require__(35);
+var common_1 = __webpack_require__(1);
+var wall_canvas_api_1 = __webpack_require__(12);
+var wall_canvas_controller_1 = __webpack_require__(55);
 var WallCanvasComponent = (function () {
     function WallCanvasComponent(wallCanvasController, doc) {
         var _this = this;
@@ -27057,7 +28198,7 @@ var WallCanvasComponent = (function () {
     WallCanvasComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas',
-            template: __webpack_require__(37),
+            template: __webpack_require__(57),
             providers: [
                 wall_canvas_api_1.WallCanvasApi,
                 wall_canvas_controller_1.WallCanvasController
@@ -27072,7 +28213,7 @@ exports.WallCanvasComponent = WallCanvasComponent;
 
 
 /***/ }),
-/* 35 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27087,10 +28228,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var wall_canvas_api_1 = __webpack_require__(11);
+var wall_canvas_api_1 = __webpack_require__(12);
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(20);
-var wall_events_1 = __webpack_require__(9);
+var wall_1 = __webpack_require__(30);
+var wall_events_1 = __webpack_require__(10);
 var WallCanvasController = (function () {
     function WallCanvasController(wallCanvasApi, wallApi) {
         this.wallCanvasApi = wallCanvasApi;
@@ -27201,7 +28342,7 @@ exports.WallCanvasController = WallCanvasController;
 
 
 /***/ }),
-/* 36 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27212,13 +28353,13 @@ exports.awesomeTypescriptLoaderBug = true;
 
 
 /***/ }),
-/* 37 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\r\n    <wall-canvas-row [row]=\"row\" *ngFor=\"let row of layout.bricks\"></wall-canvas-row>\r\n\r\n    <div #expander class=\"wall-canvas__expander\"></div>\r\n</div>"
 
 /***/ }),
-/* 38 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27246,7 +28387,7 @@ var WallCanvasRowComponent = (function () {
     WallCanvasRowComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-row',
-            template: __webpack_require__(39)
+            template: __webpack_require__(59)
         }),
         __metadata("design:paramtypes", [])
     ], WallCanvasRowComponent);
@@ -27256,13 +28397,13 @@ exports.WallCanvasRowComponent = WallCanvasRowComponent;
 
 
 /***/ }),
-/* 39 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns\">\r\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks\"></wall-canvas-brick>\r\n</div>"
 
 /***/ }),
-/* 40 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27278,19 +28419,39 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_canvas_api_1 = __webpack_require__(11);
+var wall_canvas_api_1 = __webpack_require__(12);
+var radar_1 = __webpack_require__(31);
 var WallCanvasBrickComponent = (function () {
-    function WallCanvasBrickComponent(injector, resolver, wallCanvasApi) {
+    function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasApi) {
         this.injector = injector;
         this.resolver = resolver;
+        this.radar = radar;
         this.wallCanvasApi = wallCanvasApi;
         this.selected = false;
+        this.isMouseNear = false;
+        this.minimalDistanceToMouse = 100;
     }
     WallCanvasBrickComponent.prototype.ngOnInit = function () {
-        var factory = this.resolver.resolveComponentFactory(this.brick.component);
-        var componentReference = this.container.createComponent(factory, null, this.injector);
-        componentReference.instance['id'] = this.brick.id;
+        var _this = this;
+        var componentReference = this.renderBrick();
         this.wallCanvasApi.core.registerCanvasBrickInstance(this.brick.id, this, componentReference.instance);
+        // todo maybe move it to model API?
+        this.radarSubscription = this.radar.subscribe(function (e) {
+            if (e instanceof radar_1.LocationUpdatedEvent) {
+                var currentSpot = e.spots.find(function (spot) {
+                    return spot.data === _this.brick.id;
+                });
+                if (currentSpot.isCross13Line) {
+                    _this.isMouseNear = currentSpot.topLeftPointDistance < _this.minimalDistanceToMouse;
+                }
+                else {
+                    _this.isMouseNear = false;
+                }
+            }
+        });
+    };
+    WallCanvasBrickComponent.prototype.ngOnDestroy = function () {
+        this.radarSubscription.unsubscribe();
     };
     WallCanvasBrickComponent.prototype.onFocused = function () {
         this.wallCanvasApi.core.onFocused(this.brick.id);
@@ -27300,6 +28461,12 @@ var WallCanvasBrickComponent = (function () {
     };
     WallCanvasBrickComponent.prototype.unselect = function () {
         this.selected = false;
+    };
+    WallCanvasBrickComponent.prototype.renderBrick = function () {
+        var factory = this.resolver.resolveComponentFactory(this.brick.component);
+        var componentReference = this.container.createComponent(factory, null, this.injector);
+        componentReference.instance['id'] = this.brick.id;
+        return componentReference;
     };
     __decorate([
         core_1.Input(),
@@ -27312,10 +28479,11 @@ var WallCanvasBrickComponent = (function () {
     WallCanvasBrickComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-brick',
-            template: __webpack_require__(41)
+            template: __webpack_require__(68)
         }),
         __metadata("design:paramtypes", [core_1.Injector,
             core_1.ComponentFactoryResolver,
+            radar_1.Radar,
             wall_canvas_api_1.WallCanvasApi])
     ], WallCanvasBrickComponent);
     return WallCanvasBrickComponent;
@@ -27324,13 +28492,168 @@ exports.WallCanvasBrickComponent = WallCanvasBrickComponent;
 
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports) {
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<div [pick-out-item]=\"brick.id\" (click)=\"onFocused()\" class=\"wall-canvas-brick__wrapper\"\r\n     [ngClass]=\"{'wall-canvas-brick__selected': selected}\">\r\n    <div #brickContainer></div>\r\n</div>"
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var radar_service_1 = __webpack_require__(32);
+var radar_directive_1 = __webpack_require__(34);
+var radar_tokens_1 = __webpack_require__(14);
+var radar_coordinator_service_1 = __webpack_require__(13);
+var RadarModule = (function () {
+    function RadarModule() {
+    }
+    RadarModule = __decorate([
+        core_1.NgModule({
+            exports: [radar_directive_1.SpotDirective],
+            declarations: [radar_directive_1.SpotDirective],
+            providers: [
+                radar_service_1.Radar,
+                radar_coordinator_service_1.RadarCoordinator,
+                {
+                    provide: radar_tokens_1.WindowReference,
+                    useValue: window
+                }
+            ]
+        })
+    ], RadarModule);
+    return RadarModule;
+}());
+exports.RadarModule = RadarModule;
+
 
 /***/ }),
-/* 42 */
+/* 62 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_62__;
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_63__;
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_64__;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SpotModel = (function () {
+    function SpotModel(instance) {
+        this.instance = instance;
+    }
+    SpotModel.prototype.updatePosition = function () {
+        var spotPosition = this.instance.getPosition();
+        this.x = spotPosition.x;
+        this.y = spotPosition.y;
+        this.width = spotPosition.width;
+        this.height = spotPosition.height;
+    };
+    SpotModel.prototype.isCross13Line = function (y) {
+        return (y > this.y) && (y < this.y + this.height);
+    };
+    SpotModel.prototype.getMinimalDistanceToPoint = function (x, y) {
+        var minimalDistance = null;
+        // distances to horizontal lines
+        var distanceToLine12 = Math.abs(this.y - y);
+        var distanceToLine43 = Math.abs((this.y + this.height) - y);
+        // distances to vertical lines
+        var distanceToLine14 = Math.abs(this.x - x);
+        var distanceToLine23 = Math.abs((this.x + this.width) - x);
+        var minDistanceToHorizontalLine = Math.min.apply(null, [distanceToLine12, distanceToLine43]);
+        var minDistanceToVerticalLine = Math.min.apply(null, [distanceToLine14, distanceToLine23]);
+        if ((x > this.x) && (x < this.x + this.width)) {
+            // point directly cross the beacon
+            minimalDistance = minDistanceToHorizontalLine;
+        }
+        else if ((y > this.y) && (y < this.y + this.height)) {
+            // point directly cross the beacon
+            minimalDistance = minDistanceToVerticalLine;
+        }
+        else {
+            // point doesn't cross beacon, calculate shortest distance to beacon
+            minimalDistance = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
+        }
+        return minimalDistance;
+    };
+    SpotModel.prototype.getDistanceToTopLeftPoint = function (x, y) {
+        var a = Math.abs(this.x - x);
+        var b = Math.abs(this.y - y);
+        return Math.sqrt(a * a + b * b);
+    };
+    SpotModel.prototype.getDistanceToBottomLeftPoint = function (x, y) {
+        var a = Math.abs(this.x - x);
+        var b = Math.abs(this.y + this.height - y);
+        return Math.sqrt(a * a + b * b);
+    };
+    SpotModel.prototype.getDistanceToLeftCenterPoint = function (x, y) {
+        var a = Math.abs(this.x - x);
+        var b = Math.abs(this.y + (this.height / 2) - y);
+        return Math.sqrt(a * a + b * b);
+    };
+    return SpotModel;
+}());
+exports.SpotModel = SpotModel;
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var LocationToTopLeftPointEvent = (function () {
+    function LocationToTopLeftPointEvent(spots) {
+        this.spots = spots;
+    }
+    return LocationToTopLeftPointEvent;
+}());
+exports.LocationToTopLeftPointEvent = LocationToTopLeftPointEvent;
+
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var LocationToLeftCenterPointEvent = (function () {
+    function LocationToLeftCenterPointEvent(spots) {
+        this.spots = spots;
+    }
+    return LocationToLeftCenterPointEvent;
+}());
+exports.LocationToLeftCenterPointEvent = LocationToLeftCenterPointEvent;
+
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports) {
+
+module.exports = "<div [pick-out-item]=\"brick.id\"\r\n     [beacon]=\"brick.id\"\r\n     [spot]=\"brick.id\"\r\n     (click)=\"onFocused()\"\r\n     class=\"wall-canvas-brick__wrapper\"\r\n     [ngClass]=\"{'wall-canvas-brick__selected': selected, 'wall-canvas-brick__draggable': isMouseNear}\">\r\n\r\n    <div class=\"wall-canvas-brick__draggable-handler\" [tow-slave]=\"brick.id\">\r\n        <div class=\"wall-canvas-brick__draggable-box\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" x version=\"1.1\" width=\"15px\" height=\"15px\" viewBox=\"0 0 612 612\" xml:space=\"preserve\">\r\n<g>\r\n\t<g>\r\n\t\t<circle cx=\"69.545\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t</g>\r\n</g>\r\n</svg>\r\n        </div>\r\n    </div>\r\n\r\n    <div #brickContainer></div>\r\n</div>"
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27349,13 +28672,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var wall_api_service_1 = __webpack_require__(4);
-var pick_out_1 = __webpack_require__(12);
+var common_1 = __webpack_require__(1);
+var wall_api_service_1 = __webpack_require__(5);
+var pick_out_1 = __webpack_require__(15);
+var tow_1 = __webpack_require__(18);
 var SelectionPlugin = (function () {
-    function SelectionPlugin(wallApi, pickOutNotifier, doc) {
+    function SelectionPlugin(wallApi, pickOutService, towService, doc) {
         this.wallApi = wallApi;
-        this.pickOutNotifier = pickOutNotifier;
+        this.pickOutService = pickOutService;
+        this.towService = towService;
         this.doc = null;
         this.isMouseSelection = false;
         this.doc = doc;
@@ -27363,13 +28688,17 @@ var SelectionPlugin = (function () {
     }
     SelectionPlugin.prototype.initialize = function () {
         var _this = this;
-        this.doc.addEventListener('click', function (e) {
+        this.doc.addEventListener('click', function () {
             if (_this.isMouseSelection) {
                 _this.isMouseSelection = false;
             }
             else {
                 _this.wallApi.core.unSelectBricks();
             }
+        });
+        this.doc.addEventListener('mouseup', function () {
+            // during text selection pickOutService was disable, enable it again
+            _this.pickOutService.enablePickOut();
         });
         this.doc.addEventListener('keydown', function (e) {
             var selectedBrickIds = _this.wallApi.core.getSelectedBrickIds();
@@ -27431,7 +28760,15 @@ var SelectionPlugin = (function () {
                 }
             }
         });
-        this.pickOutNotifier.changes.subscribe(function (e) {
+        this.doc.addEventListener('selectionchange', function () {
+            // selection event triggers when user select some text and then just click by the document
+            // we should disabele pick out service only when user really starts select something
+            if (_this.doc.getSelection().anchorNode) {
+                _this.pickOutService.disablePickOut();
+                _this.pickOutService.stopPickOut();
+            }
+        });
+        this.pickOutService.subscribe(function (e) {
             if (e instanceof pick_out_1.PickOutItems) {
                 _this.wallApi.core.selectBricks(e.ids);
             }
@@ -27439,6 +28776,41 @@ var SelectionPlugin = (function () {
                 _this.isMouseSelection = true;
             }
             if (e instanceof pick_out_1.EndPickOut) {
+            }
+        });
+        this.towService.subscribe(function (e) {
+            if (e instanceof tow_1.StartWorkingEvent) {
+                _this.pickOutService.disablePickOut();
+                _this.pickOutService.stopPickOut();
+            }
+            if (e instanceof tow_1.StopWorkingEvent) {
+                _this.pickOutService.enablePickOut();
+            }
+            if (e instanceof tow_1.DropEvent) {
+                var movedBrickIds = [];
+                var selectedBrickIds = _this.wallApi.core.getSelectedBrickIds();
+                if (selectedBrickIds.length > 1) {
+                    movedBrickIds = movedBrickIds.concat(selectedBrickIds);
+                }
+                else {
+                    movedBrickIds.push(e.targetId);
+                }
+                if (e.dropType === tow_1.TOW.dropTypes.horizontal) {
+                    if (e.dropSide === tow_1.TOW.dropSides.top) {
+                        _this.wallApi.core.moveBrickBeforeBrickId(movedBrickIds, e.beforeId);
+                    }
+                    if (e.dropSide === tow_1.TOW.dropSides.bottom) {
+                        _this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
+                    }
+                }
+                if (e.dropType === tow_1.TOW.dropTypes.vertical) {
+                    if (e.dropSide === tow_1.TOW.dropSides.left) {
+                        _this.wallApi.core.moveBrickToNewColumn(movedBrickIds, e.beforeId, tow_1.TOW.dropSides.left);
+                    }
+                    if (e.dropSide === tow_1.TOW.dropSides.right) {
+                        _this.wallApi.core.moveBrickToNewColumn(movedBrickIds, e.beforeId, tow_1.TOW.dropSides.right);
+                    }
+                }
             }
         });
     };
@@ -27451,9 +28823,10 @@ var SelectionPlugin = (function () {
     };
     SelectionPlugin = __decorate([
         core_1.Injectable(),
-        __param(2, core_1.Inject(common_1.DOCUMENT)),
+        __param(3, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [wall_api_service_1.WallApi,
-            pick_out_1.PickOutNotifier, Object])
+            pick_out_1.PickOutService,
+            tow_1.TowService, Object])
     ], SelectionPlugin);
     return SelectionPlugin;
 }());
@@ -27461,7 +28834,7 @@ exports.SelectionPlugin = SelectionPlugin;
 
 
 /***/ }),
-/* 43 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27474,13 +28847,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(2);
-var pick_out_item_directive_1 = __webpack_require__(21);
-var pick_out_area_directive_1 = __webpack_require__(23);
-var pick_out_notifier_service_1 = __webpack_require__(26);
-var pick_out_handler_service_1 = __webpack_require__(6);
-var pick_out_area_component_1 = __webpack_require__(25);
-var pick_out_tokens_1 = __webpack_require__(13);
+var common_1 = __webpack_require__(1);
+var pick_out_item_directive_1 = __webpack_require__(35);
+var pick_out_area_directive_1 = __webpack_require__(36);
+var pick_out_area_component_1 = __webpack_require__(38);
+var pick_out_tokens_1 = __webpack_require__(16);
+var pick_out_service_1 = __webpack_require__(39);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutModule = (function () {
     function PickOutModule() {
     }
@@ -27495,10 +28868,10 @@ var PickOutModule = (function () {
                 pick_out_item_directive_1.PickOutItemDirective
             ],
             providers: [
-                pick_out_handler_service_1.PickOutHandlerService,
-                pick_out_notifier_service_1.PickOutNotifier,
+                pick_out_service_1.PickOutService,
+                pick_out_coordinator_service_1.PickOutCoordinator,
                 {
-                    provide: pick_out_tokens_1.Window,
+                    provide: pick_out_tokens_1.WindowReference,
                     useValue: window
                 }
             ],
@@ -27517,14 +28890,14 @@ exports.PickOutModule = PickOutModule;
 
 
 /***/ }),
-/* 44 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var pick_out_model_destroy_event_1 = __webpack_require__(24);
-var Subject_1 = __webpack_require__(5);
+var pick_out_model_destroy_event_1 = __webpack_require__(37);
+var Subject_1 = __webpack_require__(2);
 var PickOutAreaModel = (function () {
     function PickOutAreaModel() {
         this.changes = new Subject_1.Subject();
@@ -27562,38 +28935,160 @@ exports.PickOutAreaModel = PickOutAreaModel;
 
 
 /***/ }),
-/* 45 */
+/* 72 */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"pickOutAreaModel\"\r\n     [style.left.px]=\"pickOutAreaModel.x\"\r\n     [style.top.px]=\"pickOutAreaModel.y\"\r\n     [style.width.px]=\"pickOutAreaModel.width\"\r\n     [style.height.px]=\"pickOutAreaModel.height\"\r\n     class=\"pick-out-area\">\r\n</div>"
+module.exports = "<div *ngIf=\"pickOutAreaModel\"\r\n           [style.left.px]=\"pickOutAreaModel.x\"\r\n           [style.top.px]=\"pickOutAreaModel.y\"\r\n           [style.width.px]=\"pickOutAreaModel.width\"\r\n           [style.height.px]=\"pickOutAreaModel.height\"\r\n           class=\"pick-out-area\">\r\n</div>"
 
 /***/ }),
-/* 46 */
+/* 73 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var common_1 = __webpack_require__(1);
+var placeholder_renderer_service_1 = __webpack_require__(19);
+var placeholder_component_1 = __webpack_require__(40);
+var beacon_registry_service_1 = __webpack_require__(7);
+var tow_tokens_1 = __webpack_require__(20);
+var beacon_directive_1 = __webpack_require__(75);
+var beacon_detector_service_1 = __webpack_require__(21);
+var tow_coordinator_service_1 = __webpack_require__(23);
+var tow_slave_directive_1 = __webpack_require__(77);
+var tow_service_1 = __webpack_require__(45);
+var TowModule = (function () {
+    function TowModule() {
+    }
+    TowModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule
+            ],
+            declarations: [
+                beacon_directive_1.BeaconDirective,
+                tow_slave_directive_1.TowSlaveDirective,
+                placeholder_component_1.PlaceholderComponent
+            ],
+            entryComponents: [
+                placeholder_component_1.PlaceholderComponent
+            ],
+            exports: [
+                beacon_directive_1.BeaconDirective,
+                tow_slave_directive_1.TowSlaveDirective
+            ],
+            providers: [
+                tow_service_1.TowService,
+                beacon_detector_service_1.BeaconDetector,
+                beacon_registry_service_1.BeaconRegistry,
+                tow_coordinator_service_1.TowCoordinator,
+                placeholder_renderer_service_1.PlaceholderRenderer,
+                {
+                    provide: tow_tokens_1.WindowReference,
+                    useValue: window
+                }
+            ]
+        })
+    ], TowModule);
+    return TowModule;
+}());
+exports.TowModule = TowModule;
+
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"x\">\r\n    <div *ngIf=\"isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"size\"\r\n         [style.height.px]=\"3\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n\r\n    <div *ngIf=\"!isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"3\"\r\n         [style.height.px]=\"size\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n</div>"
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var beacon_registry_service_1 = __webpack_require__(7);
+var tow_tokens_1 = __webpack_require__(20);
+var BeaconDirective = (function () {
+    function BeaconDirective(beaconRegistry, el, _window) {
+        this.beaconRegistry = beaconRegistry;
+        this.el = el;
+        this._window = _window;
+        this.window = _window;
+    }
+    BeaconDirective.prototype.ngOnInit = function () {
+        this.beaconRegistry.register({
+            id: this.id,
+            api: {
+                getPosition: this.getPosition.bind(this)
+            }
+        });
+    };
+    BeaconDirective.prototype.ngOnDestroy = function () {
+        this.beaconRegistry.unRegister(this.id);
+    };
+    BeaconDirective.prototype.getPosition = function () {
+        var offsets = this.el.nativeElement.getBoundingClientRect();
+        return {
+            x: offsets.left + this.window.pageXOffset,
+            y: offsets.top + this.window.pageYOffset,
+            width: this.el.nativeElement.offsetWidth,
+            height: this.el.nativeElement.offsetHeight
+        };
+    };
+    __decorate([
+        core_1.Input('beacon'),
+        __metadata("design:type", Object)
+    ], BeaconDirective.prototype, "id", void 0);
+    BeaconDirective = __decorate([
+        core_1.Directive({ selector: '[beacon]' }),
+        __param(2, core_1.Inject(tow_tokens_1.WindowReference)),
+        __metadata("design:paramtypes", [beacon_registry_service_1.BeaconRegistry,
+            core_1.ElementRef, Object])
+    ], BeaconDirective);
+    return BeaconDirective;
+}());
+exports.BeaconDirective = BeaconDirective;
+
+
+/***/ }),
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-// https://github.com/s-panferov/awesome-typescript-loader/issues/411
-exports.awesomeTypescriptLoaderBug2 = true;
+var DetectedBeacon = (function () {
+    function DetectedBeacon() {
+    }
+    return DetectedBeacon;
+}());
+exports.DetectedBeacon = DetectedBeacon;
 
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(48));
-__export(__webpack_require__(27));
-
-
-/***/ }),
-/* 48 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27609,9 +29104,109 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(1);
-var text_brick_component_1 = __webpack_require__(27);
-var platform_browser_1 = __webpack_require__(3);
+var tow_coordinator_service_1 = __webpack_require__(23);
+var TowSlaveDirective = (function () {
+    function TowSlaveDirective(renderer2, el, towCoordinator) {
+        this.renderer2 = renderer2;
+        this.el = el;
+        this.towCoordinator = towCoordinator;
+    }
+    TowSlaveDirective.prototype.dragStart = function (event) {
+        // TODO: dont hardcode drag image node position
+        event.dataTransfer.setDragImage(this.el.nativeElement.parentElement.children[2], 0, 0);
+        event.dataTransfer.dropEffect = 'move';
+        event.dataTransfer.setData('FAKE', JSON.stringify({}));
+        this.towCoordinator.slaveStartWorking(this.id);
+    };
+    TowSlaveDirective.prototype.drag = function (event) {
+        event.dataTransfer.dropEffect = 'move';
+    };
+    TowSlaveDirective.prototype.dragEnd = function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.towCoordinator.slaveStopWorking(this.id);
+    };
+    TowSlaveDirective.prototype.ngOnInit = function () {
+        this.renderer2.setAttribute(this.el.nativeElement, 'draggable', 'true');
+    };
+    __decorate([
+        core_1.Input('tow-slave'),
+        __metadata("design:type", Object)
+    ], TowSlaveDirective.prototype, "id", void 0);
+    __decorate([
+        core_1.HostListener('dragstart', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [DragEvent]),
+        __metadata("design:returntype", void 0)
+    ], TowSlaveDirective.prototype, "dragStart", null);
+    __decorate([
+        core_1.HostListener('drag', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [DragEvent]),
+        __metadata("design:returntype", void 0)
+    ], TowSlaveDirective.prototype, "drag", null);
+    __decorate([
+        core_1.HostListener('dragend', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], TowSlaveDirective.prototype, "dragEnd", null);
+    TowSlaveDirective = __decorate([
+        core_1.Directive({ selector: '[tow-slave]' }),
+        __metadata("design:paramtypes", [core_1.Renderer2,
+            core_1.ElementRef,
+            tow_coordinator_service_1.TowCoordinator])
+    ], TowSlaveDirective);
+    return TowSlaveDirective;
+}());
+exports.TowSlaveDirective = TowSlaveDirective;
+
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// https://github.com/s-panferov/awesome-typescript-loader/issues/411
+exports.awesomeTypescriptLoaderBug2 = true;
+
+
+/***/ }),
+/* 79 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(80));
+__export(__webpack_require__(46));
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var wall_1 = __webpack_require__(3);
+var text_brick_component_1 = __webpack_require__(46);
+var platform_browser_1 = __webpack_require__(4);
 var TextBrickModule = (function () {
     function TextBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -27638,13 +29233,13 @@ exports.TextBrickModule = TextBrickModule;
 
 
 /***/ }),
-/* 49 */
+/* 81 */
 /***/ (function(module, exports) {
 
-module.exports = "<div #editor\r\n     [hidden]=\"mode === modes.READ\"\r\n     (keydown)=\"onKeyPress($event)\"\r\n     (keyup)=\"onTextChanged()\"\r\n     class=\"text-brick__editor\"\r\n     contenteditable=\"true\">\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
+module.exports = "<div #editor\r\n     [hidden]=\"mode === modes.READ\"\r\n     (keydown)=\"onKeyPress($event)\"\r\n     (keyup)=\"onTextChanged()\"\r\n     class=\"text-brick__editor\"\r\n     contenteditable>\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
-/* 50 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27653,12 +29248,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(51));
-__export(__webpack_require__(28));
+__export(__webpack_require__(83));
+__export(__webpack_require__(47));
 
 
 /***/ }),
-/* 51 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27674,9 +29269,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(1);
-var header_brick_component_1 = __webpack_require__(28);
-var platform_browser_1 = __webpack_require__(3);
+var wall_1 = __webpack_require__(3);
+var header_brick_component_1 = __webpack_require__(47);
+var platform_browser_1 = __webpack_require__(4);
 var HeaderBrickModule = (function () {
     function HeaderBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -27703,13 +29298,13 @@ exports.HeaderBrickModule = HeaderBrickModule;
 
 
 /***/ }),
-/* 52 */
+/* 84 */
 /***/ (function(module, exports) {
 
-module.exports = "<h3 #editor\r\n    [hidden]=\"mode === modes.READ\"\r\n    (keydown)=\"onKeyPress($event)\"\r\n    (keyup)=\"onTextChanged()\"\r\n    class=\"editor\"\r\n    contenteditable=\"true\">\r\n</h3>\r\n\r\n<h3 [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></h3>"
+module.exports = "<div #editor\r\n    [hidden]=\"mode === modes.READ\"\r\n    (keydown)=\"onKeyPress($event)\"\r\n    (keyup)=\"onTextChanged()\"\r\n    class=\"editor\"\r\n    contenteditable>\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
-/* 53 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27718,12 +29313,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(54));
-__export(__webpack_require__(29));
+__export(__webpack_require__(86));
+__export(__webpack_require__(48));
 
 
 /***/ }),
-/* 54 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27738,10 +29333,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = __webpack_require__(3);
+var platform_browser_1 = __webpack_require__(4);
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(1);
-var img_brick_component_1 = __webpack_require__(29);
+var wall_1 = __webpack_require__(3);
+var img_brick_component_1 = __webpack_require__(48);
 var ImgBrickModule = (function () {
     function ImgBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -27767,7 +29362,7 @@ exports.ImgBrickModule = ImgBrickModule;
 
 
 /***/ }),
-/* 55 */
+/* 87 */
 /***/ (function(module, exports) {
 
 module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\r\n\r\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\r\n    Add an Image\r\n</div>\r\n\r\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\r\n    <div class=\"w-panel__body\">\r\n        <form>\r\n            <div class=\"form-group w-form-group\">\r\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\r\n                       placeholder=\"Paste the image link\">\r\n            </div>\r\n        </form>\r\n\r\n        <div>\r\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>"
@@ -27778,7 +29373,7 @@ module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src
 //# sourceMappingURL=wall.umd.js.map
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports) {
 
 /*
@@ -27860,7 +29455,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 96 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -27906,7 +29501,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(157);
+var	fixUrls = __webpack_require__(168);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -28219,9 +29814,6 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 97 */,
-/* 98 */,
-/* 99 */,
 /* 100 */,
 /* 101 */,
 /* 102 */,
@@ -28250,22 +29842,25 @@ function updateLink (link, options, obj) {
 /* 125 */,
 /* 126 */,
 /* 127 */,
-/* 128 */
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_dynamic_1 = __webpack_require__(129);
+var platform_browser_dynamic_1 = __webpack_require__(132);
 var app_module_1 = __webpack_require__(152);
-__webpack_require__(155);
-__webpack_require__(158);
-__webpack_require__(159);
+__webpack_require__(166);
+__webpack_require__(169);
+__webpack_require__(170);
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
 
 /***/ }),
-/* 129 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28275,11 +29870,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VERSION", function() { return VERSION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS", function() { return INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵResourceLoaderImpl", function() { return ResourceLoaderImpl; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(43);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__(67);
 
 /**
  * @license Angular v4.3.4
@@ -28449,7 +30044,7 @@ var platformBrowserDynamic = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__[
 
 
 /***/ }),
-/* 130 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28679,7 +30274,7 @@ var platformBrowserDynamic = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__[
 /* unused harmony export splitClasses */
 /* unused harmony export createElementCssSelector */
 /* unused harmony export removeSummaryDuplicates */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
 
 /**
@@ -56320,14 +57915,14 @@ function _mergeArrays(parts) {
 //# sourceMappingURL=compiler.es5.js.map
 
 /***/ }),
-/* 131 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Subscriber_1 = __webpack_require__(45);
-var rxSubscriber_1 = __webpack_require__(64);
-var Observer_1 = __webpack_require__(90);
+var Subscriber_1 = __webpack_require__(38);
+var rxSubscriber_1 = __webpack_require__(66);
+var Observer_1 = __webpack_require__(91);
 function toSubscriber(nextOrObserver, error, complete) {
     if (nextOrObserver) {
         if (nextOrObserver instanceof Subscriber_1.Subscriber) {
@@ -56346,7 +57941,7 @@ exports.toSubscriber = toSubscriber;
 //# sourceMappingURL=toSubscriber.js.map
 
 /***/ }),
-/* 132 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56355,32 +57950,7 @@ exports.isArray = Array.isArray || (function (x) { return x && typeof x.length =
 //# sourceMappingURL=isArray.js.map
 
 /***/ }),
-/* 133 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var errorObject_1 = __webpack_require__(89);
-var tryCatchTarget;
-function tryCatcher() {
-    try {
-        return tryCatchTarget.apply(this, arguments);
-    }
-    catch (e) {
-        errorObject_1.errorObject.e = e;
-        return errorObject_1.errorObject;
-    }
-}
-function tryCatch(fn) {
-    tryCatchTarget = fn;
-    return tryCatcher;
-}
-exports.tryCatch = tryCatch;
-;
-//# sourceMappingURL=tryCatch.js.map
-
-/***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56411,25 +57981,25 @@ exports.UnsubscriptionError = UnsubscriptionError;
 //# sourceMappingURL=UnsubscriptionError.js.map
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var merge_1 = __webpack_require__(136);
+var merge_1 = __webpack_require__(138);
 exports.merge = merge_1.mergeStatic;
 //# sourceMappingURL=merge.js.map
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var Observable_1 = __webpack_require__(26);
-var ArrayObservable_1 = __webpack_require__(137);
-var mergeAll_1 = __webpack_require__(140);
-var isScheduler_1 = __webpack_require__(92);
+var Observable_1 = __webpack_require__(11);
+var ArrayObservable_1 = __webpack_require__(139);
+var mergeAll_1 = __webpack_require__(142);
+var isScheduler_1 = __webpack_require__(93);
 /* tslint:enable:max-line-length */
 /**
  * Creates an output Observable which concurrently emits all values from every
@@ -56572,7 +58142,7 @@ exports.mergeStatic = mergeStatic;
 //# sourceMappingURL=merge.js.map
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56582,10 +58152,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1 = __webpack_require__(26);
-var ScalarObservable_1 = __webpack_require__(138);
-var EmptyObservable_1 = __webpack_require__(139);
-var isScheduler_1 = __webpack_require__(92);
+var Observable_1 = __webpack_require__(11);
+var ScalarObservable_1 = __webpack_require__(140);
+var EmptyObservable_1 = __webpack_require__(141);
+var isScheduler_1 = __webpack_require__(93);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -56700,7 +58270,7 @@ exports.ArrayObservable = ArrayObservable;
 //# sourceMappingURL=ArrayObservable.js.map
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56710,7 +58280,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1 = __webpack_require__(26);
+var Observable_1 = __webpack_require__(11);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -56764,7 +58334,7 @@ exports.ScalarObservable = ScalarObservable;
 //# sourceMappingURL=ScalarObservable.js.map
 
 /***/ }),
-/* 139 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56774,7 +58344,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Observable_1 = __webpack_require__(26);
+var Observable_1 = __webpack_require__(11);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @extends {Ignored}
@@ -56851,7 +58421,7 @@ exports.EmptyObservable = EmptyObservable;
 //# sourceMappingURL=EmptyObservable.js.map
 
 /***/ }),
-/* 140 */
+/* 142 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -56861,8 +58431,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var OuterSubscriber_1 = __webpack_require__(141);
-var subscribeToResult_1 = __webpack_require__(142);
+var OuterSubscriber_1 = __webpack_require__(94);
+var subscribeToResult_1 = __webpack_require__(95);
 /**
  * Converts a higher-order Observable into a first-order Observable which
  * concurrently delivers all values that are emitted on the inner Observables.
@@ -56968,126 +58538,6 @@ exports.MergeAllSubscriber = MergeAllSubscriber;
 //# sourceMappingURL=mergeAll.js.map
 
 /***/ }),
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var Subscriber_1 = __webpack_require__(45);
-/**
- * We need this JSDoc comment for affecting ESDoc.
- * @ignore
- * @extends {Ignored}
- */
-var OuterSubscriber = (function (_super) {
-    __extends(OuterSubscriber, _super);
-    function OuterSubscriber() {
-        _super.apply(this, arguments);
-    }
-    OuterSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
-        this.destination.next(innerValue);
-    };
-    OuterSubscriber.prototype.notifyError = function (error, innerSub) {
-        this.destination.error(error);
-    };
-    OuterSubscriber.prototype.notifyComplete = function (innerSub) {
-        this.destination.complete();
-    };
-    return OuterSubscriber;
-}(Subscriber_1.Subscriber));
-exports.OuterSubscriber = OuterSubscriber;
-//# sourceMappingURL=OuterSubscriber.js.map
-
-/***/ }),
-/* 142 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var root_1 = __webpack_require__(44);
-var isArrayLike_1 = __webpack_require__(143);
-var isPromise_1 = __webpack_require__(144);
-var isObject_1 = __webpack_require__(88);
-var Observable_1 = __webpack_require__(26);
-var iterator_1 = __webpack_require__(145);
-var InnerSubscriber_1 = __webpack_require__(146);
-var observable_1 = __webpack_require__(91);
-function subscribeToResult(outerSubscriber, result, outerValue, outerIndex) {
-    var destination = new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex);
-    if (destination.closed) {
-        return null;
-    }
-    if (result instanceof Observable_1.Observable) {
-        if (result._isScalar) {
-            destination.next(result.value);
-            destination.complete();
-            return null;
-        }
-        else {
-            return result.subscribe(destination);
-        }
-    }
-    else if (isArrayLike_1.isArrayLike(result)) {
-        for (var i = 0, len = result.length; i < len && !destination.closed; i++) {
-            destination.next(result[i]);
-        }
-        if (!destination.closed) {
-            destination.complete();
-        }
-    }
-    else if (isPromise_1.isPromise(result)) {
-        result.then(function (value) {
-            if (!destination.closed) {
-                destination.next(value);
-                destination.complete();
-            }
-        }, function (err) { return destination.error(err); })
-            .then(null, function (err) {
-            // Escaping the Promise trap: globally throw unhandled errors
-            root_1.root.setTimeout(function () { throw err; });
-        });
-        return destination;
-    }
-    else if (result && typeof result[iterator_1.iterator] === 'function') {
-        var iterator = result[iterator_1.iterator]();
-        do {
-            var item = iterator.next();
-            if (item.done) {
-                destination.complete();
-                break;
-            }
-            destination.next(item.value);
-            if (destination.closed) {
-                break;
-            }
-        } while (true);
-    }
-    else if (result && typeof result[observable_1.observable] === 'function') {
-        var obs = result[observable_1.observable]();
-        if (typeof obs.subscribe !== 'function') {
-            destination.error(new TypeError('Provided object does not correctly implement Symbol.observable'));
-        }
-        else {
-            return obs.subscribe(new InnerSubscriber_1.InnerSubscriber(outerSubscriber, outerValue, outerIndex));
-        }
-    }
-    else {
-        var value = isObject_1.isObject(result) ? 'an invalid object' : "'" + result + "'";
-        var msg = ("You provided " + value + " where a stream was expected.")
-            + ' You can provide an Observable, Promise, Array, or Iterable.';
-        destination.error(new TypeError(msg));
-    }
-    return null;
-}
-exports.subscribeToResult = subscribeToResult;
-//# sourceMappingURL=subscribeToResult.js.map
-
-/***/ }),
 /* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -57114,7 +58564,7 @@ exports.isPromise = isPromise;
 
 "use strict";
 
-var root_1 = __webpack_require__(44);
+var root_1 = __webpack_require__(37);
 function symbolIteratorPonyfill(root) {
     var Symbol = root.Symbol;
     if (typeof Symbol === 'function') {
@@ -57163,7 +58613,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subscriber_1 = __webpack_require__(45);
+var Subscriber_1 = __webpack_require__(38);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -57299,9 +58749,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var Subject_1 = __webpack_require__(53);
-var Observable_1 = __webpack_require__(26);
-var Subscriber_1 = __webpack_require__(45);
-var Subscription_1 = __webpack_require__(52);
+var Observable_1 = __webpack_require__(11);
+var Subscriber_1 = __webpack_require__(38);
+var Subscription_1 = __webpack_require__(39);
 /**
  * @class ConnectableObservable<T>
  */
@@ -57506,7 +58956,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var Subscription_1 = __webpack_require__(52);
+var Subscription_1 = __webpack_require__(39);
 /**
  * We need this JSDoc comment for affecting ESDoc.
  * @ignore
@@ -57559,9 +59009,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(31);
 var common_1 = __webpack_require__(54);
-var platform_browser_1 = __webpack_require__(65);
+var platform_browser_1 = __webpack_require__(67);
 var app_component_1 = __webpack_require__(153);
-var wall_1 = __webpack_require__(94);
+var wall_1 = __webpack_require__(97);
 var LoggerPlugin = (function () {
     function LoggerPlugin(wallApi) {
         wallApi.registerFeatureApi('logger', {
@@ -57596,6 +59046,7 @@ var AppModule = (function () {
     AppModule = __decorate([
         core_1.NgModule({
             imports: [
+                wall_1.TowModule,
                 wall_1.WallModule,
                 wall_1.PickOutModule,
                 wall_1.TextBrickModule,
@@ -57637,12 +59088,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(31);
-var wall_1 = __webpack_require__(94);
+var wall_1 = __webpack_require__(97);
 var AppComponent = (function () {
     function AppComponent() {
         this.plan = null;
@@ -57652,167 +59100,252 @@ var AppComponent = (function () {
             onRegisterApi: this.onRegisterApi.bind(this)
         };
         this.wallPlan = {
-            'bricks': [
+            "bricks": [
                 {
-                    'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'WALL'
+                    "id": "46d291d5-b057-8798-00af-ed9ba015fcda",
+                    "tag": "header",
+                    "data": {
+                        "text": "WALL"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
+                    "id": "5cb0d4dd-24fa-de29-8785-619747830add",
+                    "tag": "text",
+                    "data": {
+                        "text": "The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components."
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '89399ff0-2d1a-bbd3-68ae-a55045571c4b',
-                    'tag': 'text',
-                    'data': {
-                        'text': ''
+                    "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f",
+                    "tag": "header",
+                    "data": {
+                        "text": "Navigation\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'cf7a2e00-5016-8b6d-b238-78c4b83b4468',
-                    'tag': 'img',
-                    'data': {
-                        'src': 'https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg'
+                    "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743",
+                    "tag": "text",
+                    "data": {
+                        "text": "Press `Escape` to enter to Selection mode"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4f3ce9ed-bebc-17e7-c23a-2cc64027ed09',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Roadmap'
+                    "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e",
+                    "tag": "text",
+                    "data": {
+                        "text": "Press Shift to select few bricks"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4b089695-bad3-06eb-f782-239c340864f3',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- drag\'n\'drop support'
+                    "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d",
+                    "tag": "header",
+                    "data": {
+                        "text": "Roadmap\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '878eca6b-5c7b-0cfa-c9ad-71481879d3e3',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- support few editors on the page'
+                    "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
+                    "tag": "text",
+                    "data": {
+                        "text": "- improve drag and drop handler"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Supported tags'
+                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
+                    "tag": "text",
+                    "data": {
+                        "text": "- support few editors on the page"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '4cf44a15-d08e-399d-38ba-c051a36f6574',
-                    'tag': 'text',
-                    'data': {
-                        'text': '/h header brick'
+                    "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2",
+                    "tag": "text",
+                    "data": {
+                        "text": "- support readonly mode"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': '56be0630-1cd8-4997-b69c-e40421cf79da',
-                    'tag': 'text',
-                    'data': {
-                        'text': '/img image brick'
+                    "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d",
+                    "tag": "header",
+                    "data": {
+                        "text": "Supported tags\n"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced',
-                    'tag': 'header',
-                    'data': {
-                        'text': 'Navigation'
+                    "id": "a587554d-5698-8988-0039-ae1db771695e",
+                    "tag": "text",
+                    "data": {
+                        "text": "/h header brick"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press `Escape` to enter to Selection mode'
+                    "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb",
+                    "tag": "text",
+                    "data": {
+                        "text": "/img image brick"
                     },
-                    'meta': {}
+                    "meta": {}
                 },
                 {
-                    'id': 'f6333894-7e4d-2759-c425-9b7feda57801',
-                    'tag': 'text',
-                    'data': {
-                        'text': 'Press Shift to select few bricks'
+                    "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211",
+                    "tag": "img",
+                    "data": {
+                        "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
                     },
-                    'meta': {}
-                },
-                {
-                    'id': '94339d03-f539-cded-bb5a-4273d05898d5',
-                    'tag': 'text',
-                    'data': {
-                        'text': '- support readonly mode'
-                    },
-                    'meta': {}
+                    "meta": {}
                 }
             ],
-            'layout': {
-                'bricks': [
+            "layout": {
+                "bricks": [
                     {
-                        'columns': [
+                        "columns": [
                             {
-                                'bricks': [
+                                "bricks": [
                                     {
-                                        'id': 'b631913d-84c5-5c7b-ecf0-714453a883f2'
-                                    },
+                                        "id": "46d291d5-b057-8798-00af-ed9ba015fcda"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '13e25e42-ae37-0ee6-8bf2-fd7f78bf8762'
-                                    },
+                                        "id": "5cb0d4dd-24fa-de29-8785-619747830add"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': 'f936a755-108a-a259-1f00-3c7bdd5d5ced'
-                                    },
+                                        "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': 'f796f546-57ce-49cb-9c1f-0479df9212b1'
-                                    },
+                                        "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': 'f6333894-7e4d-2759-c425-9b7feda57801'
-                                    },
+                                        "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '4f3ce9ed-bebc-17e7-c23a-2cc64027ed09'
-                                    },
+                                        "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '4b089695-bad3-06eb-f782-239c340864f3'
-                                    },
+                                        "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '878eca6b-5c7b-0cfa-c9ad-71481879d3e3'
-                                    },
+                                        "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '94339d03-f539-cded-bb5a-4273d05898d5'
-                                    },
+                                        "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '89399ff0-2d1a-bbd3-68ae-a55045571c4b'
-                                    },
+                                        "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': 'cf7a2e00-5016-8b6d-b238-78c4b83b4468'
-                                    },
+                                        "id": "a587554d-5698-8988-0039-ae1db771695e"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '30ee9fac-991f-ec6f-5b08-801d00d760a4'
-                                    },
+                                        "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
                                     {
-                                        'id': '4cf44a15-d08e-399d-38ba-c051a36f6574'
-                                    },
-                                    {
-                                        'id': '56be0630-1cd8-4997-b69c-e40421cf79da'
+                                        "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
                                     }
                                 ]
                             }
@@ -57835,9 +59368,8 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: __webpack_require__(154)
-        }),
-        __metadata("design:paramtypes", [])
+            template: __webpack_require__(165)
+        })
     ], AppComponent);
     return AppComponent;
 }());
@@ -57846,18 +59378,829 @@ exports.AppComponent = AppComponent;
 
 /***/ }),
 /* 154 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<div pick-out-area>\r\n    <div class=\"wrapper\">\r\n        <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\r\n\r\n        <br>\r\n        <hr>\r\n        <br>\r\n\r\n        <pre>\r\n        {{plan | json}}\r\n    </pre>\r\n    </div>\r\n</div>"
+"use strict";
+
+var Observable_1 = __webpack_require__(11);
+var fromEvent_1 = __webpack_require__(155);
+Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+//# sourceMappingURL=fromEvent.js.map
 
 /***/ }),
 /* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+var FromEventObservable_1 = __webpack_require__(156);
+exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
+//# sourceMappingURL=fromEvent.js.map
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Observable_1 = __webpack_require__(11);
+var tryCatch_1 = __webpack_require__(90);
+var isFunction_1 = __webpack_require__(64);
+var errorObject_1 = __webpack_require__(65);
+var Subscription_1 = __webpack_require__(39);
+var toString = Object.prototype.toString;
+function isNodeStyleEventEmitter(sourceObj) {
+    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
+}
+function isJQueryStyleEventEmitter(sourceObj) {
+    return !!sourceObj && typeof sourceObj.on === 'function' && typeof sourceObj.off === 'function';
+}
+function isNodeList(sourceObj) {
+    return !!sourceObj && toString.call(sourceObj) === '[object NodeList]';
+}
+function isHTMLCollection(sourceObj) {
+    return !!sourceObj && toString.call(sourceObj) === '[object HTMLCollection]';
+}
+function isEventTarget(sourceObj) {
+    return !!sourceObj && typeof sourceObj.addEventListener === 'function' && typeof sourceObj.removeEventListener === 'function';
+}
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+var FromEventObservable = (function (_super) {
+    __extends(FromEventObservable, _super);
+    function FromEventObservable(sourceObj, eventName, selector, options) {
+        _super.call(this);
+        this.sourceObj = sourceObj;
+        this.eventName = eventName;
+        this.selector = selector;
+        this.options = options;
+    }
+    /* tslint:enable:max-line-length */
+    /**
+     * Creates an Observable that emits events of a specific type coming from the
+     * given event target.
+     *
+     * <span class="informal">Creates an Observable from DOM events, or Node
+     * EventEmitter events or others.</span>
+     *
+     * <img src="./img/fromEvent.png" width="100%">
+     *
+     * Creates an Observable by attaching an event listener to an "event target",
+     * which may be an object with `addEventListener` and `removeEventListener`,
+     * a Node.js EventEmitter, a jQuery style EventEmitter, a NodeList from the
+     * DOM, or an HTMLCollection from the DOM. The event handler is attached when
+     * the output Observable is subscribed, and removed when the Subscription is
+     * unsubscribed.
+     *
+     * @example <caption>Emits clicks happening on the DOM document</caption>
+     * var clicks = Rx.Observable.fromEvent(document, 'click');
+     * clicks.subscribe(x => console.log(x));
+     *
+     * // Results in:
+     * // MouseEvent object logged to console everytime a click
+     * // occurs on the document.
+     *
+     * @see {@link from}
+     * @see {@link fromEventPattern}
+     *
+     * @param {EventTargetLike} target The DOMElement, event target, Node.js
+     * EventEmitter, NodeList or HTMLCollection to attach the event handler to.
+     * @param {string} eventName The event name of interest, being emitted by the
+     * `target`.
+     * @param {EventListenerOptions} [options] Options to pass through to addEventListener
+     * @param {SelectorMethodSignature<T>} [selector] An optional function to
+     * post-process results. It takes the arguments from the event handler and
+     * should return a single value.
+     * @return {Observable<T>}
+     * @static true
+     * @name fromEvent
+     * @owner Observable
+     */
+    FromEventObservable.create = function (target, eventName, options, selector) {
+        if (isFunction_1.isFunction(options)) {
+            selector = options;
+            options = undefined;
+        }
+        return new FromEventObservable(target, eventName, selector, options);
+    };
+    FromEventObservable.setupSubscription = function (sourceObj, eventName, handler, subscriber, options) {
+        var unsubscribe;
+        if (isNodeList(sourceObj) || isHTMLCollection(sourceObj)) {
+            for (var i = 0, len = sourceObj.length; i < len; i++) {
+                FromEventObservable.setupSubscription(sourceObj[i], eventName, handler, subscriber, options);
+            }
+        }
+        else if (isEventTarget(sourceObj)) {
+            var source_1 = sourceObj;
+            sourceObj.addEventListener(eventName, handler, options);
+            unsubscribe = function () { return source_1.removeEventListener(eventName, handler); };
+        }
+        else if (isJQueryStyleEventEmitter(sourceObj)) {
+            var source_2 = sourceObj;
+            sourceObj.on(eventName, handler);
+            unsubscribe = function () { return source_2.off(eventName, handler); };
+        }
+        else if (isNodeStyleEventEmitter(sourceObj)) {
+            var source_3 = sourceObj;
+            sourceObj.addListener(eventName, handler);
+            unsubscribe = function () { return source_3.removeListener(eventName, handler); };
+        }
+        else {
+            throw new TypeError('Invalid event target');
+        }
+        subscriber.add(new Subscription_1.Subscription(unsubscribe));
+    };
+    FromEventObservable.prototype._subscribe = function (subscriber) {
+        var sourceObj = this.sourceObj;
+        var eventName = this.eventName;
+        var options = this.options;
+        var selector = this.selector;
+        var handler = selector ? function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i - 0] = arguments[_i];
+            }
+            var result = tryCatch_1.tryCatch(selector).apply(void 0, args);
+            if (result === errorObject_1.errorObject) {
+                subscriber.error(errorObject_1.errorObject.e);
+            }
+            else {
+                subscriber.next(result);
+            }
+        } : function (e) { return subscriber.next(e); };
+        FromEventObservable.setupSubscription(sourceObj, eventName, handler, subscriber, options);
+    };
+    return FromEventObservable;
+}(Observable_1.Observable));
+exports.FromEventObservable = FromEventObservable;
+//# sourceMappingURL=FromEventObservable.js.map
+
+/***/ }),
+/* 157 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Observable_1 = __webpack_require__(11);
+var throttleTime_1 = __webpack_require__(158);
+Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
+//# sourceMappingURL=throttleTime.js.map
+
+/***/ }),
+/* 158 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscriber_1 = __webpack_require__(38);
+var async_1 = __webpack_require__(159);
+var throttle_1 = __webpack_require__(164);
+/**
+ * Emits a value from the source Observable, then ignores subsequent source
+ * values for `duration` milliseconds, then repeats this process.
+ *
+ * <span class="informal">Lets a value pass, then ignores source values for the
+ * next `duration` milliseconds.</span>
+ *
+ * <img src="./img/throttleTime.png" width="100%">
+ *
+ * `throttleTime` emits the source Observable values on the output Observable
+ * when its internal timer is disabled, and ignores source values when the timer
+ * is enabled. Initially, the timer is disabled. As soon as the first source
+ * value arrives, it is forwarded to the output Observable, and then the timer
+ * is enabled. After `duration` milliseconds (or the time unit determined
+ * internally by the optional `scheduler`) has passed, the timer is disabled,
+ * and this process repeats for the next source value. Optionally takes a
+ * {@link IScheduler} for managing timers.
+ *
+ * @example <caption>Emit clicks at a rate of at most one click per second</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.throttleTime(1000);
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link auditTime}
+ * @see {@link debounceTime}
+ * @see {@link delay}
+ * @see {@link sampleTime}
+ * @see {@link throttle}
+ *
+ * @param {number} duration Time to wait before emitting another value after
+ * emitting the last value, measured in milliseconds or the time unit determined
+ * internally by the optional `scheduler`.
+ * @param {Scheduler} [scheduler=async] The {@link IScheduler} to use for
+ * managing the timers that handle the throttling.
+ * @return {Observable<T>} An Observable that performs the throttle operation to
+ * limit the rate of emissions from the source.
+ * @method throttleTime
+ * @owner Observable
+ */
+function throttleTime(duration, scheduler, config) {
+    if (scheduler === void 0) { scheduler = async_1.async; }
+    if (config === void 0) { config = throttle_1.defaultThrottleConfig; }
+    return this.lift(new ThrottleTimeOperator(duration, scheduler, config.leading, config.trailing));
+}
+exports.throttleTime = throttleTime;
+var ThrottleTimeOperator = (function () {
+    function ThrottleTimeOperator(duration, scheduler, leading, trailing) {
+        this.duration = duration;
+        this.scheduler = scheduler;
+        this.leading = leading;
+        this.trailing = trailing;
+    }
+    ThrottleTimeOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new ThrottleTimeSubscriber(subscriber, this.duration, this.scheduler, this.leading, this.trailing));
+    };
+    return ThrottleTimeOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var ThrottleTimeSubscriber = (function (_super) {
+    __extends(ThrottleTimeSubscriber, _super);
+    function ThrottleTimeSubscriber(destination, duration, scheduler, leading, trailing) {
+        _super.call(this, destination);
+        this.duration = duration;
+        this.scheduler = scheduler;
+        this.leading = leading;
+        this.trailing = trailing;
+        this._hasTrailingValue = false;
+        this._trailingValue = null;
+    }
+    ThrottleTimeSubscriber.prototype._next = function (value) {
+        if (this.throttled) {
+            if (this.trailing) {
+                this._trailingValue = value;
+                this._hasTrailingValue = true;
+            }
+        }
+        else {
+            this.add(this.throttled = this.scheduler.schedule(dispatchNext, this.duration, { subscriber: this }));
+            if (this.leading) {
+                this.destination.next(value);
+            }
+        }
+    };
+    ThrottleTimeSubscriber.prototype.clearThrottle = function () {
+        var throttled = this.throttled;
+        if (throttled) {
+            if (this.trailing && this._hasTrailingValue) {
+                this.destination.next(this._trailingValue);
+                this._trailingValue = null;
+                this._hasTrailingValue = false;
+            }
+            throttled.unsubscribe();
+            this.remove(throttled);
+            this.throttled = null;
+        }
+    };
+    return ThrottleTimeSubscriber;
+}(Subscriber_1.Subscriber));
+function dispatchNext(arg) {
+    var subscriber = arg.subscriber;
+    subscriber.clearThrottle();
+}
+//# sourceMappingURL=throttleTime.js.map
+
+/***/ }),
+/* 159 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var AsyncAction_1 = __webpack_require__(160);
+var AsyncScheduler_1 = __webpack_require__(162);
+/**
+ *
+ * Async Scheduler
+ *
+ * <span class="informal">Schedule task as if you used setTimeout(task, duration)</span>
+ *
+ * `async` scheduler schedules tasks asynchronously, by putting them on the JavaScript
+ * event loop queue. It is best used to delay tasks in time or to schedule tasks repeating
+ * in intervals.
+ *
+ * If you just want to "defer" task, that is to perform it right after currently
+ * executing synchronous code ends (commonly achieved by `setTimeout(deferredTask, 0)`),
+ * better choice will be the {@link asap} scheduler.
+ *
+ * @example <caption>Use async scheduler to delay task</caption>
+ * const task = () => console.log('it works!');
+ *
+ * Rx.Scheduler.async.schedule(task, 2000);
+ *
+ * // After 2 seconds logs:
+ * // "it works!"
+ *
+ *
+ * @example <caption>Use async scheduler to repeat task in intervals</caption>
+ * function task(state) {
+ *   console.log(state);
+ *   this.schedule(state + 1, 1000); // `this` references currently executing Action,
+ *                                   // which we reschedule with new state and delay
+ * }
+ *
+ * Rx.Scheduler.async.schedule(task, 3000, 0);
+ *
+ * // Logs:
+ * // 0 after 3s
+ * // 1 after 4s
+ * // 2 after 5s
+ * // 3 after 6s
+ *
+ * @static true
+ * @name async
+ * @owner Scheduler
+ */
+exports.async = new AsyncScheduler_1.AsyncScheduler(AsyncAction_1.AsyncAction);
+//# sourceMappingURL=async.js.map
+
+/***/ }),
+/* 160 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var root_1 = __webpack_require__(37);
+var Action_1 = __webpack_require__(161);
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var AsyncAction = (function (_super) {
+    __extends(AsyncAction, _super);
+    function AsyncAction(scheduler, work) {
+        _super.call(this, scheduler, work);
+        this.scheduler = scheduler;
+        this.work = work;
+        this.pending = false;
+    }
+    AsyncAction.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        if (this.closed) {
+            return this;
+        }
+        // Always replace the current state with the new state.
+        this.state = state;
+        // Set the pending flag indicating that this action has been scheduled, or
+        // has recursively rescheduled itself.
+        this.pending = true;
+        var id = this.id;
+        var scheduler = this.scheduler;
+        //
+        // Important implementation note:
+        //
+        // Actions only execute once by default, unless rescheduled from within the
+        // scheduled callback. This allows us to implement single and repeat
+        // actions via the same code path, without adding API surface area, as well
+        // as mimic traditional recursion but across asynchronous boundaries.
+        //
+        // However, JS runtimes and timers distinguish between intervals achieved by
+        // serial `setTimeout` calls vs. a single `setInterval` call. An interval of
+        // serial `setTimeout` calls can be individually delayed, which delays
+        // scheduling the next `setTimeout`, and so on. `setInterval` attempts to
+        // guarantee the interval callback will be invoked more precisely to the
+        // interval period, regardless of load.
+        //
+        // Therefore, we use `setInterval` to schedule single and repeat actions.
+        // If the action reschedules itself with the same delay, the interval is not
+        // canceled. If the action doesn't reschedule, or reschedules with a
+        // different delay, the interval will be canceled after scheduled callback
+        // execution.
+        //
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, delay);
+        }
+        this.delay = delay;
+        // If this action has already an async Id, don't request a new one.
+        this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
+        return this;
+    };
+    AsyncAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        return root_1.root.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    };
+    AsyncAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        // If this action is rescheduled with the same delay time, don't clear the interval id.
+        if (delay !== null && this.delay === delay && this.pending === false) {
+            return id;
+        }
+        // Otherwise, if the action's delay time is different from the current delay,
+        // or the action has been rescheduled before it's executed, clear the interval id
+        return root_1.root.clearInterval(id) && undefined || undefined;
+    };
+    /**
+     * Immediately executes this action and the `work` it contains.
+     * @return {any}
+     */
+    AsyncAction.prototype.execute = function (state, delay) {
+        if (this.closed) {
+            return new Error('executing a cancelled action');
+        }
+        this.pending = false;
+        var error = this._execute(state, delay);
+        if (error) {
+            return error;
+        }
+        else if (this.pending === false && this.id != null) {
+            // Dequeue if the action didn't reschedule itself. Don't call
+            // unsubscribe(), because the action could reschedule later.
+            // For example:
+            // ```
+            // scheduler.schedule(function doWork(counter) {
+            //   /* ... I'm a busy worker bee ... */
+            //   var originalAction = this;
+            //   /* wait 100ms before rescheduling the action */
+            //   setTimeout(function () {
+            //     originalAction.schedule(counter + 1);
+            //   }, 100);
+            // }, 1000);
+            // ```
+            this.id = this.recycleAsyncId(this.scheduler, this.id, null);
+        }
+    };
+    AsyncAction.prototype._execute = function (state, delay) {
+        var errored = false;
+        var errorValue = undefined;
+        try {
+            this.work(state);
+        }
+        catch (e) {
+            errored = true;
+            errorValue = !!e && e || new Error(e);
+        }
+        if (errored) {
+            this.unsubscribe();
+            return errorValue;
+        }
+    };
+    AsyncAction.prototype._unsubscribe = function () {
+        var id = this.id;
+        var scheduler = this.scheduler;
+        var actions = scheduler.actions;
+        var index = actions.indexOf(this);
+        this.work = null;
+        this.state = null;
+        this.pending = false;
+        this.scheduler = null;
+        if (index !== -1) {
+            actions.splice(index, 1);
+        }
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, null);
+        }
+        this.delay = null;
+    };
+    return AsyncAction;
+}(Action_1.Action));
+exports.AsyncAction = AsyncAction;
+//# sourceMappingURL=AsyncAction.js.map
+
+/***/ }),
+/* 161 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscription_1 = __webpack_require__(39);
+/**
+ * A unit of work to be executed in a {@link Scheduler}. An action is typically
+ * created from within a Scheduler and an RxJS user does not need to concern
+ * themselves about creating and manipulating an Action.
+ *
+ * ```ts
+ * class Action<T> extends Subscription {
+ *   new (scheduler: Scheduler, work: (state?: T) => void);
+ *   schedule(state?: T, delay: number = 0): Subscription;
+ * }
+ * ```
+ *
+ * @class Action<T>
+ */
+var Action = (function (_super) {
+    __extends(Action, _super);
+    function Action(scheduler, work) {
+        _super.call(this);
+    }
+    /**
+     * Schedules this action on its parent Scheduler for execution. May be passed
+     * some context object, `state`. May happen at some point in the future,
+     * according to the `delay` parameter, if specified.
+     * @param {T} [state] Some contextual data that the `work` function uses when
+     * called by the Scheduler.
+     * @param {number} [delay] Time to wait before executing the work, where the
+     * time unit is implicit and defined by the Scheduler.
+     * @return {void}
+     */
+    Action.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        return this;
+    };
+    return Action;
+}(Subscription_1.Subscription));
+exports.Action = Action;
+//# sourceMappingURL=Action.js.map
+
+/***/ }),
+/* 162 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Scheduler_1 = __webpack_require__(163);
+var AsyncScheduler = (function (_super) {
+    __extends(AsyncScheduler, _super);
+    function AsyncScheduler() {
+        _super.apply(this, arguments);
+        this.actions = [];
+        /**
+         * A flag to indicate whether the Scheduler is currently executing a batch of
+         * queued actions.
+         * @type {boolean}
+         */
+        this.active = false;
+        /**
+         * An internal ID used to track the latest asynchronous task such as those
+         * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
+         * others.
+         * @type {any}
+         */
+        this.scheduled = undefined;
+    }
+    AsyncScheduler.prototype.flush = function (action) {
+        var actions = this.actions;
+        if (this.active) {
+            actions.push(action);
+            return;
+        }
+        var error;
+        this.active = true;
+        do {
+            if (error = action.execute(action.state, action.delay)) {
+                break;
+            }
+        } while (action = actions.shift()); // exhaust the scheduler queue
+        this.active = false;
+        if (error) {
+            while (action = actions.shift()) {
+                action.unsubscribe();
+            }
+            throw error;
+        }
+    };
+    return AsyncScheduler;
+}(Scheduler_1.Scheduler));
+exports.AsyncScheduler = AsyncScheduler;
+//# sourceMappingURL=AsyncScheduler.js.map
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * An execution context and a data structure to order tasks and schedule their
+ * execution. Provides a notion of (potentially virtual) time, through the
+ * `now()` getter method.
+ *
+ * Each unit of work in a Scheduler is called an {@link Action}.
+ *
+ * ```ts
+ * class Scheduler {
+ *   now(): number;
+ *   schedule(work, delay?, state?): Subscription;
+ * }
+ * ```
+ *
+ * @class Scheduler
+ */
+var Scheduler = (function () {
+    function Scheduler(SchedulerAction, now) {
+        if (now === void 0) { now = Scheduler.now; }
+        this.SchedulerAction = SchedulerAction;
+        this.now = now;
+    }
+    /**
+     * Schedules a function, `work`, for execution. May happen at some point in
+     * the future, according to the `delay` parameter, if specified. May be passed
+     * some context object, `state`, which will be passed to the `work` function.
+     *
+     * The given arguments will be processed an stored as an Action object in a
+     * queue of actions.
+     *
+     * @param {function(state: ?T): ?Subscription} work A function representing a
+     * task, or some unit of work to be executed by the Scheduler.
+     * @param {number} [delay] Time to wait before executing the work, where the
+     * time unit is implicit and defined by the Scheduler itself.
+     * @param {T} [state] Some contextual data that the `work` function uses when
+     * called by the Scheduler.
+     * @return {Subscription} A subscription in order to be able to unsubscribe
+     * the scheduled work.
+     */
+    Scheduler.prototype.schedule = function (work, delay, state) {
+        if (delay === void 0) { delay = 0; }
+        return new this.SchedulerAction(this, work).schedule(state, delay);
+    };
+    Scheduler.now = Date.now ? Date.now : function () { return +new Date(); };
+    return Scheduler;
+}());
+exports.Scheduler = Scheduler;
+//# sourceMappingURL=Scheduler.js.map
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var OuterSubscriber_1 = __webpack_require__(94);
+var subscribeToResult_1 = __webpack_require__(95);
+exports.defaultThrottleConfig = {
+    leading: true,
+    trailing: false
+};
+/**
+ * Emits a value from the source Observable, then ignores subsequent source
+ * values for a duration determined by another Observable, then repeats this
+ * process.
+ *
+ * <span class="informal">It's like {@link throttleTime}, but the silencing
+ * duration is determined by a second Observable.</span>
+ *
+ * <img src="./img/throttle.png" width="100%">
+ *
+ * `throttle` emits the source Observable values on the output Observable
+ * when its internal timer is disabled, and ignores source values when the timer
+ * is enabled. Initially, the timer is disabled. As soon as the first source
+ * value arrives, it is forwarded to the output Observable, and then the timer
+ * is enabled by calling the `durationSelector` function with the source value,
+ * which returns the "duration" Observable. When the duration Observable emits a
+ * value or completes, the timer is disabled, and this process repeats for the
+ * next source value.
+ *
+ * @example <caption>Emit clicks at a rate of at most one click per second</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var result = clicks.throttle(ev => Rx.Observable.interval(1000));
+ * result.subscribe(x => console.log(x));
+ *
+ * @see {@link audit}
+ * @see {@link debounce}
+ * @see {@link delayWhen}
+ * @see {@link sample}
+ * @see {@link throttleTime}
+ *
+ * @param {function(value: T): SubscribableOrPromise} durationSelector A function
+ * that receives a value from the source Observable, for computing the silencing
+ * duration for each source value, returned as an Observable or a Promise.
+ * @param {Object} config a configuration object to define `leading` and `trailing` behavior. Defaults
+ * to `{ leading: true, trailing: false }`.
+ * @return {Observable<T>} An Observable that performs the throttle operation to
+ * limit the rate of emissions from the source.
+ * @method throttle
+ * @owner Observable
+ */
+function throttle(durationSelector, config) {
+    if (config === void 0) { config = exports.defaultThrottleConfig; }
+    return this.lift(new ThrottleOperator(durationSelector, config.leading, config.trailing));
+}
+exports.throttle = throttle;
+var ThrottleOperator = (function () {
+    function ThrottleOperator(durationSelector, leading, trailing) {
+        this.durationSelector = durationSelector;
+        this.leading = leading;
+        this.trailing = trailing;
+    }
+    ThrottleOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new ThrottleSubscriber(subscriber, this.durationSelector, this.leading, this.trailing));
+    };
+    return ThrottleOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc
+ * @ignore
+ * @extends {Ignored}
+ */
+var ThrottleSubscriber = (function (_super) {
+    __extends(ThrottleSubscriber, _super);
+    function ThrottleSubscriber(destination, durationSelector, _leading, _trailing) {
+        _super.call(this, destination);
+        this.destination = destination;
+        this.durationSelector = durationSelector;
+        this._leading = _leading;
+        this._trailing = _trailing;
+        this._hasTrailingValue = false;
+    }
+    ThrottleSubscriber.prototype._next = function (value) {
+        if (this.throttled) {
+            if (this._trailing) {
+                this._hasTrailingValue = true;
+                this._trailingValue = value;
+            }
+        }
+        else {
+            var duration = this.tryDurationSelector(value);
+            if (duration) {
+                this.add(this.throttled = subscribeToResult_1.subscribeToResult(this, duration));
+            }
+            if (this._leading) {
+                this.destination.next(value);
+                if (this._trailing) {
+                    this._hasTrailingValue = true;
+                    this._trailingValue = value;
+                }
+            }
+        }
+    };
+    ThrottleSubscriber.prototype.tryDurationSelector = function (value) {
+        try {
+            return this.durationSelector(value);
+        }
+        catch (err) {
+            this.destination.error(err);
+            return null;
+        }
+    };
+    ThrottleSubscriber.prototype._unsubscribe = function () {
+        var _a = this, throttled = _a.throttled, _trailingValue = _a._trailingValue, _hasTrailingValue = _a._hasTrailingValue, _trailing = _a._trailing;
+        this._trailingValue = null;
+        this._hasTrailingValue = false;
+        if (throttled) {
+            this.remove(throttled);
+            this.throttled = null;
+            throttled.unsubscribe();
+        }
+    };
+    ThrottleSubscriber.prototype._sendTrailing = function () {
+        var _a = this, destination = _a.destination, throttled = _a.throttled, _trailing = _a._trailing, _trailingValue = _a._trailingValue, _hasTrailingValue = _a._hasTrailingValue;
+        if (throttled && _trailing && _hasTrailingValue) {
+            destination.next(_trailingValue);
+            this._trailingValue = null;
+            this._hasTrailingValue = false;
+        }
+    };
+    ThrottleSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this._sendTrailing();
+        this._unsubscribe();
+    };
+    ThrottleSubscriber.prototype.notifyComplete = function () {
+        this._sendTrailing();
+        this._unsubscribe();
+    };
+    return ThrottleSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
+//# sourceMappingURL=throttle.js.map
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports) {
+
+module.exports = "<div pick-out-area>\r\n    <div class=\"wrapper\">\r\n        <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\r\n\r\n        <br>\r\n        <hr>\r\n        <br>\r\n\r\n        <pre>\r\n        {{plan | json}}\r\n    </pre>\r\n    </div>\r\n</div>"
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(156);
+var content = __webpack_require__(167);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -57865,7 +60208,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(96)(content, options);
+var update = __webpack_require__(99)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -57882,10 +60225,10 @@ if(false) {
 }
 
 /***/ }),
-/* 156 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(95)(undefined);
+exports = module.exports = __webpack_require__(98)(undefined);
 // imports
 
 
@@ -57896,7 +60239,7 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0-beta (https://getbootstrap.com
 
 
 /***/ }),
-/* 157 */
+/* 168 */
 /***/ (function(module, exports) {
 
 
@@ -57991,19 +60334,19 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 158 */
+/* 169 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 159 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(160);
+var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -58011,7 +60354,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(96)(content, options);
+var update = __webpack_require__(99)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -58028,18 +60371,18 @@ if(false) {
 }
 
 /***/ }),
-/* 160 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(95)(undefined);
+exports = module.exports = __webpack_require__(98)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block;\n  overflow: auto; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 300px; }\n\nwall-canvas-brick {\n  display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    transition: background-color 0.5s ease; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      opacity: 0.5;\n      background-color: #bae6f3; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 8px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick h3 {\n    word-break: break-all;\n    padding: 8px 2px;\n    margin: 20px 0 0 0; }\n    header-brick h3:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }", ""]);
+exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
 
 // exports
 
 
 /***/ })
-/******/ ]));
+/******/ ]);
