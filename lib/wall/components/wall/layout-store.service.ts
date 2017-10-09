@@ -66,7 +66,6 @@ export class LayoutStore {
     }
 
     addBrickToNewRowAfterBrickId(targetBrickId, afterBrickId) {
-        console.log('addBrickToNewRowAfterBrickId');
         const afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
 
         const newRowIndex = afterBrickPosition.rowIndex + 1;
@@ -77,20 +76,11 @@ export class LayoutStore {
     }
 
     addBrickToNewRowBeforeBrickId(brickId, beforeBrickId) {
-        console.log('addBrickToNewRowBeforeBrickId');
         const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
 
-        let newRowIndex;
+        this.createNewRow(beforeBrickPosition.rowIndex);
 
-        if (beforeBrickPosition.rowIndex === 0) {
-            newRowIndex = 0;
-        } else {
-            newRowIndex = beforeBrickPosition.rowIndex - 1;
-        }
-
-        this.createNewRow(newRowIndex);
-
-        this.addBrick(brickId, newRowIndex, 0, 0);
+        this.addBrick(brickId, beforeBrickPosition.rowIndex, 0, 0);
     }
 
     addBrickAfterInSameColumn(siblingBrickId: string, brickId: string) {

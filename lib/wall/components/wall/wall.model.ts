@@ -264,6 +264,8 @@ export class WallModel {
             } else {
                 this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
             }
+
+            this.unSelectBricks();
         }
     }
 
@@ -280,6 +282,8 @@ export class WallModel {
             } else {
                 this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
             }
+
+            this.unSelectBricks();
         }
     }
 
@@ -289,6 +293,8 @@ export class WallModel {
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+
+            this.unSelectBricks();
         }
     }
 
