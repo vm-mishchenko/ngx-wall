@@ -8,3 +8,6 @@ export class StartPickOut {
 
 export class EndPickOut {
 }
+
+export class StopPickOut {
+}

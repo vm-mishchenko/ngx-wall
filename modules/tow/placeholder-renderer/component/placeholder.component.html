@@ -1,0 +1,17 @@
+<div *ngIf="x">
+    <div *ngIf="isHorizontal"
+         [style.left.px]="x"
+         [style.top.px]="y"
+         [style.width.px]="size"
+         [style.height.px]="3"
+         class="tow-placeholder">
+    </div>
+
+    <div *ngIf="!isHorizontal"
+         [style.left.px]="x"
+         [style.top.px]="y"
+         [style.width.px]="3"
+         [style.height.px]="size"
+         class="tow-placeholder">
+    </div>
+</div>

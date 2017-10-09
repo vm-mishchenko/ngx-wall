@@ -1,14 +1,15 @@
 import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
 import { WallModel } from './wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
-import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
+import { WallConfiguration } from './wall.interfaces';
+import { WallDefinition } from "./interfaces/wall-definition.interface";
 
 @Injectable()
 export class WallController {
     constructor(public wallModel: WallModel, private injector: Injector) {
     }
 
-    initialize(plan: IWallDefinition, configuration: IWallConfiguration) {
+    initialize(plan: WallDefinition, configuration: WallConfiguration) {
         // initialize core functionality
         this.wallModel.initialize(plan, configuration);
 

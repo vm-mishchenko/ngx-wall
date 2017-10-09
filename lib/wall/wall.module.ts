@@ -9,13 +9,17 @@ import { WallCanvasBrickComponent } from './components/wall-canvas/components/wa
 import { WALL_PLUGIN } from './wall.tokens';
 import { SelectionPlugin } from './plugins/selection/selection';
 import { WallEditorRegistry } from './wall-editor.registry';
-import { PickOutModule } from '../pick-out';
+import { PickOutModule } from '../../modules/pick-out';
+import { TowModule } from '../../modules/tow';
+import { RadarModule } from "../../modules/radar";
 
 @NgModule({
     imports: [
         BrowserModule,
         CommonModule,
-        PickOutModule
+        PickOutModule,
+        TowModule,
+        RadarModule
     ],
 
     providers: [

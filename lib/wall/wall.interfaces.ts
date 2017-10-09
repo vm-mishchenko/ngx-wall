@@ -2,7 +2,7 @@
 export const awesomeTypescriptLoaderBug2 = true;
 
 // Register new brick
-export interface IBrickSpecification {
+export interface BrickSpecification {
     tag: string;
     component: any;
     supportText?: true;

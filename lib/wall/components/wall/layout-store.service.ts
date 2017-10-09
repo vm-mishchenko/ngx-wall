@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
-import { ILayoutDefinition } from './wall.interfaces';
+import { LayoutDefinition } from './wall.interfaces';
 import { BrickRegistry } from '../../registry/brick-registry.service';
 import { BrickStore } from './brick-store.service';
 
 @Injectable()
 export class LayoutStore {
-    constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
-
-    }
-
-    layout: ILayoutDefinition = null;
-
+    layout: LayoutDefinition = null;
     canvasLayout: any = {
         bricks: []
     };
 
-    initialize(layout: ILayoutDefinition) {
+    constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
+
+    }
+
+    initialize(layout: LayoutDefinition) {
         this.layout = layout;
 
         this.updateCanvasLayout();
@@ -50,23 +49,6 @@ export class LayoutStore {
         let row = this.layout.bricks[targetRowIndex];
         let column = row.columns[targetColumnIndex];
 
-
-        // column should already exist,  it's wall.model responsibility to check
-
-        /*if (!column) {
-            positionIndex = 0;
-
-            const siblingColumn = row.columns[targetColumnIndex - 1];
-
-            if (siblingColumn.bricks.length === 0) {
-                column = siblingColumn;
-            } else {
-                column = row.columns[row.columns.length] = {
-                    bricks: []
-                };
-            }
-        }*/
-
         const brick = {
             id: brickId
         };
@@ -76,22 +58,112 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
+    // TODO: remove this method, instead use addBrickToNewRowAfterBrickId
     addBrickToNewRow(brickId: string, targetRowIndex: number) {
         this.createNewRow(targetRowIndex);
 
         this.addBrick(brickId, targetRowIndex, 0, 0);
     }
 
-    addBrickToNewColumn(brickId: string, targetRowIndex: number, targetColumnIndex: number) {
-        this.createNewColumn(targetRowIndex, targetColumnIndex);
+    addBrickToNewRowAfterBrickId(targetBrickId, afterBrickId) {
+        console.log('addBrickToNewRowAfterBrickId');
+        const afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
 
-        this.addBrick(brickId, targetRowIndex, targetColumnIndex, 0);
+        const newRowIndex = afterBrickPosition.rowIndex + 1;
+
+        this.createNewRow(newRowIndex);
+
+        this.addBrick(targetBrickId, newRowIndex, 0, 0);
+    }
+
+    addBrickToNewRowBeforeBrickId(brickId, beforeBrickId) {
+        console.log('addBrickToNewRowBeforeBrickId');
+        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+
+        let newRowIndex;
+
+        if (beforeBrickPosition.rowIndex === 0) {
+            newRowIndex = 0;
+        } else {
+            newRowIndex = beforeBrickPosition.rowIndex - 1;
+        }
+
+        this.createNewRow(newRowIndex);
+
+        this.addBrick(brickId, newRowIndex, 0, 0);
     }
 
     addBrickAfterInSameColumn(siblingBrickId: string, brickId: string) {
         const brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
 
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
+    }
+
+    addBrickBeforeInSameColumn(siblingBrickId: string, brickId: string) {
+        const brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
+
+        this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex);
+    }
+
+    moveBrickAfterInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.reverse();
+
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+            this.addBrickAfterInSameColumn(beforeBrickId, brickId);
+        });
+    }
+
+    moveBrickBeforeInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+
+            this.addBrickBeforeInSameColumn(beforeBrickId, brickId);
+        });
+    }
+
+    moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+        });
+
+        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+
+        const rowIndex = beforeBrickPosition.rowIndex;
+        let columnIndex;
+
+        if (side === 'left') {
+            columnIndex = beforeBrickPosition.columnIndex;
+        } else if (side === 'right') {
+            columnIndex = beforeBrickPosition.columnIndex + 1;
+        }
+
+        this.createNewColumn(rowIndex, columnIndex);
+
+        targetBrickIds.forEach((brickId, index) => {
+            this.addBrick(brickId, rowIndex, columnIndex, index);
+        });
+    }
+
+    moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.reverse();
+
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+
+            this.addBrickToNewRowAfterBrickId(brickId, beforeBrickId);
+        });
+    }
+
+    moveBrickBeforeInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.forEach((brickId, index) => {
+            this.removeBrick(brickId);
+            if (index === 0) {
+                this.addBrickToNewRowBeforeBrickId(brickId, beforeBrickId);
+            } else {
+                this.addBrickToNewRowAfterBrickId(brickId, targetBrickIds[index - 1]);
+            }
+        });
     }
 
     removeBrick(brickId: string) {
@@ -101,7 +173,7 @@ export class LayoutStore {
         const column = row.columns[brickPosition.columnIndex];
 
         // remove brick
-        column.bricks.splice(brickPosition.brickIndex, 1);
+        const removedBrick = column.bricks.splice(brickPosition.brickIndex, 1);
 
         // remove column if there are no bricks inside
         if (column.bricks.length === 0) {
@@ -123,6 +195,8 @@ export class LayoutStore {
         }
 
         this.updateCanvasLayout();
+
+        return removedBrick[0];
     }
 
     getNextBrickId(brickId: string): string {

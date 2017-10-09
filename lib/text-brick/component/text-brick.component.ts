@@ -78,7 +78,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             } else if (this.state.text === '/img') {
                 this.wallApi.core.turnBrickInto(this.id, 'img');
             } else {
-                this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             }
         }
     }
@@ -96,22 +96,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
             range.selectNodeContents(this.editor.nativeElement);
             range.collapse(false);
-
-            const sel = window.getSelection();
-
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }
-
-    placeCaretAtStart() {
-        // place caret at the end
-        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
-        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
-            const range = document.createRange();
-
-            range.selectNodeContents(this.editor.nativeElement);
-            range.collapse(true);
 
             const sel = window.getSelection();
 

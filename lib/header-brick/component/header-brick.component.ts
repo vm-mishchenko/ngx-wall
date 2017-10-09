@@ -73,7 +73,7 @@ export class HeaderBrickComponent implements OnInit {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            this.wallApi.core.addBrickAfterInSameColumn(this.id, 'text');
+            this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
         }
     }
 

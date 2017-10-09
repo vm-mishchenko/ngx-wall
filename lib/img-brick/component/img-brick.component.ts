@@ -30,15 +30,17 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
     ngOnInit() {
         this.store = this.wallApi.core.getBrickStore(this.id);
 
-        this.state = this.store.get();
-
-        this.state.src = this.state.src || '';
+        this.updateState(this.store.get());
 
         if (this.state.src) {
             this.src.nativeElement.value = this.state.src;
 
             this.uiState = this.uiStates.image;
         }
+    }
+
+    updateState(newState) {
+        Object.assign(this.state, newState);
     }
 
     onWallFocus(): void {
@@ -59,9 +61,9 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
             this.applyImageSrc()
                 .then(() => {
-                    this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }).catch(() => {
-                this.wallApi.core.addBrickAfterInNewRow(this.id, 'text');
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             });
         }
     }

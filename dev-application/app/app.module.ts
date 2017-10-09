@@ -5,7 +5,7 @@ import {AppComponent} from './app.component';
 import {
     HeaderBrickModule,
     ImgBrickModule,
-    SelectionModule,
+    TowModule,
     TextBrickModule,
     WALL_PLUGIN,
     WallApi,
@@ -35,6 +35,7 @@ class EventLoggerPlugin {
 
 @NgModule({
     imports: [
+        TowModule,
         WallModule,
         PickOutModule,
         TextBrickModule,

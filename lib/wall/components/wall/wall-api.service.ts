@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { IWallCoreApi } from './wall.interfaces';
-
-// TODO: need to implement IWallApi interface
+import { WallCoreApi } from "./interfaces/wall-core-api.interface";
 
 @Injectable()
 export class WallApi {
-    core: IWallCoreApi = null;
+    core: WallCoreApi = null;
 
     features: any = {};
 

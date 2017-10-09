@@ -1,9 +1,9 @@
-<h3 #editor
+<div #editor
     [hidden]="mode === modes.READ"
     (keydown)="onKeyPress($event)"
     (keyup)="onTextChanged()"
     class="editor"
-    contenteditable="true">
-</h3>
+    contenteditable>
+</div>
 
-<h3 [innerHTML]="state.text" [hidden]="mode === modes.EDIT"></h3>
+<div [innerHTML]="state.text" [hidden]="mode === modes.EDIT"></div>

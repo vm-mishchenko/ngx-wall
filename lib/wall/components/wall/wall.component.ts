@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { IWallConfiguration, IWallDefinition } from './wall.interfaces';
+import { WallConfiguration } from './wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
 import { WallModel } from './wall.model';
 import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
+import { WallDefinition } from "./interfaces/wall-definition.interface";
 
 @Component({
     selector: 'wall',
@@ -18,8 +19,8 @@ import { LayoutStore } from './layout-store.service';
     ]
 })
 export class WallComponent implements OnInit {
-    @Input() plan: IWallDefinition = null;
-    @Input() configuration: IWallConfiguration = null;
+    @Input() plan: WallDefinition = null;
+    @Input() configuration: WallConfiguration = null;
 
     constructor(private wallController: WallController) {
     }

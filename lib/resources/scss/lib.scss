@@ -56,7 +56,6 @@ $w-background-hover-color: #ecebea;
 
 wall-canvas {
   display: block;
-  overflow: auto;
 
   .wall-canvas__editor {
     min-height: 200px;
@@ -64,15 +63,47 @@ wall-canvas {
   }
 
   .wall-canvas__expander {
-    min-height: 300px;
+    min-height: 50px;
   }
 }
 
 wall-canvas-brick {
   display: block;
+  margin: 0 0 2px;
+
+  .wall-canvas-brick__draggable {
+    .wall-canvas-brick__draggable-handler {
+      display: block;
+    }
+  }
 
   .wall-canvas-brick__wrapper {
-    transition: background-color 0.5s ease;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+
+  .wall-canvas-brick__draggable-box {
+    width: 23px;
+    height: 26px;
+    padding: 4px;
+    border-radius: 3px;
+  }
+
+  .wall-canvas-brick__draggable-handler {
+    display: none;
+    position: absolute;
+    left: -35px;
+    top: 0;
+    padding: 5px;
+    margin: 0;
+    cursor: pointer;
+    border-radius: 3px;
+
+    &:hover {
+      .wall-canvas-brick__draggable-box {
+        background: #f5f5f5;
+      }
+    }
   }
 
   .wall-canvas-brick__selected {
@@ -85,8 +116,9 @@ wall-canvas-brick {
       bottom: 0;
       left: 0;
       right: 0;
-      opacity: 0.5;
-      background-color: #bae6f3;
+      background-color: #9be0ff;
+      pointer-events: none;
+      opacity: 0.2;
     }
   }
 }
@@ -106,7 +138,7 @@ text-brick {
 
   .text-brick__editor {
     word-break: break-all;
-    padding: 8px 2px;
+    padding: 6px 2px;
 
     &:focus {
       outline: none;
@@ -118,11 +150,16 @@ text-brick {
 header-brick {
   display: block;
 
-  h3 {
+  div {
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: -0.002em;
+    line-height: 1.2;
+
     word-break: break-all;
 
-    padding: 8px 2px;
-    margin: 20px 0 0 0;
+    padding: 6px 2px;
+    margin: 8px 0 0 0;
 
     &:focus {
       outline: none;
@@ -157,6 +194,7 @@ img-brick {
   }
 
   .show {
+    z-index: 10;
     opacity: 1;
     visibility: visible;
     transition-delay: 0s;
@@ -170,4 +208,13 @@ img-brick {
   opacity: 0.5;
   position: fixed;
   background-color: $w-text-color;
+}
+
+// row
+
+.tow-placeholder {
+  opacity: 0.5;
+  position: fixed;
+  background-color: #78bed4;
+  border-radius: 2px;
 }
