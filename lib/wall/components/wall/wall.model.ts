@@ -62,6 +62,7 @@ export class WallModel {
 
             // MOVE BRICK
             'moveBrickAfterBrickId',
+            'moveBrickBeforeBrickId',
             'moveBrickToNewColumn',
 
             // REMOVE BRICK
@@ -269,6 +270,22 @@ export class WallModel {
     /**
      * @public
      * */
+    moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            const brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+
+            if (columnCount === 1) {
+                this.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+            } else {
+                this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
+            }
+        }
+    }
+
+    /**
+     * @public
+     * */
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
@@ -372,8 +389,16 @@ export class WallModel {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
     }
 
+    private moveBrickBeforeInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        this.layoutStore.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+    }
+
     private moveBrickAfterInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+    }
+
+    private moveBrickBeforeInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        this.layoutStore.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
     }
 
     private isOnlyOneBrickEmptyText() {

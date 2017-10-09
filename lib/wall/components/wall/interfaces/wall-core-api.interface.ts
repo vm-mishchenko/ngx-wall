@@ -33,6 +33,8 @@ export interface WallCoreApi {
     // MOVE BRICK
     moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string);
 
+    moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string);
+
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string);
 
 

@@ -58,27 +58,39 @@ export class LayoutStore {
         this.updateCanvasLayout();
     }
 
-    // TODO: remove this method, instead use addBrickToNewRowByBeforeBrickId
+    // TODO: remove this method, instead use addBrickToNewRowAfterBrickId
     addBrickToNewRow(brickId: string, targetRowIndex: number) {
         this.createNewRow(targetRowIndex);
 
         this.addBrick(brickId, targetRowIndex, 0, 0);
     }
 
-    addBrickToNewRowByBeforeBrickId(targetBrickId, beforeBrickId) {
-        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+    addBrickToNewRowAfterBrickId(targetBrickId, afterBrickId) {
+        console.log('addBrickToNewRowAfterBrickId');
+        const afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
 
-        const newRowIndex = beforeBrickPosition.rowIndex + 1;
+        const newRowIndex = afterBrickPosition.rowIndex + 1;
 
         this.createNewRow(newRowIndex);
 
         this.addBrick(targetBrickId, newRowIndex, 0, 0);
     }
 
-    addBrickToNewColumn(brickId: string, targetRowIndex: number, targetColumnIndex: number) {
-        this.createNewColumn(targetRowIndex, targetColumnIndex);
+    addBrickToNewRowBeforeBrickId(brickId, beforeBrickId) {
+        console.log('addBrickToNewRowBeforeBrickId');
+        const beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
 
-        this.addBrick(brickId, targetRowIndex, targetColumnIndex, 0);
+        let newRowIndex;
+
+        if (beforeBrickPosition.rowIndex === 0) {
+            newRowIndex = 0;
+        } else {
+            newRowIndex = beforeBrickPosition.rowIndex - 1;
+        }
+
+        this.createNewRow(newRowIndex);
+
+        this.addBrick(brickId, newRowIndex, 0, 0);
     }
 
     addBrickAfterInSameColumn(siblingBrickId: string, brickId: string) {
@@ -87,12 +99,26 @@ export class LayoutStore {
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
     }
 
+    addBrickBeforeInSameColumn(siblingBrickId: string, brickId: string) {
+        const brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
+
+        this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex);
+    }
+
     moveBrickAfterInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
         targetBrickIds.reverse();
 
         targetBrickIds.forEach((brickId) => {
             this.removeBrick(brickId);
             this.addBrickAfterInSameColumn(beforeBrickId, brickId);
+        });
+    }
+
+    moveBrickBeforeInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.forEach((brickId) => {
+            this.removeBrick(brickId);
+
+            this.addBrickBeforeInSameColumn(beforeBrickId, brickId);
         });
     }
 
@@ -125,7 +151,18 @@ export class LayoutStore {
         targetBrickIds.forEach((brickId) => {
             this.removeBrick(brickId);
 
-            this.addBrickToNewRowByBeforeBrickId(brickId, beforeBrickId);
+            this.addBrickToNewRowAfterBrickId(brickId, beforeBrickId);
+        });
+    }
+
+    moveBrickBeforeInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        targetBrickIds.forEach((brickId, index) => {
+            this.removeBrick(brickId);
+            if (index === 0) {
+                this.addBrickToNewRowBeforeBrickId(brickId, beforeBrickId);
+            } else {
+                this.addBrickToNewRowAfterBrickId(brickId, targetBrickIds[index - 1]);
+            }
         });
     }
 
