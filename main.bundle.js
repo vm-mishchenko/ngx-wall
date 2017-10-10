@@ -25092,7 +25092,7 @@ webpackEmptyAsyncContext.id = 96;
 		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("rxjs/Subject"), require("@angular/platform-browser"), require("rxjs/Observable"), require("rxjs/add/observable/fromEvent"), require("rxjs/add/operator/throttleTime")) : factory(root["@angular/core"], root["@angular/common"], root["rxjs/Subject"], root["@angular/platform-browser"], root["rxjs/Observable"], root["rxjs/add/observable/fromEvent"], root["rxjs/add/operator/throttleTime"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_4__, __WEBPACK_EXTERNAL_MODULE_62__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_62__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -25155,7 +25155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 24);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -25191,12 +25191,48 @@ __export(__webpack_require__(50));
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_4__;
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var BrickRegistry = (function () {
+    function BrickRegistry() {
+        this.bricks = [];
+    }
+    BrickRegistry.prototype.register = function (brickConfiguration) {
+        console.log(brickConfiguration.tag + " is regisytered");
+        this.bricks.push(brickConfiguration);
+    };
+    BrickRegistry.prototype.get = function (tag) {
+        return this.bricks.find(function (brickConfiguration) { return brickConfiguration.tag === tag; });
+    };
+    BrickRegistry.prototype.getAll = function () {
+        return this.bricks;
+    };
+    BrickRegistry = __decorate([
+        core_1.Injectable()
+    ], BrickRegistry);
+    return BrickRegistry;
+}());
+exports.BrickRegistry = BrickRegistry;
+
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25231,7 +25267,7 @@ exports.WallApi = WallApi;
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25310,7 +25346,7 @@ exports.PickOutCoordinator = PickOutCoordinator;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25361,7 +25397,7 @@ exports.BeaconRegistry = BeaconRegistry;
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25465,41 +25501,6 @@ exports.BrickStore = BrickStore;
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var BrickRegistry = (function () {
-    function BrickRegistry() {
-        this.bricks = [];
-    }
-    BrickRegistry.prototype.register = function (brickConfiguration) {
-        this.bricks.push(brickConfiguration);
-    };
-    BrickRegistry.prototype.get = function (tag) {
-        return this.bricks.find(function (brickConfiguration) { return brickConfiguration.tag === tag; });
-    };
-    BrickRegistry.prototype.getAll = function () {
-        return this.bricks;
-    };
-    BrickRegistry = __decorate([
-        core_1.Injectable()
-    ], BrickRegistry);
-    return BrickRegistry;
-}());
-exports.BrickRegistry = BrickRegistry;
-
-
-/***/ }),
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -25592,7 +25593,7 @@ __webpack_require__(63);
 __webpack_require__(64);
 var spot_model_1 = __webpack_require__(65);
 var radar_tokens_1 = __webpack_require__(14);
-var location_updated_event_1 = __webpack_require__(32);
+var location_updated_event_1 = __webpack_require__(33);
 var RadarCoordinator = (function () {
     function RadarCoordinator(doc, _window) {
         var _this = this;
@@ -25676,9 +25677,9 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(70));
 __export(__webpack_require__(17));
-__export(__webpack_require__(38));
+__export(__webpack_require__(39));
+__export(__webpack_require__(36));
 __export(__webpack_require__(35));
-__export(__webpack_require__(34));
 
 
 /***/ }),
@@ -25738,13 +25739,13 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(73));
 __export(__webpack_require__(45));
-__export(__webpack_require__(40));
+__export(__webpack_require__(22));
 __export(__webpack_require__(41));
 __export(__webpack_require__(43));
 __export(__webpack_require__(42));
 __export(__webpack_require__(44));
 __export(__webpack_require__(21));
-__export(__webpack_require__(7));
+__export(__webpack_require__(8));
 __export(__webpack_require__(19));
 
 
@@ -25765,7 +25766,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var placeholder_component_1 = __webpack_require__(39);
+var placeholder_component_1 = __webpack_require__(40);
 var PlaceholderRenderer = (function () {
     function PlaceholderRenderer(componentFactoryResolver, appRef, injector) {
         this.componentFactoryResolver = componentFactoryResolver;
@@ -25842,7 +25843,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var detected_beacon_1 = __webpack_require__(76);
-var tow_constant_1 = __webpack_require__(40);
+var tow_constant_1 = __webpack_require__(22);
 var BeaconDetector = (function () {
     function BeaconDetector() {
     }
@@ -25880,6 +25881,8 @@ var BeaconDetector = (function () {
             }
             if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
                 detected.type = tow_constant_1.TOW.dropTypes.horizontal;
+                var centerYPosition = detected.beacon.y + (detected.beacon.height / 2);
+                detected.side = y < centerYPosition ? tow_constant_1.TOW.dropSides.top : tow_constant_1.TOW.dropSides.bottom;
             }
         }
         return detected;
@@ -25928,6 +25931,27 @@ exports.BeaconDetector = BeaconDetector;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TOW = {
+    dropTypes: {
+        horizontal: 'horizontal',
+        vertical: 'vertical'
+    },
+    dropSides: {
+        left: 'left',
+        right: 'right',
+        top: 'top',
+        bottom: 'bottom'
+    }
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -25946,12 +25970,13 @@ var common_1 = __webpack_require__(1);
 var tow_tokens_1 = __webpack_require__(20);
 var beacon_detector_service_1 = __webpack_require__(21);
 var placeholder_renderer_service_1 = __webpack_require__(19);
-var beacon_registry_service_1 = __webpack_require__(7);
+var beacon_registry_service_1 = __webpack_require__(8);
 var Subject_1 = __webpack_require__(2);
 var start_working_event_1 = __webpack_require__(41);
 var work_in_progress_event_1 = __webpack_require__(42);
 var stop_working_event_1 = __webpack_require__(43);
 var drop_event_1 = __webpack_require__(44);
+var tow_constant_1 = __webpack_require__(22);
 var TowCoordinator = (function () {
     function TowCoordinator(doc, _window, placeholderRenderer, beaconDetector, beaconRegistry) {
         var _this = this;
@@ -25963,6 +25988,7 @@ var TowCoordinator = (function () {
         this.currentYScrollPosition = 0;
         this.trackingPossibleBeacons = false;
         this.previouslyNearestBeacon = null;
+        this.placeholderHeight = 2;
         this.doc = doc;
         this.window = _window;
         this.doc.addEventListener('dragover', function (event) {
@@ -26028,20 +26054,25 @@ var TowCoordinator = (function () {
         var placeholderY;
         var placeholderSize;
         var placeholderIsHorizontal;
-        if (this.previouslyNearestBeacon.type === 'horizontal') {
+        if (this.previouslyNearestBeacon.type === tow_constant_1.TOW.dropTypes.horizontal) {
             placeholderX = this.previouslyNearestBeacon.beacon.x;
-            placeholderY = this.previouslyNearestBeacon.beacon.y + this.previouslyNearestBeacon.beacon.height - this.currentYScrollPosition;
             placeholderSize = this.previouslyNearestBeacon.beacon.width;
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.top) {
+                placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition - this.placeholderHeight;
+            }
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.bottom) {
+                placeholderY = this.previouslyNearestBeacon.beacon.y + this.previouslyNearestBeacon.beacon.height - this.currentYScrollPosition;
+            }
             placeholderIsHorizontal = true;
         }
-        if (this.previouslyNearestBeacon.type === 'vertical') {
+        if (this.previouslyNearestBeacon.type === tow_constant_1.TOW.dropTypes.vertical) {
             placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition;
             placeholderSize = this.previouslyNearestBeacon.beacon.height;
             placeholderIsHorizontal = false;
-            if (this.previouslyNearestBeacon.side === 'left') {
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.left) {
                 placeholderX = this.previouslyNearestBeacon.beacon.x;
             }
-            if (this.previouslyNearestBeacon.side === 'right') {
+            if (this.previouslyNearestBeacon.side === tow_constant_1.TOW.dropSides.right) {
                 placeholderX = this.previouslyNearestBeacon.beacon.x + this.previouslyNearestBeacon.beacon.width;
             }
         }
@@ -26061,7 +26092,7 @@ exports.TowCoordinator = TowCoordinator;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26072,15 +26103,19 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(49);
 __export(__webpack_require__(3));
+// bricks
 __export(__webpack_require__(79));
 __export(__webpack_require__(82));
 __export(__webpack_require__(85));
+__export(__webpack_require__(88));
+__export(__webpack_require__(92));
+// modules
 __export(__webpack_require__(15));
 __export(__webpack_require__(18));
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26097,10 +26132,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_controller_1 = __webpack_require__(52);
-var wall_api_service_1 = __webpack_require__(5);
-var wall_model_1 = __webpack_require__(25);
-var brick_store_service_1 = __webpack_require__(8);
-var layout_store_service_1 = __webpack_require__(26);
+var wall_api_service_1 = __webpack_require__(6);
+var wall_model_1 = __webpack_require__(26);
+var brick_store_service_1 = __webpack_require__(9);
+var layout_store_service_1 = __webpack_require__(27);
 var WallComponent = (function () {
     function WallComponent(wallController) {
         this.wallController = wallController;
@@ -26146,7 +26181,7 @@ exports.WallComponent = WallComponent;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26162,21 +26197,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_api_service_1 = __webpack_require__(5);
-var brick_store_service_1 = __webpack_require__(8);
-var layout_store_service_1 = __webpack_require__(26);
-var wall_constant_1 = __webpack_require__(27);
-var wall_editor_registry_1 = __webpack_require__(28);
+var wall_api_service_1 = __webpack_require__(6);
+var brick_store_service_1 = __webpack_require__(9);
+var layout_store_service_1 = __webpack_require__(27);
+var wall_constant_1 = __webpack_require__(28);
+var wall_editor_registry_1 = __webpack_require__(29);
 var Subject_1 = __webpack_require__(2);
 var wall_events_1 = __webpack_require__(10);
+var brick_registry_service_1 = __webpack_require__(4);
 /**
  * @desc Responsible for storing wall state.
  * Provide core functionality
  * */
 var WallModel = (function () {
-    function WallModel(api, brickStore, wallEditorRegistry, layoutStore) {
+    function WallModel(api, brickStore, brickRegistry, wallEditorRegistry, layoutStore) {
         this.api = api;
         this.brickStore = brickStore;
+        this.brickRegistry = brickRegistry;
         this.wallEditorRegistry = wallEditorRegistry;
         this.layoutStore = layoutStore;
         this.id = String(Math.random());
@@ -26217,6 +26254,7 @@ var WallModel = (function () {
             'addBrickAfterBrickId',
             // MOVE BRICK
             'moveBrickAfterBrickId',
+            'moveBrickBeforeBrickId',
             'moveBrickToNewColumn',
             // REMOVE BRICK
             'removeBrick',
@@ -26230,6 +26268,7 @@ var WallModel = (function () {
             'getMode',
             'subscribe',
             // BRICk
+            'isRegisteredBrick',
             'turnBrickInto',
             'getBrickStore'
         ].reduce(function (result, methodName) {
@@ -26295,6 +26334,9 @@ var WallModel = (function () {
         this.brickStore.turnBrickInto(brickId, newTag);
         this.layoutStore.updateCanvasLayout();
         this.focusOnBrickId(brickId);
+    };
+    WallModel.prototype.isRegisteredBrick = function (tag) {
+        return Boolean(this.brickRegistry.get(tag));
     };
     /* Add text brick to the bottom of wall in the new row */
     WallModel.prototype.addDefaultBrick = function () {
@@ -26373,6 +26415,23 @@ var WallModel = (function () {
             else {
                 this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
             }
+            this.unSelectBricks();
+        }
+    };
+    /**
+     * @public
+     * */
+    WallModel.prototype.moveBrickBeforeBrickId = function (targetBrickIds, beforeBrickId) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            var brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            var columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+            if (columnCount === 1) {
+                this.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+            }
+            else {
+                this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
+            }
+            this.unSelectBricks();
         }
     };
     /**
@@ -26381,6 +26440,7 @@ var WallModel = (function () {
     WallModel.prototype.moveBrickToNewColumn = function (targetBrickIds, beforeBrickId, side) {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+            this.unSelectBricks();
         }
     };
     WallModel.prototype.removeBrick = function (brickId) {
@@ -26465,8 +26525,14 @@ var WallModel = (function () {
     WallModel.prototype.moveBrickAfterInNewRow = function (targetBrickIds, beforeBrickId) {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
     };
+    WallModel.prototype.moveBrickBeforeInNewRow = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+    };
     WallModel.prototype.moveBrickAfterInSameColumn = function (targetBrickIds, beforeBrickId) {
         this.layoutStore.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+    };
+    WallModel.prototype.moveBrickBeforeInSameColumn = function (targetBrickIds, beforeBrickId) {
+        this.layoutStore.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
     };
     WallModel.prototype.isOnlyOneBrickEmptyText = function () {
         var brickLength = this.brickStore.getBricksCount();
@@ -26492,6 +26558,7 @@ var WallModel = (function () {
         core_1.Injectable(),
         __metadata("design:paramtypes", [wall_api_service_1.WallApi,
             brick_store_service_1.BrickStore,
+            brick_registry_service_1.BrickRegistry,
             wall_editor_registry_1.WallEditorRegistry,
             layout_store_service_1.LayoutStore])
     ], WallModel);
@@ -26501,7 +26568,7 @@ exports.WallModel = WallModel;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26517,8 +26584,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var brick_registry_service_1 = __webpack_require__(9);
-var brick_store_service_1 = __webpack_require__(8);
+var brick_registry_service_1 = __webpack_require__(4);
+var brick_store_service_1 = __webpack_require__(9);
 var LayoutStore = (function () {
     function LayoutStore(brickRegistry, brickStore) {
         this.brickRegistry = brickRegistry;
@@ -26564,24 +26631,29 @@ var LayoutStore = (function () {
         column.bricks.splice(positionIndex, 0, brick);
         this.updateCanvasLayout();
     };
-    // TODO: remove this method, instead use addBrickToNewRowByBeforeBrickId
+    // TODO: remove this method, instead use addBrickToNewRowAfterBrickId
     LayoutStore.prototype.addBrickToNewRow = function (brickId, targetRowIndex) {
         this.createNewRow(targetRowIndex);
         this.addBrick(brickId, targetRowIndex, 0, 0);
     };
-    LayoutStore.prototype.addBrickToNewRowByBeforeBrickId = function (targetBrickId, beforeBrickId) {
-        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
-        var newRowIndex = beforeBrickPosition.rowIndex + 1;
+    LayoutStore.prototype.addBrickToNewRowAfterBrickId = function (targetBrickId, afterBrickId) {
+        var afterBrickPosition = this.getBrickPositionByBrickId(afterBrickId);
+        var newRowIndex = afterBrickPosition.rowIndex + 1;
         this.createNewRow(newRowIndex);
         this.addBrick(targetBrickId, newRowIndex, 0, 0);
     };
-    LayoutStore.prototype.addBrickToNewColumn = function (brickId, targetRowIndex, targetColumnIndex) {
-        this.createNewColumn(targetRowIndex, targetColumnIndex);
-        this.addBrick(brickId, targetRowIndex, targetColumnIndex, 0);
+    LayoutStore.prototype.addBrickToNewRowBeforeBrickId = function (brickId, beforeBrickId) {
+        var beforeBrickPosition = this.getBrickPositionByBrickId(beforeBrickId);
+        this.createNewRow(beforeBrickPosition.rowIndex);
+        this.addBrick(brickId, beforeBrickPosition.rowIndex, 0, 0);
     };
     LayoutStore.prototype.addBrickAfterInSameColumn = function (siblingBrickId, brickId) {
         var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
         this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex + 1);
+    };
+    LayoutStore.prototype.addBrickBeforeInSameColumn = function (siblingBrickId, brickId) {
+        var brickPosition = this.getBrickPositionByBrickId(siblingBrickId);
+        this.addBrick(brickId, brickPosition.rowIndex, brickPosition.columnIndex, brickPosition.brickIndex);
     };
     LayoutStore.prototype.moveBrickAfterInSameColumn = function (targetBrickIds, beforeBrickId) {
         var _this = this;
@@ -26589,6 +26661,13 @@ var LayoutStore = (function () {
         targetBrickIds.forEach(function (brickId) {
             _this.removeBrick(brickId);
             _this.addBrickAfterInSameColumn(beforeBrickId, brickId);
+        });
+    };
+    LayoutStore.prototype.moveBrickBeforeInSameColumn = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.forEach(function (brickId) {
+            _this.removeBrick(brickId);
+            _this.addBrickBeforeInSameColumn(beforeBrickId, brickId);
         });
     };
     LayoutStore.prototype.moveBrickToNewColumn = function (targetBrickIds, beforeBrickId, side) {
@@ -26615,7 +26694,19 @@ var LayoutStore = (function () {
         targetBrickIds.reverse();
         targetBrickIds.forEach(function (brickId) {
             _this.removeBrick(brickId);
-            _this.addBrickToNewRowByBeforeBrickId(brickId, beforeBrickId);
+            _this.addBrickToNewRowAfterBrickId(brickId, beforeBrickId);
+        });
+    };
+    LayoutStore.prototype.moveBrickBeforeInNewRow = function (targetBrickIds, beforeBrickId) {
+        var _this = this;
+        targetBrickIds.forEach(function (brickId, index) {
+            _this.removeBrick(brickId);
+            if (index === 0) {
+                _this.addBrickToNewRowBeforeBrickId(brickId, beforeBrickId);
+            }
+            else {
+                _this.addBrickToNewRowAfterBrickId(brickId, targetBrickIds[index - 1]);
+            }
         });
     };
     LayoutStore.prototype.removeBrick = function (brickId) {
@@ -26794,7 +26885,7 @@ exports.LayoutStore = LayoutStore;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26809,7 +26900,7 @@ exports.WALL = {
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26848,7 +26939,7 @@ exports.WallEditorRegistry = WallEditorRegistry;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26857,15 +26948,15 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(5));
-__export(__webpack_require__(24));
+__export(__webpack_require__(6));
+__export(__webpack_require__(25));
 __export(__webpack_require__(10));
-__export(__webpack_require__(27));
+__export(__webpack_require__(28));
 __export(__webpack_require__(56));
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26873,11 +26964,11 @@ __export(__webpack_require__(56));
 Object.defineProperty(exports, "__esModule", { value: true });
 var radar_module_1 = __webpack_require__(61);
 exports.RadarModule = radar_module_1.RadarModule;
-var radar_service_1 = __webpack_require__(31);
+var radar_service_1 = __webpack_require__(32);
 exports.Radar = radar_service_1.Radar;
-var radar_directive_1 = __webpack_require__(33);
+var radar_directive_1 = __webpack_require__(34);
 exports.SpotDirective = radar_directive_1.SpotDirective;
-var location_updated_event_1 = __webpack_require__(32);
+var location_updated_event_1 = __webpack_require__(33);
 exports.LocationUpdatedEvent = location_updated_event_1.LocationUpdatedEvent;
 var location_to_top_left_point_event_1 = __webpack_require__(66);
 exports.LocationToTopLeftPointEvent = location_to_top_left_point_event_1.LocationToTopLeftPointEvent;
@@ -26886,7 +26977,7 @@ exports.LocationToLeftCenterPointEvent = location_to_left_center_point_event_1.L
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26926,7 +27017,7 @@ exports.Radar = Radar;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26942,7 +27033,7 @@ exports.LocationUpdatedEvent = LocationUpdatedEvent;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27002,7 +27093,7 @@ exports.SpotDirective = SpotDirective;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27022,7 +27113,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var pick_out_tokens_1 = __webpack_require__(16);
-var pick_out_coordinator_service_1 = __webpack_require__(6);
+var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutItemDirective = (function () {
     function PickOutItemDirective(pickOutCoordinator, _window, el) {
         this.pickOutCoordinator = pickOutCoordinator;
@@ -27067,7 +27158,7 @@ exports.PickOutItemDirective = PickOutItemDirective;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27088,10 +27179,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
 var pick_out_area_model_1 = __webpack_require__(71);
-var pick_out_area_component_1 = __webpack_require__(37);
+var pick_out_area_component_1 = __webpack_require__(38);
 var pick_out_tokens_1 = __webpack_require__(16);
 var pick_out_events_1 = __webpack_require__(17);
-var pick_out_coordinator_service_1 = __webpack_require__(6);
+var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutAreaDirective = (function () {
     function PickOutAreaDirective(doc, _window, pickOutHandlerService, componentFactoryResolver, appRef, injector) {
         var _this = this;
@@ -27226,7 +27317,7 @@ exports.PickOutAreaDirective = PickOutAreaDirective;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27241,7 +27332,7 @@ exports.PickOutModelDestroyEvent = PickOutModelDestroyEvent;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27254,7 +27345,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_model_destroy_event_1 = __webpack_require__(36);
+var pick_out_model_destroy_event_1 = __webpack_require__(37);
 var PickOutAreaComponent = (function () {
     function PickOutAreaComponent() {
         this.pickOutAreaModel = null;
@@ -27278,7 +27369,7 @@ exports.PickOutAreaComponent = PickOutAreaComponent;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27295,7 +27386,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var pick_out_coordinator_service_1 = __webpack_require__(6);
+var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutService = (function () {
     function PickOutService(pickOutHandlerService) {
         var _this = this;
@@ -27327,7 +27418,7 @@ exports.PickOutService = PickOutService;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27357,25 +27448,6 @@ var PlaceholderComponent = (function () {
     return PlaceholderComponent;
 }());
 exports.PlaceholderComponent = PlaceholderComponent;
-
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TOW = {
-    dropTypes: {
-        horizontal: 'horizontal',
-        vertical: 'vertical'
-    },
-    dropSides: {
-        left: 'left',
-        right: 'right'
-    }
-};
 
 
 /***/ }),
@@ -27460,7 +27532,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var tow_coordinator_service_1 = __webpack_require__(22);
+var tow_coordinator_service_1 = __webpack_require__(23);
 var TowService = (function () {
     function TowService(towCoordinator) {
         var _this = this;
@@ -27545,11 +27617,18 @@ var TextBrickComponent = (function () {
         }
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
-            if (this.state.text === '/h' || this.state.text === '/header') {
-                this.wallApi.core.turnBrickInto(this.id, 'header');
-            }
-            else if (this.state.text === '/img') {
-                this.wallApi.core.turnBrickInto(this.id, 'img');
+            if (this.state.text[0] === '/') {
+                var tag = this.state.text.slice(1);
+                if (this.wallApi.core.isRegisteredBrick(tag)) {
+                    this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
+                    // d - divider tag
+                    if (tag === 'd') {
+                        this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                    }
+                }
+                else {
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                }
             }
             else {
                 this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
@@ -27780,7 +27859,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var index_1 = __webpack_require__(23);
+var index_1 = __webpack_require__(24);
 var ImgBrickComponent = (function () {
     function ImgBrickComponent(wallApi) {
         this.wallApi = wallApi;
@@ -27919,8 +27998,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(51));
 __export(__webpack_require__(78));
 __export(__webpack_require__(11));
-__export(__webpack_require__(29));
-__export(__webpack_require__(9));
+__export(__webpack_require__(30));
+__export(__webpack_require__(4));
 
 
 /***/ }),
@@ -27938,18 +28017,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var platform_browser_1 = __webpack_require__(4);
-var wall_component_1 = __webpack_require__(24);
-var brick_registry_service_1 = __webpack_require__(9);
+var platform_browser_1 = __webpack_require__(5);
+var wall_component_1 = __webpack_require__(25);
+var brick_registry_service_1 = __webpack_require__(4);
 var wall_canvas_component_1 = __webpack_require__(54);
 var wall_canvas_row_component_1 = __webpack_require__(58);
 var wall_canvas_brick_component_1 = __webpack_require__(60);
 var wall_tokens_1 = __webpack_require__(11);
 var selection_1 = __webpack_require__(69);
-var wall_editor_registry_1 = __webpack_require__(28);
+var wall_editor_registry_1 = __webpack_require__(29);
 var pick_out_1 = __webpack_require__(15);
 var tow_1 = __webpack_require__(18);
-var radar_1 = __webpack_require__(30);
+var radar_1 = __webpack_require__(31);
 var WallModule = (function () {
     function WallModule() {
     }
@@ -28002,7 +28081,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_model_1 = __webpack_require__(25);
+var wall_model_1 = __webpack_require__(26);
 var wall_tokens_1 = __webpack_require__(11);
 var WallController = (function () {
     function WallController(wallModel, injector) {
@@ -28163,7 +28242,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var wall_canvas_api_1 = __webpack_require__(12);
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(29);
+var wall_1 = __webpack_require__(30);
 var wall_events_1 = __webpack_require__(10);
 var WallCanvasController = (function () {
     function WallCanvasController(wallCanvasApi, wallApi) {
@@ -28353,7 +28432,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_canvas_api_1 = __webpack_require__(12);
-var radar_1 = __webpack_require__(30);
+var radar_1 = __webpack_require__(31);
 var WallCanvasBrickComponent = (function () {
     function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasApi) {
         this.injector = injector;
@@ -28362,7 +28441,7 @@ var WallCanvasBrickComponent = (function () {
         this.wallCanvasApi = wallCanvasApi;
         this.selected = false;
         this.isMouseNear = false;
-        this.minimalDistanceToMouse = 250;
+        this.minimalDistanceToMouse = 100;
     }
     WallCanvasBrickComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -28438,8 +28517,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_service_1 = __webpack_require__(31);
-var radar_directive_1 = __webpack_require__(33);
+var radar_service_1 = __webpack_require__(32);
+var radar_directive_1 = __webpack_require__(34);
 var radar_tokens_1 = __webpack_require__(14);
 var radar_coordinator_service_1 = __webpack_require__(13);
 var RadarModule = (function () {
@@ -28606,7 +28685,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var wall_api_service_1 = __webpack_require__(5);
+var wall_api_service_1 = __webpack_require__(6);
 var pick_out_1 = __webpack_require__(15);
 var tow_1 = __webpack_require__(18);
 var SelectionPlugin = (function () {
@@ -28729,7 +28808,12 @@ var SelectionPlugin = (function () {
                     movedBrickIds.push(e.targetId);
                 }
                 if (e.dropType === tow_1.TOW.dropTypes.horizontal) {
-                    _this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
+                    if (e.dropSide === tow_1.TOW.dropSides.top) {
+                        _this.wallApi.core.moveBrickBeforeBrickId(movedBrickIds, e.beforeId);
+                    }
+                    if (e.dropSide === tow_1.TOW.dropSides.bottom) {
+                        _this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
+                    }
                 }
                 if (e.dropType === tow_1.TOW.dropTypes.vertical) {
                     if (e.dropSide === tow_1.TOW.dropSides.left) {
@@ -28776,12 +28860,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var pick_out_item_directive_1 = __webpack_require__(34);
-var pick_out_area_directive_1 = __webpack_require__(35);
-var pick_out_area_component_1 = __webpack_require__(37);
+var pick_out_item_directive_1 = __webpack_require__(35);
+var pick_out_area_directive_1 = __webpack_require__(36);
+var pick_out_area_component_1 = __webpack_require__(38);
 var pick_out_tokens_1 = __webpack_require__(16);
-var pick_out_service_1 = __webpack_require__(38);
-var pick_out_coordinator_service_1 = __webpack_require__(6);
+var pick_out_service_1 = __webpack_require__(39);
+var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutModule = (function () {
     function PickOutModule() {
     }
@@ -28824,7 +28908,7 @@ exports.PickOutModule = PickOutModule;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var pick_out_model_destroy_event_1 = __webpack_require__(36);
+var pick_out_model_destroy_event_1 = __webpack_require__(37);
 var Subject_1 = __webpack_require__(2);
 var PickOutAreaModel = (function () {
     function PickOutAreaModel() {
@@ -28884,12 +28968,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
 var placeholder_renderer_service_1 = __webpack_require__(19);
-var placeholder_component_1 = __webpack_require__(39);
-var beacon_registry_service_1 = __webpack_require__(7);
+var placeholder_component_1 = __webpack_require__(40);
+var beacon_registry_service_1 = __webpack_require__(8);
 var tow_tokens_1 = __webpack_require__(20);
 var beacon_directive_1 = __webpack_require__(75);
 var beacon_detector_service_1 = __webpack_require__(21);
-var tow_coordinator_service_1 = __webpack_require__(22);
+var tow_coordinator_service_1 = __webpack_require__(23);
 var tow_slave_directive_1 = __webpack_require__(77);
 var tow_service_1 = __webpack_require__(45);
 var TowModule = (function () {
@@ -28956,7 +29040,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var beacon_registry_service_1 = __webpack_require__(7);
+var beacon_registry_service_1 = __webpack_require__(8);
 var tow_tokens_1 = __webpack_require__(20);
 var BeaconDirective = (function () {
     function BeaconDirective(beaconRegistry, el, _window) {
@@ -29032,7 +29116,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var tow_coordinator_service_1 = __webpack_require__(22);
+var tow_coordinator_service_1 = __webpack_require__(23);
 var TowSlaveDirective = (function () {
     function TowSlaveDirective(renderer2, el, towCoordinator) {
         this.renderer2 = renderer2;
@@ -29134,7 +29218,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
 var text_brick_component_1 = __webpack_require__(46);
-var platform_browser_1 = __webpack_require__(4);
+var platform_browser_1 = __webpack_require__(5);
 var TextBrickModule = (function () {
     function TextBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29199,7 +29283,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
 var header_brick_component_1 = __webpack_require__(47);
-var platform_browser_1 = __webpack_require__(4);
+var platform_browser_1 = __webpack_require__(5);
 var HeaderBrickModule = (function () {
     function HeaderBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29261,7 +29345,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = __webpack_require__(4);
+var platform_browser_1 = __webpack_require__(5);
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
 var img_brick_component_1 = __webpack_require__(48);
@@ -29294,6 +29378,282 @@ exports.ImgBrickModule = ImgBrickModule;
 /***/ (function(module, exports) {
 
 module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\n\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\n    Add an Image\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the image link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\n            </button>\n        </div>\n    </div>\n</div>"
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(89));
+
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var brick_registry_service_1 = __webpack_require__(4);
+var divider_brick_component_1 = __webpack_require__(90);
+var DividerBrickModule = (function () {
+    function DividerBrickModule(brickRegistry) {
+        this.brickRegistry = brickRegistry;
+        this.brickRegistry.register({
+            tag: 'd',
+            component: divider_brick_component_1.DividerBrickComponent
+        });
+    }
+    DividerBrickModule = __decorate([
+        core_1.NgModule({
+            exports: [divider_brick_component_1.DividerBrickComponent],
+            declarations: [divider_brick_component_1.DividerBrickComponent],
+            entryComponents: [divider_brick_component_1.DividerBrickComponent]
+        }),
+        __metadata("design:paramtypes", [brick_registry_service_1.BrickRegistry])
+    ], DividerBrickModule);
+    return DividerBrickModule;
+}());
+exports.DividerBrickModule = DividerBrickModule;
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var DividerBrickComponent = (function () {
+    function DividerBrickComponent() {
+    }
+    DividerBrickComponent = __decorate([
+        core_1.Component({
+            selector: 'divider-brick',
+            template: __webpack_require__(91)
+        })
+    ], DividerBrickComponent);
+    return DividerBrickComponent;
+}());
+exports.DividerBrickComponent = DividerBrickComponent;
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"divider-brick__wrapper\">\n    <div class=\"divider-brick__divider\"></div>\n</div>"
+
+/***/ }),
+/* 92 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(93));
+
+
+/***/ }),
+/* 93 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var brick_registry_service_1 = __webpack_require__(4);
+var quote_brick_component_1 = __webpack_require__(94);
+var QuoteBrickModule = (function () {
+    function QuoteBrickModule(brickRegistry) {
+        this.brickRegistry = brickRegistry;
+        this.brickRegistry.register({
+            tag: 'quote',
+            component: quote_brick_component_1.QuoteBrickComponent,
+            supportText: true
+        });
+    }
+    QuoteBrickModule = __decorate([
+        core_1.NgModule({
+            exports: [quote_brick_component_1.QuoteBrickComponent],
+            declarations: [quote_brick_component_1.QuoteBrickComponent],
+            entryComponents: [quote_brick_component_1.QuoteBrickComponent]
+        }),
+        __metadata("design:paramtypes", [brick_registry_service_1.BrickRegistry])
+    ], QuoteBrickModule);
+    return QuoteBrickModule;
+}());
+exports.QuoteBrickModule = QuoteBrickModule;
+
+
+/***/ }),
+/* 94 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var wall_1 = __webpack_require__(3);
+var QuoteBrickComponent = (function () {
+    function QuoteBrickComponent(wallApi) {
+        this.wallApi = wallApi;
+        this.state = {};
+        this.modes = wall_1.WALL.MODES;
+        this.mode = wall_1.WALL.MODES.EDIT;
+        this.store = null;
+    }
+    QuoteBrickComponent.prototype.ngOnInit = function () {
+        this.mode = this.wallApi.core.getMode();
+        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.state = this.store.get();
+        this.state.text = this.state.text || '';
+        this.editor.nativeElement.innerText = this.state.text;
+    };
+    QuoteBrickComponent.prototype.onTextChanged = function () {
+        this.state.text = this.editor.nativeElement.innerText;
+        this.save();
+    };
+    QuoteBrickComponent.prototype.onKeyPress = function (e) {
+        var ENTER_KEY = 13;
+        var DELETE_KEY = 46;
+        var BACK_SPACE_KEY = 8;
+        var LEFT_KEY = 37;
+        var TOP_KEY = 38;
+        var RIGHT_KEY = 39;
+        var BOTTOM_KEY = 40;
+        if (e.keyCode === TOP_KEY) {
+            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+        }
+        if (e.keyCode === BOTTOM_KEY) {
+            this.wallApi.core.focusOnNextTextBrick(this.id);
+        }
+        if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
+            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+        }
+        if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
+            this.wallApi.core.focusOnNextTextBrick(this.id);
+        }
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+            e.preventDefault();
+            this.wallApi.core.removeBrick(this.id);
+        }
+        if (e.keyCode === ENTER_KEY) {
+            e.preventDefault();
+            this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+        }
+    };
+    QuoteBrickComponent.prototype.onWallFocus = function () {
+        this.editor.nativeElement.focus();
+        this.placeCaretAtEnd();
+    };
+    QuoteBrickComponent.prototype.placeCaretAtEnd = function () {
+        // place caret at the end
+        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
+        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
+            var range = document.createRange();
+            range.selectNodeContents(this.editor.nativeElement);
+            range.collapse(false);
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    };
+    QuoteBrickComponent.prototype.isCaretAtStart = function () {
+        var atStart = false;
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var selRange = sel.getRangeAt(0);
+            var testRange = selRange.cloneRange();
+            testRange.selectNodeContents(this.editor.nativeElement);
+            testRange.setEnd(selRange.startContainer, selRange.startOffset);
+            atStart = (testRange.toString() == '');
+        }
+        return atStart;
+    };
+    QuoteBrickComponent.prototype.isCaretAtEnd = function () {
+        var atEnd = false;
+        var sel = window.getSelection();
+        if (sel.rangeCount) {
+            var selRange = sel.getRangeAt(0);
+            var testRange = selRange.cloneRange();
+            testRange.selectNodeContents(this.editor.nativeElement);
+            testRange.setStart(selRange.endContainer, selRange.endOffset);
+            atEnd = (testRange.toString() == '');
+        }
+        return atEnd;
+    };
+    QuoteBrickComponent.prototype.save = function () {
+        this.store.set(this.state);
+    };
+    __decorate([
+        core_1.ViewChild('editor'),
+        __metadata("design:type", core_1.ElementRef)
+    ], QuoteBrickComponent.prototype, "editor", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], QuoteBrickComponent.prototype, "id", void 0);
+    QuoteBrickComponent = __decorate([
+        core_1.Component({
+            selector: 'quote-brick',
+            template: __webpack_require__(95)
+        }),
+        __metadata("design:paramtypes", [wall_1.WallApi])
+    ], QuoteBrickComponent);
+    return QuoteBrickComponent;
+}());
+exports.QuoteBrickComponent = QuoteBrickComponent;
+
+
+/***/ }),
+/* 95 */
+/***/ (function(module, exports) {
+
+module.exports = "<div #editor\n     [hidden]=\"mode === modes.READ\"\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"editor quote-brick__editor\"\n     contenteditable>\n</div>\n"
 
 /***/ })
 /******/ ]);
@@ -58977,7 +59337,9 @@ var AppModule = (function () {
                 wall_1.TowModule,
                 wall_1.WallModule,
                 wall_1.PickOutModule,
+                wall_1.QuoteBrickModule,
                 wall_1.TextBrickModule,
+                wall_1.DividerBrickModule,
                 wall_1.HeaderBrickModule,
                 wall_1.ImgBrickModule,
                 common_1.CommonModule,
@@ -59039,7 +59401,7 @@ var AppComponent = (function () {
                 },
                 {
                     "id": "5cb0d4dd-24fa-de29-8785-619747830add",
-                    "tag": "text",
+                    "tag": "quote",
                     "data": {
                         "text": "The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components."
                     },
@@ -59113,7 +59475,7 @@ var AppComponent = (function () {
                     "id": "a587554d-5698-8988-0039-ae1db771695e",
                     "tag": "text",
                     "data": {
-                        "text": "/h header brick"
+                        "text": "/h header"
                     },
                     "meta": {}
                 },
@@ -59121,7 +59483,7 @@ var AppComponent = (function () {
                     "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb",
                     "tag": "text",
                     "data": {
-                        "text": "/img image brick"
+                        "text": "/img image"
                     },
                     "meta": {}
                 },
@@ -59131,6 +59493,46 @@ var AppComponent = (function () {
                     "data": {
                         "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
                     },
+                    "meta": {}
+                },
+                {
+                    "id": "135e4e24-36b4-5128-5db2-4648fb1b99be",
+                    "tag": "text",
+                    "data": {},
+                    "meta": {}
+                },
+                {
+                    "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d",
+                    "tag": "text",
+                    "data": {},
+                    "meta": {}
+                },
+                {
+                    "id": "2e1c3c38-e75c-2c45-df3e-af887b258571",
+                    "tag": "d",
+                    "data": {},
+                    "meta": {}
+                },
+                {
+                    "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e",
+                    "tag": "text",
+                    "data": {
+                        "text": "/quote quote"
+                    },
+                    "meta": {}
+                },
+                {
+                    "id": "cd73851a-16fe-5363-5274-bd9adb27af06",
+                    "tag": "text",
+                    "data": {
+                        "text": "/d divider"
+                    },
+                    "meta": {}
+                },
+                {
+                    "id": "7f068912-94e7-314b-f910-9548816a3e13",
+                    "tag": "text",
+                    "data": {},
                     "meta": {}
                 }
             ],
@@ -59152,7 +59554,50 @@ var AppComponent = (function () {
                             {
                                 "bricks": [
                                     {
+                                        "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "135e4e24-36b4-5128-5db2-4648fb1b99be"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
                                         "id": "5cb0d4dd-24fa-de29-8785-619747830add"
+                                    },
+                                    {
+                                        "id": "7f068912-94e7-314b-f910-9548816a3e13"
+                                    }
+                                ]
+                            },
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d"
                                     }
                                 ]
                             }
@@ -59164,116 +59609,47 @@ var AppComponent = (function () {
                                 "bricks": [
                                     {
                                         "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e"
                                     }
                                 ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
+                            },
                             {
                                 "bricks": [
                                     {
                                         "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
                                     }
                                 ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
+                            },
                             {
                                 "bricks": [
                                     {
                                         "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
                                     {
                                         "id": "a587554d-5698-8988-0039-ae1db771695e"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
+                                    },
+                                    {
+                                        "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e"
+                                    },
+                                    {
+                                        "id": "cd73851a-16fe-5363-5274-bd9adb27af06"
+                                    },
                                     {
                                         "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
                                     }
                                 ]
                             }
@@ -60307,7 +60683,7 @@ exports = module.exports = __webpack_require__(98)(undefined);
 
 
 // module
-exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    background-color: #ddf2f9; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
+exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\ndivider-brick .divider-brick__wrapper {\n  height: 36px; }\n\ndivider-brick .divider-brick__divider {\n  border-bottom: 1px solid silver;\n  height: 1px;\n  padding-top: 17px; }\n\nquote-brick .quote-brick__editor {\n  max-width: 100%;\n  width: 100%;\n  border-left: 4px solid black;\n  padding-left: 1.25em;\n  padding-right: 1.25em;\n  font-size: 21px; }\n  quote-brick .quote-brick__editor:focus {\n    outline: none; }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
 
 // exports
 
