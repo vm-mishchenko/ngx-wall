@@ -28,11 +28,6 @@ export class SelectionPlugin {
             }
         });
 
-        this.doc.addEventListener('mouseup', () => {
-            // during text selection pickOutService was disable, enable it again
-            this.pickOutService.enablePickOut();
-        });
-
         this.doc.addEventListener('keydown', (e) => {
             const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
             const firstSelectedBrickId = selectedBrickIds[0];
@@ -109,8 +104,10 @@ export class SelectionPlugin {
         this.doc.addEventListener('selectionchange', () => {
             // selection event triggers when user select some text and then just click by the document
             // we should disabele pick out service only when user really starts select something
-            if (this.doc.getSelection().anchorNode) {
-                this.pickOutService.disablePickOut();
+            const selection = this.doc.getSelection();
+
+            // todo need to find more robust variant
+            if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
                 this.pickOutService.stopPickOut();
             }
         });
@@ -122,6 +119,15 @@ export class SelectionPlugin {
 
             if (e instanceof StartPickOut) {
                 this.isMouseSelection = true;
+
+                const selection = this.doc.getSelection();
+
+                // todo need to find more robust variant
+                if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
+                    this.pickOutService.stopPickOut();
+
+                    this.isMouseSelection = false;
+                }
             }
 
             if (e instanceof EndPickOut) {
@@ -182,4 +188,6 @@ export class SelectionPlugin {
 
         return this.wallApi.core.isBrickAheadOf(penultimateBrickId, lastBrickId);
     }
+
+
 }
