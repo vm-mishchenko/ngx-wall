@@ -6,6 +6,8 @@ export class BrickRegistry {
     private bricks: BrickSpecification[] = [];
 
     register(brickConfiguration: BrickSpecification) {
+        console.log(`${brickConfiguration.tag} is regisytered`);
+
         this.bricks.push(brickConfiguration);
     }
 

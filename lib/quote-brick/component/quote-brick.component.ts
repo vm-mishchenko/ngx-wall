@@ -1,20 +1,21 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { onWallFocus, WALL, WallApi } from '../../wall';
+import { WALL, WallApi } from "../../wall";
 
 @Component({
-    selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html'
+    selector: 'quote-brick',
+    templateUrl: './quote-brick.component.html'
 })
-export class TextBrickComponent implements OnInit, onWallFocus {
+
+export class QuoteBrickComponent implements OnInit {
+    @ViewChild('editor') editor: ElementRef;
+
     @Input() id: string;
 
-    @ViewChild('editor') editor: ElementRef;
+    state: any = {};
 
     modes = WALL.MODES;
 
     mode: string = WALL.MODES.EDIT;
-
-    state: any = {};
 
     store: any = null;
 
@@ -73,15 +74,11 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.state.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.state.text.slice(1))) {
-                this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
-            }
-
             this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
         }
     }
 
-    onWallFocus(): void {
+    onWallFocus() {
         this.editor.nativeElement.focus();
         this.placeCaretAtEnd();
     }

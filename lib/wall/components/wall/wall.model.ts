@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
 import { Subscription } from 'rxjs/Subscription';
 import { WallDefinition } from "./interfaces/wall-definition.interface";
+import { BrickRegistry } from "../../registry/brick-registry.service";
 
 /**
  * @desc Responsible for storing wall state.
@@ -26,6 +27,7 @@ export class WallModel {
 
     constructor(public api: WallApi,
                 private brickStore: BrickStore,
+                private brickRegistry: BrickRegistry,
                 private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
     }
@@ -80,6 +82,7 @@ export class WallModel {
             'subscribe',
 
             // BRICk
+            'isRegisteredBrick',
             'turnBrickInto',
             'getBrickStore'
 
@@ -169,6 +172,10 @@ export class WallModel {
         this.layoutStore.updateCanvasLayout();
 
         this.focusOnBrickId(brickId);
+    }
+
+    isRegisteredBrick(tag: string) {
+        return Boolean(this.brickRegistry.get(tag));
     }
 
     /* Add text brick to the bottom of wall in the new row */

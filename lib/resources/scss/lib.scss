@@ -202,8 +202,19 @@ img-brick {
   }
 }
 
-// selection range
+divider-brick {
+  .divider-brick__wrapper {
+    height: 36px;
+  }
 
+  .divider-brick__divider {
+    border-bottom: 1px solid silver;
+    height: 1px;
+    padding-top: 17px;
+  }
+}
+
+// selection range
 .pick-out-area {
   opacity: 0.5;
   position: fixed;

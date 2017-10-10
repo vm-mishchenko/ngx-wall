@@ -121,8 +121,6 @@ export class TowCoordinator {
         let placeholderSize;
         let placeholderIsHorizontal;
 
-        console.log(this.previouslyNearestBeacon);
-
         if (this.previouslyNearestBeacon.type === TOW.dropTypes.horizontal) {
             placeholderX = this.previouslyNearestBeacon.beacon.x;
             placeholderSize = this.previouslyNearestBeacon.beacon.width;
