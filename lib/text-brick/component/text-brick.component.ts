@@ -73,11 +73,22 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.state.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.state.text.slice(1))) {
-                this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
-            }
+            if (this.state.text[0] === '/') {
+                const tag = this.state.text.slice(1);
 
-            this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                if (this.wallApi.core.isRegisteredBrick(tag)) {
+                    this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
+
+                    // d - divider tag
+                    if (tag === 'd') {
+                        this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                    }
+                } else {
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                }
+            } else {
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+            }
         }
     }
 

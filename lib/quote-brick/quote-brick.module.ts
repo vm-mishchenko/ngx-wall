@@ -11,7 +11,8 @@ export class QuoteBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
             tag: 'quote',
-            component: QuoteBrickComponent
+            component: QuoteBrickComponent,
+            supportText: true
         });
     }
 }
