@@ -28708,10 +28708,6 @@ var SelectionPlugin = (function () {
                 _this.wallApi.core.unSelectBricks();
             }
         });
-        this.doc.addEventListener('mouseup', function () {
-            // during text selection pickOutService was disable, enable it again
-            _this.pickOutService.enablePickOut();
-        });
         this.doc.addEventListener('keydown', function (e) {
             var selectedBrickIds = _this.wallApi.core.getSelectedBrickIds();
             var firstSelectedBrickId = selectedBrickIds[0];
@@ -28775,8 +28771,9 @@ var SelectionPlugin = (function () {
         this.doc.addEventListener('selectionchange', function () {
             // selection event triggers when user select some text and then just click by the document
             // we should disabele pick out service only when user really starts select something
-            if (_this.doc.getSelection().anchorNode) {
-                _this.pickOutService.disablePickOut();
+            var selection = _this.doc.getSelection();
+            // todo need to find more robust variant
+            if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
                 _this.pickOutService.stopPickOut();
             }
         });
@@ -28786,6 +28783,12 @@ var SelectionPlugin = (function () {
             }
             if (e instanceof pick_out_1.StartPickOut) {
                 _this.isMouseSelection = true;
+                var selection = _this.doc.getSelection();
+                // todo need to find more robust variant
+                if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
+                    _this.pickOutService.stopPickOut();
+                    _this.isMouseSelection = false;
+                }
             }
             if (e instanceof pick_out_1.EndPickOut) {
             }
