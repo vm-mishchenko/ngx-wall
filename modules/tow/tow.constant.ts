@@ -6,6 +6,8 @@ export const TOW = {
 
     dropSides: {
         left: 'left',
-        right: 'right'
+        right: 'right',
+        top: 'top',
+        bottom: 'bottom'
     }
 };

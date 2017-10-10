@@ -33,6 +33,8 @@ export interface WallCoreApi {
     // MOVE BRICK
     moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string);
 
+    moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string);
+
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string);
 
 
@@ -59,6 +61,8 @@ export interface WallCoreApi {
 
 
     // BRICK
+    isRegisteredBrick(tag: string): boolean;
+
     turnBrickInto(brickId: string, newTag: string): void;
 
     getBrickStore(brickId: string);

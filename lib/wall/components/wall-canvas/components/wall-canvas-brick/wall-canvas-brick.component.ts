@@ -25,7 +25,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     private isMouseNear: boolean = false;
 
-    private minimalDistanceToMouse = 250;
+    private minimalDistanceToMouse = 100;
 
     private radarSubscription: Subscription;
 

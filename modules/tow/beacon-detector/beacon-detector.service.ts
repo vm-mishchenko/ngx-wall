@@ -41,6 +41,10 @@ export class BeaconDetector {
 
             if (x > detected.beacon.x && x < detected.beacon.x + detected.beacon.width) {
                 detected.type = TOW.dropTypes.horizontal;
+
+                const centerYPosition = detected.beacon.y + (detected.beacon.height / 2);
+
+                detected.side = y < centerYPosition ? TOW.dropSides.top : TOW.dropSides.bottom;
             }
         }
 

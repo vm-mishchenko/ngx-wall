@@ -107,7 +107,19 @@ wall-canvas-brick {
   }
 
   .wall-canvas-brick__selected {
-    background-color: #ddf2f9;
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #9be0ff;
+      pointer-events: none;
+      opacity: 0.2;
+    }
   }
 }
 
@@ -190,8 +202,34 @@ img-brick {
   }
 }
 
-// selection range
+divider-brick {
+  .divider-brick__wrapper {
+    height: 36px;
+  }
 
+  .divider-brick__divider {
+    border-bottom: 1px solid silver;
+    height: 1px;
+    padding-top: 17px;
+  }
+}
+
+quote-brick {
+  .quote-brick__editor {
+    max-width: 100%;
+    width: 100%;
+    border-left: 4px solid black;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    font-size: 21px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+// selection range
 .pick-out-area {
   opacity: 0.5;
   position: fixed;

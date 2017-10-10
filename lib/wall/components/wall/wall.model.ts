@@ -9,6 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
 import { Subscription } from 'rxjs/Subscription';
 import { WallDefinition } from "./interfaces/wall-definition.interface";
+import { BrickRegistry } from "../../registry/brick-registry.service";
 
 /**
  * @desc Responsible for storing wall state.
@@ -26,6 +27,7 @@ export class WallModel {
 
     constructor(public api: WallApi,
                 private brickStore: BrickStore,
+                private brickRegistry: BrickRegistry,
                 private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
     }
@@ -62,6 +64,7 @@ export class WallModel {
 
             // MOVE BRICK
             'moveBrickAfterBrickId',
+            'moveBrickBeforeBrickId',
             'moveBrickToNewColumn',
 
             // REMOVE BRICK
@@ -79,6 +82,7 @@ export class WallModel {
             'subscribe',
 
             // BRICk
+            'isRegisteredBrick',
             'turnBrickInto',
             'getBrickStore'
 
@@ -168,6 +172,10 @@ export class WallModel {
         this.layoutStore.updateCanvasLayout();
 
         this.focusOnBrickId(brickId);
+    }
+
+    isRegisteredBrick(tag: string) {
+        return Boolean(this.brickRegistry.get(tag));
     }
 
     /* Add text brick to the bottom of wall in the new row */
@@ -263,6 +271,26 @@ export class WallModel {
             } else {
                 this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
             }
+
+            this.unSelectBricks();
+        }
+    }
+
+    /**
+     * @public
+     * */
+    moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string) {
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            const brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
+            const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
+
+            if (columnCount === 1) {
+                this.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+            } else {
+                this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
+            }
+
+            this.unSelectBricks();
         }
     }
 
@@ -272,6 +300,8 @@ export class WallModel {
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+
+            this.unSelectBricks();
         }
     }
 
@@ -372,8 +402,16 @@ export class WallModel {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
     }
 
+    private moveBrickBeforeInNewRow(targetBrickIds: string[], beforeBrickId: string) {
+        this.layoutStore.moveBrickBeforeInNewRow(targetBrickIds, beforeBrickId);
+    }
+
     private moveBrickAfterInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
+    }
+
+    private moveBrickBeforeInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
+        this.layoutStore.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
     }
 
     private isOnlyOneBrickEmptyText() {

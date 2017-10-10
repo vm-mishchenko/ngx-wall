@@ -150,7 +150,13 @@ export class SelectionPlugin {
                 }
 
                 if (e.dropType === TOW.dropTypes.horizontal) {
-                    this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
+                    if (e.dropSide === TOW.dropSides.top) {
+                        this.wallApi.core.moveBrickBeforeBrickId(movedBrickIds, e.beforeId);
+                    }
+
+                    if (e.dropSide === TOW.dropSides.bottom) {
+                        this.wallApi.core.moveBrickAfterBrickId(movedBrickIds, e.beforeId);
+                    }
                 }
 
                 if (e.dropType === TOW.dropTypes.vertical) {
