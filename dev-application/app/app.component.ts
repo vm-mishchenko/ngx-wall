@@ -70,7 +70,7 @@ export class AppComponent {
                 "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
                 "tag": "text",
                 "data": {
-                    "text": "- improve drag and drop handler"
+                    "text": "- improve selection experience for media bricks"
                 },
                 "meta": {}
             },
@@ -78,7 +78,7 @@ export class AppComponent {
                 "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
                 "tag": "text",
                 "data": {
-                    "text": "- support few editors on the page"
+                    "text": "- improve re-rendering algorithm"
                 },
                 "meta": {}
             },
@@ -115,26 +115,6 @@ export class AppComponent {
                 "meta": {}
             },
             {
-                "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211",
-                "tag": "img",
-                "data": {
-                    "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
-                },
-                "meta": {}
-            },
-            {
-                "id": "135e4e24-36b4-5128-5db2-4648fb1b99be",
-                "tag": "text",
-                "data": {},
-                "meta": {}
-            },
-            {
-                "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d",
-                "tag": "text",
-                "data": {},
-                "meta": {}
-            },
-            {
                 "id": "2e1c3c38-e75c-2c45-df3e-af887b258571",
                 "tag": "d",
                 "data": {},
@@ -157,9 +137,31 @@ export class AppComponent {
                 "meta": {}
             },
             {
-                "id": "7f068912-94e7-314b-f910-9548816a3e13",
+                "id": "e3a9d696-55bc-46d7-7009-a33774934aef",
+                "tag": "v",
+                "data": {
+                    "src": "https://www.youtube.com/embed/YR5ApYxkU-U"
+                },
+                "meta": {}
+            },
+            {
+                "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc",
+                "tag": "d",
+                "data": {},
+                "meta": {}
+            },
+            {
+                "id": "299f6ef7-6c2e-dcd0-c591-de6733195437",
                 "tag": "text",
                 "data": {},
+                "meta": {}
+            },
+            {
+                "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85",
+                "tag": "text",
+                "data": {
+                    "text": "/v video"
+                },
                 "meta": {}
             }
         ],
@@ -181,18 +183,7 @@ export class AppComponent {
                         {
                             "bricks": [
                                 {
-                                    "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "135e4e24-36b4-5128-5db2-4648fb1b99be"
+                                    "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc"
                                 }
                             ]
                         }
@@ -204,16 +195,6 @@ export class AppComponent {
                             "bricks": [
                                 {
                                     "id": "5cb0d4dd-24fa-de29-8785-619747830add"
-                                },
-                                {
-                                    "id": "7f068912-94e7-314b-f910-9548816a3e13"
-                                }
-                            ]
-                        },
-                        {
-                            "bricks": [
-                                {
-                                    "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
                                 }
                             ]
                         }
@@ -224,7 +205,29 @@ export class AppComponent {
                         {
                             "bricks": [
                                 {
-                                    "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d"
+                                    "id": "299f6ef7-6c2e-dcd0-c591-de6733195437"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "e3a9d696-55bc-46d7-7009-a33774934aef"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
                                 }
                             ]
                         }
@@ -277,6 +280,9 @@ export class AppComponent {
                                 },
                                 {
                                     "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
+                                },
+                                {
+                                    "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85"
                                 }
                             ]
                         }

@@ -33,8 +33,6 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
 
         this.updateState(this.store.get());
 
-        console.log(this.state);
-
         if (this.state.src) {
             this.uiState = this.uiStates.video;
 
@@ -80,41 +78,41 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
         if (e.key === 'Enter') {
             e.preventDefault();
 
-            this.applySrc()
-                .then(() => {
-                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                }).catch(() => {
+            if(this.applySrc()){
                 this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-            });
+            }
         }
     }
 
     applySrc() {
+        let isSuccess = false;
+
         const currentValue = this.getCurrentInputValue();
 
         this.uiState = this.uiStates.initial;
 
-        return this.isVideo(currentValue)
-            .then(() => {
-                this.state.src = currentValue;
+        if (currentValue.length) {
+            const srcArray = currentValue.split('=');
+            const youtubeId = srcArray[1];
+
+            if (youtubeId) {
+                this.state.src = `https://www.youtube.com/embed/${youtubeId}`;
 
                 this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
 
                 this.save();
 
                 this.uiState = this.uiStates.video;
-            })
-            .catch(() => {
-                alert('Please enter valid url');
-            });
+
+                isSuccess = true;
+            }
+        }
+
+        return isSuccess;
     }
 
     private save() {
         this.store.set(this.state);
-    }
-
-    private isVideo(src): Promise<boolean> {
-        return Promise.resolve(true);
     }
 
     private getCurrentInputValue() {
