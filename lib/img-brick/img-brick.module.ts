@@ -5,7 +5,7 @@ import { ImgBrickComponent } from './component/img-brick.component';
 
 @NgModule({
     imports: [
-        BrowserModule,
+        BrowserModule
     ],
     exports: [ImgBrickComponent],
     declarations: [ImgBrickComponent],
