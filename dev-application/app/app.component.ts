@@ -152,8 +152,10 @@ export class AppComponent {
             },
             {
                 "id": "299f6ef7-6c2e-dcd0-c591-de6733195437",
-                "tag": "text",
-                "data": {},
+                "tag": "img",
+                "data": {
+                    "src": "https://vanda-production-assets.s3.amazonaws.com/2017/05/04/11/24/01/2b263b74-1f28-49bc-9f20-215f825f6e13/members-only-mornings-the-pink-floyd-exhibition_960.jpg"
+                },
                 "meta": {}
             },
             {
@@ -162,6 +164,40 @@ export class AppComponent {
                 "data": {
                     "text": "/v video"
                 },
+                "meta": {}
+            },
+            {
+                "id": "cc72c194-ee44-4006-3d13-b6d2b980ec36",
+                "tag": "img",
+                "data": {
+                    "src": "https://i.pinimg.com/736x/d3/11/85/d311857d38ed98cf957a144832a3a16c--david-gilmour-pink-floyd.jpg"
+                },
+                "meta": {}
+            },
+            {
+                "id": "68f49a58-d328-e9bf-76cd-94c5a7c8375c",
+                "tag": "img",
+                "data": {
+                    "src": "http://ultimateclassicrock.com/files/2016/11/Pink-FLoyd.jpg"
+                },
+                "meta": {}
+            },
+            {
+                "id": "607eb464-0ef1-3eb9-7d70-1cf82f50c05a",
+                "tag": "text",
+                "data": {},
+                "meta": {}
+            },
+            {
+                "id": "c63c2fb1-b3e3-35f1-8466-b5281a62d4dc",
+                "tag": "text",
+                "data": {},
+                "meta": {}
+            },
+            {
+                "id": "ffd617f5-2ac7-fa58-ae78-142a304642a7",
+                "tag": "text",
+                "data": {},
                 "meta": {}
             }
         ],
@@ -194,6 +230,17 @@ export class AppComponent {
                         {
                             "bricks": [
                                 {
+                                    "id": "ffd617f5-2ac7-fa58-ae78-142a304642a7"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
                                     "id": "5cb0d4dd-24fa-de29-8785-619747830add"
                                 }
                             ]
@@ -205,7 +252,43 @@ export class AppComponent {
                         {
                             "bricks": [
                                 {
+                                    "id": "607eb464-0ef1-3eb9-7d70-1cf82f50c05a"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "cc72c194-ee44-4006-3d13-b6d2b980ec36"
+                                }
+                            ]
+                        },
+                        {
+                            "bricks": [
+                                {
                                     "id": "299f6ef7-6c2e-dcd0-c591-de6733195437"
+                                }
+                            ]
+                        },
+                        {
+                            "bricks": [
+                                {
+                                    "id": "68f49a58-d328-e9bf-76cd-94c5a7c8375c"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "c63c2fb1-b3e3-35f1-8466-b5281a62d4dc"
                                 }
                             ]
                         }

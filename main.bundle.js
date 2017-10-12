@@ -555,7 +555,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return makeParamDecorator; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵt", function() { return _def; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵu", function() { return DebugContext; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_merge__ = __webpack_require__(137);
@@ -15867,7 +15867,8 @@ function flattenUnsubscriptionErrors(errors) {
 /* 43 */,
 /* 44 */,
 /* 45 */,
-/* 46 */
+/* 46 */,
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -16050,7 +16051,6 @@ function __asyncValues(o) {
 }
 
 /***/ }),
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -16310,7 +16310,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Location", function() { return Location; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return COMMON_DIRECTIVES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return COMMON_PIPES; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
 
 /**
@@ -20387,7 +20387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return _createNgProbe; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return EventManagerPlugin; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return DomSanitizerImpl; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
 
@@ -25155,7 +25155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 24);
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -25208,7 +25208,6 @@ var BrickRegistry = (function () {
         this.bricks = [];
     }
     BrickRegistry.prototype.register = function (brickConfiguration) {
-        console.log(brickConfiguration.tag + " is regisytered");
         this.bricks.push(brickConfiguration);
     };
     BrickRegistry.prototype.get = function (tag) {
@@ -25281,7 +25280,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var Subject_1 = __webpack_require__(2);
 var core_1 = __webpack_require__(0);
-var pick_out_events_1 = __webpack_require__(17);
+var pick_out_events_1 = __webpack_require__(18);
 var PickOutCoordinator = (function () {
     function PickOutCoordinator() {
         this.changes = new Subject_1.Subject();
@@ -25402,6 +25401,30 @@ exports.BeaconRegistry = BeaconRegistry;
 
 "use strict";
 
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__webpack_require__(49);
+__export(__webpack_require__(3));
+// bricks
+__export(__webpack_require__(79));
+__export(__webpack_require__(82));
+__export(__webpack_require__(85));
+__export(__webpack_require__(88));
+__export(__webpack_require__(92));
+__export(__webpack_require__(96));
+// modules
+__export(__webpack_require__(16));
+__export(__webpack_require__(19));
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -25501,7 +25524,7 @@ exports.BrickStore = BrickStore;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25531,7 +25554,7 @@ exports.AddBrickEvent = AddBrickEvent;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25542,7 +25565,7 @@ exports.WALL_PLUGIN = new core_1.InjectionToken('Wall plugin');
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25567,7 +25590,7 @@ exports.WallCanvasApi = WallCanvasApi;
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25592,7 +25615,7 @@ var Observable_1 = __webpack_require__(62);
 __webpack_require__(63);
 __webpack_require__(64);
 var spot_model_1 = __webpack_require__(65);
-var radar_tokens_1 = __webpack_require__(14);
+var radar_tokens_1 = __webpack_require__(15);
 var location_updated_event_1 = __webpack_require__(33);
 var RadarCoordinator = (function () {
     function RadarCoordinator(doc, _window) {
@@ -25655,7 +25678,7 @@ exports.RadarCoordinator = RadarCoordinator;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25666,7 +25689,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25676,14 +25699,14 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(70));
-__export(__webpack_require__(17));
+__export(__webpack_require__(18));
 __export(__webpack_require__(39));
 __export(__webpack_require__(36));
 __export(__webpack_require__(35));
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25694,7 +25717,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25728,7 +25751,7 @@ exports.StopPickOut = StopPickOut;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25739,18 +25762,18 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(73));
 __export(__webpack_require__(45));
-__export(__webpack_require__(22));
+__export(__webpack_require__(23));
 __export(__webpack_require__(41));
 __export(__webpack_require__(43));
 __export(__webpack_require__(42));
 __export(__webpack_require__(44));
-__export(__webpack_require__(21));
+__export(__webpack_require__(22));
 __export(__webpack_require__(8));
-__export(__webpack_require__(19));
+__export(__webpack_require__(20));
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25818,7 +25841,7 @@ exports.PlaceholderRenderer = PlaceholderRenderer;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25829,7 +25852,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25843,7 +25866,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var detected_beacon_1 = __webpack_require__(76);
-var tow_constant_1 = __webpack_require__(22);
+var tow_constant_1 = __webpack_require__(23);
 var BeaconDetector = (function () {
     function BeaconDetector() {
     }
@@ -25926,7 +25949,7 @@ exports.BeaconDetector = BeaconDetector;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25947,7 +25970,7 @@ exports.TOW = {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25967,16 +25990,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var tow_tokens_1 = __webpack_require__(20);
-var beacon_detector_service_1 = __webpack_require__(21);
-var placeholder_renderer_service_1 = __webpack_require__(19);
+var tow_tokens_1 = __webpack_require__(21);
+var beacon_detector_service_1 = __webpack_require__(22);
+var placeholder_renderer_service_1 = __webpack_require__(20);
 var beacon_registry_service_1 = __webpack_require__(8);
 var Subject_1 = __webpack_require__(2);
 var start_working_event_1 = __webpack_require__(41);
 var work_in_progress_event_1 = __webpack_require__(42);
 var stop_working_event_1 = __webpack_require__(43);
 var drop_event_1 = __webpack_require__(44);
-var tow_constant_1 = __webpack_require__(22);
+var tow_constant_1 = __webpack_require__(23);
 var TowCoordinator = (function () {
     function TowCoordinator(doc, _window, placeholderRenderer, beaconDetector, beaconRegistry) {
         var _this = this;
@@ -26092,29 +26115,6 @@ exports.TowCoordinator = TowCoordinator;
 
 
 /***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
-Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(49);
-__export(__webpack_require__(3));
-// bricks
-__export(__webpack_require__(79));
-__export(__webpack_require__(82));
-__export(__webpack_require__(85));
-__export(__webpack_require__(88));
-__export(__webpack_require__(92));
-// modules
-__export(__webpack_require__(15));
-__export(__webpack_require__(18));
-
-
-/***/ }),
 /* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -26134,7 +26134,7 @@ var core_1 = __webpack_require__(0);
 var wall_controller_1 = __webpack_require__(52);
 var wall_api_service_1 = __webpack_require__(6);
 var wall_model_1 = __webpack_require__(26);
-var brick_store_service_1 = __webpack_require__(9);
+var brick_store_service_1 = __webpack_require__(10);
 var layout_store_service_1 = __webpack_require__(27);
 var WallComponent = (function () {
     function WallComponent(wallController) {
@@ -26198,12 +26198,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_api_service_1 = __webpack_require__(6);
-var brick_store_service_1 = __webpack_require__(9);
+var brick_store_service_1 = __webpack_require__(10);
 var layout_store_service_1 = __webpack_require__(27);
 var wall_constant_1 = __webpack_require__(28);
 var wall_editor_registry_1 = __webpack_require__(29);
 var Subject_1 = __webpack_require__(2);
-var wall_events_1 = __webpack_require__(10);
+var wall_events_1 = __webpack_require__(11);
 var brick_registry_service_1 = __webpack_require__(4);
 /**
  * @desc Responsible for storing wall state.
@@ -26585,7 +26585,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var brick_registry_service_1 = __webpack_require__(4);
-var brick_store_service_1 = __webpack_require__(9);
+var brick_store_service_1 = __webpack_require__(10);
 var LayoutStore = (function () {
     function LayoutStore(brickRegistry, brickStore) {
         this.brickRegistry = brickRegistry;
@@ -26950,7 +26950,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(6));
 __export(__webpack_require__(25));
-__export(__webpack_require__(10));
+__export(__webpack_require__(11));
 __export(__webpack_require__(28));
 __export(__webpack_require__(56));
 
@@ -26993,7 +26993,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_coordinator_service_1 = __webpack_require__(13);
+var radar_coordinator_service_1 = __webpack_require__(14);
 var Subject_1 = __webpack_require__(2);
 var Radar = (function () {
     function Radar(radarCoordinator) {
@@ -27052,8 +27052,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_tokens_1 = __webpack_require__(14);
-var radar_coordinator_service_1 = __webpack_require__(13);
+var radar_tokens_1 = __webpack_require__(15);
+var radar_coordinator_service_1 = __webpack_require__(14);
 var SpotDirective = (function () {
     function SpotDirective(radarCoordinator, el, _window) {
         this.radarCoordinator = radarCoordinator;
@@ -27112,7 +27112,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_tokens_1 = __webpack_require__(16);
+var pick_out_tokens_1 = __webpack_require__(17);
 var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutItemDirective = (function () {
     function PickOutItemDirective(pickOutCoordinator, _window, el) {
@@ -27180,8 +27180,8 @@ var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
 var pick_out_area_model_1 = __webpack_require__(71);
 var pick_out_area_component_1 = __webpack_require__(38);
-var pick_out_tokens_1 = __webpack_require__(16);
-var pick_out_events_1 = __webpack_require__(17);
+var pick_out_tokens_1 = __webpack_require__(17);
+var pick_out_events_1 = __webpack_require__(18);
 var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutAreaDirective = (function () {
     function PickOutAreaDirective(doc, _window, pickOutHandlerService, componentFactoryResolver, appRef, injector) {
@@ -27532,7 +27532,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var tow_coordinator_service_1 = __webpack_require__(23);
+var tow_coordinator_service_1 = __webpack_require__(24);
 var TowService = (function () {
     function TowService(towCoordinator) {
         var _this = this;
@@ -27859,7 +27859,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var index_1 = __webpack_require__(24);
+var index_1 = __webpack_require__(9);
 var ImgBrickComponent = (function () {
     function ImgBrickComponent(wallApi) {
         this.wallApi = wallApi;
@@ -27997,7 +27997,7 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(51));
 __export(__webpack_require__(78));
-__export(__webpack_require__(11));
+__export(__webpack_require__(12));
 __export(__webpack_require__(30));
 __export(__webpack_require__(4));
 
@@ -28023,11 +28023,11 @@ var brick_registry_service_1 = __webpack_require__(4);
 var wall_canvas_component_1 = __webpack_require__(54);
 var wall_canvas_row_component_1 = __webpack_require__(58);
 var wall_canvas_brick_component_1 = __webpack_require__(60);
-var wall_tokens_1 = __webpack_require__(11);
+var wall_tokens_1 = __webpack_require__(12);
 var selection_1 = __webpack_require__(69);
 var wall_editor_registry_1 = __webpack_require__(29);
-var pick_out_1 = __webpack_require__(15);
-var tow_1 = __webpack_require__(18);
+var pick_out_1 = __webpack_require__(16);
+var tow_1 = __webpack_require__(19);
 var radar_1 = __webpack_require__(31);
 var WallModule = (function () {
     function WallModule() {
@@ -28082,7 +28082,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_model_1 = __webpack_require__(26);
-var wall_tokens_1 = __webpack_require__(11);
+var wall_tokens_1 = __webpack_require__(12);
 var WallController = (function () {
     function WallController(wallModel, injector) {
         this.wallModel = wallModel;
@@ -28113,7 +28113,7 @@ exports.WallController = WallController;
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\n             [layout]=\"wallController.wallModel.canvasLayout\">\n</wall-canvas>"
+module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\r\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\r\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\r\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\r\n             [layout]=\"wallController.wallModel.canvasLayout\">\r\n</wall-canvas>"
 
 /***/ }),
 /* 54 */
@@ -28136,7 +28136,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var wall_canvas_api_1 = __webpack_require__(12);
+var wall_canvas_api_1 = __webpack_require__(13);
 var wall_canvas_controller_1 = __webpack_require__(55);
 var WallCanvasComponent = (function () {
     function WallCanvasComponent(wallCanvasController, doc) {
@@ -28240,10 +28240,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var wall_canvas_api_1 = __webpack_require__(12);
+var wall_canvas_api_1 = __webpack_require__(13);
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(30);
-var wall_events_1 = __webpack_require__(10);
+var wall_events_1 = __webpack_require__(11);
 var WallCanvasController = (function () {
     function WallCanvasController(wallCanvasApi, wallApi) {
         this.wallCanvasApi = wallCanvasApi;
@@ -28368,7 +28368,7 @@ exports.awesomeTypescriptLoaderBug = true;
 /* 57 */
 /***/ (function(module, exports) {
 
-module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\n    <wall-canvas-row [row]=\"row\" *ngFor=\"let row of layout.bricks\"></wall-canvas-row>\n\n    <div #expander class=\"wall-canvas__expander\"></div>\n</div>"
+module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\r\n    <wall-canvas-row [row]=\"row\" *ngFor=\"let row of layout.bricks\"></wall-canvas-row>\r\n\r\n    <div #expander class=\"wall-canvas__expander\"></div>\r\n</div>"
 
 /***/ }),
 /* 58 */
@@ -28412,7 +28412,7 @@ exports.WallCanvasRowComponent = WallCanvasRowComponent;
 /* 59 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns\">\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks\"></wall-canvas-brick>\n</div>"
+module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns\">\r\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks\"></wall-canvas-brick>\r\n</div>"
 
 /***/ }),
 /* 60 */
@@ -28431,7 +28431,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_canvas_api_1 = __webpack_require__(12);
+var wall_canvas_api_1 = __webpack_require__(13);
 var radar_1 = __webpack_require__(31);
 var WallCanvasBrickComponent = (function () {
     function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasApi) {
@@ -28519,8 +28519,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var radar_service_1 = __webpack_require__(32);
 var radar_directive_1 = __webpack_require__(34);
-var radar_tokens_1 = __webpack_require__(14);
-var radar_coordinator_service_1 = __webpack_require__(13);
+var radar_tokens_1 = __webpack_require__(15);
+var radar_coordinator_service_1 = __webpack_require__(14);
 var RadarModule = (function () {
     function RadarModule() {
     }
@@ -28662,7 +28662,7 @@ exports.LocationToLeftCenterPointEvent = LocationToLeftCenterPointEvent;
 /* 68 */
 /***/ (function(module, exports) {
 
-module.exports = "<div [pick-out-item]=\"brick.id\"\n     [beacon]=\"brick.id\"\n     [spot]=\"brick.id\"\n     (click)=\"onFocused()\"\n     class=\"wall-canvas-brick__wrapper\"\n     [ngClass]=\"{'wall-canvas-brick__selected': selected, 'wall-canvas-brick__draggable': isMouseNear}\">\n\n    <div class=\"wall-canvas-brick__draggable-handler\" [tow-slave]=\"brick.id\">\n        <div class=\"wall-canvas-brick__draggable-box\">\n            <svg xmlns=\"http://www.w3.org/2000/svg\" x version=\"1.1\" width=\"15px\" height=\"15px\" viewBox=\"0 0 612 612\" xml:space=\"preserve\">\n<g>\n\t<g>\n\t\t<circle cx=\"69.545\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"69.545\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"69.545\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t</g>\n</g>\n</svg>\n        </div>\n    </div>\n\n    <div #brickContainer></div>\n</div>"
+module.exports = "<div [pick-out-item]=\"brick.id\"\r\n     [beacon]=\"brick.id\"\r\n     [spot]=\"brick.id\"\r\n     (click)=\"onFocused()\"\r\n     class=\"wall-canvas-brick__wrapper\"\r\n     [ngClass]=\"{'wall-canvas-brick__selected': selected, 'wall-canvas-brick__draggable': isMouseNear}\">\r\n\r\n    <div class=\"wall-canvas-brick__draggable-handler\" [tow-slave]=\"brick.id\">\r\n        <div class=\"wall-canvas-brick__draggable-box\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" x version=\"1.1\" width=\"15px\" height=\"15px\" viewBox=\"0 0 612 612\" xml:space=\"preserve\">\r\n<g>\r\n\t<g>\r\n\t\t<circle cx=\"69.545\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t</g>\r\n</g>\r\n</svg>\r\n        </div>\r\n    </div>\r\n\r\n    <div #brickContainer></div>\r\n</div>"
 
 /***/ }),
 /* 69 */
@@ -28686,8 +28686,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
 var wall_api_service_1 = __webpack_require__(6);
-var pick_out_1 = __webpack_require__(15);
-var tow_1 = __webpack_require__(18);
+var pick_out_1 = __webpack_require__(16);
+var tow_1 = __webpack_require__(19);
 var SelectionPlugin = (function () {
     function SelectionPlugin(wallApi, pickOutService, towService, doc) {
         this.wallApi = wallApi;
@@ -28866,7 +28866,7 @@ var common_1 = __webpack_require__(1);
 var pick_out_item_directive_1 = __webpack_require__(35);
 var pick_out_area_directive_1 = __webpack_require__(36);
 var pick_out_area_component_1 = __webpack_require__(38);
-var pick_out_tokens_1 = __webpack_require__(16);
+var pick_out_tokens_1 = __webpack_require__(17);
 var pick_out_service_1 = __webpack_require__(39);
 var pick_out_coordinator_service_1 = __webpack_require__(7);
 var PickOutModule = (function () {
@@ -28953,7 +28953,7 @@ exports.PickOutAreaModel = PickOutAreaModel;
 /* 72 */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"pickOutAreaModel\"\n           [style.left.px]=\"pickOutAreaModel.x\"\n           [style.top.px]=\"pickOutAreaModel.y\"\n           [style.width.px]=\"pickOutAreaModel.width\"\n           [style.height.px]=\"pickOutAreaModel.height\"\n           class=\"pick-out-area\">\n</div>"
+module.exports = "<div *ngIf=\"pickOutAreaModel\"\r\n           [style.left.px]=\"pickOutAreaModel.x\"\r\n           [style.top.px]=\"pickOutAreaModel.y\"\r\n           [style.width.px]=\"pickOutAreaModel.width\"\r\n           [style.height.px]=\"pickOutAreaModel.height\"\r\n           class=\"pick-out-area\">\r\n</div>"
 
 /***/ }),
 /* 73 */
@@ -28970,13 +28970,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var placeholder_renderer_service_1 = __webpack_require__(19);
+var placeholder_renderer_service_1 = __webpack_require__(20);
 var placeholder_component_1 = __webpack_require__(40);
 var beacon_registry_service_1 = __webpack_require__(8);
-var tow_tokens_1 = __webpack_require__(20);
+var tow_tokens_1 = __webpack_require__(21);
 var beacon_directive_1 = __webpack_require__(75);
-var beacon_detector_service_1 = __webpack_require__(21);
-var tow_coordinator_service_1 = __webpack_require__(23);
+var beacon_detector_service_1 = __webpack_require__(22);
+var tow_coordinator_service_1 = __webpack_require__(24);
 var tow_slave_directive_1 = __webpack_require__(77);
 var tow_service_1 = __webpack_require__(45);
 var TowModule = (function () {
@@ -29021,7 +29021,7 @@ exports.TowModule = TowModule;
 /* 74 */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"x\">\n    <div *ngIf=\"isHorizontal\"\n         [style.left.px]=\"x\"\n         [style.top.px]=\"y\"\n         [style.width.px]=\"size\"\n         [style.height.px]=\"3\"\n         class=\"tow-placeholder\">\n    </div>\n\n    <div *ngIf=\"!isHorizontal\"\n         [style.left.px]=\"x\"\n         [style.top.px]=\"y\"\n         [style.width.px]=\"3\"\n         [style.height.px]=\"size\"\n         class=\"tow-placeholder\">\n    </div>\n</div>"
+module.exports = "<div *ngIf=\"x\">\r\n    <div *ngIf=\"isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"size\"\r\n         [style.height.px]=\"3\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n\r\n    <div *ngIf=\"!isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"3\"\r\n         [style.height.px]=\"size\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n</div>"
 
 /***/ }),
 /* 75 */
@@ -29044,7 +29044,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var beacon_registry_service_1 = __webpack_require__(8);
-var tow_tokens_1 = __webpack_require__(20);
+var tow_tokens_1 = __webpack_require__(21);
 var BeaconDirective = (function () {
     function BeaconDirective(beaconRegistry, el, _window) {
         this.beaconRegistry = beaconRegistry;
@@ -29119,7 +29119,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var tow_coordinator_service_1 = __webpack_require__(23);
+var tow_coordinator_service_1 = __webpack_require__(24);
 var TowSlaveDirective = (function () {
     function TowSlaveDirective(renderer2, el, towCoordinator) {
         this.renderer2 = renderer2;
@@ -29251,7 +29251,7 @@ exports.TextBrickModule = TextBrickModule;
 /* 81 */
 /***/ (function(module, exports) {
 
-module.exports = "<div #editor\n     [hidden]=\"mode === modes.READ\"\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"text-brick__editor\"\n     contenteditable>\n</div>\n\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
+module.exports = "<div #editor\r\n     [hidden]=\"mode === modes.READ\"\r\n     (keydown)=\"onKeyPress($event)\"\r\n     (keyup)=\"onTextChanged()\"\r\n     class=\"text-brick__editor\"\r\n     contenteditable>\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
 /* 82 */
@@ -29316,7 +29316,7 @@ exports.HeaderBrickModule = HeaderBrickModule;
 /* 84 */
 /***/ (function(module, exports) {
 
-module.exports = "<div #editor\n    [hidden]=\"mode === modes.READ\"\n    (keydown)=\"onKeyPress($event)\"\n    (keyup)=\"onTextChanged()\"\n    class=\"editor\"\n    contenteditable>\n</div>\n\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
+module.exports = "<div #editor\r\n    [hidden]=\"mode === modes.READ\"\r\n    (keydown)=\"onKeyPress($event)\"\r\n    (keyup)=\"onTextChanged()\"\r\n    class=\"editor\"\r\n    contenteditable>\r\n</div>\r\n\r\n<div [innerHTML]=\"state.text\" [hidden]=\"mode === modes.EDIT\"></div>"
 
 /***/ }),
 /* 85 */
@@ -29363,7 +29363,7 @@ var ImgBrickModule = (function () {
     ImgBrickModule = __decorate([
         core_1.NgModule({
             imports: [
-                platform_browser_1.BrowserModule,
+                platform_browser_1.BrowserModule
             ],
             exports: [img_brick_component_1.ImgBrickComponent],
             declarations: [img_brick_component_1.ImgBrickComponent],
@@ -29380,7 +29380,7 @@ exports.ImgBrickModule = ImgBrickModule;
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\n\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\n    Add an Image\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the image link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\n            </button>\n        </div>\n    </div>\n</div>"
+module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\r\n\r\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\r\n    Add an Image\r\n</div>\r\n\r\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\r\n    <div class=\"w-panel__body\">\r\n        <form>\r\n            <div class=\"form-group w-form-group\">\r\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\r\n                       placeholder=\"Paste the image link\">\r\n            </div>\r\n        </form>\r\n\r\n        <div>\r\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 /* 88 */
@@ -29467,7 +29467,7 @@ exports.DividerBrickComponent = DividerBrickComponent;
 /* 91 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"divider-brick__wrapper\">\n    <div class=\"divider-brick__divider\"></div>\n</div>"
+module.exports = "<div class=\"divider-brick__wrapper\">\r\n    <div class=\"divider-brick__divider\"></div>\r\n</div>"
 
 /***/ }),
 /* 92 */
@@ -29656,7 +29656,197 @@ exports.QuoteBrickComponent = QuoteBrickComponent;
 /* 95 */
 /***/ (function(module, exports) {
 
-module.exports = "<div #editor\n     [hidden]=\"mode === modes.READ\"\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"editor quote-brick__editor\"\n     contenteditable>\n</div>\n"
+module.exports = "<div #editor\r\n     [hidden]=\"mode === modes.READ\"\r\n     (keydown)=\"onKeyPress($event)\"\r\n     (keyup)=\"onTextChanged()\"\r\n     class=\"editor quote-brick__editor\"\r\n     contenteditable>\r\n</div>\r\n"
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(97));
+
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var brick_registry_service_1 = __webpack_require__(4);
+var video_brick_component_1 = __webpack_require__(98);
+var common_1 = __webpack_require__(1);
+var VideoBrickModule = (function () {
+    function VideoBrickModule(brickRegistry) {
+        this.brickRegistry = brickRegistry;
+        this.brickRegistry.register({
+            tag: 'v',
+            component: video_brick_component_1.VideoBrickComponent
+        });
+    }
+    VideoBrickModule = __decorate([
+        core_1.NgModule({
+            imports: [
+                common_1.CommonModule
+            ],
+            exports: [video_brick_component_1.VideoBrickComponent],
+            declarations: [video_brick_component_1.VideoBrickComponent],
+            entryComponents: [video_brick_component_1.VideoBrickComponent]
+        }),
+        __metadata("design:paramtypes", [brick_registry_service_1.BrickRegistry])
+    ], VideoBrickModule);
+    return VideoBrickModule;
+}());
+exports.VideoBrickModule = VideoBrickModule;
+
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var index_1 = __webpack_require__(9);
+var VideoBrickComponent = (function () {
+    function VideoBrickComponent(wallApi, r) {
+        this.wallApi = wallApi;
+        this.r = r;
+        // ui
+        this.uiStates = {
+            initial: 'initial',
+            pasteSrc: 'pasteSrc',
+            video: 'video'
+        };
+        // data
+        this.state = {};
+        this.store = null;
+        this.uiState = this.uiStates.initial;
+    }
+    VideoBrickComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.updateState(this.store.get());
+        if (this.state.src) {
+            this.uiState = this.uiStates.video;
+            setTimeout(function () {
+                _this.r.setAttribute(_this.iframe.nativeElement, 'src', _this.state.src);
+            }, 10);
+        }
+    };
+    VideoBrickComponent.prototype.onWallFocus = function () {
+        if (this.uiState === this.uiStates.initial) {
+            this.showPanel();
+        }
+    };
+    VideoBrickComponent.prototype.updateState = function (newState) {
+        this.state = newState;
+    };
+    VideoBrickComponent.prototype.switchPanel = function () {
+        if (this.uiState === this.uiStates.initial) {
+            this.showPanel();
+        }
+        else if (this.uiState === this.uiStates.pasteSrc) {
+            this.uiState = this.uiStates.initial;
+        }
+    };
+    VideoBrickComponent.prototype.showPanel = function () {
+        var _this = this;
+        this.uiState = this.uiStates.pasteSrc;
+        setTimeout(function () {
+            _this.src.nativeElement.focus();
+        });
+    };
+    VideoBrickComponent.prototype.onKeyPress = function (e) {
+        if (e.key === 'Escape') {
+            if (this.uiState === this.uiStates.pasteSrc) {
+                this.uiState = this.uiStates.initial;
+            }
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (this.applySrc()) {
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+            }
+        }
+    };
+    VideoBrickComponent.prototype.applySrc = function () {
+        var isSuccess = false;
+        var currentValue = this.getCurrentInputValue();
+        this.uiState = this.uiStates.initial;
+        if (currentValue.length) {
+            var srcArray = currentValue.split('=');
+            var youtubeId = srcArray[1];
+            if (youtubeId) {
+                this.state.src = "https://www.youtube.com/embed/" + youtubeId;
+                this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
+                this.save();
+                this.uiState = this.uiStates.video;
+                isSuccess = true;
+            }
+        }
+        return isSuccess;
+    };
+    VideoBrickComponent.prototype.save = function () {
+        this.store.set(this.state);
+    };
+    VideoBrickComponent.prototype.getCurrentInputValue = function () {
+        return this.src.nativeElement.value;
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], VideoBrickComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.ViewChild('src'),
+        __metadata("design:type", core_1.ElementRef)
+    ], VideoBrickComponent.prototype, "src", void 0);
+    __decorate([
+        core_1.ViewChild('iframe'),
+        __metadata("design:type", core_1.ElementRef)
+    ], VideoBrickComponent.prototype, "iframe", void 0);
+    VideoBrickComponent = __decorate([
+        core_1.Component({
+            selector: 'video-brick',
+            template: __webpack_require__(99)
+        }),
+        __metadata("design:paramtypes", [index_1.WallApi, core_1.Renderer2])
+    ], VideoBrickComponent);
+    return VideoBrickComponent;
+}());
+exports.VideoBrickComponent = VideoBrickComponent;
+
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports) {
+
+module.exports = "<iframe height=\"400\" [hidden]=\"uiState !== uiStates.video\" #iframe frameborder=\"0\" allowfullscreen></iframe>\r\n\r\n<div [hidden]=\"uiState == uiStates.video\" class=\"w-signboard\" (click)=\"switchPanel()\">\r\n    Add an Video\r\n</div>\r\n\r\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\r\n    <div class=\"w-panel__body\">\r\n        <form>\r\n            <div class=\"form-group w-form-group\">\r\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\r\n                       placeholder=\"Paste the video link\">\r\n            </div>\r\n        </form>\r\n\r\n        <div>\r\n            <button (click)=\"applySrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed video\r\n            </button>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n"
 
 /***/ })
 /******/ ]);
@@ -30161,7 +30351,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VERSION", function() { return VERSION; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵINTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS", function() { return INTERNAL_BROWSER_DYNAMIC_PLATFORM_PROVIDERS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵResourceLoaderImpl", function() { return ResourceLoaderImpl; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__(54);
@@ -30565,7 +30755,7 @@ var platformBrowserDynamic = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__[
 /* unused harmony export splitClasses */
 /* unused harmony export createElementCssSelector */
 /* unused harmony export removeSummaryDuplicates */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
 
 /**
@@ -59343,6 +59533,7 @@ var AppModule = (function () {
                 wall_1.QuoteBrickModule,
                 wall_1.TextBrickModule,
                 wall_1.DividerBrickModule,
+                wall_1.VideoBrickModule,
                 wall_1.HeaderBrickModule,
                 wall_1.ImgBrickModule,
                 common_1.CommonModule,
@@ -59446,7 +59637,7 @@ var AppComponent = (function () {
                     "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
                     "tag": "text",
                     "data": {
-                        "text": "- improve drag and drop handler"
+                        "text": "- improve selection experience for media bricks"
                     },
                     "meta": {}
                 },
@@ -59454,7 +59645,7 @@ var AppComponent = (function () {
                     "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
                     "tag": "text",
                     "data": {
-                        "text": "- support few editors on the page"
+                        "text": "- improve re-rendering algorithm"
                     },
                     "meta": {}
                 },
@@ -59491,26 +59682,6 @@ var AppComponent = (function () {
                     "meta": {}
                 },
                 {
-                    "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211",
-                    "tag": "img",
-                    "data": {
-                        "src": "https://cdn3.volusion.com/mache.udhvk/v/vspfiles/photos/M8994-PARENT-2.jpg"
-                    },
-                    "meta": {}
-                },
-                {
-                    "id": "135e4e24-36b4-5128-5db2-4648fb1b99be",
-                    "tag": "text",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d",
-                    "tag": "text",
-                    "data": {},
-                    "meta": {}
-                },
-                {
                     "id": "2e1c3c38-e75c-2c45-df3e-af887b258571",
                     "tag": "d",
                     "data": {},
@@ -59533,9 +59704,31 @@ var AppComponent = (function () {
                     "meta": {}
                 },
                 {
-                    "id": "7f068912-94e7-314b-f910-9548816a3e13",
+                    "id": "e3a9d696-55bc-46d7-7009-a33774934aef",
+                    "tag": "v",
+                    "data": {
+                        "src": "https://www.youtube.com/embed/YR5ApYxkU-U"
+                    },
+                    "meta": {}
+                },
+                {
+                    "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc",
+                    "tag": "d",
+                    "data": {},
+                    "meta": {}
+                },
+                {
+                    "id": "299f6ef7-6c2e-dcd0-c591-de6733195437",
                     "tag": "text",
                     "data": {},
+                    "meta": {}
+                },
+                {
+                    "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85",
+                    "tag": "text",
+                    "data": {
+                        "text": "/v video"
+                    },
                     "meta": {}
                 }
             ],
@@ -59557,18 +59750,7 @@ var AppComponent = (function () {
                             {
                                 "bricks": [
                                     {
-                                        "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "135e4e24-36b4-5128-5db2-4648fb1b99be"
+                                        "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc"
                                     }
                                 ]
                             }
@@ -59580,16 +59762,6 @@ var AppComponent = (function () {
                                 "bricks": [
                                     {
                                         "id": "5cb0d4dd-24fa-de29-8785-619747830add"
-                                    },
-                                    {
-                                        "id": "7f068912-94e7-314b-f910-9548816a3e13"
-                                    }
-                                ]
-                            },
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "dc8a4548-54b6-c341-ded0-4d32e5b81211"
                                     }
                                 ]
                             }
@@ -59600,7 +59772,29 @@ var AppComponent = (function () {
                             {
                                 "bricks": [
                                     {
-                                        "id": "e56805c8-b7ac-37c5-5f61-a63ec7b58c5d"
+                                        "id": "299f6ef7-6c2e-dcd0-c591-de6733195437"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "e3a9d696-55bc-46d7-7009-a33774934aef"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "columns": [
+                            {
+                                "bricks": [
+                                    {
+                                        "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
                                     }
                                 ]
                             }
@@ -59653,6 +59847,9 @@ var AppComponent = (function () {
                                     },
                                     {
                                         "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
+                                    },
+                                    {
+                                        "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85"
                                     }
                                 ]
                             }
@@ -60498,7 +60695,7 @@ var ThrottleSubscriber = (function (_super) {
 /* 165 */
 /***/ (function(module, exports) {
 
-module.exports = "<div pick-out-area>\n    <div class=\"wrapper\">\n        <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\n\n        <br>\n        <hr>\n        <br>\n\n        <pre>\n        {{plan | json}}\n    </pre>\n    </div>\n</div>"
+module.exports = "<div pick-out-area>\r\n    <div class=\"wrapper\">\r\n        <wall [configuration]=\"wallConfiguration\" [plan]=\"wallPlan\"></wall>\r\n\r\n        <br>\r\n        <hr>\r\n        <br>\r\n\r\n        <pre>\r\n        {{plan | json}}\r\n    </pre>\r\n    </div>\r\n</div>"
 
 /***/ }),
 /* 166 */
@@ -60686,7 +60883,7 @@ exports = module.exports = __webpack_require__(98)(undefined);
 
 
 // module
-exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\ndivider-brick .divider-brick__wrapper {\n  height: 36px; }\n\ndivider-brick .divider-brick__divider {\n  border-bottom: 1px solid silver;\n  height: 1px;\n  padding-top: 17px; }\n\nquote-brick .quote-brick__editor {\n  max-width: 100%;\n  width: 100%;\n  border-left: 4px solid black;\n  padding-left: 1.25em;\n  padding-right: 1.25em;\n  font-size: 21px; }\n  quote-brick .quote-brick__editor:focus {\n    outline: none; }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
+exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\ndivider-brick .divider-brick__wrapper {\n  height: 36px; }\n\ndivider-brick .divider-brick__divider {\n  border-bottom: 1px solid silver;\n  height: 1px;\n  padding-top: 17px; }\n\nquote-brick .quote-brick__editor {\n  max-width: 100%;\n  width: 100%;\n  border-left: 4px solid black;\n  padding-left: 1.25em;\n  padding-right: 1.25em;\n  font-size: 21px; }\n  quote-brick .quote-brick__editor:focus {\n    outline: none; }\n\nvideo-brick {\n  position: relative;\n  display: block; }\n  video-brick iframe {\n    width: 100%; }\n  video-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  video-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
 
 // exports
 
