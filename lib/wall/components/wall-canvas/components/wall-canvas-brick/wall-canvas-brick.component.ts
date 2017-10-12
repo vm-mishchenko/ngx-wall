@@ -9,7 +9,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import { WallCanvasApi } from '../../wall-canvas.api';
-import { LocationUpdatedEvent, Radar } from "../../../../../../modules/radar";
+import { LocationUpdatedEvent, Radar } from "../../../../../modules/radar";
 import { Subscription } from "rxjs/Subscription";
 
 @Component({

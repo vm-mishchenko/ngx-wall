@@ -132,7 +132,6 @@ wall-canvas-row {
   }
 }
 
-// text
 text-brick {
   display: block;
 
@@ -146,7 +145,6 @@ text-brick {
   }
 }
 
-// header
 header-brick {
   display: block;
 
@@ -166,8 +164,6 @@ header-brick {
     }
   }
 }
-
-// img
 
 img-brick {
   position: relative;
@@ -202,8 +198,61 @@ img-brick {
   }
 }
 
-// selection range
+divider-brick {
+  .divider-brick__wrapper {
+    height: 36px;
+  }
 
+  .divider-brick__divider {
+    border-bottom: 1px solid silver;
+    height: 1px;
+    padding-top: 17px;
+  }
+}
+
+quote-brick {
+  .quote-brick__editor {
+    max-width: 100%;
+    width: 100%;
+    border-left: 4px solid black;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    font-size: 21px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+video-brick {
+  position: relative;
+  display: block;
+
+  iframe {
+    width: 100%;
+  }
+
+  .w-panel {
+    width: 80%;
+    position: absolute;
+    max-width: 450px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(12%, -12px);
+    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear;
+  }
+
+  .show {
+    z-index: 10;
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+    transform: translate(12%, -10px);
+  }
+}
+
+// selection range
 .pick-out-area {
   opacity: 0.5;
   position: fixed;
