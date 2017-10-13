@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { onWallFocus, WallApi } from '../../index';
+import { Subject } from "rxjs/Subject";
 
 @Component({
     selector: 'video-brick',
@@ -40,6 +41,11 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
                 this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
             }, 10);
         }
+
+        const state = {
+            environment: 'mobile',
+            isMediaInteractionEnabled: false
+        };
     }
 
     onWallFocus(): void {
@@ -78,7 +84,7 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
         if (e.key === 'Enter') {
             e.preventDefault();
 
-            if(this.applySrc()){
+            if (this.applySrc()) {
                 this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             }
         }

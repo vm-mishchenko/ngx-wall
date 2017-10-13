@@ -23,6 +23,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     private selected: boolean = false;
 
+    private isMediaInteractionEnabled: boolean = true;
+
     private isMouseNear: boolean = false;
 
     private minimalDistanceToMouse = 100;
@@ -70,6 +72,14 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     unselect() {
         this.selected = false;
+    }
+
+    enableMediaInteraction() {
+        this.isMediaInteractionEnabled = true;
+    }
+
+    disableMediaInteraction() {
+        this.isMediaInteractionEnabled = false;
     }
 
     private renderBrick() {

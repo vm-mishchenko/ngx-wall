@@ -1,7 +1,7 @@
-import {WallCanvasApi} from './wall-canvas.api';
-import {EventEmitter, Injectable} from '@angular/core';
-import {RemoveBrickEvent, WallApi} from "../wall";
-import {RemoveBricksEvent} from "../wall/wall.events";
+import { WallCanvasApi } from './wall-canvas.api';
+import { EventEmitter, Injectable } from '@angular/core';
+import { RemoveBrickEvent, WallApi } from "../wall";
+import { RemoveBricksEvent } from "../wall/wall.events";
 
 @Injectable()
 export class WallCanvasController {
@@ -121,5 +121,17 @@ export class WallCanvasController {
 
     removeCanvasBrickInstance(brickId: string) {
         this.canvasBrickInstances.delete(brickId);
+    }
+
+    enableMediaInteraction() {
+        this.canvasBrickInstances.forEach((canvasBrickInstance) => {
+            canvasBrickInstance.canvasBrickInstance.enableMediaInteraction();
+        });
+    }
+
+    disableMediaInteraction() {
+        this.canvasBrickInstances.forEach((canvasBrickInstance) => {
+            canvasBrickInstance.canvasBrickInstance.disableMediaInteraction();
+        });
     }
 }

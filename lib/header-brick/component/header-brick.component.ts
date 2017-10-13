@@ -10,10 +10,6 @@ export class HeaderBrickComponent implements OnInit {
 
     @ViewChild('editor') editor: ElementRef;
 
-    modes = WALL.MODES;
-
-    mode: string = WALL.MODES.EDIT;
-
     state: any = {};
 
     store: any = null;
@@ -22,8 +18,6 @@ export class HeaderBrickComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.mode = this.wallApi.core.getMode();
-
         this.store = this.wallApi.core.getBrickStore(this.id);
 
         this.state = this.store.get();

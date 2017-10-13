@@ -1,5 +1,6 @@
 <wall-canvas (canvasClick)="onCanvasClick()"
              (onFocusedBrick)="onFocusedBrick($event)"
+             [isMediaInteractionEnabled]="wallController.wallModel.state.isMediaInteractionEnabled.getValue()"
              [focusedBrickId]="wallController.wallModel.focusedBrickId"
              [selectedBricks]="wallController.wallModel.selectedBricks"
              [layout]="wallController.wallModel.canvasLayout">

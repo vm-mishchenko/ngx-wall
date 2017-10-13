@@ -13,18 +13,12 @@ export class QuoteBrickComponent implements OnInit {
 
     state: any = {};
 
-    modes = WALL.MODES;
-
-    mode: string = WALL.MODES.EDIT;
-
     store: any = null;
 
     constructor(private wallApi: WallApi) {
     }
 
     ngOnInit() {
-        this.mode = this.wallApi.core.getMode();
-
         this.store = this.wallApi.core.getBrickStore(this.id);
 
         this.state = this.store.get();
