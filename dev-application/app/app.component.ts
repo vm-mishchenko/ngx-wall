@@ -67,14 +67,6 @@ export class AppComponent {
                 "meta": {}
             },
             {
-                "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
-                "tag": "text",
-                "data": {
-                    "text": "- improve selection experience for media bricks"
-                },
-                "meta": {}
-            },
-            {
                 "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
                 "tag": "text",
                 "data": {
@@ -86,7 +78,7 @@ export class AppComponent {
                 "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2",
                 "tag": "text",
                 "data": {
-                    "text": "- support readonly mode"
+                    "text": "- support read-only mode"
                 },
                 "meta": {}
             },
@@ -198,6 +190,14 @@ export class AppComponent {
                 "id": "ffd617f5-2ac7-fa58-ae78-142a304642a7",
                 "tag": "text",
                 "data": {},
+                "meta": {}
+            },
+            {
+                "id": "5d3c7fcc-f752-bcb5-a330-ab2da369d209",
+                "tag": "text",
+                "data": {
+                    "text": "- clean up canvas code"
+                },
                 "meta": {}
             }
         ],
@@ -337,10 +337,10 @@ export class AppComponent {
                                     "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
                                 },
                                 {
-                                    "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
+                                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
                                 },
                                 {
-                                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
+                                    "id": "5d3c7fcc-f752-bcb5-a330-ab2da369d209"
                                 },
                                 {
                                     "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
