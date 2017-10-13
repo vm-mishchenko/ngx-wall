@@ -1,15 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'wall-canvas-row',
     templateUrl: './wall-canvas-row.component.html'
 })
-export class WallCanvasRowComponent implements OnInit {
+export class WallCanvasRowComponent {
     @Input() row: any;
-
-    constructor() {
-    }
-
-    ngOnInit() {
-    }
 }

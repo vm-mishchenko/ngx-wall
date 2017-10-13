@@ -10,6 +10,8 @@ import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.event
 import { Subscription } from 'rxjs/Subscription';
 import { WallDefinition } from "./interfaces/wall-definition.interface";
 import { BrickRegistry } from "../../registry/brick-registry.service";
+import { ReactiveProperty, ReactiveReadOnlyProperty } from "../../../reactive-property";
+import { WallState } from "./interfaces/wall-state.interface";
 
 /**
  * @desc Responsible for storing wall state.
@@ -20,16 +22,26 @@ export class WallModel {
     id: string = String(Math.random());
 
     events: Subject<any> = new Subject();
-    mode: string = WALL.MODES.EDIT;
     // UI
     focusedBrickId: string = null;
     selectedBricks: string[] = [];
+
+    private writeState = {
+        mode: new ReactiveProperty<string>(WALL.MODES.EDIT),
+        isMediaInteractionEnabled: new ReactiveProperty<boolean>(true)
+    };
+
+    state: WallState = {
+        mode: new ReactiveReadOnlyProperty(this.writeState.mode.getValue(), this.writeState.mode.valueChanged),
+        isMediaInteractionEnabled: new ReactiveReadOnlyProperty(this.writeState.isMediaInteractionEnabled.getValue(), this.writeState.isMediaInteractionEnabled.valueChanged)
+    };
 
     constructor(public api: WallApi,
                 private brickStore: BrickStore,
                 private brickRegistry: BrickRegistry,
                 private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
+
     }
 
     get canvasLayout(): boolean {
@@ -39,12 +51,10 @@ export class WallModel {
     initialize(plan: WallDefinition, configuration: WallConfiguration) {
         this.wallEditorRegistry.registerEditor(this.id, this);
 
-        if (configuration && configuration.mode) {
-            this.mode = configuration.mode;
-        }
-
         // initialize core API
         const coreApi = [
+            'state',
+
             // SELECTION
             'getSelectedBrickIds',
             'selectBrick',
@@ -76,9 +86,12 @@ export class WallModel {
             'getNextBrickId',
             'isBrickAheadOf',
 
+            // BEHAVIOUR
+            'enableMediaInteraction',
+            'disableMediaInteraction',
+
             // CLIENT
             'getPlan',
-            'getMode',
             'subscribe',
 
             // BRICk
@@ -87,7 +100,11 @@ export class WallModel {
             'getBrickStore'
 
         ].reduce((result, methodName) => {
-            result[methodName] = this[methodName].bind(this);
+            if (this[methodName].bind) {
+                result[methodName] = this[methodName].bind(this);
+            } else {
+                result[methodName] = this[methodName];
+            }
 
             return result;
         }, {});
@@ -157,10 +174,6 @@ export class WallModel {
             bricks: this.brickStore.serialize(),
             layout: this.layoutStore.serialize()
         }
-    }
-
-    getMode() {
-        return this.mode;
     }
 
     getBrickStore(brickId: string) {
@@ -397,6 +410,20 @@ export class WallModel {
     subscribe(callback: any): Subscription {
         return this.events.subscribe(callback);
     }
+
+    /**
+     * @public
+     * */
+    enableMediaInteraction() {
+        this.writeState.isMediaInteractionEnabled.setValue(true);
+    };
+
+    /**
+     * @public
+     * */
+    disableMediaInteraction() {
+        this.writeState.isMediaInteractionEnabled.setValue(false);
+    };
 
     private moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);

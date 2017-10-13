@@ -4,14 +4,15 @@ import {
     EventEmitter,
     Inject,
     Input,
-    OnChanges, OnInit,
+    OnChanges,
+    OnInit,
     Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {DOCUMENT} from '@angular/common';
-import {WallCanvasApi} from './wall-canvas.api';
-import {WallCanvasController} from './wall-canvas.controller';
+import { DOCUMENT } from '@angular/common';
+import { WallCanvasApi } from './wall-canvas.api';
+import { WallCanvasController } from './wall-canvas.controller';
 
 @Component({
     selector: 'wall-canvas',
@@ -25,6 +26,8 @@ export class WallCanvasComponent implements OnInit, OnChanges {
     @Input() layout: any = {bricks: []};
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrickId: string = null;
+    @Input() isMediaInteractionEnabled: boolean = true;
+
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
     @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
 
@@ -47,7 +50,7 @@ export class WallCanvasComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this.wallCanvasController.initialize()
     }
 
@@ -72,6 +75,14 @@ export class WallCanvasComponent implements OnInit, OnChanges {
 
         if (changes.layout && changes.layout.currentValue) {
             this.wallCanvasController.clearBrickInstances();
+        }
+
+        if (changes.isMediaInteractionEnabled) {
+            if (changes.isMediaInteractionEnabled.currentValue) {
+                this.wallCanvasController.enableMediaInteraction();
+            } else {
+                this.wallCanvasController.disableMediaInteraction();
+            }
         }
     }
 }

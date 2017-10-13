@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { onWallFocus, WALL, WallApi } from '../../wall';
+import { onWallFocus, WallApi } from '../../wall';
 
 @Component({
     selector: 'text-brick',
@@ -10,10 +10,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
     @ViewChild('editor') editor: ElementRef;
 
-    modes = WALL.MODES;
-
-    mode: string = WALL.MODES.EDIT;
-
     state: any = {};
 
     store: any = null;
@@ -22,8 +18,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
     }
 
     ngOnInit() {
-        this.mode = this.wallApi.core.getMode();
-
         this.store = this.wallApi.core.getBrickStore(this.id);
 
         this.state = this.store.get();

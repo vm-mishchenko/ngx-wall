@@ -113,10 +113,6 @@ export class SelectionPlugin {
         });
 
         this.pickOutService.subscribe((e) => {
-            if (e instanceof PickOutItems) {
-                this.wallApi.core.selectBricks(e.ids);
-            }
-
             if (e instanceof StartPickOut) {
                 this.isMouseSelection = true;
 
@@ -127,10 +123,17 @@ export class SelectionPlugin {
                     this.pickOutService.stopPickOut();
 
                     this.isMouseSelection = false;
+                } else {
+                    this.wallApi.core.disableMediaInteraction();
                 }
             }
 
+            if (e instanceof PickOutItems) {
+                this.wallApi.core.selectBricks(e.ids);
+            }
+
             if (e instanceof EndPickOut) {
+                this.wallApi.core.enableMediaInteraction();
             }
         });
 
@@ -149,6 +152,7 @@ export class SelectionPlugin {
                 let movedBrickIds = [];
 
                 const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
+
                 if (selectedBrickIds.length > 1) {
                     movedBrickIds = movedBrickIds.concat(selectedBrickIds);
                 } else {

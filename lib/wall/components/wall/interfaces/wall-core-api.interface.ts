@@ -1,7 +1,10 @@
 import { Subscription } from "rxjs/Subscription";
 import { WallDefinition } from "./wall-definition.interface";
+import { WallState } from "./wall-state.interface";
 
 export interface WallCoreApi {
+    state: WallState;
+
     // SELECTION API
     getSelectedBrickIds(): string[];
 
@@ -52,10 +55,14 @@ export interface WallCoreApi {
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean
 
 
+    // BEHAVIOUR
+    enableMediaInteraction();
+
+    disableMediaInteraction();
+
+
     // CLIENT
     getPlan(): WallDefinition;
-
-    getMode(): string;
 
     subscribe(callback: Function): Subscription;
 

@@ -165,6 +165,4 @@ export class PickOutAreaDirective implements OnDestroy {
 
         this.pickOutAreaModel = null;
     }
-
-
 }

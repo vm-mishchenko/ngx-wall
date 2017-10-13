@@ -121,6 +121,10 @@ wall-canvas-brick {
       opacity: 0.2;
     }
   }
+
+  .wall-canvas-brick__disabled-interaction {
+    pointer-events: none;
+  }
 }
 
 wall-canvas-row {
