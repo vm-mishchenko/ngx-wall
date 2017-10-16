@@ -6,4 +6,12 @@ import { Component, Input } from '@angular/core';
 })
 export class WallCanvasRowComponent {
     @Input() row: any;
+
+    trackColumnsBy(index, item) {
+        return JSON.stringify(item);
+    }
+
+    trackBricksBy(index, item) {
+        return JSON.stringify(item);
+    }
 }
