@@ -1,5 +1,5 @@
 <div #editor class="wall-canvas__editor" (click)="onEditorClick($event)">
-    <wall-canvas-row [row]="row" *ngFor="let row of layout.bricks"></wall-canvas-row>
+    <wall-canvas-row *ngFor="let row of layout.rows; trackBy: trackBricksBy" [row]="row"></wall-canvas-row>
 
     <div #expander class="wall-canvas__expander"></div>
 </div>

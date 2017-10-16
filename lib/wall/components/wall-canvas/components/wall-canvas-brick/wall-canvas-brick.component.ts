@@ -59,6 +59,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.wallCanvasApi.core.removeCanvasBrickInstance(this.brick.id);
         this.radarSubscription.unsubscribe();
     }
 

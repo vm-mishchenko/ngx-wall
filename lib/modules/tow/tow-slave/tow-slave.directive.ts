@@ -12,9 +12,6 @@ export class TowSlaveDirective implements OnInit {
 
     @HostListener('dragstart', ['$event'])
     dragStart(event: DragEvent) {
-        // TODO: dont hardcode drag image node position
-        event.dataTransfer.setDragImage(this.el.nativeElement.parentElement.children[2], 0, 0);
-
         event.dataTransfer.dropEffect = 'move';
 
         event.dataTransfer.setData('FAKE', JSON.stringify({}));

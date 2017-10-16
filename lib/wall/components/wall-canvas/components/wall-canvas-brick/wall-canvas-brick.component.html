@@ -4,8 +4,7 @@
      (click)="onFocused()"
      class="wall-canvas-brick__wrapper"
      [ngClass]="{'wall-canvas-brick__selected': selected,
-     		'wall-canvas-brick__draggable': isMouseNear,
-     		'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}">
+     		'wall-canvas-brick__draggable': isMouseNear}">
 
     <div class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">
         <div class="wall-canvas-brick__draggable-box">
@@ -27,5 +26,7 @@
         </div>
     </div>
 
-    <div #brickContainer></div>
+    <div [ngClass]="{'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}">
+        <div #brickContainer></div>
+    </div>
 </div>

@@ -5,13 +5,10 @@ import { RemoveBricksEvent } from "../wall/wall.events";
 
 @Injectable()
 export class WallCanvasController {
-    private canvasBrickInstances: Map<string, any> = new Map();
-
-    private currentlyFocusedBrickId: string = null;
-
-    private selectedBrickIds: string[] = [];
-
     onFocusedEvent: EventEmitter<any> = new EventEmitter();
+    private canvasBrickInstances: Map<string, any> = new Map();
+    private currentlyFocusedBrickId: string = null;
+    private selectedBrickIds: string[] = [];
 
     constructor(private wallCanvasApi: WallCanvasApi,
                 private wallApi: WallApi) {
@@ -19,6 +16,7 @@ export class WallCanvasController {
 
     initialize() {
         this.wallCanvasApi.core = {
+            removeCanvasBrickInstance: this.removeCanvasBrickInstance.bind(this),
             onFocused: this.onFocused.bind(this),
             registerCanvasBrickInstance: this.registerCanvasBrickInstance.bind(this)
         };

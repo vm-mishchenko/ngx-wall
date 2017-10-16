@@ -22,7 +22,7 @@ export class LayoutStore {
 
     updateCanvasLayout() {
         this.canvasLayout = {
-            bricks: this.layout.bricks.map((row) => {
+            rows: this.layout.bricks.map((row) => {
                 return {
                     columns: row.columns.map((column) => {
                         return {
