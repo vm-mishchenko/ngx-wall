@@ -1,6 +1,6 @@
 {
   "name": "wall",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Wall web based editor",
   "main": "./dist/wall.umd.js",
   "module": "./dist/index.js",
@@ -33,7 +33,7 @@
   "homepage": "https://github.com/vm-mishchenko/wall#readme",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
-    "lodash": "^4.17.4"
+    "rxjs": "^5.4.3"
   },
   "devDependencies": {
     "@angular/common": "4.4.5",
