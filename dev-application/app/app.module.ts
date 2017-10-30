@@ -9,12 +9,13 @@ import {
     PickOutModule,
     QuoteBrickModule,
     TextBrickModule,
-    VideoBrickModule,
     TowModule,
+    VideoBrickModule,
     WALL_PLUGIN,
     WallApi,
     WallModule
 } from 'wall';
+import { DebugService } from "./debug/debug.service";
 
 @Injectable()
 class LoggerPlugin {
@@ -54,6 +55,7 @@ class EventLoggerPlugin {
         AppComponent
     ],
     providers: [
+        DebugService,
         {
             provide: WALL_PLUGIN, useValue: LoggerPlugin, multi: true
         },
@@ -66,4 +68,7 @@ class EventLoggerPlugin {
     ]
 })
 export class AppModule {
+    constructor(private debugService: DebugService) {
+        this.debugService.enableDebugTools(); // ng.profiler.timeChangeDetection()
+    }
 }

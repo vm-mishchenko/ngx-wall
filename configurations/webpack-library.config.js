@@ -8,7 +8,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     entry: {
         [`${libraryConfig.libraryName}.umd`]: root('lib/index.ts'),
-        [`${libraryConfig.libraryName}.umd.min`]: root('lib/index.ts')
+        [`${libraryConfig.libraryName}.umd.min`]: root('lib/index.ts'),
+        [`${libraryConfig.libraryName}.css`]: root('lib/resources/scss/lib.scss')
     },
 
     devtool: 'cheap-source-map',

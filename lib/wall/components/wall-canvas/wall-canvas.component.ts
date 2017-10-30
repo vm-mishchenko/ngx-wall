@@ -13,6 +13,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { WallCanvasApi } from './wall-canvas.api';
 import { WallCanvasController } from './wall-canvas.controller';
+import { Layout } from "./interfaces/layout.interface";
 
 @Component({
     selector: 'wall-canvas',
@@ -23,7 +24,7 @@ import { WallCanvasController } from './wall-canvas.controller';
     ]
 })
 export class WallCanvasComponent implements OnInit, OnChanges {
-    @Input() layout: any = {bricks: []};
+    @Input() layout: Layout = {rows: []};
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrickId: string = null;
     @Input() isMediaInteractionEnabled: boolean = true;
@@ -51,7 +52,7 @@ export class WallCanvasComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        this.wallCanvasController.initialize()
+        this.wallCanvasController.initialize();
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -73,10 +74,6 @@ export class WallCanvasComponent implements OnInit, OnChanges {
             }
         }
 
-        if (changes.layout && changes.layout.currentValue) {
-            this.wallCanvasController.clearBrickInstances();
-        }
-
         if (changes.isMediaInteractionEnabled) {
             if (changes.isMediaInteractionEnabled.currentValue) {
                 this.wallCanvasController.enableMediaInteraction();
@@ -84,5 +81,9 @@ export class WallCanvasComponent implements OnInit, OnChanges {
                 this.wallCanvasController.disableMediaInteraction();
             }
         }
+    }
+
+    trackBricksBy(index, item) {
+        return JSON.stringify(item);
     }
 }

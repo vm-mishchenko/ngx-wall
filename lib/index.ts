@@ -1,5 +1,3 @@
-import './resources/scss/lib.scss';
-
 export * from './wall';
 
 // bricks

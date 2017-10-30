@@ -14,7 +14,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
     store: any = null;
 
-    constructor(private wallApi: WallApi) {
+    constructor(private wallApi: WallApi, private el: ElementRef) {
     }
 
     ngOnInit() {
