@@ -33,6 +33,7 @@
   "homepage": "https://github.com/vm-mishchenko/wall#readme",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
+    "@angular/common": "^4.0.0",
     "rxjs": "^5.4.3"
   },
   "devDependencies": {
