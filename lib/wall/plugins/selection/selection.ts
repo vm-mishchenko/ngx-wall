@@ -116,16 +116,7 @@ export class SelectionPlugin {
             if (e instanceof StartPickOut) {
                 this.isMouseSelection = true;
 
-                const selection = this.doc.getSelection();
-
-                // todo need to find more robust variant
-                if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
-                    this.pickOutService.stopPickOut();
-
-                    this.isMouseSelection = false;
-                } else {
-                    this.wallApi.core.disableMediaInteraction();
-                }
+                this.wallApi.core.disableMediaInteraction();
             }
 
             if (e instanceof PickOutItems) {
@@ -192,6 +183,4 @@ export class SelectionPlugin {
 
         return this.wallApi.core.isBrickAheadOf(penultimateBrickId, lastBrickId);
     }
-
-
 }

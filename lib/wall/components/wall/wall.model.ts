@@ -4,14 +4,13 @@ import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { WALL } from './wall.constant';
 import { WallEditorRegistry } from '../../wall-editor.registry';
-import { WallConfiguration } from './wall.interfaces';
 import { Subject } from 'rxjs/Subject';
 import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
 import { Subscription } from 'rxjs/Subscription';
-import { WallDefinition } from "./interfaces/wall-definition.interface";
-import { BrickRegistry } from "../../registry/brick-registry.service";
-import { ReactiveProperty, ReactiveReadOnlyProperty } from "../../../reactive-property";
-import { WallState } from "./interfaces/wall-state.interface";
+import { WallDefinition } from './interfaces/wall-definition.interface';
+import { BrickRegistry } from '../../registry/brick-registry.service';
+import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
+import { WallState } from './interfaces/wall-state.interface';
 
 /**
  * @desc Responsible for storing wall state.
@@ -22,6 +21,7 @@ export class WallModel {
     id: string = String(Math.random());
 
     events: Subject<any> = new Subject();
+
     // UI
     focusedBrickId: string = null;
     selectedBricks: string[] = [];
@@ -48,7 +48,7 @@ export class WallModel {
         return this.layoutStore.canvasLayout;
     }
 
-    initialize(plan: WallDefinition, configuration: WallConfiguration) {
+    initialize(plan: WallDefinition) {
         this.wallEditorRegistry.registerEditor(this.id, this);
 
         // initialize core API

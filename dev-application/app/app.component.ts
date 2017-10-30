@@ -17,272 +17,272 @@ export class AppComponent {
     };
 
     wallPlan: IWallDefinition = {
-        "bricks": [
+        'bricks': [
             {
-                "id": "46d291d5-b057-8798-00af-ed9ba015fcda",
-                "tag": "header",
-                "data": {
-                    "text": "WALL"
+                'id': '46d291d5-b057-8798-00af-ed9ba015fcda',
+                'tag': 'header',
+                'data': {
+                    'text': 'WALL'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "5cb0d4dd-24fa-de29-8785-619747830add",
-                "tag": "quote",
-                "data": {
-                    "text": "The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components."
+                'id': '5cb0d4dd-24fa-de29-8785-619747830add',
+                'tag': 'quote',
+                'data': {
+                    'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f",
-                "tag": "header",
-                "data": {
-                    "text": "Navigation\n"
+                'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f',
+                'tag': 'header',
+                'data': {
+                    'text': 'Navigation\n'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743",
-                "tag": "text",
-                "data": {
-                    "text": "Press `Escape` to enter to Selection mode"
+                'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743',
+                'tag': 'text',
+                'data': {
+                    'text': 'Press `Escape` to enter to Selection mode'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e",
-                "tag": "text",
-                "data": {
-                    "text": "Press Shift to select few bricks"
+                'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e',
+                'tag': 'text',
+                'data': {
+                    'text': 'Press Shift to select few bricks'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d",
-                "tag": "header",
-                "data": {
-                    "text": "Roadmap\n"
+                'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d',
+                'tag': 'header',
+                'data': {
+                    'text': 'Roadmap\n'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17",
-                "tag": "text",
-                "data": {
-                    "text": "- improve selection experience for media bricks"
+                'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17',
+                'tag': 'text',
+                'data': {
+                    'text': '- improve selection experience for media bricks'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
-                "tag": "text",
-                "data": {
-                    "text": "- improve re-rendering algorithm"
+                'id': '74928e82-54d8-c166-1e17-0de2b174bb02',
+                'tag': 'text',
+                'data': {
+                    'text': '- improve re-rendering algorithm'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2",
-                "tag": "text",
-                "data": {
-                    "text": "- support readonly mode"
+                'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2',
+                'tag': 'text',
+                'data': {
+                    'text': '- support readonly mode'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d",
-                "tag": "header",
-                "data": {
-                    "text": "Supported tags\n"
+                'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d',
+                'tag': 'header',
+                'data': {
+                    'text': 'Supported tags\n'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "a587554d-5698-8988-0039-ae1db771695e",
-                "tag": "text",
-                "data": {
-                    "text": "/h header"
+                'id': 'a587554d-5698-8988-0039-ae1db771695e',
+                'tag': 'text',
+                'data': {
+                    'text': '/h header'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb",
-                "tag": "text",
-                "data": {
-                    "text": "/img image"
+                'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb',
+                'tag': 'text',
+                'data': {
+                    'text': '/img image'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "2e1c3c38-e75c-2c45-df3e-af887b258571",
-                "tag": "d",
-                "data": {},
-                "meta": {}
+                'id': '2e1c3c38-e75c-2c45-df3e-af887b258571',
+                'tag': 'd',
+                'data': {},
+                'meta': {}
             },
             {
-                "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e",
-                "tag": "text",
-                "data": {
-                    "text": "/quote quote"
+                'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e',
+                'tag': 'text',
+                'data': {
+                    'text': '/quote quote'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "cd73851a-16fe-5363-5274-bd9adb27af06",
-                "tag": "text",
-                "data": {
-                    "text": "/d divider"
+                'id': 'cd73851a-16fe-5363-5274-bd9adb27af06',
+                'tag': 'text',
+                'data': {
+                    'text': '/d divider'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "e3a9d696-55bc-46d7-7009-a33774934aef",
-                "tag": "v",
-                "data": {
-                    "src": "https://www.youtube.com/embed/YR5ApYxkU-U"
+                'id': 'e3a9d696-55bc-46d7-7009-a33774934aef',
+                'tag': 'v',
+                'data': {
+                    'src': 'https://www.youtube.com/embed/YR5ApYxkU-U'
                 },
-                "meta": {}
+                'meta': {}
             },
             {
-                "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc",
-                "tag": "d",
-                "data": {},
-                "meta": {}
+                'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc',
+                'tag': 'd',
+                'data': {},
+                'meta': {}
             },
             {
-                "id": "299f6ef7-6c2e-dcd0-c591-de6733195437",
-                "tag": "text",
-                "data": {},
-                "meta": {}
+                'id': '299f6ef7-6c2e-dcd0-c591-de6733195437',
+                'tag': 'text',
+                'data': {},
+                'meta': {}
             },
             {
-                "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85",
-                "tag": "text",
-                "data": {
-                    "text": "/v video"
+                'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85',
+                'tag': 'text',
+                'data': {
+                    'text': '/v video'
                 },
-                "meta": {}
+                'meta': {}
             }
         ],
-        "layout": {
-            "bricks": [
+        'layout': {
+            'bricks': [
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "46d291d5-b057-8798-00af-ed9ba015fcda"
+                                    'id': '46d291d5-b057-8798-00af-ed9ba015fcda'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc"
+                                    'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "5cb0d4dd-24fa-de29-8785-619747830add"
+                                    'id': '5cb0d4dd-24fa-de29-8785-619747830add'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "299f6ef7-6c2e-dcd0-c591-de6733195437"
+                                    'id': '299f6ef7-6c2e-dcd0-c591-de6733195437'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "e3a9d696-55bc-46d7-7009-a33774934aef"
+                                    'id': 'e3a9d696-55bc-46d7-7009-a33774934aef'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
+                                    'id': '2e1c3c38-e75c-2c45-df3e-af887b258571'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f"
+                                    'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f'
                                 },
                                 {
-                                    "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743"
+                                    'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743'
                                 },
                                 {
-                                    "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e"
+                                    'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e'
                                 }
                             ]
                         },
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
+                                    'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d'
                                 },
                                 {
-                                    "id": "4edc3d51-cf7c-6648-a4fe-fe9418ea6c17"
+                                    'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17'
                                 },
                                 {
-                                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
+                                    'id': '74928e82-54d8-c166-1e17-0de2b174bb02'
                                 },
                                 {
-                                    "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
+                                    'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2'
                                 }
                             ]
                         },
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
+                                    'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d'
                                 },
                                 {
-                                    "id": "a587554d-5698-8988-0039-ae1db771695e"
+                                    'id': 'a587554d-5698-8988-0039-ae1db771695e'
                                 },
                                 {
-                                    "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e"
+                                    'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e'
                                 },
                                 {
-                                    "id": "cd73851a-16fe-5363-5274-bd9adb27af06"
+                                    'id': 'cd73851a-16fe-5363-5274-bd9adb27af06'
                                 },
                                 {
-                                    "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
+                                    'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb'
                                 },
                                 {
-                                    "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85"
+                                    'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85'
                                 }
                             ]
                         }

@@ -2,7 +2,8 @@ import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
 import { WallModel } from './wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallConfiguration } from './wall.interfaces';
-import { WallDefinition } from "./interfaces/wall-definition.interface";
+import { WallDefinition } from './interfaces/wall-definition.interface';
+import { WALL } from './wall.constant';
 
 @Injectable()
 export class WallController {
@@ -11,7 +12,7 @@ export class WallController {
 
     initialize(plan: WallDefinition, configuration: WallConfiguration) {
         // initialize core functionality
-        this.wallModel.initialize(plan, configuration);
+        this.wallModel.initialize(plan || WALL.defaultPlan);
 
         // initialize plugins
         const plugins = this.injector.get(WALL_PLUGIN);
