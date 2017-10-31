@@ -22,6 +22,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
+    private stateChangesSubscription: Subscription;
+
     private selected: boolean = false;
 
     private isMediaInteractionEnabled: boolean = true;
@@ -62,7 +64,12 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.wallCanvasApi.core.removeCanvasBrickInstance(this.brick.id);
+
         this.radarSubscription.unsubscribe();
+
+        if (this.stateChangesSubscription) {
+            this.stateChangesSubscription.unsubscribe();
+        }
     }
 
     onFocused() {
@@ -94,7 +101,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
         componentReference.instance['state'] = this.brick.state;
 
         if (componentReference.instance['stateChanges']) {
-            componentReference.instance['stateChanges'].subscribe((newState) => {
+            this.stateChangesSubscription = componentReference.instance['stateChanges'].subscribe((newState) => {
                 this.wallCanvasComponent.brickStateChanged(this.brick.id, newState);
             });
         }

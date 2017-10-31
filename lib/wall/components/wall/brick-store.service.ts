@@ -10,6 +10,17 @@ import { BrickStorage } from './brick-storage.class';
 export class BrickStore {
     bricks: BrickStorage[] = [];
 
+    static getNewGuid() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
+    }
+
     initialize(brickDefinitions: BrickDefinition[]) {
         this.bricks = brickDefinitions.map((brickDefinition) => {
             return this.initializeBrickStorage(
@@ -36,7 +47,7 @@ export class BrickStore {
 
     removeBrick(brickId: string): void {
         let brickIndex;
- 
+
         this.bricks.forEach((brick, index) => {
             if (brick.id === brickId) {
                 brickIndex = index;
@@ -80,12 +91,6 @@ export class BrickStore {
         });
     }
 
-    getBrickStore(brickId: string): any {
-        return this.bricks.find((brick) => {
-            return brick.id === brickId;
-        });
-    }
-
     updateBrickState(brickId: string, brickState: any) {
         const brickStorage = this.bricks.find((brick) => {
             return brick.id === brickId;
@@ -100,16 +105,5 @@ export class BrickStore {
 
     private initializeBrickStorage(id: string, tag: string, data: any, meta: any): BrickStorage {
         return new BrickStorage(id, tag, data, meta);
-    }
-
-    static getNewGuid() {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-                .toString(16)
-                .substring(1);
-        }
-
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-            s4() + '-' + s4() + s4() + s4();
     }
 }

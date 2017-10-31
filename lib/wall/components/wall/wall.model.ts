@@ -24,6 +24,7 @@ export class WallModel {
 
     // UI
     focusedBrickId: string = null;
+
     selectedBricks: string[] = [];
 
     private writeState = {
@@ -95,8 +96,7 @@ export class WallModel {
 
             // BRICk
             'isRegisteredBrick',
-            'turnBrickInto',
-            'getBrickStore'
+            'turnBrickInto'
 
         ].reduce((result, methodName) => {
             if (this[methodName].bind) {
@@ -173,10 +173,6 @@ export class WallModel {
             bricks: this.brickStore.serialize(),
             layout: this.layoutStore.serialize()
         }
-    }
-
-    getBrickStore(brickId: string) {
-        return this.brickStore.getBrickStore(brickId);
     }
 
     updateBrickState(brickId, brickState) {

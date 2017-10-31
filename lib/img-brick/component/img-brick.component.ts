@@ -1,5 +1,7 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {onWallFocus, WallApi} from '../../index';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { onWallFocus, WallApi } from '../../index';
+import { Observable } from 'rxjs/Observable';
+import { ImgBrickState } from "../img-brick-state.interface";
 
 @Component({
     selector: 'img-brick',
@@ -7,13 +9,16 @@ import {onWallFocus, WallApi} from '../../index';
 })
 export class ImgBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
+    @Input() state: Observable<ImgBrickState | null>;
+
+    @Output() stateChanges: EventEmitter<ImgBrickState> = new EventEmitter();
 
     @ViewChild('src') src: ElementRef;
 
     // data
-    state: any = {};
-
-    store: any = null;
+    scope: ImgBrickState = {
+        src: ''
+    };
 
     // ui
     uiStates: any = {
@@ -28,19 +33,17 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
     }
 
     ngOnInit() {
-        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.state.subscribe((newState) => {
+            if (newState && newState.src !== this.scope.src) {
+                this.scope.src = newState.src;
 
-        this.updateState(this.store.get());
+                if (this.scope.src) {
+                    this.src.nativeElement.value = this.scope.src;
 
-        if (this.state.src) {
-            this.src.nativeElement.value = this.state.src;
-
-            this.uiState = this.uiStates.image;
-        }
-    }
-
-    updateState(newState) {
-        Object.assign(this.state, newState);
+                    this.uiState = this.uiStates.image;
+                }
+            }
+        });
     }
 
     onWallFocus(): void {
@@ -62,9 +65,10 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
             this.applyImageSrc()
                 .then(() => {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                }).catch(() => {
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-            });
+                })
+                .catch(() => {
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                });
         }
     }
 
@@ -82,7 +86,7 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
 
         return this.isImage(currentValue)
             .then(() => {
-                this.state.src = currentValue;
+                this.scope.src = currentValue;
 
                 this.save();
 
@@ -110,7 +114,7 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
     }
 
     private save() {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     }
 
     private isImage(src): Promise<boolean> {
