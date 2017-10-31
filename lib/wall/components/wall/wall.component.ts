@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { WallConfiguration } from './wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
@@ -18,7 +18,7 @@ import { WallDefinition } from './interfaces/wall-definition.interface';
         WallController
     ]
 })
-export class WallComponent implements OnInit, OnChanges {
+export class WallComponent implements OnChanges, OnDestroy {
     @Input() plan: WallDefinition = null;
     @Input() configuration: WallConfiguration = null;
 
@@ -34,17 +34,19 @@ export class WallComponent implements OnInit, OnChanges {
         this.wallController.wallModel.onFocusedBrick(brickId);
     }
 
-    ngOnInit() {
-        this.initialize();
-    }
-
     ngOnChanges(changes: SimpleChanges) {
         if (changes.plan) {
             this.initialize();
         }
     }
 
+    ngOnDestroy() {
+        this.wallController.reset();
+    }
+
     private initialize() {
+        this.wallController.reset();
+
         this.wallController.initialize(this.plan, this.configuration);
     }
 }

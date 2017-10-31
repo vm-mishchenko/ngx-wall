@@ -7,6 +7,8 @@ import { WALL } from './wall.constant';
 
 @Injectable()
 export class WallController {
+    private initializedPlugins: any[] = [];
+
     constructor(public wallModel: WallModel, private injector: Injector) {
     }
 
@@ -14,15 +16,37 @@ export class WallController {
         // initialize core functionality
         this.wallModel.initialize(plan || WALL.defaultPlan);
 
-        // initialize plugins
-        const plugins = this.injector.get(WALL_PLUGIN);
-        const pluginInjector = ReflectiveInjector.resolveAndCreate(plugins, this.injector);
-
-        plugins.forEach((plugin) => pluginInjector.resolveAndInstantiate(plugin));
+        this.initializePlugins();
 
         // pass initialized API back to the client
         if (configuration && configuration.onRegisterApi) {
             configuration.onRegisterApi(this.wallModel.api);
         }
+    }
+
+    initializePlugins() {
+        // initialize plugins
+        const plugins = this.injector.get(WALL_PLUGIN);
+        const pluginInjector = ReflectiveInjector.resolveAndCreate(plugins, this.injector);
+
+        plugins.forEach((plugin) => {
+            this.initializedPlugins.push(pluginInjector.resolveAndInstantiate(plugin));
+        });
+    }
+
+    destroyPlugins() {
+        this.initializedPlugins.forEach((plugin) => {
+            if (plugin.destroy) {
+                plugin.destroy();
+            }
+        });
+
+        this.initializedPlugins = [];
+    }
+
+    reset() {
+        this.wallModel.reset();
+
+        this.destroyPlugins();
     }
 }

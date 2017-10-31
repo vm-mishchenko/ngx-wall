@@ -13,7 +13,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { WallCanvasApi } from './wall-canvas.api';
 import { WallCanvasController } from './wall-canvas.controller';
-import { Layout } from "./interfaces/layout.interface";
+import { Layout } from './interfaces/layout.interface';
 
 @Component({
     selector: 'wall-canvas',

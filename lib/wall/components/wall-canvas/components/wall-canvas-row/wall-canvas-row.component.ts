@@ -12,6 +12,6 @@ export class WallCanvasRowComponent {
     }
 
     trackBricksBy(index, item) {
-        return JSON.stringify(item);
+        return item.hash;
     }
 }

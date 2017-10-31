@@ -41,7 +41,6 @@ export class WallModel {
                 private brickRegistry: BrickRegistry,
                 private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
-
     }
 
     get canvasLayout(): boolean {
@@ -424,6 +423,15 @@ export class WallModel {
     disableMediaInteraction() {
         this.writeState.isMediaInteractionEnabled.setValue(false);
     };
+
+    reset() {
+        this.brickStore.reset();
+        this.layoutStore.reset();
+
+        this.focusedBrickId = null;
+
+        this.unSelectBricks();
+    }
 
     private moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);

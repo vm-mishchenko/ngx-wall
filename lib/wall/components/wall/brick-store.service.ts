@@ -26,7 +26,7 @@ class BrickItemStore {
  * */
 @Injectable()
 export class BrickStore {
-    bricks: BrickDefinition[];
+    bricks: BrickDefinition[] = [];
 
     initialize(bricks: BrickDefinition[]) {
         this.bricks = bricks;
@@ -90,6 +90,10 @@ export class BrickStore {
         });
 
         return new BrickItemStore(brick);
+    }
+
+    reset() {
+        this.bricks = [];
     }
 
     static getNewGuid() {
