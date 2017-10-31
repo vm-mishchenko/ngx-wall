@@ -9,8 +9,9 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import { WallCanvasApi } from '../../wall-canvas.api';
-import { LocationUpdatedEvent, Radar } from "../../../../../modules/radar";
-import { Subscription } from "rxjs/Subscription";
+import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
+import { Subscription } from 'rxjs/Subscription';
+import { WallCanvasComponent } from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -34,6 +35,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
+                private wallCanvasComponent: WallCanvasComponent,
                 private wallCanvasApi: WallCanvasApi) {
     }
 
@@ -89,6 +91,13 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
         const componentReference = this.container.createComponent(factory, null, this.injector);
 
         componentReference.instance['id'] = this.brick.id;
+        componentReference.instance['state'] = this.brick.state;
+
+        if (componentReference.instance['stateChanges']) {
+            componentReference.instance['stateChanges'].subscribe((newState) => {
+                this.wallCanvasComponent.brickStateChanged(this.brick.id, newState);
+            });
+        }
 
         return componentReference;
     }

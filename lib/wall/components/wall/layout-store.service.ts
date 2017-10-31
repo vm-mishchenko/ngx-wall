@@ -27,12 +27,13 @@ export class LayoutStore {
                     columns: row.columns.map((column) => {
                         return {
                             bricks: column.bricks.map((brickConfig) => {
-                                const brick = this.brickStore.getBrickById(brickConfig.id);
-                                const component = this.brickRegistry.get(brick.tag).component;
+                                const brickStorage = this.brickStore.getBrickById(brickConfig.id);
+                                const component = this.brickRegistry.get(brickStorage.tag).component;
 
                                 return {
-                                    id: brick.id,
-                                    hash: brick.tag + brick.id,
+                                    id: brickStorage.id,
+                                    hash: brickStorage.tag + brickStorage.id,
+                                    state: brickStorage.state,
                                     component: component
                                 };
                             })

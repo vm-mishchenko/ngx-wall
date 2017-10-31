@@ -34,6 +34,10 @@ export class WallComponent implements OnChanges, OnDestroy {
         this.wallController.wallModel.onFocusedBrick(brickId);
     }
 
+    onBrickStateChanged(event) {
+        this.wallController.wallModel.updateBrickState(event.brickId, event.brickState);
+    }
+
     ngOnChanges(changes: SimpleChanges) {
         if (changes.plan) {
             this.initialize();

@@ -7,7 +7,7 @@ export interface BrickDefinition {
 
     // user specific data
     data: {};
-
+ 
     meta: {
         comments?: any[]
     }

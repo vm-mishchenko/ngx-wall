@@ -5,7 +5,7 @@ import { LayoutStore } from './layout-store.service';
 import { WALL } from './wall.constant';
 import { WallEditorRegistry } from '../../wall-editor.registry';
 import { Subject } from 'rxjs/Subject';
-import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
+import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent, UpdateBrickStateEvent } from './wall.events';
 import { Subscription } from 'rxjs/Subscription';
 import { WallDefinition } from './interfaces/wall-definition.interface';
 import { BrickRegistry } from '../../registry/brick-registry.service';
@@ -177,6 +177,12 @@ export class WallModel {
 
     getBrickStore(brickId: string) {
         return this.brickStore.getBrickStore(brickId);
+    }
+
+    updateBrickState(brickId, brickState) {
+        this.brickStore.updateBrickState(brickId, brickState);
+
+        this.events.next(new UpdateBrickStateEvent(brickId, brickState));
     }
 
     turnBrickInto(brickId: string, newTag: string) {

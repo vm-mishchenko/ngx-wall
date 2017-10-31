@@ -1,11 +1,12 @@
 import { WallCanvasApi } from './wall-canvas.api';
 import { EventEmitter, Injectable } from '@angular/core';
-import { RemoveBrickEvent, WallApi } from "../wall";
-import { RemoveBricksEvent } from "../wall/wall.events";
+import { RemoveBrickEvent, WallApi } from '../wall';
+import { RemoveBricksEvent } from '../wall/wall.events';
 
 @Injectable()
 export class WallCanvasController {
     onFocusedEvent: EventEmitter<any> = new EventEmitter();
+
     private canvasBrickInstances: Map<string, any> = new Map();
     private currentlyFocusedBrickId: string = null;
     private selectedBrickIds: string[] = [];

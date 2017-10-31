@@ -1,24 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BrickDefinition } from './wall.interfaces';
-
-
-// Simple naive implementation
-class BrickItemStore {
-    constructor(private brick: any) {
-    }
-
-    get() {
-        return this.cloneObject(this.brick.data);
-    }
-
-    set(data: any) {
-        this.brick.data = data;
-    }
-
-    private cloneObject(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    }
-}
+import { BrickStorage } from './brick-storage.class';
 
 /**
  * @desc
@@ -26,28 +8,35 @@ class BrickItemStore {
  * */
 @Injectable()
 export class BrickStore {
-    bricks: BrickDefinition[] = [];
+    bricks: BrickStorage[] = [];
 
-    initialize(bricks: BrickDefinition[]) {
-        this.bricks = bricks;
+    initialize(brickDefinitions: BrickDefinition[]) {
+        this.bricks = brickDefinitions.map((brickDefinition) => {
+            return this.initializeBrickStorage(
+                brickDefinition.id,
+                brickDefinition.tag,
+                brickDefinition.data,
+                brickDefinition.meta
+            );
+        });
     }
 
     addBrick(tag: string) {
-        const brick = {
-            id: BrickStore.getNewGuid(),
-            tag: tag,
-            data: {},
-            meta: {}
-        };
+        const brickStorage = this.initializeBrickStorage(
+            BrickStore.getNewGuid(),
+            tag,
+            {},
+            {}
+        );
 
-        this.bricks.push(brick);
+        this.bricks.push(brickStorage);
 
-        return brick;
+        return brickStorage;
     }
 
     removeBrick(brickId: string): void {
         let brickIndex;
-
+ 
         this.bricks.forEach((brick, index) => {
             if (brick.id === brickId) {
                 brickIndex = index;
@@ -58,17 +47,17 @@ export class BrickStore {
     }
 
     turnBrickInto(brickId: string, newTag: string): void {
-        const brick = this.getBrickById(brickId);
+        const brickStorage = this.getBrickById(brickId);
 
-        brick.tag = newTag;
-        brick.data = {};
+        brickStorage.tag = newTag;
+        brickStorage.updateState({});
     }
 
     getBricksCount() {
         return this.bricks.length;
     }
 
-    getBrickById(brickId: string): BrickDefinition {
+    getBrickById(brickId: string): BrickStorage {
         return this.bricks.find((brick) => {
             return brick.id === brickId;
         });
@@ -81,19 +70,36 @@ export class BrickStore {
     }
 
     serialize() {
-        return this.bricks;
+        return this.bricks.map((brick) => {
+            return {
+                id: brick.id,
+                tag: brick.tag,
+                data: brick.data,
+                meta: brick.meta
+            };
+        });
     }
 
     getBrickStore(brickId: string): any {
-        const brick = this.bricks.find((brick) => {
+        return this.bricks.find((brick) => {
+            return brick.id === brickId;
+        });
+    }
+
+    updateBrickState(brickId: string, brickState: any) {
+        const brickStorage = this.bricks.find((brick) => {
             return brick.id === brickId;
         });
 
-        return new BrickItemStore(brick);
+        brickStorage.updateState(brickState);
     }
 
     reset() {
         this.bricks = [];
+    }
+
+    private initializeBrickStorage(id: string, tag: string, data: any, meta: any): BrickStorage {
+        return new BrickStorage(id, tag, data, meta);
     }
 
     static getNewGuid() {
