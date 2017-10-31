@@ -10,21 +10,9 @@ export class BrickStorage {
         this.state = new BehaviorSubject(data);
     }
 
-    get() {
-        return this.cloneObject(this.data);
-    }
-
-    set(data: any) {
-        this.updateState(data);
-    }
-
     updateState(state: any) {
         this.data = state;
 
         this.state.next(state);
-    }
-
-    private cloneObject(obj) {
-        return JSON.parse(JSON.stringify(obj));
     }
 }

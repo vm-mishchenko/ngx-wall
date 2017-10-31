@@ -204,7 +204,7 @@ export class WallModel {
     /* Add brick to existing row and existing column */
     addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
         if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
-            const newBrick = this.brickStore.addBrick(tag);
+            const newBrick = this.brickStore.create(tag);
 
             this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
 
@@ -224,7 +224,7 @@ export class WallModel {
             targetRowIndex = lastRowIndex + 1;
         }
 
-        const newBrick = this.brickStore.addBrick(tag);
+        const newBrick = this.brickStore.create(tag);
 
         this.layoutStore.addBrickToNewRow(newBrick.id, targetRowIndex);
 
@@ -329,7 +329,7 @@ export class WallModel {
             const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
             const nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
 
-            this.brickStore.removeBrick(brickId);
+            this.brickStore.remove(brickId);
             this.layoutStore.removeBrick(brickId);
 
             if (previousTextBrickId) {
@@ -355,7 +355,7 @@ export class WallModel {
             const nextTextBrickId = this.layoutStore.getNextTextBrick(brickIds[brickIds.length - 1]);
 
             brickIds.forEach((brickId) => {
-                this.brickStore.removeBrick(brickId);
+                this.brickStore.remove(brickId);
                 this.layoutStore.removeBrick(brickId);
             });
 
@@ -463,7 +463,7 @@ export class WallModel {
         const lastBrickId = this.layoutStore.getLastBrickId();
 
         if (lastBrickId) {
-            const lastBrick = this.brickStore.getBrickById(lastBrickId);
+            const lastBrick = this.brickStore.getBrickStorageById(lastBrickId);
 
             if (lastBrick.tag === 'text' && !lastBrick.data['text']) {
                 return lastBrick;

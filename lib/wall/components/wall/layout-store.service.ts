@@ -27,7 +27,7 @@ export class LayoutStore {
                     columns: row.columns.map((column) => {
                         return {
                             bricks: column.bricks.map((brickConfig) => {
-                                const brickStorage = this.brickStore.getBrickById(brickConfig.id);
+                                const brickStorage = this.brickStore.getBrickStorageById(brickConfig.id);
                                 const component = this.brickRegistry.get(brickStorage.tag).component;
 
                                 return {
@@ -305,8 +305,6 @@ export class LayoutStore {
         this.layout = {
             bricks: []
         };
-
-        this.updateCanvasLayout();
     }
 
     private createNewRow(targetRowIndex: number): void {

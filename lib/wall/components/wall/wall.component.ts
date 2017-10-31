@@ -40,6 +40,10 @@ export class WallComponent implements OnChanges, OnDestroy {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.plan) {
+            if (!changes.plan.firstChange) {
+                this.wallController.reset();
+            }
+
             this.initialize();
         }
     }
@@ -49,8 +53,6 @@ export class WallComponent implements OnChanges, OnDestroy {
     }
 
     private initialize() {
-        this.wallController.reset();
-
         this.wallController.initialize(this.plan, this.configuration);
     }
 }

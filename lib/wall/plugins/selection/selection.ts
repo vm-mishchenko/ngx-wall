@@ -10,13 +10,11 @@ export class SelectionPlugin {
     doc: any = null;
 
     isMouseSelection: boolean = false;
-
-    private towServiceSubscription: Subscription;
-    private pickOutServiceSubscription: Subscription;
-
     onClickHandlerBound: any;
     onKeyDownHandlerBound: any;
     onSelectionChangeBound: any;
+    private towServiceSubscription: Subscription;
+    private pickOutServiceSubscription: Subscription;
 
     constructor(private wallApi: WallApi,
                 private pickOutService: PickOutService,
@@ -180,7 +178,7 @@ export class SelectionPlugin {
 
     onSelectionChange() {
         // selection event triggers when user select some text and then just click by the document
-        // we should disabele pick out service only when user really starts select something
+        // we should disable pick out service only when user really starts select something
         const selection = this.doc.getSelection();
 
         // todo need to find more robust variant

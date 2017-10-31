@@ -3,7 +3,6 @@ import { WallModel } from './wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallConfiguration } from './wall.interfaces';
 import { WallDefinition } from './interfaces/wall-definition.interface';
-import { WALL } from './wall.constant';
 
 @Injectable()
 export class WallController {
@@ -14,7 +13,7 @@ export class WallController {
 
     initialize(plan: WallDefinition, configuration: WallConfiguration) {
         // initialize core functionality
-        this.wallModel.initialize(plan || WALL.defaultPlan);
+        this.wallModel.initialize(plan || this.getDefaultPlan());
 
         this.initializePlugins();
 
@@ -48,5 +47,23 @@ export class WallController {
         this.wallModel.reset();
 
         this.destroyPlugins();
+    }
+
+    getDefaultPlan() {
+        return {
+            bricks: [],
+
+            layout: {
+                bricks: [
+                    {
+                        columns: [
+                            {
+                                bricks: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
     }
 }
