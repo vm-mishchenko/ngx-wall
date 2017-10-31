@@ -352,11 +352,7 @@ exports.Observable = Observable;
 /* 24 */,
 /* 25 */,
 /* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */
+/* 27 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15371,6 +15367,10 @@ function transition$$1(stateChangeExpr, steps) {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(52)))
 
 /***/ }),
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
 /* 32 */,
 /* 33 */,
 /* 34 */,
@@ -16329,7 +16329,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return COMMON_DIRECTIVES; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return COMMON_PIPES; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(27);
 
 /**
  * @license Angular v4.4.5
@@ -20431,7 +20431,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵe", function() { return DomSanitizerImpl; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(27);
 
 /**
  * @license Angular v4.4.5
@@ -25123,14 +25123,14 @@ webpackEmptyAsyncContext.id = 96;
 
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(true)
-		module.exports = factory(__webpack_require__(31), __webpack_require__(54), __webpack_require__(53), __webpack_require__(67), __webpack_require__(11), __webpack_require__(154), __webpack_require__(157));
+		module.exports = factory(__webpack_require__(27), __webpack_require__(54), __webpack_require__(53), __webpack_require__(11), __webpack_require__(154), __webpack_require__(157));
 	else if(typeof define === 'function' && define.amd)
-		define(["@angular/core", "@angular/common", "rxjs/Subject", "@angular/platform-browser", "rxjs/Observable", "rxjs/add/observable/fromEvent", "rxjs/add/operator/throttleTime"], factory);
+		define(["@angular/core", "@angular/common", "rxjs/Subject", "rxjs/Observable", "rxjs/add/observable/fromEvent", "rxjs/add/operator/throttleTime"], factory);
 	else {
-		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("rxjs/Subject"), require("@angular/platform-browser"), require("rxjs/Observable"), require("rxjs/add/observable/fromEvent"), require("rxjs/add/operator/throttleTime")) : factory(root["@angular/core"], root["@angular/common"], root["rxjs/Subject"], root["@angular/platform-browser"], root["rxjs/Observable"], root["rxjs/add/observable/fromEvent"], root["rxjs/add/operator/throttleTime"]);
+		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("rxjs/Subject"), require("rxjs/Observable"), require("rxjs/add/observable/fromEvent"), require("rxjs/add/operator/throttleTime")) : factory(root["@angular/core"], root["@angular/common"], root["rxjs/Subject"], root["rxjs/Observable"], root["rxjs/add/observable/fromEvent"], root["rxjs/add/operator/throttleTime"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_63__, __WEBPACK_EXTERNAL_MODULE_64__, __WEBPACK_EXTERNAL_MODULE_65__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_5__, __WEBPACK_EXTERNAL_MODULE_82__, __WEBPACK_EXTERNAL_MODULE_83__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -25193,7 +25193,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 8);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -25224,7 +25224,7 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(50));
+__export(__webpack_require__(57));
 
 
 /***/ }),
@@ -25281,44 +25281,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var WallApi = /** @class */ (function () {
-    function WallApi() {
-        this.core = null;
-        this.features = {};
-    }
-    WallApi.prototype.registerCoreApi = function (coreApi) {
-        this.core = coreApi;
-    };
-    WallApi.prototype.registerFeatureApi = function (featureName, api) {
-        if (!this.features[featureName]) {
-            this.features[featureName] = api;
-        }
-    };
-    WallApi = __decorate([
-        core_1.Injectable()
-    ], WallApi);
-    return WallApi;
-}());
-exports.WallApi = WallApi;
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
 var Subject_1 = __webpack_require__(2);
 var core_1 = __webpack_require__(0);
-var pick_out_events_1 = __webpack_require__(18);
+var pick_out_events_1 = __webpack_require__(22);
 var PickOutCoordinator = /** @class */ (function () {
     function PickOutCoordinator() {
         this.changes = new Subject_1.Subject();
@@ -25383,7 +25348,7 @@ exports.PickOutCoordinator = PickOutCoordinator;
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25407,6 +25372,7 @@ var BeaconRegistry = /** @class */ (function () {
     };
     BeaconRegistry.prototype.unRegister = function (id) {
         this.beaconConfigs.delete(id);
+        this.beacons.delete(id);
     };
     BeaconRegistry.prototype.getBeacons = function () {
         return Array.from(this.beacons.values());
@@ -25434,7 +25400,7 @@ exports.BeaconRegistry = BeaconRegistry;
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25443,18 +25409,52 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__webpack_require__(49);
 __export(__webpack_require__(3));
 // bricks
-__export(__webpack_require__(80));
-__export(__webpack_require__(83));
-__export(__webpack_require__(86));
-__export(__webpack_require__(89));
-__export(__webpack_require__(93));
-__export(__webpack_require__(97));
+__export(__webpack_require__(98));
+__export(__webpack_require__(101));
+__export(__webpack_require__(104));
+__export(__webpack_require__(107));
+__export(__webpack_require__(111));
+__export(__webpack_require__(115));
 // modules
-__export(__webpack_require__(16));
-__export(__webpack_require__(19));
+__export(__webpack_require__(20));
+__export(__webpack_require__(23));
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var WallApi = /** @class */ (function () {
+    function WallApi() {
+        this.core = null;
+        this.features = {};
+    }
+    WallApi.prototype.registerCoreApi = function (coreApi) {
+        this.core = coreApi;
+    };
+    WallApi.prototype.registerFeatureApi = function (featureName, api) {
+        if (!this.features[featureName]) {
+            this.features[featureName] = api;
+        }
+    };
+    WallApi = __decorate([
+        core_1.Injectable()
+    ], WallApi);
+    return WallApi;
+}());
+exports.WallApi = WallApi;
 
 
 /***/ }),
@@ -25471,78 +25471,16 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-// Simple naive implementation
-var BrickItemStore = /** @class */ (function () {
-    function BrickItemStore(brick) {
-        this.brick = brick;
-    }
-    BrickItemStore.prototype.get = function () {
-        return this.cloneObject(this.brick.data);
-    };
-    BrickItemStore.prototype.set = function (data) {
-        this.brick.data = data;
-    };
-    BrickItemStore.prototype.cloneObject = function (obj) {
-        return JSON.parse(JSON.stringify(obj));
-    };
-    return BrickItemStore;
-}());
+var brick_storage_class_1 = __webpack_require__(61);
 /**
  * @desc
  * Store all brick states
  * */
 var BrickStore = /** @class */ (function () {
     function BrickStore() {
+        this.brickStorages = [];
     }
     BrickStore_1 = BrickStore;
-    BrickStore.prototype.initialize = function (bricks) {
-        this.bricks = bricks;
-    };
-    BrickStore.prototype.addBrick = function (tag) {
-        var brick = {
-            id: BrickStore_1.getNewGuid(),
-            tag: tag,
-            data: {},
-            meta: {}
-        };
-        this.bricks.push(brick);
-        return brick;
-    };
-    BrickStore.prototype.removeBrick = function (brickId) {
-        var brickIndex;
-        this.bricks.forEach(function (brick, index) {
-            if (brick.id === brickId) {
-                brickIndex = index;
-            }
-        });
-        this.bricks.splice(brickIndex, 1);
-    };
-    BrickStore.prototype.turnBrickInto = function (brickId, newTag) {
-        var brick = this.getBrickById(brickId);
-        brick.tag = newTag;
-        brick.data = {};
-    };
-    BrickStore.prototype.getBricksCount = function () {
-        return this.bricks.length;
-    };
-    BrickStore.prototype.getBrickById = function (brickId) {
-        return this.bricks.find(function (brick) {
-            return brick.id === brickId;
-        });
-    };
-    BrickStore.prototype.getBrickTagById = function (brickId) {
-        var brick = this.getBrickById(brickId);
-        return brick.tag;
-    };
-    BrickStore.prototype.serialize = function () {
-        return this.bricks;
-    };
-    BrickStore.prototype.getBrickStore = function (brickId) {
-        var brick = this.bricks.find(function (brick) {
-            return brick.id === brickId;
-        });
-        return new BrickItemStore(brick);
-    };
     BrickStore.getNewGuid = function () {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -25551,6 +25489,63 @@ var BrickStore = /** @class */ (function () {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
+    };
+    BrickStore.prototype.initialize = function (brickDefinitions) {
+        var _this = this;
+        this.brickStorages = brickDefinitions.map(function (brickDefinition) {
+            return _this.initializeBrickStorage(brickDefinition.id, brickDefinition.tag, brickDefinition.data, brickDefinition.meta);
+        });
+    };
+    BrickStore.prototype.create = function (tag) {
+        var brickStorage = this.initializeBrickStorage(BrickStore_1.getNewGuid(), tag, {}, {});
+        this.brickStorages.push(brickStorage);
+        return brickStorage;
+    };
+    BrickStore.prototype.remove = function (brickId) {
+        var brickIndex;
+        this.brickStorages.forEach(function (brick, index) {
+            if (brick.id === brickId) {
+                brickIndex = index;
+            }
+        });
+        this.brickStorages.splice(brickIndex, 1);
+    };
+    BrickStore.prototype.turnBrickInto = function (brickId, newTag) {
+        var brickStorage = this.getBrickStorageById(brickId);
+        brickStorage.tag = newTag;
+        brickStorage.updateState({});
+    };
+    BrickStore.prototype.getBricksCount = function () {
+        return this.brickStorages.length;
+    };
+    BrickStore.prototype.getBrickStorageById = function (brickId) {
+        return this.brickStorages.find(function (brick) {
+            return brick.id === brickId;
+        });
+    };
+    BrickStore.prototype.getBrickTagById = function (brickId) {
+        var brick = this.getBrickStorageById(brickId);
+        return brick.tag;
+    };
+    BrickStore.prototype.serialize = function () {
+        return this.brickStorages.map(function (brick) {
+            return {
+                id: brick.id,
+                tag: brick.tag,
+                data: brick.data,
+                meta: brick.meta
+            };
+        });
+    };
+    BrickStore.prototype.updateBrickState = function (brickId, brickState) {
+        var brickStorage = this.getBrickStorageById(brickId);
+        brickStorage.updateState(brickState);
+    };
+    BrickStore.prototype.reset = function () {
+        this.brickStorages = [];
+    };
+    BrickStore.prototype.initializeBrickStorage = function (id, tag, data, meta) {
+        return new brick_storage_class_1.BrickStorage(id, tag, data, meta);
     };
     BrickStore = BrickStore_1 = __decorate([
         core_1.Injectable()
@@ -25563,6 +25558,247 @@ exports.BrickStore = BrickStore;
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+// CommonJS / Node have global context exposed as "global" variable.
+// We don't want to include the whole node.d.ts this this compilation unit so we'll just fake
+// the global "global" var for now.
+var __window = typeof window !== 'undefined' && window;
+var __self = typeof self !== 'undefined' && typeof WorkerGlobalScope !== 'undefined' &&
+    self instanceof WorkerGlobalScope && self;
+var __global = typeof global !== 'undefined' && global;
+var _root = __window || __global || __self;
+exports.root = _root;
+// Workaround Closure Compiler restriction: The body of a goog.module cannot use throw.
+// This is needed when used with angular/tsickle which inserts a goog.module statement.
+// Wrap in IIFE
+(function () {
+    if (!_root) {
+        throw new Error('RxJS could not find any global context (window, self, global)');
+    }
+})();
+//# sourceMappingURL=root.js.map
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(65)))
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var isArray_1 = __webpack_require__(67);
+var isObject_1 = __webpack_require__(68);
+var isFunction_1 = __webpack_require__(31);
+var tryCatch_1 = __webpack_require__(69);
+var errorObject_1 = __webpack_require__(32);
+var UnsubscriptionError_1 = __webpack_require__(70);
+/**
+ * Represents a disposable resource, such as the execution of an Observable. A
+ * Subscription has one important method, `unsubscribe`, that takes no argument
+ * and just disposes the resource held by the subscription.
+ *
+ * Additionally, subscriptions may be grouped together through the `add()`
+ * method, which will attach a child Subscription to the current Subscription.
+ * When a Subscription is unsubscribed, all its children (and its grandchildren)
+ * will be unsubscribed as well.
+ *
+ * @class Subscription
+ */
+var Subscription = (function () {
+    /**
+     * @param {function(): void} [unsubscribe] A function describing how to
+     * perform the disposal of resources when the `unsubscribe` method is called.
+     */
+    function Subscription(unsubscribe) {
+        /**
+         * A flag to indicate whether this Subscription has already been unsubscribed.
+         * @type {boolean}
+         */
+        this.closed = false;
+        this._parent = null;
+        this._parents = null;
+        this._subscriptions = null;
+        if (unsubscribe) {
+            this._unsubscribe = unsubscribe;
+        }
+    }
+    /**
+     * Disposes the resources held by the subscription. May, for instance, cancel
+     * an ongoing Observable execution or cancel any other type of work that
+     * started when the Subscription was created.
+     * @return {void}
+     */
+    Subscription.prototype.unsubscribe = function () {
+        var hasErrors = false;
+        var errors;
+        if (this.closed) {
+            return;
+        }
+        var _a = this, _parent = _a._parent, _parents = _a._parents, _unsubscribe = _a._unsubscribe, _subscriptions = _a._subscriptions;
+        this.closed = true;
+        this._parent = null;
+        this._parents = null;
+        // null out _subscriptions first so any child subscriptions that attempt
+        // to remove themselves from this subscription will noop
+        this._subscriptions = null;
+        var index = -1;
+        var len = _parents ? _parents.length : 0;
+        // if this._parent is null, then so is this._parents, and we
+        // don't have to remove ourselves from any parent subscriptions.
+        while (_parent) {
+            _parent.remove(this);
+            // if this._parents is null or index >= len,
+            // then _parent is set to null, and the loop exits
+            _parent = ++index < len && _parents[index] || null;
+        }
+        if (isFunction_1.isFunction(_unsubscribe)) {
+            var trial = tryCatch_1.tryCatch(_unsubscribe).call(this);
+            if (trial === errorObject_1.errorObject) {
+                hasErrors = true;
+                errors = errors || (errorObject_1.errorObject.e instanceof UnsubscriptionError_1.UnsubscriptionError ?
+                    flattenUnsubscriptionErrors(errorObject_1.errorObject.e.errors) : [errorObject_1.errorObject.e]);
+            }
+        }
+        if (isArray_1.isArray(_subscriptions)) {
+            index = -1;
+            len = _subscriptions.length;
+            while (++index < len) {
+                var sub = _subscriptions[index];
+                if (isObject_1.isObject(sub)) {
+                    var trial = tryCatch_1.tryCatch(sub.unsubscribe).call(sub);
+                    if (trial === errorObject_1.errorObject) {
+                        hasErrors = true;
+                        errors = errors || [];
+                        var err = errorObject_1.errorObject.e;
+                        if (err instanceof UnsubscriptionError_1.UnsubscriptionError) {
+                            errors = errors.concat(flattenUnsubscriptionErrors(err.errors));
+                        }
+                        else {
+                            errors.push(err);
+                        }
+                    }
+                }
+            }
+        }
+        if (hasErrors) {
+            throw new UnsubscriptionError_1.UnsubscriptionError(errors);
+        }
+    };
+    /**
+     * Adds a tear down to be called during the unsubscribe() of this
+     * Subscription.
+     *
+     * If the tear down being added is a subscription that is already
+     * unsubscribed, is the same reference `add` is being called on, or is
+     * `Subscription.EMPTY`, it will not be added.
+     *
+     * If this subscription is already in an `closed` state, the passed
+     * tear down logic will be executed immediately.
+     *
+     * @param {TeardownLogic} teardown The additional logic to execute on
+     * teardown.
+     * @return {Subscription} Returns the Subscription used or created to be
+     * added to the inner subscriptions list. This Subscription can be used with
+     * `remove()` to remove the passed teardown logic from the inner subscriptions
+     * list.
+     */
+    Subscription.prototype.add = function (teardown) {
+        if (!teardown || (teardown === Subscription.EMPTY)) {
+            return Subscription.EMPTY;
+        }
+        if (teardown === this) {
+            return this;
+        }
+        var subscription = teardown;
+        switch (typeof teardown) {
+            case 'function':
+                subscription = new Subscription(teardown);
+            case 'object':
+                if (subscription.closed || typeof subscription.unsubscribe !== 'function') {
+                    return subscription;
+                }
+                else if (this.closed) {
+                    subscription.unsubscribe();
+                    return subscription;
+                }
+                else if (typeof subscription._addParent !== 'function' /* quack quack */) {
+                    var tmp = subscription;
+                    subscription = new Subscription();
+                    subscription._subscriptions = [tmp];
+                }
+                break;
+            default:
+                throw new Error('unrecognized teardown ' + teardown + ' added to Subscription.');
+        }
+        var subscriptions = this._subscriptions || (this._subscriptions = []);
+        subscriptions.push(subscription);
+        subscription._addParent(this);
+        return subscription;
+    };
+    /**
+     * Removes a Subscription from the internal list of subscriptions that will
+     * unsubscribe during the unsubscribe process of this Subscription.
+     * @param {Subscription} subscription The subscription to remove.
+     * @return {void}
+     */
+    Subscription.prototype.remove = function (subscription) {
+        var subscriptions = this._subscriptions;
+        if (subscriptions) {
+            var subscriptionIndex = subscriptions.indexOf(subscription);
+            if (subscriptionIndex !== -1) {
+                subscriptions.splice(subscriptionIndex, 1);
+            }
+        }
+    };
+    Subscription.prototype._addParent = function (parent) {
+        var _a = this, _parent = _a._parent, _parents = _a._parents;
+        if (!_parent || _parent === parent) {
+            // If we don't have a parent, or the new parent is the same as the
+            // current parent, then set this._parent to the new parent.
+            this._parent = parent;
+        }
+        else if (!_parents) {
+            // If there's already one parent, but not multiple, allocate an Array to
+            // store the rest of the parent Subscriptions.
+            this._parents = [parent];
+        }
+        else if (_parents.indexOf(parent) === -1) {
+            // Only add the new parent to the _parents list if it's not already there.
+            _parents.push(parent);
+        }
+    };
+    Subscription.EMPTY = (function (empty) {
+        empty.closed = true;
+        return empty;
+    }(new Subscription()));
+    return Subscription;
+}());
+exports.Subscription = Subscription;
+function flattenUnsubscriptionErrors(errors) {
+    return errors.reduce(function (errs, err) { return errs.concat((err instanceof UnsubscriptionError_1.UnsubscriptionError) ? err.errors : err); }, []);
+}
+//# sourceMappingURL=Subscription.js.map
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var root_1 = __webpack_require__(11);
+var Symbol = root_1.root.Symbol;
+exports.rxSubscriber = (typeof Symbol === 'function' && typeof Symbol.for === 'function') ?
+    Symbol.for('rxSubscriber') : '@@rxSubscriber';
+/**
+ * @deprecated use rxSubscriber instead
+ */
+exports.$$rxSubscriber = exports.rxSubscriber;
+//# sourceMappingURL=rxSubscriber.js.map
+
+/***/ }),
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25589,10 +25825,18 @@ var AddBrickEvent = /** @class */ (function () {
     return AddBrickEvent;
 }());
 exports.AddBrickEvent = AddBrickEvent;
+var UpdateBrickStateEvent = /** @class */ (function () {
+    function UpdateBrickStateEvent(brickId, brickState) {
+        this.brickId = brickId;
+        this.brickState = brickState;
+    }
+    return UpdateBrickStateEvent;
+}());
+exports.UpdateBrickStateEvent = UpdateBrickStateEvent;
 
 
 /***/ }),
-/* 12 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25603,7 +25847,7 @@ exports.WALL_PLUGIN = new core_1.InjectionToken('Wall plugin');
 
 
 /***/ }),
-/* 13 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25628,7 +25872,23 @@ exports.WallCanvasApi = WallCanvasApi;
 
 
 /***/ }),
-/* 14 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(9));
+__export(__webpack_require__(14));
+__export(__webpack_require__(36));
+__export(__webpack_require__(76));
+
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25649,12 +25909,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
 var common_1 = __webpack_require__(1);
-var Observable_1 = __webpack_require__(63);
-__webpack_require__(64);
-__webpack_require__(65);
-var spot_model_1 = __webpack_require__(66);
-var radar_tokens_1 = __webpack_require__(15);
-var location_updated_event_1 = __webpack_require__(33);
+var Observable_1 = __webpack_require__(5);
+__webpack_require__(82);
+__webpack_require__(83);
+var spot_model_1 = __webpack_require__(84);
+var radar_tokens_1 = __webpack_require__(19);
+var location_updated_event_1 = __webpack_require__(41);
 var RadarCoordinator = /** @class */ (function () {
     function RadarCoordinator(doc, _window) {
         var _this = this;
@@ -25716,7 +25976,7 @@ exports.RadarCoordinator = RadarCoordinator;
 
 
 /***/ }),
-/* 15 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25727,7 +25987,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 16 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25736,15 +25996,15 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(71));
-__export(__webpack_require__(18));
-__export(__webpack_require__(39));
-__export(__webpack_require__(36));
-__export(__webpack_require__(35));
+__export(__webpack_require__(89));
+__export(__webpack_require__(22));
+__export(__webpack_require__(47));
+__export(__webpack_require__(44));
+__export(__webpack_require__(43));
 
 
 /***/ }),
-/* 17 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25755,7 +26015,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 18 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25789,7 +26049,7 @@ exports.StopPickOut = StopPickOut;
 
 
 /***/ }),
-/* 19 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25798,20 +26058,20 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(74));
-__export(__webpack_require__(45));
-__export(__webpack_require__(23));
-__export(__webpack_require__(41));
-__export(__webpack_require__(43));
-__export(__webpack_require__(42));
-__export(__webpack_require__(44));
-__export(__webpack_require__(22));
-__export(__webpack_require__(8));
-__export(__webpack_require__(20));
+__export(__webpack_require__(92));
+__export(__webpack_require__(53));
+__export(__webpack_require__(27));
+__export(__webpack_require__(49));
+__export(__webpack_require__(51));
+__export(__webpack_require__(50));
+__export(__webpack_require__(52));
+__export(__webpack_require__(26));
+__export(__webpack_require__(7));
+__export(__webpack_require__(24));
 
 
 /***/ }),
-/* 20 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25827,7 +26087,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var placeholder_component_1 = __webpack_require__(40);
+var placeholder_component_1 = __webpack_require__(48);
 var PlaceholderRenderer = /** @class */ (function () {
     function PlaceholderRenderer(componentFactoryResolver, appRef, injector) {
         this.componentFactoryResolver = componentFactoryResolver;
@@ -25879,7 +26139,7 @@ exports.PlaceholderRenderer = PlaceholderRenderer;
 
 
 /***/ }),
-/* 21 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25890,7 +26150,7 @@ exports.WindowReference = new core_1.InjectionToken('Window');
 
 
 /***/ }),
-/* 22 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -25903,8 +26163,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var detected_beacon_1 = __webpack_require__(77);
-var tow_constant_1 = __webpack_require__(23);
+var detected_beacon_1 = __webpack_require__(95);
+var tow_constant_1 = __webpack_require__(27);
 var BeaconDetector = /** @class */ (function () {
     function BeaconDetector() {
     }
@@ -25987,7 +26247,7 @@ exports.BeaconDetector = BeaconDetector;
 
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26008,7 +26268,7 @@ exports.TOW = {
 
 
 /***/ }),
-/* 24 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26028,16 +26288,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var tow_tokens_1 = __webpack_require__(21);
-var beacon_detector_service_1 = __webpack_require__(22);
-var placeholder_renderer_service_1 = __webpack_require__(20);
-var beacon_registry_service_1 = __webpack_require__(8);
+var tow_tokens_1 = __webpack_require__(25);
+var beacon_detector_service_1 = __webpack_require__(26);
+var placeholder_renderer_service_1 = __webpack_require__(24);
+var beacon_registry_service_1 = __webpack_require__(7);
 var Subject_1 = __webpack_require__(2);
-var start_working_event_1 = __webpack_require__(41);
-var work_in_progress_event_1 = __webpack_require__(42);
-var stop_working_event_1 = __webpack_require__(43);
-var drop_event_1 = __webpack_require__(44);
-var tow_constant_1 = __webpack_require__(23);
+var start_working_event_1 = __webpack_require__(49);
+var work_in_progress_event_1 = __webpack_require__(50);
+var stop_working_event_1 = __webpack_require__(51);
+var drop_event_1 = __webpack_require__(52);
+var tow_constant_1 = __webpack_require__(27);
 var TowCoordinator = /** @class */ (function () {
     function TowCoordinator(doc, _window, placeholderRenderer, beaconDetector, beaconRegistry) {
         var _this = this;
@@ -26153,7 +26413,7 @@ exports.TowCoordinator = TowCoordinator;
 
 
 /***/ }),
-/* 25 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26169,81 +26429,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_controller_1 = __webpack_require__(52);
-var wall_api_service_1 = __webpack_require__(6);
-var wall_model_1 = __webpack_require__(26);
+var wall_api_service_1 = __webpack_require__(9);
 var brick_store_service_1 = __webpack_require__(10);
-var layout_store_service_1 = __webpack_require__(27);
-var WallComponent = /** @class */ (function () {
-    function WallComponent(wallController) {
-        this.wallController = wallController;
-        this.plan = null;
-        this.configuration = null;
-    }
-    WallComponent.prototype.onCanvasClick = function () {
-        this.wallController.wallModel.addDefaultBrick();
-    };
-    // callback when user focused to some brick by mouse click
-    WallComponent.prototype.onFocusedBrick = function (brickId) {
-        this.wallController.wallModel.onFocusedBrick(brickId);
-    };
-    WallComponent.prototype.ngOnInit = function () {
-        // initialize plan
-        this.wallController.initialize(this.plan, this.configuration);
-    };
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], WallComponent.prototype, "plan", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], WallComponent.prototype, "configuration", void 0);
-    WallComponent = __decorate([
-        core_1.Component({
-            selector: 'wall',
-            template: __webpack_require__(54),
-            providers: [
-                wall_api_service_1.WallApi,
-                wall_model_1.WallModel,
-                brick_store_service_1.BrickStore,
-                layout_store_service_1.LayoutStore,
-                wall_controller_1.WallController
-            ]
-        }),
-        __metadata("design:paramtypes", [wall_controller_1.WallController])
-    ], WallComponent);
-    return WallComponent;
-}());
-exports.WallComponent = WallComponent;
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var wall_api_service_1 = __webpack_require__(6);
-var brick_store_service_1 = __webpack_require__(10);
-var layout_store_service_1 = __webpack_require__(27);
-var wall_constant_1 = __webpack_require__(28);
-var wall_editor_registry_1 = __webpack_require__(29);
+var layout_store_service_1 = __webpack_require__(35);
+var wall_constant_1 = __webpack_require__(36);
+var wall_editor_registry_1 = __webpack_require__(37);
 var Subject_1 = __webpack_require__(2);
-var wall_events_1 = __webpack_require__(11);
+var wall_events_1 = __webpack_require__(14);
 var brick_registry_service_1 = __webpack_require__(4);
-var reactive_property_1 = __webpack_require__(53);
+var reactive_property_1 = __webpack_require__(73);
 /**
  * @desc Responsible for storing wall state.
  * Provide core functionality
@@ -26276,7 +26470,7 @@ var WallModel = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    WallModel.prototype.initialize = function (plan, configuration) {
+    WallModel.prototype.initialize = function (plan) {
         var _this = this;
         this.wallEditorRegistry.registerEditor(this.id, this);
         // initialize core API
@@ -26315,8 +26509,7 @@ var WallModel = /** @class */ (function () {
             'subscribe',
             // BRICk
             'isRegisteredBrick',
-            'turnBrickInto',
-            'getBrickStore'
+            'turnBrickInto'
         ].reduce(function (result, methodName) {
             if (_this[methodName].bind) {
                 result[methodName] = _this[methodName].bind(_this);
@@ -26375,8 +26568,9 @@ var WallModel = /** @class */ (function () {
             layout: this.layoutStore.serialize()
         };
     };
-    WallModel.prototype.getBrickStore = function (brickId) {
-        return this.brickStore.getBrickStore(brickId);
+    WallModel.prototype.updateBrickState = function (brickId, brickState) {
+        this.brickStore.updateBrickState(brickId, brickState);
+        this.events.next(new wall_events_1.UpdateBrickStateEvent(brickId, brickState));
     };
     WallModel.prototype.turnBrickInto = function (brickId, newTag) {
         this.brickStore.turnBrickInto(brickId, newTag);
@@ -26398,7 +26592,7 @@ var WallModel = /** @class */ (function () {
     /* Add brick to existing row and existing column */
     WallModel.prototype.addBrick = function (tag, targetRowIndex, targetColumnIndex, positionIndex) {
         if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
-            var newBrick = this.brickStore.addBrick(tag);
+            var newBrick = this.brickStore.create(tag);
             this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
             this.focusOnBrickId(newBrick.id);
             this.events.next(new wall_events_1.AddBrickEvent(newBrick.id));
@@ -26412,7 +26606,7 @@ var WallModel = /** @class */ (function () {
         if (targetRowIndex > (lastRowIndex + 1)) {
             targetRowIndex = lastRowIndex + 1;
         }
-        var newBrick = this.brickStore.addBrick(tag);
+        var newBrick = this.brickStore.create(tag);
         this.layoutStore.addBrickToNewRow(newBrick.id, targetRowIndex);
         this.focusOnBrickId(newBrick.id);
         this.events.next(new wall_events_1.AddBrickEvent(newBrick.id));
@@ -26500,7 +26694,7 @@ var WallModel = /** @class */ (function () {
             // should find next/prev brick before remove target brick
             var previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
             var nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
-            this.brickStore.removeBrick(brickId);
+            this.brickStore.remove(brickId);
             this.layoutStore.removeBrick(brickId);
             if (previousTextBrickId) {
                 this.focusOnBrickId(previousTextBrickId);
@@ -26523,7 +26717,7 @@ var WallModel = /** @class */ (function () {
             var previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickIds[0]);
             var nextTextBrickId = this.layoutStore.getNextTextBrick(brickIds[brickIds.length - 1]);
             brickIds.forEach(function (brickId) {
-                _this.brickStore.removeBrick(brickId);
+                _this.brickStore.remove(brickId);
                 _this.layoutStore.removeBrick(brickId);
             });
             if (previousTextBrickId) {
@@ -26584,6 +26778,12 @@ var WallModel = /** @class */ (function () {
         this.writeState.isMediaInteractionEnabled.setValue(false);
     };
     ;
+    WallModel.prototype.reset = function () {
+        this.brickStore.reset();
+        this.layoutStore.reset();
+        this.focusedBrickId = null;
+        this.unSelectBricks();
+    };
     WallModel.prototype.moveBrickAfterInNewRow = function (targetBrickIds, beforeBrickId) {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
     };
@@ -26604,7 +26804,7 @@ var WallModel = /** @class */ (function () {
     WallModel.prototype.isLastBrickEmptyText = function () {
         var lastBrickId = this.layoutStore.getLastBrickId();
         if (lastBrickId) {
-            var lastBrick = this.brickStore.getBrickById(lastBrickId);
+            var lastBrick = this.brickStore.getBrickStorageById(lastBrickId);
             if (lastBrick.tag === 'text' && !lastBrick.data['text']) {
                 return lastBrick;
             }
@@ -26630,7 +26830,346 @@ exports.WallModel = WallModel;
 
 
 /***/ }),
-/* 27 */
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var isFunction_1 = __webpack_require__(31);
+var Subscription_1 = __webpack_require__(12);
+var Observer_1 = __webpack_require__(33);
+var rxSubscriber_1 = __webpack_require__(13);
+/**
+ * Implements the {@link Observer} interface and extends the
+ * {@link Subscription} class. While the {@link Observer} is the public API for
+ * consuming the values of an {@link Observable}, all Observers get converted to
+ * a Subscriber, in order to provide Subscription-like capabilities such as
+ * `unsubscribe`. Subscriber is a common type in RxJS, and crucial for
+ * implementing operators, but it is rarely used as a public API.
+ *
+ * @class Subscriber<T>
+ */
+var Subscriber = (function (_super) {
+    __extends(Subscriber, _super);
+    /**
+     * @param {Observer|function(value: T): void} [destinationOrNext] A partially
+     * defined Observer or a `next` callback function.
+     * @param {function(e: ?any): void} [error] The `error` callback of an
+     * Observer.
+     * @param {function(): void} [complete] The `complete` callback of an
+     * Observer.
+     */
+    function Subscriber(destinationOrNext, error, complete) {
+        _super.call(this);
+        this.syncErrorValue = null;
+        this.syncErrorThrown = false;
+        this.syncErrorThrowable = false;
+        this.isStopped = false;
+        switch (arguments.length) {
+            case 0:
+                this.destination = Observer_1.empty;
+                break;
+            case 1:
+                if (!destinationOrNext) {
+                    this.destination = Observer_1.empty;
+                    break;
+                }
+                if (typeof destinationOrNext === 'object') {
+                    if (destinationOrNext instanceof Subscriber) {
+                        this.destination = destinationOrNext;
+                        this.destination.add(this);
+                    }
+                    else {
+                        this.syncErrorThrowable = true;
+                        this.destination = new SafeSubscriber(this, destinationOrNext);
+                    }
+                    break;
+                }
+            default:
+                this.syncErrorThrowable = true;
+                this.destination = new SafeSubscriber(this, destinationOrNext, error, complete);
+                break;
+        }
+    }
+    Subscriber.prototype[rxSubscriber_1.rxSubscriber] = function () { return this; };
+    /**
+     * A static factory for a Subscriber, given a (potentially partial) definition
+     * of an Observer.
+     * @param {function(x: ?T): void} [next] The `next` callback of an Observer.
+     * @param {function(e: ?any): void} [error] The `error` callback of an
+     * Observer.
+     * @param {function(): void} [complete] The `complete` callback of an
+     * Observer.
+     * @return {Subscriber<T>} A Subscriber wrapping the (partially defined)
+     * Observer represented by the given arguments.
+     */
+    Subscriber.create = function (next, error, complete) {
+        var subscriber = new Subscriber(next, error, complete);
+        subscriber.syncErrorThrowable = false;
+        return subscriber;
+    };
+    /**
+     * The {@link Observer} callback to receive notifications of type `next` from
+     * the Observable, with a value. The Observable may call this method 0 or more
+     * times.
+     * @param {T} [value] The `next` value.
+     * @return {void}
+     */
+    Subscriber.prototype.next = function (value) {
+        if (!this.isStopped) {
+            this._next(value);
+        }
+    };
+    /**
+     * The {@link Observer} callback to receive notifications of type `error` from
+     * the Observable, with an attached {@link Error}. Notifies the Observer that
+     * the Observable has experienced an error condition.
+     * @param {any} [err] The `error` exception.
+     * @return {void}
+     */
+    Subscriber.prototype.error = function (err) {
+        if (!this.isStopped) {
+            this.isStopped = true;
+            this._error(err);
+        }
+    };
+    /**
+     * The {@link Observer} callback to receive a valueless notification of type
+     * `complete` from the Observable. Notifies the Observer that the Observable
+     * has finished sending push-based notifications.
+     * @return {void}
+     */
+    Subscriber.prototype.complete = function () {
+        if (!this.isStopped) {
+            this.isStopped = true;
+            this._complete();
+        }
+    };
+    Subscriber.prototype.unsubscribe = function () {
+        if (this.closed) {
+            return;
+        }
+        this.isStopped = true;
+        _super.prototype.unsubscribe.call(this);
+    };
+    Subscriber.prototype._next = function (value) {
+        this.destination.next(value);
+    };
+    Subscriber.prototype._error = function (err) {
+        this.destination.error(err);
+        this.unsubscribe();
+    };
+    Subscriber.prototype._complete = function () {
+        this.destination.complete();
+        this.unsubscribe();
+    };
+    Subscriber.prototype._unsubscribeAndRecycle = function () {
+        var _a = this, _parent = _a._parent, _parents = _a._parents;
+        this._parent = null;
+        this._parents = null;
+        this.unsubscribe();
+        this.closed = false;
+        this.isStopped = false;
+        this._parent = _parent;
+        this._parents = _parents;
+        return this;
+    };
+    return Subscriber;
+}(Subscription_1.Subscription));
+exports.Subscriber = Subscriber;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SafeSubscriber = (function (_super) {
+    __extends(SafeSubscriber, _super);
+    function SafeSubscriber(_parentSubscriber, observerOrNext, error, complete) {
+        _super.call(this);
+        this._parentSubscriber = _parentSubscriber;
+        var next;
+        var context = this;
+        if (isFunction_1.isFunction(observerOrNext)) {
+            next = observerOrNext;
+        }
+        else if (observerOrNext) {
+            next = observerOrNext.next;
+            error = observerOrNext.error;
+            complete = observerOrNext.complete;
+            if (observerOrNext !== Observer_1.empty) {
+                context = Object.create(observerOrNext);
+                if (isFunction_1.isFunction(context.unsubscribe)) {
+                    this.add(context.unsubscribe.bind(context));
+                }
+                context.unsubscribe = this.unsubscribe.bind(this);
+            }
+        }
+        this._context = context;
+        this._next = next;
+        this._error = error;
+        this._complete = complete;
+    }
+    SafeSubscriber.prototype.next = function (value) {
+        if (!this.isStopped && this._next) {
+            var _parentSubscriber = this._parentSubscriber;
+            if (!_parentSubscriber.syncErrorThrowable) {
+                this.__tryOrUnsub(this._next, value);
+            }
+            else if (this.__tryOrSetError(_parentSubscriber, this._next, value)) {
+                this.unsubscribe();
+            }
+        }
+    };
+    SafeSubscriber.prototype.error = function (err) {
+        if (!this.isStopped) {
+            var _parentSubscriber = this._parentSubscriber;
+            if (this._error) {
+                if (!_parentSubscriber.syncErrorThrowable) {
+                    this.__tryOrUnsub(this._error, err);
+                    this.unsubscribe();
+                }
+                else {
+                    this.__tryOrSetError(_parentSubscriber, this._error, err);
+                    this.unsubscribe();
+                }
+            }
+            else if (!_parentSubscriber.syncErrorThrowable) {
+                this.unsubscribe();
+                throw err;
+            }
+            else {
+                _parentSubscriber.syncErrorValue = err;
+                _parentSubscriber.syncErrorThrown = true;
+                this.unsubscribe();
+            }
+        }
+    };
+    SafeSubscriber.prototype.complete = function () {
+        var _this = this;
+        if (!this.isStopped) {
+            var _parentSubscriber = this._parentSubscriber;
+            if (this._complete) {
+                var wrappedComplete = function () { return _this._complete.call(_this._context); };
+                if (!_parentSubscriber.syncErrorThrowable) {
+                    this.__tryOrUnsub(wrappedComplete);
+                    this.unsubscribe();
+                }
+                else {
+                    this.__tryOrSetError(_parentSubscriber, wrappedComplete);
+                    this.unsubscribe();
+                }
+            }
+            else {
+                this.unsubscribe();
+            }
+        }
+    };
+    SafeSubscriber.prototype.__tryOrUnsub = function (fn, value) {
+        try {
+            fn.call(this._context, value);
+        }
+        catch (err) {
+            this.unsubscribe();
+            throw err;
+        }
+    };
+    SafeSubscriber.prototype.__tryOrSetError = function (parent, fn, value) {
+        try {
+            fn.call(this._context, value);
+        }
+        catch (err) {
+            parent.syncErrorValue = err;
+            parent.syncErrorThrown = true;
+            return true;
+        }
+        return false;
+    };
+    SafeSubscriber.prototype._unsubscribe = function () {
+        var _parentSubscriber = this._parentSubscriber;
+        this._context = null;
+        this._parentSubscriber = null;
+        _parentSubscriber.unsubscribe();
+    };
+    return SafeSubscriber;
+}(Subscriber));
+//# sourceMappingURL=Subscriber.js.map
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function isFunction(x) {
+    return typeof x === 'function';
+}
+exports.isFunction = isFunction;
+//# sourceMappingURL=isFunction.js.map
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+// typeof any so that it we don't have to cast when comparing a result to the error object
+exports.errorObject = { e: {} };
+//# sourceMappingURL=errorObject.js.map
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.empty = {
+    closed: true,
+    next: function (value) { },
+    error: function (err) { throw err; },
+    complete: function () { }
+};
+//# sourceMappingURL=Observer.js.map
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+/**
+ * An error thrown when an action is invalid because the object has been
+ * unsubscribed.
+ *
+ * @see {@link Subject}
+ * @see {@link BehaviorSubject}
+ *
+ * @class ObjectUnsubscribedError
+ */
+var ObjectUnsubscribedError = (function (_super) {
+    __extends(ObjectUnsubscribedError, _super);
+    function ObjectUnsubscribedError() {
+        var err = _super.call(this, 'object unsubscribed');
+        this.name = err.name = 'ObjectUnsubscribedError';
+        this.stack = err.stack;
+        this.message = err.message;
+    }
+    return ObjectUnsubscribedError;
+}(Error));
+exports.ObjectUnsubscribedError = ObjectUnsubscribedError;
+//# sourceMappingURL=ObjectUnsubscribedError.js.map
+
+/***/ }),
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26668,11 +27207,14 @@ var LayoutStore = /** @class */ (function () {
                 return {
                     columns: row.columns.map(function (column) {
                         return {
-                            bricks: column.bricks.map(function (brick) {
-                                var brickTag = _this.brickStore.getBrickTagById(brick.id);
+                            bricks: column.bricks.map(function (brickConfig) {
+                                var brickStorage = _this.brickStore.getBrickStorageById(brickConfig.id);
+                                var component = _this.brickRegistry.get(brickStorage.tag).component;
                                 return {
-                                    id: brick.id,
-                                    component: _this.brickRegistry.get(brickTag).component
+                                    id: brickStorage.id,
+                                    hash: brickStorage.tag + brickStorage.id,
+                                    state: brickStorage.state,
+                                    component: component
                                 };
                             })
                         };
@@ -26879,6 +27421,11 @@ var LayoutStore = /** @class */ (function () {
         }
         return brickPosition;
     };
+    LayoutStore.prototype.reset = function () {
+        this.layout = {
+            bricks: []
+        };
+    };
     LayoutStore.prototype.createNewRow = function (targetRowIndex) {
         this.layout.bricks.splice(targetRowIndex, 0, this.initializeNewRow());
     };
@@ -26947,7 +27494,7 @@ exports.LayoutStore = LayoutStore;
 
 
 /***/ }),
-/* 28 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -26962,7 +27509,7 @@ exports.WALL = {
 
 
 /***/ }),
-/* 29 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27001,45 +27548,167 @@ exports.WallEditorRegistry = WallEditorRegistry;
 
 
 /***/ }),
-/* 30 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(6));
-__export(__webpack_require__(25));
-__export(__webpack_require__(11));
-__export(__webpack_require__(28));
-__export(__webpack_require__(57));
+var core_1 = __webpack_require__(0);
+var common_1 = __webpack_require__(1);
+var wall_canvas_api_1 = __webpack_require__(16);
+var wall_canvas_controller_1 = __webpack_require__(75);
+var WallCanvasComponent = /** @class */ (function () {
+    function WallCanvasComponent(wallCanvasController, doc) {
+        var _this = this;
+        this.wallCanvasController = wallCanvasController;
+        this.layout = { rows: [] };
+        this.selectedBricks = null;
+        this.focusedBrickId = null;
+        this.isMediaInteractionEnabled = true;
+        this.canvasClick = new core_1.EventEmitter();
+        this.onFocusedBrick = new core_1.EventEmitter();
+        this.onBrickStateChanged = new core_1.EventEmitter();
+        this.doc = null;
+        this.doc = doc;
+        this.wallCanvasController.onFocusedEvent.subscribe(function (brickId) {
+            _this.onFocusedBrick.next(brickId);
+        });
+    }
+    WallCanvasComponent.prototype.onEditorClick = function (e) {
+        if (e.target === this.expander.nativeElement) {
+            this.canvasClick.next();
+        }
+    };
+    WallCanvasComponent.prototype.ngOnInit = function () {
+        this.wallCanvasController.initialize();
+    };
+    WallCanvasComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.focusedBrickId) {
+            if (changes.focusedBrickId.currentValue) {
+                this.wallCanvasController.focusBrickById(changes.focusedBrickId.currentValue);
+            }
+            else {
+                this.doc.activeElement.blur();
+                this.wallCanvasController.clearFocusedBrickId();
+            }
+        }
+        if (changes.selectedBricks) {
+            if (changes.selectedBricks.currentValue.length) {
+                this.wallCanvasController.selectBricks(changes.selectedBricks.currentValue);
+            }
+            else {
+                this.wallCanvasController.unselectBricks();
+            }
+        }
+        if (changes.isMediaInteractionEnabled) {
+            if (changes.isMediaInteractionEnabled.currentValue) {
+                this.wallCanvasController.enableMediaInteraction();
+            }
+            else {
+                this.wallCanvasController.disableMediaInteraction();
+            }
+        }
+    };
+    WallCanvasComponent.prototype.brickStateChanged = function (brickId, brickState) {
+        this.onBrickStateChanged.emit({
+            brickId: brickId,
+            brickState: brickState
+        });
+    };
+    WallCanvasComponent.prototype.trackBricksBy = function (index, item) {
+        return item.columns.reduce(function (result, column) {
+            result += column.bricks.reduce(function (brickResult, brick) {
+                brickResult += brick.hash;
+                return brickResult;
+            }, '');
+            return result;
+        }, '');
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], WallCanvasComponent.prototype, "layout", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Array)
+    ], WallCanvasComponent.prototype, "selectedBricks", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], WallCanvasComponent.prototype, "focusedBrickId", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Boolean)
+    ], WallCanvasComponent.prototype, "isMediaInteractionEnabled", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], WallCanvasComponent.prototype, "canvasClick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], WallCanvasComponent.prototype, "onFocusedBrick", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], WallCanvasComponent.prototype, "onBrickStateChanged", void 0);
+    __decorate([
+        core_1.ViewChild('expander'),
+        __metadata("design:type", core_1.ElementRef)
+    ], WallCanvasComponent.prototype, "expander", void 0);
+    WallCanvasComponent = __decorate([
+        core_1.Component({
+            selector: 'wall-canvas',
+            template: __webpack_require__(77),
+            providers: [
+                wall_canvas_api_1.WallCanvasApi,
+                wall_canvas_controller_1.WallCanvasController
+            ]
+        }),
+        __param(1, core_1.Inject(common_1.DOCUMENT)),
+        __metadata("design:paramtypes", [wall_canvas_controller_1.WallCanvasController, Object])
+    ], WallCanvasComponent);
+    return WallCanvasComponent;
+}());
+exports.WallCanvasComponent = WallCanvasComponent;
 
 
 /***/ }),
-/* 31 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var radar_module_1 = __webpack_require__(62);
+var radar_module_1 = __webpack_require__(81);
 exports.RadarModule = radar_module_1.RadarModule;
-var radar_service_1 = __webpack_require__(32);
+var radar_service_1 = __webpack_require__(40);
 exports.Radar = radar_service_1.Radar;
-var radar_directive_1 = __webpack_require__(34);
+var radar_directive_1 = __webpack_require__(42);
 exports.SpotDirective = radar_directive_1.SpotDirective;
-var location_updated_event_1 = __webpack_require__(33);
+var location_updated_event_1 = __webpack_require__(41);
 exports.LocationUpdatedEvent = location_updated_event_1.LocationUpdatedEvent;
-var location_to_top_left_point_event_1 = __webpack_require__(67);
+var location_to_top_left_point_event_1 = __webpack_require__(85);
 exports.LocationToTopLeftPointEvent = location_to_top_left_point_event_1.LocationToTopLeftPointEvent;
-var location_to_left_center_point_event_1 = __webpack_require__(68);
+var location_to_left_center_point_event_1 = __webpack_require__(86);
 exports.LocationToLeftCenterPointEvent = location_to_left_center_point_event_1.LocationToLeftCenterPointEvent;
 
 
 /***/ }),
-/* 32 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27055,7 +27724,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_coordinator_service_1 = __webpack_require__(14);
+var radar_coordinator_service_1 = __webpack_require__(18);
 var Subject_1 = __webpack_require__(2);
 var Radar = /** @class */ (function () {
     function Radar(radarCoordinator) {
@@ -27079,7 +27748,7 @@ exports.Radar = Radar;
 
 
 /***/ }),
-/* 33 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27095,7 +27764,7 @@ exports.LocationUpdatedEvent = LocationUpdatedEvent;
 
 
 /***/ }),
-/* 34 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27114,8 +27783,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_tokens_1 = __webpack_require__(15);
-var radar_coordinator_service_1 = __webpack_require__(14);
+var radar_tokens_1 = __webpack_require__(19);
+var radar_coordinator_service_1 = __webpack_require__(18);
 var SpotDirective = /** @class */ (function () {
     function SpotDirective(radarCoordinator, el, _window) {
         this.radarCoordinator = radarCoordinator;
@@ -27155,7 +27824,7 @@ exports.SpotDirective = SpotDirective;
 
 
 /***/ }),
-/* 35 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27174,8 +27843,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_tokens_1 = __webpack_require__(17);
-var pick_out_coordinator_service_1 = __webpack_require__(7);
+var pick_out_tokens_1 = __webpack_require__(21);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutItemDirective = /** @class */ (function () {
     function PickOutItemDirective(pickOutCoordinator, _window, el) {
         this.pickOutCoordinator = pickOutCoordinator;
@@ -27220,7 +27889,7 @@ exports.PickOutItemDirective = PickOutItemDirective;
 
 
 /***/ }),
-/* 36 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27240,11 +27909,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var pick_out_area_model_1 = __webpack_require__(72);
-var pick_out_area_component_1 = __webpack_require__(38);
-var pick_out_tokens_1 = __webpack_require__(17);
-var pick_out_events_1 = __webpack_require__(18);
-var pick_out_coordinator_service_1 = __webpack_require__(7);
+var pick_out_area_model_1 = __webpack_require__(90);
+var pick_out_area_component_1 = __webpack_require__(46);
+var pick_out_tokens_1 = __webpack_require__(21);
+var pick_out_events_1 = __webpack_require__(22);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutAreaDirective = /** @class */ (function () {
     function PickOutAreaDirective(doc, _window, pickOutHandlerService, componentFactoryResolver, appRef, injector) {
         var _this = this;
@@ -27379,7 +28048,7 @@ exports.PickOutAreaDirective = PickOutAreaDirective;
 
 
 /***/ }),
-/* 37 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27394,7 +28063,7 @@ exports.PickOutModelDestroyEvent = PickOutModelDestroyEvent;
 
 
 /***/ }),
-/* 38 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27407,7 +28076,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var pick_out_model_destroy_event_1 = __webpack_require__(37);
+var pick_out_model_destroy_event_1 = __webpack_require__(45);
 var PickOutAreaComponent = /** @class */ (function () {
     function PickOutAreaComponent() {
         this.pickOutAreaModel = null;
@@ -27422,7 +28091,7 @@ var PickOutAreaComponent = /** @class */ (function () {
     };
     PickOutAreaComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__(73)
+            template: __webpack_require__(91)
         })
     ], PickOutAreaComponent);
     return PickOutAreaComponent;
@@ -27431,7 +28100,7 @@ exports.PickOutAreaComponent = PickOutAreaComponent;
 
 
 /***/ }),
-/* 39 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27448,7 +28117,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var pick_out_coordinator_service_1 = __webpack_require__(7);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutService = /** @class */ (function () {
     function PickOutService(pickOutHandlerService) {
         var _this = this;
@@ -27480,7 +28149,7 @@ exports.PickOutService = PickOutService;
 
 
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27504,7 +28173,7 @@ var PlaceholderComponent = /** @class */ (function () {
     };
     PlaceholderComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__(75)
+            template: __webpack_require__(93)
         })
     ], PlaceholderComponent);
     return PlaceholderComponent;
@@ -27513,7 +28182,7 @@ exports.PlaceholderComponent = PlaceholderComponent;
 
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27528,7 +28197,7 @@ exports.StartWorkingEvent = StartWorkingEvent;
 
 
 /***/ }),
-/* 42 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27543,7 +28212,7 @@ exports.WorkInProgressEvent = WorkInProgressEvent;
 
 
 /***/ }),
-/* 43 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27558,7 +28227,7 @@ exports.StopWorkingEvent = StopWorkingEvent;
 
 
 /***/ }),
-/* 44 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27577,7 +28246,7 @@ exports.DropEvent = DropEvent;
 
 
 /***/ }),
-/* 45 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27594,7 +28263,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var tow_coordinator_service_1 = __webpack_require__(24);
+var tow_coordinator_service_1 = __webpack_require__(28);
 var TowService = /** @class */ (function () {
     function TowService(towCoordinator) {
         var _this = this;
@@ -27617,7 +28286,7 @@ exports.TowService = TowService;
 
 
 /***/ }),
-/* 46 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27634,21 +28303,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
+var Observable_1 = __webpack_require__(5);
 var TextBrickComponent = /** @class */ (function () {
-    function TextBrickComponent(wallApi, el) {
+    function TextBrickComponent(wallApi) {
         this.wallApi = wallApi;
-        this.el = el;
-        this.state = {};
-        this.store = null;
+        this.stateChanges = new core_1.EventEmitter();
+        this.scope = {
+            text: ''
+        };
     }
     TextBrickComponent.prototype.ngOnInit = function () {
-        this.store = this.wallApi.core.getBrickStore(this.id);
-        this.state = this.store.get();
-        this.state.text = this.state.text || '';
-        this.editor.nativeElement.innerText = this.state.text;
+        var _this = this;
+        this.state.subscribe(function (newState) {
+            if (newState && newState.text !== _this.scope.text) {
+                _this.scope.text = newState.text || '';
+                _this.editor.nativeElement.innerText = _this.scope.text;
+            }
+        });
     };
     TextBrickComponent.prototype.onTextChanged = function () {
-        this.state.text = this.editor.nativeElement.innerText;
+        this.scope.text = this.editor.nativeElement.innerText;
         this.save();
     };
     TextBrickComponent.prototype.onKeyPress = function (e) {
@@ -27671,16 +28345,16 @@ var TextBrickComponent = /** @class */ (function () {
         if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
             this.wallApi.core.removeBrick(this.id);
         }
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
-            if (this.state.text[0] === '/') {
-                var tag = this.state.text.slice(1);
+            if (this.scope.text[0] === '/') {
+                var tag = this.scope.text.slice(1);
                 if (this.wallApi.core.isRegisteredBrick(tag)) {
-                    this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
+                    this.wallApi.core.turnBrickInto(this.id, this.scope.text.slice(1));
                     // d - divider tag
                     if (tag === 'd') {
                         this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
@@ -27736,12 +28410,20 @@ var TextBrickComponent = /** @class */ (function () {
         return atEnd;
     };
     TextBrickComponent.prototype.save = function () {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     };
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
     ], TextBrickComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Observable_1.Observable)
+    ], TextBrickComponent.prototype, "state", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], TextBrickComponent.prototype, "stateChanges", void 0);
     __decorate([
         core_1.ViewChild('editor'),
         __metadata("design:type", core_1.ElementRef)
@@ -27749,9 +28431,9 @@ var TextBrickComponent = /** @class */ (function () {
     TextBrickComponent = __decorate([
         core_1.Component({
             selector: 'text-brick',
-            template: __webpack_require__(82)
+            template: __webpack_require__(100)
         }),
-        __metadata("design:paramtypes", [wall_1.WallApi, core_1.ElementRef])
+        __metadata("design:paramtypes", [wall_1.WallApi])
     ], TextBrickComponent);
     return TextBrickComponent;
 }());
@@ -27759,7 +28441,7 @@ exports.TextBrickComponent = TextBrickComponent;
 
 
 /***/ }),
-/* 47 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27775,21 +28457,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
+var Observable_1 = __webpack_require__(5);
 var wall_1 = __webpack_require__(3);
 var HeaderBrickComponent = /** @class */ (function () {
     function HeaderBrickComponent(wallApi) {
         this.wallApi = wallApi;
-        this.state = {};
-        this.store = null;
+        this.stateChanges = new core_1.EventEmitter();
+        this.scope = {
+            text: ''
+        };
     }
     HeaderBrickComponent.prototype.ngOnInit = function () {
-        this.store = this.wallApi.core.getBrickStore(this.id);
-        this.state = this.store.get();
-        this.state.text = this.state.text || '';
-        this.editor.nativeElement.innerText = this.state.text;
+        var _this = this;
+        this.state.subscribe(function (newState) {
+            if (newState && newState.text !== _this.scope.text) {
+                _this.scope.text = newState.text || '';
+                _this.editor.nativeElement.innerText = _this.scope.text;
+            }
+        });
     };
     HeaderBrickComponent.prototype.onTextChanged = function () {
-        this.state.text = this.editor.nativeElement.innerText;
+        this.scope.text = this.editor.nativeElement.innerText;
         this.save();
     };
     HeaderBrickComponent.prototype.onKeyPress = function (e) {
@@ -27812,7 +28500,7 @@ var HeaderBrickComponent = /** @class */ (function () {
         if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
             this.wallApi.core.removeBrick(this.id);
         }
@@ -27877,12 +28565,20 @@ var HeaderBrickComponent = /** @class */ (function () {
         return atEnd;
     };
     HeaderBrickComponent.prototype.save = function () {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     };
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
     ], HeaderBrickComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Observable_1.Observable)
+    ], HeaderBrickComponent.prototype, "state", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], HeaderBrickComponent.prototype, "stateChanges", void 0);
     __decorate([
         core_1.ViewChild('editor'),
         __metadata("design:type", core_1.ElementRef)
@@ -27890,7 +28586,7 @@ var HeaderBrickComponent = /** @class */ (function () {
     HeaderBrickComponent = __decorate([
         core_1.Component({
             selector: 'header-brick',
-            template: __webpack_require__(85)
+            template: __webpack_require__(103)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], HeaderBrickComponent);
@@ -27900,7 +28596,7 @@ exports.HeaderBrickComponent = HeaderBrickComponent;
 
 
 /***/ }),
-/* 48 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -27916,13 +28612,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var index_1 = __webpack_require__(9);
+var index_1 = __webpack_require__(8);
+var Observable_1 = __webpack_require__(5);
 var ImgBrickComponent = /** @class */ (function () {
     function ImgBrickComponent(wallApi) {
         this.wallApi = wallApi;
+        this.stateChanges = new core_1.EventEmitter();
         // data
-        this.state = {};
-        this.store = null;
+        this.scope = {
+            src: ''
+        };
         // ui
         this.uiStates = {
             initial: 'initial',
@@ -27932,15 +28631,16 @@ var ImgBrickComponent = /** @class */ (function () {
         this.uiState = this.uiStates.initial;
     }
     ImgBrickComponent.prototype.ngOnInit = function () {
-        this.store = this.wallApi.core.getBrickStore(this.id);
-        this.updateState(this.store.get());
-        if (this.state.src) {
-            this.src.nativeElement.value = this.state.src;
-            this.uiState = this.uiStates.image;
-        }
-    };
-    ImgBrickComponent.prototype.updateState = function (newState) {
-        Object.assign(this.state, newState);
+        var _this = this;
+        this.state.subscribe(function (newState) {
+            if (newState && newState.src !== _this.scope.src) {
+                _this.scope.src = newState.src;
+                if (_this.scope.src) {
+                    _this.src.nativeElement.value = _this.scope.src;
+                    _this.uiState = _this.uiStates.image;
+                }
+            }
+        });
     };
     ImgBrickComponent.prototype.onWallFocus = function () {
         if (this.uiState === this.uiStates.initial) {
@@ -27959,7 +28659,8 @@ var ImgBrickComponent = /** @class */ (function () {
             this.applyImageSrc()
                 .then(function () {
                 _this.wallApi.core.addBrickAfterBrickId(_this.id, 'text');
-            }).catch(function () {
+            })
+                .catch(function () {
                 _this.wallApi.core.addBrickAfterBrickId(_this.id, 'text');
             });
         }
@@ -27975,7 +28676,7 @@ var ImgBrickComponent = /** @class */ (function () {
         this.uiState = this.uiStates.initial;
         return this.isImage(currentValue)
             .then(function () {
-            _this.state.src = currentValue;
+            _this.scope.src = currentValue;
             _this.save();
             _this.uiState = _this.uiStates.image;
         })
@@ -27999,7 +28700,7 @@ var ImgBrickComponent = /** @class */ (function () {
         });
     };
     ImgBrickComponent.prototype.save = function () {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     };
     ImgBrickComponent.prototype.isImage = function (src) {
         return new Promise(function (resolve, reject) {
@@ -28021,13 +28722,21 @@ var ImgBrickComponent = /** @class */ (function () {
         __metadata("design:type", String)
     ], ImgBrickComponent.prototype, "id", void 0);
     __decorate([
+        core_1.Input(),
+        __metadata("design:type", Observable_1.Observable)
+    ], ImgBrickComponent.prototype, "state", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], ImgBrickComponent.prototype, "stateChanges", void 0);
+    __decorate([
         core_1.ViewChild('src'),
         __metadata("design:type", core_1.ElementRef)
     ], ImgBrickComponent.prototype, "src", void 0);
     ImgBrickComponent = __decorate([
         core_1.Component({
             selector: 'img-brick',
-            template: __webpack_require__(88)
+            template: __webpack_require__(106)
         }),
         __metadata("design:paramtypes", [index_1.WallApi])
     ], ImgBrickComponent);
@@ -28037,13 +28746,7 @@ exports.ImgBrickComponent = ImgBrickComponent;
 
 
 /***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 50 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28052,15 +28755,15 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(51));
-__export(__webpack_require__(79));
-__export(__webpack_require__(12));
-__export(__webpack_require__(30));
+__export(__webpack_require__(58));
+__export(__webpack_require__(97));
+__export(__webpack_require__(15));
+__export(__webpack_require__(17));
 __export(__webpack_require__(4));
 
 
 /***/ }),
-/* 51 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28074,25 +28777,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var platform_browser_1 = __webpack_require__(5);
-var wall_component_1 = __webpack_require__(25);
+var wall_component_1 = __webpack_require__(59);
 var brick_registry_service_1 = __webpack_require__(4);
-var wall_canvas_component_1 = __webpack_require__(55);
-var wall_canvas_row_component_1 = __webpack_require__(59);
-var wall_canvas_brick_component_1 = __webpack_require__(61);
-var wall_tokens_1 = __webpack_require__(12);
-var selection_1 = __webpack_require__(70);
-var wall_editor_registry_1 = __webpack_require__(29);
-var pick_out_1 = __webpack_require__(16);
-var tow_1 = __webpack_require__(19);
-var radar_1 = __webpack_require__(31);
+var wall_canvas_component_1 = __webpack_require__(38);
+var wall_canvas_row_component_1 = __webpack_require__(78);
+var wall_canvas_brick_component_1 = __webpack_require__(80);
+var wall_tokens_1 = __webpack_require__(15);
+var selection_1 = __webpack_require__(88);
+var wall_editor_registry_1 = __webpack_require__(37);
+var pick_out_1 = __webpack_require__(20);
+var tow_1 = __webpack_require__(23);
+var radar_1 = __webpack_require__(39);
 var WallModule = /** @class */ (function () {
     function WallModule() {
     }
     WallModule = __decorate([
         core_1.NgModule({
             imports: [
-                platform_browser_1.BrowserModule,
                 common_1.CommonModule,
                 pick_out_1.PickOutModule,
                 tow_1.TowModule,
@@ -28122,7 +28823,7 @@ exports.WallModule = WallModule;
 
 
 /***/ }),
-/* 52 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28138,24 +28839,138 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_model_1 = __webpack_require__(26);
-var wall_tokens_1 = __webpack_require__(12);
+var wall_controller_1 = __webpack_require__(60);
+var wall_api_service_1 = __webpack_require__(9);
+var wall_model_1 = __webpack_require__(29);
+var brick_store_service_1 = __webpack_require__(10);
+var layout_store_service_1 = __webpack_require__(35);
+var WallComponent = /** @class */ (function () {
+    function WallComponent(wallController) {
+        this.wallController = wallController;
+        this.plan = null;
+        this.configuration = null;
+    }
+    WallComponent.prototype.onCanvasClick = function () {
+        this.wallController.wallModel.addDefaultBrick();
+    };
+    // callback when user focused to some brick by mouse click
+    WallComponent.prototype.onFocusedBrick = function (brickId) {
+        this.wallController.wallModel.onFocusedBrick(brickId);
+    };
+    WallComponent.prototype.onBrickStateChanged = function (event) {
+        this.wallController.wallModel.updateBrickState(event.brickId, event.brickState);
+    };
+    WallComponent.prototype.ngOnChanges = function (changes) {
+        if (changes.plan) {
+            if (!changes.plan.firstChange) {
+                this.wallController.reset();
+            }
+            this.initialize();
+        }
+    };
+    WallComponent.prototype.ngOnDestroy = function () {
+        this.wallController.reset();
+    };
+    WallComponent.prototype.initialize = function () {
+        this.wallController.initialize(this.plan, this.configuration);
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], WallComponent.prototype, "plan", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], WallComponent.prototype, "configuration", void 0);
+    WallComponent = __decorate([
+        core_1.Component({
+            selector: 'wall',
+            template: __webpack_require__(74),
+            providers: [
+                wall_api_service_1.WallApi,
+                wall_model_1.WallModel,
+                brick_store_service_1.BrickStore,
+                layout_store_service_1.LayoutStore,
+                wall_controller_1.WallController
+            ]
+        }),
+        __metadata("design:paramtypes", [wall_controller_1.WallController])
+    ], WallComponent);
+    return WallComponent;
+}());
+exports.WallComponent = WallComponent;
+
+
+/***/ }),
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var wall_model_1 = __webpack_require__(29);
+var wall_tokens_1 = __webpack_require__(15);
 var WallController = /** @class */ (function () {
     function WallController(wallModel, injector) {
         this.wallModel = wallModel;
         this.injector = injector;
+        this.initializedPlugins = [];
     }
     WallController.prototype.initialize = function (plan, configuration) {
         // initialize core functionality
-        this.wallModel.initialize(plan, configuration);
-        // initialize plugins
-        var plugins = this.injector.get(wall_tokens_1.WALL_PLUGIN);
-        var pluginInjector = core_1.ReflectiveInjector.resolveAndCreate(plugins, this.injector);
-        plugins.forEach(function (plugin) { return pluginInjector.resolveAndInstantiate(plugin); });
+        this.wallModel.initialize(plan || this.getDefaultPlan());
+        this.initializePlugins();
         // pass initialized API back to the client
         if (configuration && configuration.onRegisterApi) {
             configuration.onRegisterApi(this.wallModel.api);
         }
+    };
+    WallController.prototype.initializePlugins = function () {
+        var _this = this;
+        // initialize plugins
+        var plugins = this.injector.get(wall_tokens_1.WALL_PLUGIN);
+        var pluginInjector = core_1.ReflectiveInjector.resolveAndCreate(plugins, this.injector);
+        plugins.forEach(function (plugin) {
+            _this.initializedPlugins.push(pluginInjector.resolveAndInstantiate(plugin));
+        });
+    };
+    WallController.prototype.destroyPlugins = function () {
+        this.initializedPlugins.forEach(function (plugin) {
+            if (plugin.destroy) {
+                plugin.destroy();
+            }
+        });
+        this.initializedPlugins = [];
+    };
+    WallController.prototype.reset = function () {
+        this.wallModel.reset();
+        this.destroyPlugins();
+    };
+    WallController.prototype.getDefaultPlan = function () {
+        return {
+            bricks: [],
+            layout: {
+                bricks: [
+                    {
+                        columns: [
+                            {
+                                bricks: []
+                            }
+                        ]
+                    }
+                ]
+            }
+        };
     };
     WallController = __decorate([
         core_1.Injectable(),
@@ -28167,7 +28982,732 @@ exports.WallController = WallController;
 
 
 /***/ }),
-/* 53 */
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BehaviorSubject_1 = __webpack_require__(62);
+var BrickStorage = /** @class */ (function () {
+    function BrickStorage(id, tag, data, meta) {
+        this.id = id;
+        this.tag = tag;
+        this.data = data;
+        this.meta = meta;
+        this.state = null;
+        this.state = new BehaviorSubject_1.BehaviorSubject(data);
+    }
+    BrickStorage.prototype.updateState = function (state) {
+        this.data = state;
+        this.state.next(state);
+    };
+    return BrickStorage;
+}());
+exports.BrickStorage = BrickStorage;
+
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subject_1 = __webpack_require__(63);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
+/**
+ * @class BehaviorSubject<T>
+ */
+var BehaviorSubject = (function (_super) {
+    __extends(BehaviorSubject, _super);
+    function BehaviorSubject(_value) {
+        _super.call(this);
+        this._value = _value;
+    }
+    Object.defineProperty(BehaviorSubject.prototype, "value", {
+        get: function () {
+            return this.getValue();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BehaviorSubject.prototype._subscribe = function (subscriber) {
+        var subscription = _super.prototype._subscribe.call(this, subscriber);
+        if (subscription && !subscription.closed) {
+            subscriber.next(this._value);
+        }
+        return subscription;
+    };
+    BehaviorSubject.prototype.getValue = function () {
+        if (this.hasError) {
+            throw this.thrownError;
+        }
+        else if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else {
+            return this._value;
+        }
+    };
+    BehaviorSubject.prototype.next = function (value) {
+        _super.prototype.next.call(this, this._value = value);
+    };
+    return BehaviorSubject;
+}(Subject_1.Subject));
+exports.BehaviorSubject = BehaviorSubject;
+//# sourceMappingURL=BehaviorSubject.js.map
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Observable_1 = __webpack_require__(64);
+var Subscriber_1 = __webpack_require__(30);
+var Subscription_1 = __webpack_require__(12);
+var ObjectUnsubscribedError_1 = __webpack_require__(34);
+var SubjectSubscription_1 = __webpack_require__(72);
+var rxSubscriber_1 = __webpack_require__(13);
+/**
+ * @class SubjectSubscriber<T>
+ */
+var SubjectSubscriber = (function (_super) {
+    __extends(SubjectSubscriber, _super);
+    function SubjectSubscriber(destination) {
+        _super.call(this, destination);
+        this.destination = destination;
+    }
+    return SubjectSubscriber;
+}(Subscriber_1.Subscriber));
+exports.SubjectSubscriber = SubjectSubscriber;
+/**
+ * @class Subject<T>
+ */
+var Subject = (function (_super) {
+    __extends(Subject, _super);
+    function Subject() {
+        _super.call(this);
+        this.observers = [];
+        this.closed = false;
+        this.isStopped = false;
+        this.hasError = false;
+        this.thrownError = null;
+    }
+    Subject.prototype[rxSubscriber_1.rxSubscriber] = function () {
+        return new SubjectSubscriber(this);
+    };
+    Subject.prototype.lift = function (operator) {
+        var subject = new AnonymousSubject(this, this);
+        subject.operator = operator;
+        return subject;
+    };
+    Subject.prototype.next = function (value) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        if (!this.isStopped) {
+            var observers = this.observers;
+            var len = observers.length;
+            var copy = observers.slice();
+            for (var i = 0; i < len; i++) {
+                copy[i].next(value);
+            }
+        }
+    };
+    Subject.prototype.error = function (err) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        this.hasError = true;
+        this.thrownError = err;
+        this.isStopped = true;
+        var observers = this.observers;
+        var len = observers.length;
+        var copy = observers.slice();
+        for (var i = 0; i < len; i++) {
+            copy[i].error(err);
+        }
+        this.observers.length = 0;
+    };
+    Subject.prototype.complete = function () {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        this.isStopped = true;
+        var observers = this.observers;
+        var len = observers.length;
+        var copy = observers.slice();
+        for (var i = 0; i < len; i++) {
+            copy[i].complete();
+        }
+        this.observers.length = 0;
+    };
+    Subject.prototype.unsubscribe = function () {
+        this.isStopped = true;
+        this.closed = true;
+        this.observers = null;
+    };
+    Subject.prototype._trySubscribe = function (subscriber) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else {
+            return _super.prototype._trySubscribe.call(this, subscriber);
+        }
+    };
+    Subject.prototype._subscribe = function (subscriber) {
+        if (this.closed) {
+            throw new ObjectUnsubscribedError_1.ObjectUnsubscribedError();
+        }
+        else if (this.hasError) {
+            subscriber.error(this.thrownError);
+            return Subscription_1.Subscription.EMPTY;
+        }
+        else if (this.isStopped) {
+            subscriber.complete();
+            return Subscription_1.Subscription.EMPTY;
+        }
+        else {
+            this.observers.push(subscriber);
+            return new SubjectSubscription_1.SubjectSubscription(this, subscriber);
+        }
+    };
+    Subject.prototype.asObservable = function () {
+        var observable = new Observable_1.Observable();
+        observable.source = this;
+        return observable;
+    };
+    Subject.create = function (destination, source) {
+        return new AnonymousSubject(destination, source);
+    };
+    return Subject;
+}(Observable_1.Observable));
+exports.Subject = Subject;
+/**
+ * @class AnonymousSubject<T>
+ */
+var AnonymousSubject = (function (_super) {
+    __extends(AnonymousSubject, _super);
+    function AnonymousSubject(destination, source) {
+        _super.call(this);
+        this.destination = destination;
+        this.source = source;
+    }
+    AnonymousSubject.prototype.next = function (value) {
+        var destination = this.destination;
+        if (destination && destination.next) {
+            destination.next(value);
+        }
+    };
+    AnonymousSubject.prototype.error = function (err) {
+        var destination = this.destination;
+        if (destination && destination.error) {
+            this.destination.error(err);
+        }
+    };
+    AnonymousSubject.prototype.complete = function () {
+        var destination = this.destination;
+        if (destination && destination.complete) {
+            this.destination.complete();
+        }
+    };
+    AnonymousSubject.prototype._subscribe = function (subscriber) {
+        var source = this.source;
+        if (source) {
+            return this.source.subscribe(subscriber);
+        }
+        else {
+            return Subscription_1.Subscription.EMPTY;
+        }
+    };
+    return AnonymousSubject;
+}(Subject));
+exports.AnonymousSubject = AnonymousSubject;
+//# sourceMappingURL=Subject.js.map
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var root_1 = __webpack_require__(11);
+var toSubscriber_1 = __webpack_require__(66);
+var observable_1 = __webpack_require__(71);
+/**
+ * A representation of any set of values over any amount of time. This is the most basic building block
+ * of RxJS.
+ *
+ * @class Observable<T>
+ */
+var Observable = (function () {
+    /**
+     * @constructor
+     * @param {Function} subscribe the function that is called when the Observable is
+     * initially subscribed to. This function is given a Subscriber, to which new values
+     * can be `next`ed, or an `error` method can be called to raise an error, or
+     * `complete` can be called to notify of a successful completion.
+     */
+    function Observable(subscribe) {
+        this._isScalar = false;
+        if (subscribe) {
+            this._subscribe = subscribe;
+        }
+    }
+    /**
+     * Creates a new Observable, with this Observable as the source, and the passed
+     * operator defined as the new observable's operator.
+     * @method lift
+     * @param {Operator} operator the operator defining the operation to take on the observable
+     * @return {Observable} a new observable with the Operator applied
+     */
+    Observable.prototype.lift = function (operator) {
+        var observable = new Observable();
+        observable.source = this;
+        observable.operator = operator;
+        return observable;
+    };
+    /**
+     * Invokes an execution of an Observable and registers Observer handlers for notifications it will emit.
+     *
+     * <span class="informal">Use it when you have all these Observables, but still nothing is happening.</span>
+     *
+     * `subscribe` is not a regular operator, but a method that calls Observable's internal `subscribe` function. It
+     * might be for example a function that you passed to a {@link create} static factory, but most of the time it is
+     * a library implementation, which defines what and when will be emitted by an Observable. This means that calling
+     * `subscribe` is actually the moment when Observable starts its work, not when it is created, as it is often
+     * thought.
+     *
+     * Apart from starting the execution of an Observable, this method allows you to listen for values
+     * that an Observable emits, as well as for when it completes or errors. You can achieve this in two
+     * following ways.
+     *
+     * The first way is creating an object that implements {@link Observer} interface. It should have methods
+     * defined by that interface, but note that it should be just a regular JavaScript object, which you can create
+     * yourself in any way you want (ES6 class, classic function constructor, object literal etc.). In particular do
+     * not attempt to use any RxJS implementation details to create Observers - you don't need them. Remember also
+     * that your object does not have to implement all methods. If you find yourself creating a method that doesn't
+     * do anything, you can simply omit it. Note however, that if `error` method is not provided, all errors will
+     * be left uncaught.
+     *
+     * The second way is to give up on Observer object altogether and simply provide callback functions in place of its methods.
+     * This means you can provide three functions as arguments to `subscribe`, where first function is equivalent
+     * of a `next` method, second of an `error` method and third of a `complete` method. Just as in case of Observer,
+     * if you do not need to listen for something, you can omit a function, preferably by passing `undefined` or `null`,
+     * since `subscribe` recognizes these functions by where they were placed in function call. When it comes
+     * to `error` function, just as before, if not provided, errors emitted by an Observable will be thrown.
+     *
+     * Whatever style of calling `subscribe` you use, in both cases it returns a Subscription object.
+     * This object allows you to call `unsubscribe` on it, which in turn will stop work that an Observable does and will clean
+     * up all resources that an Observable used. Note that cancelling a subscription will not call `complete` callback
+     * provided to `subscribe` function, which is reserved for a regular completion signal that comes from an Observable.
+     *
+     * Remember that callbacks provided to `subscribe` are not guaranteed to be called asynchronously.
+     * It is an Observable itself that decides when these functions will be called. For example {@link of}
+     * by default emits all its values synchronously. Always check documentation for how given Observable
+     * will behave when subscribed and if its default behavior can be modified with a {@link Scheduler}.
+     *
+     * @example <caption>Subscribe with an Observer</caption>
+     * const sumObserver = {
+     *   sum: 0,
+     *   next(value) {
+     *     console.log('Adding: ' + value);
+     *     this.sum = this.sum + value;
+     *   },
+     *   error() { // We actually could just remove this method,
+     *   },        // since we do not really care about errors right now.
+     *   complete() {
+     *     console.log('Sum equals: ' + this.sum);
+     *   }
+     * };
+     *
+     * Rx.Observable.of(1, 2, 3) // Synchronously emits 1, 2, 3 and then completes.
+     * .subscribe(sumObserver);
+     *
+     * // Logs:
+     * // "Adding: 1"
+     * // "Adding: 2"
+     * // "Adding: 3"
+     * // "Sum equals: 6"
+     *
+     *
+     * @example <caption>Subscribe with functions</caption>
+     * let sum = 0;
+     *
+     * Rx.Observable.of(1, 2, 3)
+     * .subscribe(
+     *   function(value) {
+     *     console.log('Adding: ' + value);
+     *     sum = sum + value;
+     *   },
+     *   undefined,
+     *   function() {
+     *     console.log('Sum equals: ' + sum);
+     *   }
+     * );
+     *
+     * // Logs:
+     * // "Adding: 1"
+     * // "Adding: 2"
+     * // "Adding: 3"
+     * // "Sum equals: 6"
+     *
+     *
+     * @example <caption>Cancel a subscription</caption>
+     * const subscription = Rx.Observable.interval(1000).subscribe(
+     *   num => console.log(num),
+     *   undefined,
+     *   () => console.log('completed!') // Will not be called, even
+     * );                                // when cancelling subscription
+     *
+     *
+     * setTimeout(() => {
+     *   subscription.unsubscribe();
+     *   console.log('unsubscribed!');
+     * }, 2500);
+     *
+     * // Logs:
+     * // 0 after 1s
+     * // 1 after 2s
+     * // "unsubscribed!" after 2.5s
+     *
+     *
+     * @param {Observer|Function} observerOrNext (optional) Either an observer with methods to be called,
+     *  or the first of three possible handlers, which is the handler for each value emitted from the subscribed
+     *  Observable.
+     * @param {Function} error (optional) A handler for a terminal event resulting from an error. If no error handler is provided,
+     *  the error will be thrown as unhandled.
+     * @param {Function} complete (optional) A handler for a terminal event resulting from successful completion.
+     * @return {ISubscription} a subscription reference to the registered handlers
+     * @method subscribe
+     */
+    Observable.prototype.subscribe = function (observerOrNext, error, complete) {
+        var operator = this.operator;
+        var sink = toSubscriber_1.toSubscriber(observerOrNext, error, complete);
+        if (operator) {
+            operator.call(sink, this.source);
+        }
+        else {
+            sink.add(this.source ? this._subscribe(sink) : this._trySubscribe(sink));
+        }
+        if (sink.syncErrorThrowable) {
+            sink.syncErrorThrowable = false;
+            if (sink.syncErrorThrown) {
+                throw sink.syncErrorValue;
+            }
+        }
+        return sink;
+    };
+    Observable.prototype._trySubscribe = function (sink) {
+        try {
+            return this._subscribe(sink);
+        }
+        catch (err) {
+            sink.syncErrorThrown = true;
+            sink.syncErrorValue = err;
+            sink.error(err);
+        }
+    };
+    /**
+     * @method forEach
+     * @param {Function} next a handler for each value emitted by the observable
+     * @param {PromiseConstructor} [PromiseCtor] a constructor function used to instantiate the Promise
+     * @return {Promise} a promise that either resolves on observable completion or
+     *  rejects with the handled error
+     */
+    Observable.prototype.forEach = function (next, PromiseCtor) {
+        var _this = this;
+        if (!PromiseCtor) {
+            if (root_1.root.Rx && root_1.root.Rx.config && root_1.root.Rx.config.Promise) {
+                PromiseCtor = root_1.root.Rx.config.Promise;
+            }
+            else if (root_1.root.Promise) {
+                PromiseCtor = root_1.root.Promise;
+            }
+        }
+        if (!PromiseCtor) {
+            throw new Error('no Promise impl found');
+        }
+        return new PromiseCtor(function (resolve, reject) {
+            // Must be declared in a separate statement to avoid a RefernceError when
+            // accessing subscription below in the closure due to Temporal Dead Zone.
+            var subscription;
+            subscription = _this.subscribe(function (value) {
+                if (subscription) {
+                    // if there is a subscription, then we can surmise
+                    // the next handling is asynchronous. Any errors thrown
+                    // need to be rejected explicitly and unsubscribe must be
+                    // called manually
+                    try {
+                        next(value);
+                    }
+                    catch (err) {
+                        reject(err);
+                        subscription.unsubscribe();
+                    }
+                }
+                else {
+                    // if there is NO subscription, then we're getting a nexted
+                    // value synchronously during subscription. We can just call it.
+                    // If it errors, Observable's `subscribe` will ensure the
+                    // unsubscription logic is called, then synchronously rethrow the error.
+                    // After that, Promise will trap the error and send it
+                    // down the rejection path.
+                    next(value);
+                }
+            }, reject, resolve);
+        });
+    };
+    Observable.prototype._subscribe = function (subscriber) {
+        return this.source.subscribe(subscriber);
+    };
+    /**
+     * An interop point defined by the es7-observable spec https://github.com/zenparsing/es-observable
+     * @method Symbol.observable
+     * @return {Observable} this instance of the observable
+     */
+    Observable.prototype[observable_1.observable] = function () {
+        return this;
+    };
+    // HACK: Since TypeScript inherits static properties too, we have to
+    // fight against TypeScript here so Subject can have a different static create signature
+    /**
+     * Creates a new cold Observable by calling the Observable constructor
+     * @static true
+     * @owner Observable
+     * @method create
+     * @param {Function} subscribe? the subscriber function to be passed to the Observable constructor
+     * @return {Observable} a new cold observable
+     */
+    Observable.create = function (subscribe) {
+        return new Observable(subscribe);
+    };
+    return Observable;
+}());
+exports.Observable = Observable;
+//# sourceMappingURL=Observable.js.map
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var Subscriber_1 = __webpack_require__(30);
+var rxSubscriber_1 = __webpack_require__(13);
+var Observer_1 = __webpack_require__(33);
+function toSubscriber(nextOrObserver, error, complete) {
+    if (nextOrObserver) {
+        if (nextOrObserver instanceof Subscriber_1.Subscriber) {
+            return nextOrObserver;
+        }
+        if (nextOrObserver[rxSubscriber_1.rxSubscriber]) {
+            return nextOrObserver[rxSubscriber_1.rxSubscriber]();
+        }
+    }
+    if (!nextOrObserver && !error && !complete) {
+        return new Subscriber_1.Subscriber(Observer_1.empty);
+    }
+    return new Subscriber_1.Subscriber(nextOrObserver, error, complete);
+}
+exports.toSubscriber = toSubscriber;
+//# sourceMappingURL=toSubscriber.js.map
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.isArray = Array.isArray || (function (x) { return x && typeof x.length === 'number'; });
+//# sourceMappingURL=isArray.js.map
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function isObject(x) {
+    return x != null && typeof x === 'object';
+}
+exports.isObject = isObject;
+//# sourceMappingURL=isObject.js.map
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var errorObject_1 = __webpack_require__(32);
+var tryCatchTarget;
+function tryCatcher() {
+    try {
+        return tryCatchTarget.apply(this, arguments);
+    }
+    catch (e) {
+        errorObject_1.errorObject.e = e;
+        return errorObject_1.errorObject;
+    }
+}
+function tryCatch(fn) {
+    tryCatchTarget = fn;
+    return tryCatcher;
+}
+exports.tryCatch = tryCatch;
+;
+//# sourceMappingURL=tryCatch.js.map
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+/**
+ * An error thrown when one or more errors have occurred during the
+ * `unsubscribe` of a {@link Subscription}.
+ */
+var UnsubscriptionError = (function (_super) {
+    __extends(UnsubscriptionError, _super);
+    function UnsubscriptionError(errors) {
+        _super.call(this);
+        this.errors = errors;
+        var err = Error.call(this, errors ?
+            errors.length + " errors occurred during unsubscription:\n  " + errors.map(function (err, i) { return ((i + 1) + ") " + err.toString()); }).join('\n  ') : '');
+        this.name = err.name = 'UnsubscriptionError';
+        this.stack = err.stack;
+        this.message = err.message;
+    }
+    return UnsubscriptionError;
+}(Error));
+exports.UnsubscriptionError = UnsubscriptionError;
+//# sourceMappingURL=UnsubscriptionError.js.map
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var root_1 = __webpack_require__(11);
+function getSymbolObservable(context) {
+    var $$observable;
+    var Symbol = context.Symbol;
+    if (typeof Symbol === 'function') {
+        if (Symbol.observable) {
+            $$observable = Symbol.observable;
+        }
+        else {
+            $$observable = Symbol('observable');
+            Symbol.observable = $$observable;
+        }
+    }
+    else {
+        $$observable = '@@observable';
+    }
+    return $$observable;
+}
+exports.getSymbolObservable = getSymbolObservable;
+exports.observable = getSymbolObservable(root_1.root);
+/**
+ * @deprecated use observable instead
+ */
+exports.$$observable = exports.observable;
+//# sourceMappingURL=observable.js.map
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscription_1 = __webpack_require__(12);
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var SubjectSubscription = (function (_super) {
+    __extends(SubjectSubscription, _super);
+    function SubjectSubscription(subject, subscriber) {
+        _super.call(this);
+        this.subject = subject;
+        this.subscriber = subscriber;
+        this.closed = false;
+    }
+    SubjectSubscription.prototype.unsubscribe = function () {
+        if (this.closed) {
+            return;
+        }
+        this.closed = true;
+        var subject = this.subject;
+        var observers = subject.observers;
+        this.subject = null;
+        if (!observers || observers.length === 0 || subject.isStopped || subject.closed) {
+            return;
+        }
+        var subscriberIndex = observers.indexOf(this.subscriber);
+        if (subscriberIndex !== -1) {
+            observers.splice(subscriberIndex, 1);
+        }
+    };
+    return SubjectSubscription;
+}(Subscription_1.Subscription));
+exports.SubjectSubscription = SubjectSubscription;
+//# sourceMappingURL=SubjectSubscription.js.map
+
+/***/ }),
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28207,135 +29747,13 @@ exports.ReactiveProperty = ReactiveProperty;
 
 
 /***/ }),
-/* 54 */
+/* 74 */
 /***/ (function(module, exports) {
 
-module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\n             [isMediaInteractionEnabled]=\"wallController.wallModel.state.isMediaInteractionEnabled.getValue()\"\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\n             [layout]=\"wallController.wallModel.canvasLayout\">\n</wall-canvas>"
+module.exports = "<wall-canvas (canvasClick)=\"onCanvasClick()\"\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\n             (onBrickStateChanged)=\"onBrickStateChanged($event)\"\n             [isMediaInteractionEnabled]=\"wallController.wallModel.state.isMediaInteractionEnabled.getValue()\"\n             [focusedBrickId]=\"wallController.wallModel.focusedBrickId\"\n             [selectedBricks]=\"wallController.wallModel.selectedBricks\"\n             [layout]=\"wallController.wallModel.canvasLayout\">\n</wall-canvas>"
 
 /***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var common_1 = __webpack_require__(1);
-var wall_canvas_api_1 = __webpack_require__(13);
-var wall_canvas_controller_1 = __webpack_require__(56);
-var WallCanvasComponent = /** @class */ (function () {
-    function WallCanvasComponent(wallCanvasController, doc) {
-        var _this = this;
-        this.wallCanvasController = wallCanvasController;
-        this.layout = { rows: [] };
-        this.selectedBricks = null;
-        this.focusedBrickId = null;
-        this.isMediaInteractionEnabled = true;
-        this.canvasClick = new core_1.EventEmitter();
-        this.onFocusedBrick = new core_1.EventEmitter();
-        this.doc = null;
-        this.doc = doc;
-        this.wallCanvasController.onFocusedEvent.subscribe(function (brickId) {
-            _this.onFocusedBrick.next(brickId);
-        });
-    }
-    WallCanvasComponent.prototype.onEditorClick = function (e) {
-        if (e.target === this.expander.nativeElement) {
-            this.canvasClick.next();
-        }
-    };
-    WallCanvasComponent.prototype.ngOnInit = function () {
-        this.wallCanvasController.initialize();
-    };
-    WallCanvasComponent.prototype.ngOnChanges = function (changes) {
-        if (changes.focusedBrickId) {
-            if (changes.focusedBrickId.currentValue) {
-                this.wallCanvasController.focusBrickById(changes.focusedBrickId.currentValue);
-            }
-            else {
-                this.doc.activeElement.blur();
-                this.wallCanvasController.clearFocusedBrickId();
-            }
-        }
-        if (changes.selectedBricks) {
-            if (changes.selectedBricks.currentValue.length) {
-                this.wallCanvasController.selectBricks(changes.selectedBricks.currentValue);
-            }
-            else {
-                this.wallCanvasController.unselectBricks();
-            }
-        }
-        if (changes.isMediaInteractionEnabled) {
-            if (changes.isMediaInteractionEnabled.currentValue) {
-                this.wallCanvasController.enableMediaInteraction();
-            }
-            else {
-                this.wallCanvasController.disableMediaInteraction();
-            }
-        }
-    };
-    WallCanvasComponent.prototype.trackBricksBy = function (index, item) {
-        return JSON.stringify(item);
-    };
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Object)
-    ], WallCanvasComponent.prototype, "layout", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Array)
-    ], WallCanvasComponent.prototype, "selectedBricks", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", String)
-    ], WallCanvasComponent.prototype, "focusedBrickId", void 0);
-    __decorate([
-        core_1.Input(),
-        __metadata("design:type", Boolean)
-    ], WallCanvasComponent.prototype, "isMediaInteractionEnabled", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", core_1.EventEmitter)
-    ], WallCanvasComponent.prototype, "canvasClick", void 0);
-    __decorate([
-        core_1.Output(),
-        __metadata("design:type", core_1.EventEmitter)
-    ], WallCanvasComponent.prototype, "onFocusedBrick", void 0);
-    __decorate([
-        core_1.ViewChild('expander'),
-        __metadata("design:type", core_1.ElementRef)
-    ], WallCanvasComponent.prototype, "expander", void 0);
-    WallCanvasComponent = __decorate([
-        core_1.Component({
-            selector: 'wall-canvas',
-            template: __webpack_require__(58),
-            providers: [
-                wall_canvas_api_1.WallCanvasApi,
-                wall_canvas_controller_1.WallCanvasController
-            ]
-        }),
-        __param(1, core_1.Inject(common_1.DOCUMENT)),
-        __metadata("design:paramtypes", [wall_canvas_controller_1.WallCanvasController, Object])
-    ], WallCanvasComponent);
-    return WallCanvasComponent;
-}());
-exports.WallCanvasComponent = WallCanvasComponent;
-
-
-/***/ }),
-/* 56 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28350,10 +29768,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var wall_canvas_api_1 = __webpack_require__(13);
+var wall_canvas_api_1 = __webpack_require__(16);
 var core_1 = __webpack_require__(0);
-var wall_1 = __webpack_require__(30);
-var wall_events_1 = __webpack_require__(11);
+var wall_1 = __webpack_require__(17);
+var wall_events_1 = __webpack_require__(14);
 var WallCanvasController = /** @class */ (function () {
     function WallCanvasController(wallCanvasApi, wallApi) {
         this.wallCanvasApi = wallCanvasApi;
@@ -28475,7 +29893,7 @@ exports.WallCanvasController = WallCanvasController;
 
 
 /***/ }),
-/* 57 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28486,13 +29904,13 @@ exports.awesomeTypescriptLoaderBug = true;
 
 
 /***/ }),
-/* 58 */
+/* 77 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\n    <wall-canvas-row *ngFor=\"let row of layout.rows; trackBy: trackBricksBy\" [row]=\"row\"></wall-canvas-row>\n\n    <div #expander class=\"wall-canvas__expander\"></div>\n</div>"
 
 /***/ }),
-/* 59 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28512,10 +29930,13 @@ var WallCanvasRowComponent = /** @class */ (function () {
     function WallCanvasRowComponent() {
     }
     WallCanvasRowComponent.prototype.trackColumnsBy = function (index, item) {
-        return JSON.stringify(item);
+        return item.bricks.reduce(function (result, brick) {
+            result += brick.hash;
+            return result;
+        }, '');
     };
     WallCanvasRowComponent.prototype.trackBricksBy = function (index, item) {
-        return JSON.stringify(item);
+        return item.hash;
     };
     __decorate([
         core_1.Input(),
@@ -28524,7 +29945,7 @@ var WallCanvasRowComponent = /** @class */ (function () {
     WallCanvasRowComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-row',
-            template: __webpack_require__(60)
+            template: __webpack_require__(79)
         })
     ], WallCanvasRowComponent);
     return WallCanvasRowComponent;
@@ -28533,13 +29954,13 @@ exports.WallCanvasRowComponent = WallCanvasRowComponent;
 
 
 /***/ }),
-/* 60 */
+/* 79 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns; trackBy: trackColumnsBy\">\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks; trackBy: trackBricksBy\"></wall-canvas-brick>\n</div>"
 
 /***/ }),
-/* 61 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28555,13 +29976,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_canvas_api_1 = __webpack_require__(13);
-var radar_1 = __webpack_require__(31);
+var wall_canvas_api_1 = __webpack_require__(16);
+var radar_1 = __webpack_require__(39);
+var wall_canvas_component_1 = __webpack_require__(38);
 var WallCanvasBrickComponent = /** @class */ (function () {
-    function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasApi) {
+    function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasComponent, wallCanvasApi) {
         this.injector = injector;
         this.resolver = resolver;
         this.radar = radar;
+        this.wallCanvasComponent = wallCanvasComponent;
         this.wallCanvasApi = wallCanvasApi;
         this.selected = false;
         this.isMediaInteractionEnabled = true;
@@ -28590,6 +30013,9 @@ var WallCanvasBrickComponent = /** @class */ (function () {
     WallCanvasBrickComponent.prototype.ngOnDestroy = function () {
         this.wallCanvasApi.core.removeCanvasBrickInstance(this.brick.id);
         this.radarSubscription.unsubscribe();
+        if (this.stateChangesSubscription) {
+            this.stateChangesSubscription.unsubscribe();
+        }
     };
     WallCanvasBrickComponent.prototype.onFocused = function () {
         this.wallCanvasApi.core.onFocused(this.brick.id);
@@ -28607,9 +30033,16 @@ var WallCanvasBrickComponent = /** @class */ (function () {
         this.isMediaInteractionEnabled = false;
     };
     WallCanvasBrickComponent.prototype.renderBrick = function () {
+        var _this = this;
         var factory = this.resolver.resolveComponentFactory(this.brick.component);
         var componentReference = this.container.createComponent(factory, null, this.injector);
         componentReference.instance['id'] = this.brick.id;
+        componentReference.instance['state'] = this.brick.state;
+        if (componentReference.instance['stateChanges']) {
+            this.stateChangesSubscription = componentReference.instance['stateChanges'].subscribe(function (newState) {
+                _this.wallCanvasComponent.brickStateChanged(_this.brick.id, newState);
+            });
+        }
         return componentReference;
     };
     __decorate([
@@ -28623,11 +30056,12 @@ var WallCanvasBrickComponent = /** @class */ (function () {
     WallCanvasBrickComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-brick',
-            template: __webpack_require__(69)
+            template: __webpack_require__(87)
         }),
         __metadata("design:paramtypes", [core_1.Injector,
             core_1.ComponentFactoryResolver,
             radar_1.Radar,
+            wall_canvas_component_1.WallCanvasComponent,
             wall_canvas_api_1.WallCanvasApi])
     ], WallCanvasBrickComponent);
     return WallCanvasBrickComponent;
@@ -28636,7 +30070,7 @@ exports.WallCanvasBrickComponent = WallCanvasBrickComponent;
 
 
 /***/ }),
-/* 62 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28649,10 +30083,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_service_1 = __webpack_require__(32);
-var radar_directive_1 = __webpack_require__(34);
-var radar_tokens_1 = __webpack_require__(15);
-var radar_coordinator_service_1 = __webpack_require__(14);
+var radar_service_1 = __webpack_require__(40);
+var radar_directive_1 = __webpack_require__(42);
+var radar_tokens_1 = __webpack_require__(19);
+var radar_coordinator_service_1 = __webpack_require__(18);
 var RadarModule = /** @class */ (function () {
     function RadarModule() {
     }
@@ -28676,25 +30110,19 @@ exports.RadarModule = RadarModule;
 
 
 /***/ }),
-/* 63 */
+/* 82 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_63__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_82__;
 
 /***/ }),
-/* 64 */
+/* 83 */
 /***/ (function(module, exports) {
 
-module.exports = __WEBPACK_EXTERNAL_MODULE_64__;
+module.exports = __WEBPACK_EXTERNAL_MODULE_83__;
 
 /***/ }),
-/* 65 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_65__;
-
-/***/ }),
-/* 66 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28759,7 +30187,7 @@ exports.SpotModel = SpotModel;
 
 
 /***/ }),
-/* 67 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28775,7 +30203,7 @@ exports.LocationToTopLeftPointEvent = LocationToTopLeftPointEvent;
 
 
 /***/ }),
-/* 68 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28791,13 +30219,13 @@ exports.LocationToLeftCenterPointEvent = LocationToLeftCenterPointEvent;
 
 
 /***/ }),
-/* 69 */
+/* 87 */
 /***/ (function(module, exports) {
 
 module.exports = "<div [pick-out-item]=\"brick.id\"\n     [beacon]=\"brick.id\"\n     [spot]=\"brick.id\"\n     (click)=\"onFocused()\"\n     class=\"wall-canvas-brick__wrapper\"\n     [ngClass]=\"{'wall-canvas-brick__selected': selected,\n     \t\t'wall-canvas-brick__draggable': isMouseNear}\">\n\n    <div class=\"wall-canvas-brick__draggable-handler\" [tow-slave]=\"brick.id\">\n        <div class=\"wall-canvas-brick__draggable-box\">\n            <svg xmlns=\"http://www.w3.org/2000/svg\" x version=\"1.1\" width=\"15px\" height=\"15px\" viewBox=\"0 0 612 612\" xml:space=\"preserve\">\n<g>\n\t<g>\n\t\t<circle cx=\"69.545\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"69.545\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"69.545\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"306\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t\t<circle cx=\"542.454\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\n\t</g>\n</g>\n</svg>\n        </div>\n    </div>\n\n    <div [ngClass]=\"{'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}\">\n        <div #brickContainer></div>\n    </div>\n</div>"
 
 /***/ }),
-/* 70 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28817,9 +30245,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var wall_api_service_1 = __webpack_require__(6);
-var pick_out_1 = __webpack_require__(16);
-var tow_1 = __webpack_require__(19);
+var wall_1 = __webpack_require__(17);
+var pick_out_1 = __webpack_require__(20);
+var tow_1 = __webpack_require__(23);
 var SelectionPlugin = /** @class */ (function () {
     function SelectionPlugin(wallApi, pickOutService, towService, doc) {
         this.wallApi = wallApi;
@@ -28832,95 +30260,16 @@ var SelectionPlugin = /** @class */ (function () {
     }
     SelectionPlugin.prototype.initialize = function () {
         var _this = this;
-        this.doc.addEventListener('click', function () {
-            if (_this.isMouseSelection) {
-                _this.isMouseSelection = false;
-            }
-            else {
-                _this.wallApi.core.unSelectBricks();
-            }
-        });
-        this.doc.addEventListener('keydown', function (e) {
-            var selectedBrickIds = _this.wallApi.core.getSelectedBrickIds();
-            var firstSelectedBrickId = selectedBrickIds[0];
-            var lastSelectedBrickId = selectedBrickIds[selectedBrickIds.length - 1];
-            if (e.key === 'Delete' && selectedBrickIds.length) {
-                e.preventDefault();
-                _this.wallApi.core.unSelectBricks();
-                _this.wallApi.core.removeBricks(selectedBrickIds);
-            }
-            if (e.key === 'Enter' && selectedBrickIds.length) {
-                e.preventDefault();
-                _this.wallApi.core.focusOnBrickId(firstSelectedBrickId);
-                _this.wallApi.core.unSelectBricks();
-            }
-            if (e.key === 'ArrowUp' && selectedBrickIds.length) {
-                e.preventDefault();
-                var previousBrickId = _this.wallApi.core.getPreviousBrickId(lastSelectedBrickId);
-                if (previousBrickId) {
-                    if (e.shiftKey) {
-                        if (selectedBrickIds.length > 1 && _this.isDownSelectionDirection()) {
-                            _this.wallApi.core.removeBrickFromSelection(lastSelectedBrickId);
-                        }
-                        else {
-                            _this.wallApi.core.addBrickToSelection(previousBrickId);
-                        }
-                    }
-                    else {
-                        _this.wallApi.core.selectBrick(previousBrickId);
-                    }
-                }
-            }
-            if (e.key === 'ArrowDown' && selectedBrickIds.length) {
-                e.preventDefault();
-                var nextBrickId = _this.wallApi.core.getNextBrickId(lastSelectedBrickId);
-                if (nextBrickId) {
-                    if (e.shiftKey) {
-                        if (selectedBrickIds.length > 1 && !_this.isDownSelectionDirection()) {
-                            _this.wallApi.core.removeBrickFromSelection(lastSelectedBrickId);
-                        }
-                        else {
-                            _this.wallApi.core.addBrickToSelection(nextBrickId);
-                        }
-                    }
-                    else {
-                        _this.wallApi.core.selectBrick(nextBrickId);
-                    }
-                }
-            }
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                if (selectedBrickIds.length) {
-                    _this.wallApi.core.focusOnBrickId(firstSelectedBrickId);
-                    _this.wallApi.core.unSelectBricks();
-                }
-                var focusedBrickId = _this.wallApi.core.getFocusedBrickId();
-                if (focusedBrickId) {
-                    _this.wallApi.core.selectBrick(focusedBrickId);
-                }
-            }
-        });
-        this.doc.addEventListener('selectionchange', function () {
-            // selection event triggers when user select some text and then just click by the document
-            // we should disabele pick out service only when user really starts select something
-            var selection = _this.doc.getSelection();
-            // todo need to find more robust variant
-            if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
-                _this.pickOutService.stopPickOut();
-            }
-        });
-        this.pickOutService.subscribe(function (e) {
+        this.onClickHandlerBound = this.onClickHandler.bind(this);
+        this.onKeyDownHandlerBound = this.onKeyDownHandler.bind(this);
+        this.onSelectionChangeBound = this.onSelectionChange.bind(this);
+        this.doc.addEventListener('click', this.onClickHandlerBound);
+        this.doc.addEventListener('keydown', this.onKeyDownHandlerBound);
+        this.doc.addEventListener('selectionchange', this.onSelectionChangeBound);
+        this.pickOutServiceSubscription = this.pickOutService.subscribe(function (e) {
             if (e instanceof pick_out_1.StartPickOut) {
                 _this.isMouseSelection = true;
-                var selection = _this.doc.getSelection();
-                // todo need to find more robust variant
-                if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
-                    _this.pickOutService.stopPickOut();
-                    _this.isMouseSelection = false;
-                }
-                else {
-                    _this.wallApi.core.disableMediaInteraction();
-                }
+                _this.wallApi.core.disableMediaInteraction();
             }
             if (e instanceof pick_out_1.PickOutItems) {
                 _this.wallApi.core.selectBricks(e.ids);
@@ -28929,7 +30278,7 @@ var SelectionPlugin = /** @class */ (function () {
                 _this.wallApi.core.enableMediaInteraction();
             }
         });
-        this.towService.subscribe(function (e) {
+        this.towServiceSubscription = this.towService.subscribe(function (e) {
             if (e instanceof tow_1.StartWorkingEvent) {
                 _this.pickOutService.disablePickOut();
                 _this.pickOutService.stopPickOut();
@@ -28965,6 +30314,91 @@ var SelectionPlugin = /** @class */ (function () {
             }
         });
     };
+    SelectionPlugin.prototype.onClickHandler = function () {
+        if (this.isMouseSelection) {
+            this.isMouseSelection = false;
+        }
+        else {
+            this.wallApi.core.unSelectBricks();
+        }
+    };
+    SelectionPlugin.prototype.onKeyDownHandler = function (e) {
+        var selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
+        var firstSelectedBrickId = selectedBrickIds[0];
+        var lastSelectedBrickId = selectedBrickIds[selectedBrickIds.length - 1];
+        if (e.key === 'Delete' && selectedBrickIds.length) {
+            e.preventDefault();
+            this.wallApi.core.unSelectBricks();
+            this.wallApi.core.removeBricks(selectedBrickIds);
+        }
+        if (e.key === 'Enter' && selectedBrickIds.length) {
+            e.preventDefault();
+            this.wallApi.core.focusOnBrickId(firstSelectedBrickId);
+            this.wallApi.core.unSelectBricks();
+        }
+        if (e.key === 'ArrowUp' && selectedBrickIds.length) {
+            e.preventDefault();
+            var previousBrickId = this.wallApi.core.getPreviousBrickId(lastSelectedBrickId);
+            if (previousBrickId) {
+                if (e.shiftKey) {
+                    if (selectedBrickIds.length > 1 && this.isDownSelectionDirection()) {
+                        this.wallApi.core.removeBrickFromSelection(lastSelectedBrickId);
+                    }
+                    else {
+                        this.wallApi.core.addBrickToSelection(previousBrickId);
+                    }
+                }
+                else {
+                    this.wallApi.core.selectBrick(previousBrickId);
+                }
+            }
+        }
+        if (e.key === 'ArrowDown' && selectedBrickIds.length) {
+            e.preventDefault();
+            var nextBrickId = this.wallApi.core.getNextBrickId(lastSelectedBrickId);
+            if (nextBrickId) {
+                if (e.shiftKey) {
+                    if (selectedBrickIds.length > 1 && !this.isDownSelectionDirection()) {
+                        this.wallApi.core.removeBrickFromSelection(lastSelectedBrickId);
+                    }
+                    else {
+                        this.wallApi.core.addBrickToSelection(nextBrickId);
+                    }
+                }
+                else {
+                    this.wallApi.core.selectBrick(nextBrickId);
+                }
+            }
+        }
+        if (e.key === 'Escape') {
+            e.preventDefault();
+            if (selectedBrickIds.length) {
+                this.wallApi.core.focusOnBrickId(firstSelectedBrickId);
+                this.wallApi.core.unSelectBricks();
+            }
+            var focusedBrickId = this.wallApi.core.getFocusedBrickId();
+            if (focusedBrickId) {
+                this.wallApi.core.selectBrick(focusedBrickId);
+            }
+        }
+    };
+    SelectionPlugin.prototype.onSelectionChange = function () {
+        // selection event triggers when user select some text and then just click by the document
+        // we should disable pick out service only when user really starts select something
+        var selection = this.doc.getSelection();
+        // todo need to find more robust variant
+        if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
+            this.pickOutService.stopPickOut();
+        }
+    };
+    SelectionPlugin.prototype.destroy = function () {
+        this.doc.removeEventListener('click', this.onClickHandlerBound);
+        this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
+        this.doc.removeEventListener('selectionchange', this.onSelectionChangeBound);
+        this.wallApi = null;
+        this.pickOutServiceSubscription.unsubscribe();
+        this.towServiceSubscription.unsubscribe();
+    };
     SelectionPlugin.prototype.isDownSelectionDirection = function () {
         var selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
         var bricksCount = selectedBrickIds.length;
@@ -28975,7 +30409,7 @@ var SelectionPlugin = /** @class */ (function () {
     SelectionPlugin = __decorate([
         core_1.Injectable(),
         __param(3, core_1.Inject(common_1.DOCUMENT)),
-        __metadata("design:paramtypes", [wall_api_service_1.WallApi,
+        __metadata("design:paramtypes", [wall_1.WallApi,
             pick_out_1.PickOutService,
             tow_1.TowService, Object])
     ], SelectionPlugin);
@@ -28985,7 +30419,7 @@ exports.SelectionPlugin = SelectionPlugin;
 
 
 /***/ }),
-/* 71 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -28999,12 +30433,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var pick_out_item_directive_1 = __webpack_require__(35);
-var pick_out_area_directive_1 = __webpack_require__(36);
-var pick_out_area_component_1 = __webpack_require__(38);
-var pick_out_tokens_1 = __webpack_require__(17);
-var pick_out_service_1 = __webpack_require__(39);
-var pick_out_coordinator_service_1 = __webpack_require__(7);
+var pick_out_item_directive_1 = __webpack_require__(43);
+var pick_out_area_directive_1 = __webpack_require__(44);
+var pick_out_area_component_1 = __webpack_require__(46);
+var pick_out_tokens_1 = __webpack_require__(21);
+var pick_out_service_1 = __webpack_require__(47);
+var pick_out_coordinator_service_1 = __webpack_require__(6);
 var PickOutModule = /** @class */ (function () {
     function PickOutModule() {
     }
@@ -29041,13 +30475,13 @@ exports.PickOutModule = PickOutModule;
 
 
 /***/ }),
-/* 72 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var pick_out_model_destroy_event_1 = __webpack_require__(37);
+var pick_out_model_destroy_event_1 = __webpack_require__(45);
 var Subject_1 = __webpack_require__(2);
 var PickOutAreaModel = /** @class */ (function () {
     function PickOutAreaModel() {
@@ -29086,13 +30520,13 @@ exports.PickOutAreaModel = PickOutAreaModel;
 
 
 /***/ }),
-/* 73 */
+/* 91 */
 /***/ (function(module, exports) {
 
 module.exports = "<div *ngIf=\"pickOutAreaModel\"\n           [style.left.px]=\"pickOutAreaModel.x\"\n           [style.top.px]=\"pickOutAreaModel.y\"\n           [style.width.px]=\"pickOutAreaModel.width\"\n           [style.height.px]=\"pickOutAreaModel.height\"\n           class=\"pick-out-area\">\n</div>"
 
 /***/ }),
-/* 74 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29106,15 +30540,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var common_1 = __webpack_require__(1);
-var placeholder_renderer_service_1 = __webpack_require__(20);
-var placeholder_component_1 = __webpack_require__(40);
-var beacon_registry_service_1 = __webpack_require__(8);
-var tow_tokens_1 = __webpack_require__(21);
-var beacon_directive_1 = __webpack_require__(76);
-var beacon_detector_service_1 = __webpack_require__(22);
-var tow_coordinator_service_1 = __webpack_require__(24);
-var tow_slave_directive_1 = __webpack_require__(78);
-var tow_service_1 = __webpack_require__(45);
+var placeholder_renderer_service_1 = __webpack_require__(24);
+var placeholder_component_1 = __webpack_require__(48);
+var beacon_registry_service_1 = __webpack_require__(7);
+var tow_tokens_1 = __webpack_require__(25);
+var beacon_directive_1 = __webpack_require__(94);
+var beacon_detector_service_1 = __webpack_require__(26);
+var tow_coordinator_service_1 = __webpack_require__(28);
+var tow_slave_directive_1 = __webpack_require__(96);
+var tow_service_1 = __webpack_require__(53);
 var TowModule = /** @class */ (function () {
     function TowModule() {
     }
@@ -29154,13 +30588,13 @@ exports.TowModule = TowModule;
 
 
 /***/ }),
-/* 75 */
+/* 93 */
 /***/ (function(module, exports) {
 
 module.exports = "<div *ngIf=\"x\">\n    <div *ngIf=\"isHorizontal\"\n         [style.left.px]=\"x\"\n         [style.top.px]=\"y\"\n         [style.width.px]=\"size\"\n         [style.height.px]=\"3\"\n         class=\"tow-placeholder\">\n    </div>\n\n    <div *ngIf=\"!isHorizontal\"\n         [style.left.px]=\"x\"\n         [style.top.px]=\"y\"\n         [style.width.px]=\"3\"\n         [style.height.px]=\"size\"\n         class=\"tow-placeholder\">\n    </div>\n</div>"
 
 /***/ }),
-/* 76 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29179,8 +30613,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var beacon_registry_service_1 = __webpack_require__(8);
-var tow_tokens_1 = __webpack_require__(21);
+var beacon_registry_service_1 = __webpack_require__(7);
+var tow_tokens_1 = __webpack_require__(25);
 var BeaconDirective = /** @class */ (function () {
     function BeaconDirective(beaconRegistry, el, _window) {
         this.beaconRegistry = beaconRegistry;
@@ -29224,7 +30658,7 @@ exports.BeaconDirective = BeaconDirective;
 
 
 /***/ }),
-/* 77 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29239,7 +30673,7 @@ exports.DetectedBeacon = DetectedBeacon;
 
 
 /***/ }),
-/* 78 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29255,7 +30689,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var tow_coordinator_service_1 = __webpack_require__(24);
+var tow_coordinator_service_1 = __webpack_require__(28);
 var TowSlaveDirective = /** @class */ (function () {
     function TowSlaveDirective(renderer2, el, towCoordinator) {
         this.renderer2 = renderer2;
@@ -29312,7 +30746,7 @@ exports.TowSlaveDirective = TowSlaveDirective;
 
 
 /***/ }),
-/* 79 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29323,7 +30757,7 @@ exports.awesomeTypescriptLoaderBug2 = true;
 
 
 /***/ }),
-/* 80 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29332,12 +30766,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(81));
-__export(__webpack_require__(46));
+__export(__webpack_require__(99));
+__export(__webpack_require__(54));
 
 
 /***/ }),
-/* 81 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29354,8 +30788,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
-var text_brick_component_1 = __webpack_require__(46);
-var platform_browser_1 = __webpack_require__(5);
+var text_brick_component_1 = __webpack_require__(54);
 var TextBrickModule = /** @class */ (function () {
     function TextBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29367,9 +30800,6 @@ var TextBrickModule = /** @class */ (function () {
     }
     TextBrickModule = __decorate([
         core_1.NgModule({
-            imports: [
-                platform_browser_1.BrowserModule,
-            ],
             exports: [text_brick_component_1.TextBrickComponent],
             declarations: [text_brick_component_1.TextBrickComponent],
             entryComponents: [text_brick_component_1.TextBrickComponent]
@@ -29382,13 +30812,13 @@ exports.TextBrickModule = TextBrickModule;
 
 
 /***/ }),
-/* 82 */
+/* 100 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"text-brick__editor\"\n     contenteditable>\n</div>"
 
 /***/ }),
-/* 83 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29397,12 +30827,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(84));
-__export(__webpack_require__(47));
+__export(__webpack_require__(102));
+__export(__webpack_require__(55));
 
 
 /***/ }),
-/* 84 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29419,8 +30849,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
-var header_brick_component_1 = __webpack_require__(47);
-var platform_browser_1 = __webpack_require__(5);
+var header_brick_component_1 = __webpack_require__(55);
 var HeaderBrickModule = /** @class */ (function () {
     function HeaderBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29432,9 +30861,6 @@ var HeaderBrickModule = /** @class */ (function () {
     }
     HeaderBrickModule = __decorate([
         core_1.NgModule({
-            imports: [
-                platform_browser_1.BrowserModule,
-            ],
             exports: [header_brick_component_1.HeaderBrickComponent],
             declarations: [header_brick_component_1.HeaderBrickComponent],
             entryComponents: [header_brick_component_1.HeaderBrickComponent]
@@ -29447,13 +30873,13 @@ exports.HeaderBrickModule = HeaderBrickModule;
 
 
 /***/ }),
-/* 85 */
+/* 103 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor\n    (keydown)=\"onKeyPress($event)\"\n    (keyup)=\"onTextChanged()\"\n    class=\"editor\"\n    contenteditable>\n</div>"
 
 /***/ }),
-/* 86 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29462,12 +30888,12 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(87));
-__export(__webpack_require__(48));
+__export(__webpack_require__(105));
+__export(__webpack_require__(56));
 
 
 /***/ }),
-/* 87 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29482,10 +30908,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = __webpack_require__(5);
 var core_1 = __webpack_require__(0);
+var common_1 = __webpack_require__(1);
 var wall_1 = __webpack_require__(3);
-var img_brick_component_1 = __webpack_require__(48);
+var img_brick_component_1 = __webpack_require__(56);
 var ImgBrickModule = /** @class */ (function () {
     function ImgBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29497,7 +30923,7 @@ var ImgBrickModule = /** @class */ (function () {
     ImgBrickModule = __decorate([
         core_1.NgModule({
             imports: [
-                platform_browser_1.BrowserModule
+                common_1.CommonModule
             ],
             exports: [img_brick_component_1.ImgBrickComponent],
             declarations: [img_brick_component_1.ImgBrickComponent],
@@ -29511,13 +30937,13 @@ exports.ImgBrickModule = ImgBrickModule;
 
 
 /***/ }),
-/* 88 */
+/* 106 */
 /***/ (function(module, exports) {
 
-module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"state.src\" (click)=\"onImageClick($event)\">\n\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\n    Add an Image\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the image link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\n            </button>\n        </div>\n    </div>\n</div>"
+module.exports = "<img [hidden]=\"uiState !== uiStates.image\" [src]=\"scope.src\" (click)=\"onImageClick($event)\">\n\n<div [hidden]=\"uiState === uiStates.image\" class=\"w-signboard\" (click)=\"switchImagePanel()\">\n    Add an Image\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the image link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applyImageSrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed image\n            </button>\n        </div>\n    </div>\n</div>"
 
 /***/ }),
-/* 89 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29526,11 +30952,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(90));
+__export(__webpack_require__(108));
 
 
 /***/ }),
-/* 90 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29547,7 +30973,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var brick_registry_service_1 = __webpack_require__(4);
-var divider_brick_component_1 = __webpack_require__(91);
+var divider_brick_component_1 = __webpack_require__(109);
 var DividerBrickModule = /** @class */ (function () {
     function DividerBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29570,7 +30996,7 @@ exports.DividerBrickModule = DividerBrickModule;
 
 
 /***/ }),
-/* 91 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29589,7 +31015,7 @@ var DividerBrickComponent = /** @class */ (function () {
     DividerBrickComponent = __decorate([
         core_1.Component({
             selector: 'divider-brick',
-            template: __webpack_require__(92)
+            template: __webpack_require__(110)
         })
     ], DividerBrickComponent);
     return DividerBrickComponent;
@@ -29598,13 +31024,13 @@ exports.DividerBrickComponent = DividerBrickComponent;
 
 
 /***/ }),
-/* 92 */
+/* 110 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"divider-brick__wrapper\">\n    <div class=\"divider-brick__divider\"></div>\n</div>"
 
 /***/ }),
-/* 93 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29613,11 +31039,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(94));
+__export(__webpack_require__(112));
 
 
 /***/ }),
-/* 94 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29634,7 +31060,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var brick_registry_service_1 = __webpack_require__(4);
-var quote_brick_component_1 = __webpack_require__(95);
+var quote_brick_component_1 = __webpack_require__(113);
 var QuoteBrickModule = /** @class */ (function () {
     function QuoteBrickModule(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -29658,7 +31084,7 @@ exports.QuoteBrickModule = QuoteBrickModule;
 
 
 /***/ }),
-/* 95 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29675,20 +31101,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var wall_1 = __webpack_require__(3);
+var Observable_1 = __webpack_require__(5);
 var QuoteBrickComponent = /** @class */ (function () {
     function QuoteBrickComponent(wallApi) {
         this.wallApi = wallApi;
-        this.state = {};
-        this.store = null;
+        this.stateChanges = new core_1.EventEmitter();
+        this.scope = {
+            text: ''
+        };
     }
     QuoteBrickComponent.prototype.ngOnInit = function () {
-        this.store = this.wallApi.core.getBrickStore(this.id);
-        this.state = this.store.get();
-        this.state.text = this.state.text || '';
-        this.editor.nativeElement.innerText = this.state.text;
+        var _this = this;
+        this.state.subscribe(function (newState) {
+            if (newState && newState.text !== _this.scope.text) {
+                _this.scope.text = newState.text || '';
+                _this.editor.nativeElement.innerText = _this.scope.text;
+            }
+        });
     };
     QuoteBrickComponent.prototype.onTextChanged = function () {
-        this.state.text = this.editor.nativeElement.innerText;
+        this.scope.text = this.editor.nativeElement.innerText;
         this.save();
     };
     QuoteBrickComponent.prototype.onKeyPress = function (e) {
@@ -29711,7 +31143,7 @@ var QuoteBrickComponent = /** @class */ (function () {
         if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
             this.wallApi.core.removeBrick(this.id);
         }
@@ -29761,20 +31193,28 @@ var QuoteBrickComponent = /** @class */ (function () {
         return atEnd;
     };
     QuoteBrickComponent.prototype.save = function () {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     };
-    __decorate([
-        core_1.ViewChild('editor'),
-        __metadata("design:type", core_1.ElementRef)
-    ], QuoteBrickComponent.prototype, "editor", void 0);
     __decorate([
         core_1.Input(),
         __metadata("design:type", String)
     ], QuoteBrickComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Observable_1.Observable)
+    ], QuoteBrickComponent.prototype, "state", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], QuoteBrickComponent.prototype, "stateChanges", void 0);
+    __decorate([
+        core_1.ViewChild('editor'),
+        __metadata("design:type", core_1.ElementRef)
+    ], QuoteBrickComponent.prototype, "editor", void 0);
     QuoteBrickComponent = __decorate([
         core_1.Component({
             selector: 'quote-brick',
-            template: __webpack_require__(96)
+            template: __webpack_require__(114)
         }),
         __metadata("design:paramtypes", [wall_1.WallApi])
     ], QuoteBrickComponent);
@@ -29784,13 +31224,13 @@ exports.QuoteBrickComponent = QuoteBrickComponent;
 
 
 /***/ }),
-/* 96 */
+/* 114 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor\n     (keydown)=\"onKeyPress($event)\"\n     (keyup)=\"onTextChanged()\"\n     class=\"editor quote-brick__editor\"\n     contenteditable>\n</div>\n"
 
 /***/ }),
-/* 97 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29799,11 +31239,11 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(98));
+__export(__webpack_require__(116));
 
 
 /***/ }),
-/* 98 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29820,7 +31260,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var brick_registry_service_1 = __webpack_require__(4);
-var video_brick_component_1 = __webpack_require__(99);
+var video_brick_component_1 = __webpack_require__(117);
 var common_1 = __webpack_require__(1);
 var VideoBrickModule = /** @class */ (function () {
     function VideoBrickModule(brickRegistry) {
@@ -29847,7 +31287,7 @@ exports.VideoBrickModule = VideoBrickModule;
 
 
 /***/ }),
-/* 99 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -29863,36 +31303,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var index_1 = __webpack_require__(9);
+var Observable_1 = __webpack_require__(5);
+var index_1 = __webpack_require__(8);
 var VideoBrickComponent = /** @class */ (function () {
     function VideoBrickComponent(wallApi, r) {
         this.wallApi = wallApi;
         this.r = r;
+        this.stateChanges = new core_1.EventEmitter();
         // ui
         this.uiStates = {
             initial: 'initial',
             pasteSrc: 'pasteSrc',
             video: 'video'
         };
-        // data
-        this.state = {};
-        this.store = null;
         this.uiState = this.uiStates.initial;
+        this.scope = {
+            src: ''
+        };
     }
     VideoBrickComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.store = this.wallApi.core.getBrickStore(this.id);
-        this.updateState(this.store.get());
-        if (this.state.src) {
-            this.uiState = this.uiStates.video;
-            setTimeout(function () {
-                _this.r.setAttribute(_this.iframe.nativeElement, 'src', _this.state.src);
-            }, 10);
-        }
-        var state = {
-            environment: 'mobile',
-            isMediaInteractionEnabled: false
-        };
+        this.state.subscribe(function (newState) {
+            if (newState && newState.src !== _this.scope.src) {
+                _this.scope.src = newState.src;
+                if (_this.scope.src) {
+                    _this.uiState = _this.uiStates.video;
+                    setTimeout(function () {
+                        _this.r.setAttribute(_this.iframe.nativeElement, 'src', _this.scope.src);
+                    }, 10);
+                }
+            }
+        });
     };
     VideoBrickComponent.prototype.onWallFocus = function () {
         if (this.uiState === this.uiStates.initial) {
@@ -29938,8 +31379,8 @@ var VideoBrickComponent = /** @class */ (function () {
             var srcArray = currentValue.split('=');
             var youtubeId = srcArray[1];
             if (youtubeId) {
-                this.state.src = "https://www.youtube.com/embed/" + youtubeId;
-                this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
+                this.scope.src = "https://www.youtube.com/embed/" + youtubeId;
+                this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
                 this.save();
                 this.uiState = this.uiStates.video;
                 isSuccess = true;
@@ -29948,7 +31389,7 @@ var VideoBrickComponent = /** @class */ (function () {
         return isSuccess;
     };
     VideoBrickComponent.prototype.save = function () {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     };
     VideoBrickComponent.prototype.getCurrentInputValue = function () {
         return this.src.nativeElement.value;
@@ -29957,6 +31398,14 @@ var VideoBrickComponent = /** @class */ (function () {
         core_1.Input(),
         __metadata("design:type", String)
     ], VideoBrickComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Observable_1.Observable)
+    ], VideoBrickComponent.prototype, "state", void 0);
+    __decorate([
+        core_1.Output(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], VideoBrickComponent.prototype, "stateChanges", void 0);
     __decorate([
         core_1.ViewChild('src'),
         __metadata("design:type", core_1.ElementRef)
@@ -29968,7 +31417,7 @@ var VideoBrickComponent = /** @class */ (function () {
     VideoBrickComponent = __decorate([
         core_1.Component({
             selector: 'video-brick',
-            template: __webpack_require__(100)
+            template: __webpack_require__(118)
         }),
         __metadata("design:paramtypes", [index_1.WallApi, core_1.Renderer2])
     ], VideoBrickComponent);
@@ -29978,7 +31427,7 @@ exports.VideoBrickComponent = VideoBrickComponent;
 
 
 /***/ }),
-/* 100 */
+/* 118 */
 /***/ (function(module, exports) {
 
 module.exports = "<iframe height=\"400\" [hidden]=\"uiState !== uiStates.video\" #iframe frameborder=\"0\" allowfullscreen></iframe>\n\n<div [hidden]=\"uiState == uiStates.video\" class=\"w-signboard\" (click)=\"switchPanel()\">\n    Add an Video\n</div>\n\n<div [ngClass]=\"{show: uiState === uiStates.pasteSrc}\" class=\"w-panel\">\n    <div class=\"w-panel__body\">\n        <form>\n            <div class=\"form-group w-form-group\">\n                <input #src (keydown)=\"onKeyPress($event)\" class=\"form-control w-input\"\n                       placeholder=\"Paste the video link\">\n            </div>\n        </form>\n\n        <div>\n            <button (click)=\"applySrc()\" type=\"button\" class=\"btn btn-primary btn-sm btn-block\">Embed video\n            </button>\n        </div>\n    </div>\n</div>\n\n"
@@ -30127,7 +31576,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(168);
+var	fixUrls = __webpack_require__(169);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -30482,8 +31931,7 @@ function updateLink (link, options, obj) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var platform_browser_dynamic_1 = __webpack_require__(132);
 var app_module_1 = __webpack_require__(152);
-__webpack_require__(166);
-__webpack_require__(169);
+__webpack_require__(167);
 __webpack_require__(170);
 platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 
@@ -30501,7 +31949,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵResourceLoaderImpl", function() { return ResourceLoaderImpl; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_compiler__ = __webpack_require__(133);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_platform_browser__ = __webpack_require__(67);
 
@@ -30895,7 +32343,7 @@ var platformBrowserDynamic = Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__[
 /* unused harmony export createElementCssSelector */
 /* unused harmony export removeSummaryDuplicates */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(31);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(27);
 
 /**
  * @license Angular v4.4.5
@@ -59662,11 +61110,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(31);
+var core_1 = __webpack_require__(27);
 var common_1 = __webpack_require__(54);
 var platform_browser_1 = __webpack_require__(67);
 var app_component_1 = __webpack_require__(153);
 var wall_1 = __webpack_require__(97);
+var debug_service_1 = __webpack_require__(166);
 var LoggerPlugin = /** @class */ (function () {
     function LoggerPlugin(wallApi) {
         wallApi.registerFeatureApi('logger', {
@@ -59696,7 +61145,9 @@ var EventLoggerPlugin = /** @class */ (function () {
     var _a;
 }());
 var AppModule = /** @class */ (function () {
-    function AppModule() {
+    function AppModule(debugService) {
+        this.debugService = debugService;
+        this.debugService.enableDebugTools(); // ng.profiler.timeChangeDetection()
     }
     AppModule = __decorate([
         core_1.NgModule({
@@ -59717,6 +61168,7 @@ var AppModule = /** @class */ (function () {
                 app_component_1.AppComponent
             ],
             providers: [
+                debug_service_1.DebugService,
                 {
                     provide: wall_1.WALL_PLUGIN, useValue: LoggerPlugin, multi: true
                 },
@@ -59727,9 +61179,11 @@ var AppModule = /** @class */ (function () {
             bootstrap: [
                 app_component_1.AppComponent
             ]
-        })
+        }),
+        __metadata("design:paramtypes", [typeof (_a = typeof debug_service_1.DebugService !== "undefined" && debug_service_1.DebugService) === "function" && _a || Object])
     ], AppModule);
     return AppModule;
+    var _a;
 }());
 exports.AppModule = AppModule;
 
@@ -59747,7 +61201,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(31);
+var core_1 = __webpack_require__(27);
 var wall_1 = __webpack_require__(97);
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
@@ -59758,355 +61212,272 @@ var AppComponent = /** @class */ (function () {
             onRegisterApi: this.onRegisterApi.bind(this)
         };
         this.wallPlan = {
-            "bricks": [
+            'bricks': [
                 {
-                    "id": "46d291d5-b057-8798-00af-ed9ba015fcda",
-                    "tag": "header",
-                    "data": {
-                        "text": "WALL"
+                    'id': '46d291d5-b057-8798-00af-ed9ba015fcda',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'WALL'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "5cb0d4dd-24fa-de29-8785-619747830add",
-                    "tag": "quote",
-                    "data": {
-                        "text": "The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components."
+                    'id': '5cb0d4dd-24fa-de29-8785-619747830add',
+                    'tag': 'quote',
+                    'data': {
+                        'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f",
-                    "tag": "header",
-                    "data": {
-                        "text": "Navigation\n"
+                    'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'Navigation\n'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743",
-                    "tag": "text",
-                    "data": {
-                        "text": "Press `Escape` to enter to Selection mode"
+                    'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743',
+                    'tag': 'text',
+                    'data': {
+                        'text': 'Press `Escape` to enter to Selection mode'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e",
-                    "tag": "text",
-                    "data": {
-                        "text": "Press Shift to select few bricks"
+                    'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e',
+                    'tag': 'text',
+                    'data': {
+                        'text': 'Press Shift to select few bricks'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d",
-                    "tag": "header",
-                    "data": {
-                        "text": "Roadmap\n"
+                    'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'Roadmap\n'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "74928e82-54d8-c166-1e17-0de2b174bb02",
-                    "tag": "text",
-                    "data": {
-                        "text": "- improve re-rendering algorithm"
+                    'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17',
+                    'tag': 'text',
+                    'data': {
+                        'text': '- improve selection experience for media bricks'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2",
-                    "tag": "text",
-                    "data": {
-                        "text": "- support read-only mode"
+                    'id': '74928e82-54d8-c166-1e17-0de2b174bb02',
+                    'tag': 'text',
+                    'data': {
+                        'text': '- improve re-rendering algorithm'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d",
-                    "tag": "header",
-                    "data": {
-                        "text": "Supported tags\n"
+                    'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2',
+                    'tag': 'text',
+                    'data': {
+                        'text': '- support readonly mode'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "a587554d-5698-8988-0039-ae1db771695e",
-                    "tag": "text",
-                    "data": {
-                        "text": "/h header"
+                    'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d',
+                    'tag': 'header',
+                    'data': {
+                        'text': 'Supported tags\n'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb",
-                    "tag": "text",
-                    "data": {
-                        "text": "/img image"
+                    'id': 'a587554d-5698-8988-0039-ae1db771695e',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/h header'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "2e1c3c38-e75c-2c45-df3e-af887b258571",
-                    "tag": "d",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e",
-                    "tag": "text",
-                    "data": {
-                        "text": "/quote quote"
+                    'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/img image'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "cd73851a-16fe-5363-5274-bd9adb27af06",
-                    "tag": "text",
-                    "data": {
-                        "text": "/d divider"
+                    'id': '2e1c3c38-e75c-2c45-df3e-af887b258571',
+                    'tag': 'd',
+                    'data': {},
+                    'meta': {}
+                },
+                {
+                    'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/quote quote'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "e3a9d696-55bc-46d7-7009-a33774934aef",
-                    "tag": "v",
-                    "data": {
-                        "src": "https://www.youtube.com/embed/YR5ApYxkU-U"
+                    'id': 'cd73851a-16fe-5363-5274-bd9adb27af06',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/d divider'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc",
-                    "tag": "d",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "299f6ef7-6c2e-dcd0-c591-de6733195437",
-                    "tag": "img",
-                    "data": {
-                        "src": "https://vanda-production-assets.s3.amazonaws.com/2017/05/04/11/24/01/2b263b74-1f28-49bc-9f20-215f825f6e13/members-only-mornings-the-pink-floyd-exhibition_960.jpg"
+                    'id': 'e3a9d696-55bc-46d7-7009-a33774934aef',
+                    'tag': 'v',
+                    'data': {
+                        'src': 'https://www.youtube.com/embed/YR5ApYxkU-U'
                     },
-                    "meta": {}
+                    'meta': {}
                 },
                 {
-                    "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85",
-                    "tag": "text",
-                    "data": {
-                        "text": "/v video"
+                    'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc',
+                    'tag': 'd',
+                    'data': {},
+                    'meta': {}
+                },
+                {
+                    'id': '299f6ef7-6c2e-dcd0-c591-de6733195437',
+                    'tag': 'text',
+                    'data': {},
+                    'meta': {}
+                },
+                {
+                    'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85',
+                    'tag': 'text',
+                    'data': {
+                        'text': '/v video'
                     },
-                    "meta": {}
-                },
-                {
-                    "id": "cc72c194-ee44-4006-3d13-b6d2b980ec36",
-                    "tag": "img",
-                    "data": {
-                        "src": "https://i.pinimg.com/736x/d3/11/85/d311857d38ed98cf957a144832a3a16c--david-gilmour-pink-floyd.jpg"
-                    },
-                    "meta": {}
-                },
-                {
-                    "id": "68f49a58-d328-e9bf-76cd-94c5a7c8375c",
-                    "tag": "img",
-                    "data": {
-                        "src": "http://ultimateclassicrock.com/files/2016/11/Pink-FLoyd.jpg"
-                    },
-                    "meta": {}
-                },
-                {
-                    "id": "607eb464-0ef1-3eb9-7d70-1cf82f50c05a",
-                    "tag": "text",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "c63c2fb1-b3e3-35f1-8466-b5281a62d4dc",
-                    "tag": "text",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "ffd617f5-2ac7-fa58-ae78-142a304642a7",
-                    "tag": "text",
-                    "data": {},
-                    "meta": {}
-                },
-                {
-                    "id": "5d3c7fcc-f752-bcb5-a330-ab2da369d209",
-                    "tag": "text",
-                    "data": {
-                        "text": "- clean up canvas code"
-                    },
-                    "meta": {}
+                    'meta': {}
                 }
             ],
-            "layout": {
-                "bricks": [
+            'layout': {
+                'bricks': [
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "46d291d5-b057-8798-00af-ed9ba015fcda"
+                                        'id': '46d291d5-b057-8798-00af-ed9ba015fcda'
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "78fcc4fb-372e-a7c5-245a-26d6263790bc"
+                                        'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc'
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "ffd617f5-2ac7-fa58-ae78-142a304642a7"
+                                        'id': '5cb0d4dd-24fa-de29-8785-619747830add'
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "5cb0d4dd-24fa-de29-8785-619747830add"
+                                        'id': '299f6ef7-6c2e-dcd0-c591-de6733195437'
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "607eb464-0ef1-3eb9-7d70-1cf82f50c05a"
+                                        'id': 'e3a9d696-55bc-46d7-7009-a33774934aef'
                                     }
                                 ]
                             }
                         ]
                     },
                     {
-                        "columns": [
+                        'columns': [
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "cc72c194-ee44-4006-3d13-b6d2b980ec36"
+                                        'id': '2e1c3c38-e75c-2c45-df3e-af887b258571'
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        'columns': [
+                            {
+                                'bricks': [
+                                    {
+                                        'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f'
+                                    },
+                                    {
+                                        'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743'
+                                    },
+                                    {
+                                        'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e'
                                     }
                                 ]
                             },
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "299f6ef7-6c2e-dcd0-c591-de6733195437"
+                                        'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d'
+                                    },
+                                    {
+                                        'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17'
+                                    },
+                                    {
+                                        'id': '74928e82-54d8-c166-1e17-0de2b174bb02'
+                                    },
+                                    {
+                                        'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2'
                                     }
                                 ]
                             },
                             {
-                                "bricks": [
+                                'bricks': [
                                     {
-                                        "id": "68f49a58-d328-e9bf-76cd-94c5a7c8375c"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "c63c2fb1-b3e3-35f1-8466-b5281a62d4dc"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "e3a9d696-55bc-46d7-7009-a33774934aef"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "2e1c3c38-e75c-2c45-df3e-af887b258571"
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "columns": [
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f"
+                                        'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d'
                                     },
                                     {
-                                        "id": "a3acc3a3-53d5-70ec-b374-90d6d39e2743"
+                                        'id': 'a587554d-5698-8988-0039-ae1db771695e'
                                     },
                                     {
-                                        "id": "20307eb4-6c6a-0481-cf3d-af2c17b0487e"
-                                    }
-                                ]
-                            },
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "2d7f65b4-ea8a-a86c-e99c-dd57c858d58d"
+                                        'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e'
                                     },
                                     {
-                                        "id": "74928e82-54d8-c166-1e17-0de2b174bb02"
+                                        'id': 'cd73851a-16fe-5363-5274-bd9adb27af06'
                                     },
                                     {
-                                        "id": "5d3c7fcc-f752-bcb5-a330-ab2da369d209"
+                                        'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb'
                                     },
                                     {
-                                        "id": "0a182d45-04c0-3852-7899-9ad9fc90d6a2"
-                                    }
-                                ]
-                            },
-                            {
-                                "bricks": [
-                                    {
-                                        "id": "a855168e-2e86-8c59-24bc-a7a6f0c3245d"
-                                    },
-                                    {
-                                        "id": "a587554d-5698-8988-0039-ae1db771695e"
-                                    },
-                                    {
-                                        "id": "bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e"
-                                    },
-                                    {
-                                        "id": "cd73851a-16fe-5363-5274-bd9adb27af06"
-                                    },
-                                    {
-                                        "id": "1147c417-c1ad-2550-7d96-bc5bd02470cb"
-                                    },
-                                    {
-                                        "id": "669f8a76-a4a7-8cbe-a15a-c77149194a85"
+                                        'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85'
                                     }
                                 ]
                             }
@@ -60129,7 +61500,8 @@ var AppComponent = /** @class */ (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'my-app',
-            template: __webpack_require__(165)
+            template: __webpack_require__(165),
+            styles: ["\n        .wrapper {\n            width: 800px;\n            margin: 0 auto;\n        }\n    "]
         })
     ], AppComponent);
     return AppComponent;
@@ -60958,10 +62330,61 @@ module.exports = "<div pick-out-area>\n    <div class=\"wrapper\">\n        <wal
 /* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(27);
+var platform_browser_1 = __webpack_require__(67);
+var DebugService = /** @class */ (function () {
+    function DebugService(applicationRef) {
+        this.applicationRef = applicationRef;
+    }
+    DebugService.prototype.mockChangeDetectionTick = function (beforeTick, afterTick) {
+        var _this = this;
+        var originalTick = this.applicationRef.tick;
+        afterTick = afterTick || this.noop;
+        beforeTick = beforeTick || this.noop;
+        this.applicationRef.tick = function () {
+            beforeTick();
+            originalTick.apply(_this.applicationRef);
+            afterTick();
+        };
+    };
+    DebugService.prototype.enableDebugTools = function () {
+        var _this = this;
+        setTimeout(function () {
+            platform_browser_1.enableDebugTools(_this.applicationRef.components[0]);
+        });
+    };
+    DebugService.prototype.noop = function () {
+    };
+    DebugService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [typeof (_a = typeof core_1.ApplicationRef !== "undefined" && core_1.ApplicationRef) === "function" && _a || Object])
+    ], DebugService);
+    return DebugService;
+    var _a;
+}());
+exports.DebugService = DebugService;
+
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(167);
+var content = __webpack_require__(168);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -60986,7 +62409,7 @@ if(false) {
 }
 
 /***/ }),
-/* 167 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(98)(undefined);
@@ -61000,7 +62423,7 @@ exports.push([module.i, "/*!\n * Bootstrap v4.0.0-beta (https://getbootstrap.com
 
 
 /***/ }),
-/* 168 */
+/* 169 */
 /***/ (function(module, exports) {
 
 
@@ -61095,12 +62518,6 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 169 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -61140,7 +62557,7 @@ exports = module.exports = __webpack_require__(98)(undefined);
 
 
 // module
-exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 50px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n  wall-canvas-brick .wall-canvas-brick__disabled-interaction {\n    pointer-events: none; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\ndivider-brick .divider-brick__wrapper {\n  height: 36px; }\n\ndivider-brick .divider-brick__divider {\n  border-bottom: 1px solid silver;\n  height: 1px;\n  padding-top: 17px; }\n\nquote-brick .quote-brick__editor {\n  max-width: 100%;\n  width: 100%;\n  border-left: 4px solid black;\n  padding-left: 1.25em;\n  padding-right: 1.25em;\n  font-size: 21px; }\n  quote-brick .quote-brick__editor:focus {\n    outline: none; }\n\nvideo-brick {\n  position: relative;\n  display: block; }\n  video-brick iframe {\n    width: 100%; }\n  video-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  video-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
+exports.push([module.i, ".w-input {\n  padding: 0.3rem 0.65rem; }\n\n.w-form-group {\n  margin-bottom: 0.5rem; }\n\n.w-panel {\n  min-height: 50px;\n  border-radius: 3px;\n  background: white;\n  box-shadow: rgba(84, 70, 35, 0.3) 0 6px 20px, rgba(84, 70, 35, 0.14) 0 1px 3px, rgba(0, 0, 0, 0.08) 0 0 1px;\n  position: relative; }\n  .w-panel .w-panel__header {\n    display: flex;\n    border-bottom: 1px solid #e7e6e5;\n    font-size: 13px;\n    justify-content: center; }\n    .w-panel .w-panel__header .w-header__tab {\n      padding-top: 4px;\n      padding-bottom: 4px;\n      margin: 0 4px; }\n    .w-panel .w-panel__header .w-header__tab-active {\n      border-bottom: 2px solid black;\n      padding-bottom: 2px; }\n  .w-panel .w-panel__body {\n    display: flex;\n    justify-content: center;\n    padding: 10px 25%;\n    flex-direction: column; }\n\n.w-signboard {\n  color: #c8c8c8;\n  background: #f7f6f5;\n  padding: 15px; }\n  .w-signboard:hover {\n    background: #ecebea;\n    cursor: pointer; }\n\nwall-canvas {\n  display: block; }\n  wall-canvas .wall-canvas__editor {\n    min-height: 200px;\n    cursor: text; }\n  wall-canvas .wall-canvas__expander {\n    min-height: 250px; }\n\nwall-canvas-brick {\n  display: block;\n  margin: 0 0 2px; }\n  wall-canvas-brick .wall-canvas-brick__draggable .wall-canvas-brick__draggable-handler {\n    display: block; }\n  wall-canvas-brick .wall-canvas-brick__wrapper {\n    position: relative;\n    transition: background-color 0.3s ease; }\n  wall-canvas-brick .wall-canvas-brick__draggable-box {\n    width: 23px;\n    height: 26px;\n    padding: 4px;\n    border-radius: 3px; }\n  wall-canvas-brick .wall-canvas-brick__draggable-handler {\n    display: none;\n    position: absolute;\n    left: -35px;\n    top: 0;\n    padding: 5px;\n    margin: 0;\n    cursor: pointer;\n    border-radius: 3px; }\n    wall-canvas-brick .wall-canvas-brick__draggable-handler:hover .wall-canvas-brick__draggable-box {\n      background: #f5f5f5; }\n  wall-canvas-brick .wall-canvas-brick__selected {\n    position: relative; }\n    wall-canvas-brick .wall-canvas-brick__selected:after {\n      content: '';\n      position: absolute;\n      top: 0;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      background-color: #9be0ff;\n      pointer-events: none;\n      opacity: 0.2; }\n  wall-canvas-brick .wall-canvas-brick__disabled-interaction {\n    pointer-events: none; }\n\nwall-canvas-row {\n  display: flex; }\n  wall-canvas-row .wall-canvas-row__column {\n    flex: 1;\n    margin: 0 10px; }\n\ntext-brick {\n  display: block; }\n  text-brick .text-brick__editor {\n    word-break: break-all;\n    padding: 6px 2px; }\n    text-brick .text-brick__editor:focus {\n      outline: none; }\n\nheader-brick {\n  display: block; }\n  header-brick div {\n    font-weight: 600;\n    font-size: 1.2em;\n    letter-spacing: -0.002em;\n    line-height: 1.2;\n    word-break: break-all;\n    padding: 6px 2px;\n    margin: 8px 0 0 0; }\n    header-brick div:focus {\n      outline: none; }\n\nimg-brick {\n  position: relative;\n  display: block; }\n  img-brick img {\n    object-fit: cover;\n    width: 100%;\n    height: 100%;\n    max-width: 900px;\n    margin: 0 auto;\n    display: block;\n    cursor: pointer; }\n  img-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  img-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\ndivider-brick .divider-brick__wrapper {\n  height: 36px; }\n\ndivider-brick .divider-brick__divider {\n  border-bottom: 1px solid silver;\n  height: 1px;\n  padding-top: 17px; }\n\nquote-brick .quote-brick__editor {\n  max-width: 100%;\n  width: 100%;\n  border-left: 4px solid black;\n  padding-left: 1.25em;\n  padding-right: 1.25em;\n  font-size: 21px; }\n  quote-brick .quote-brick__editor:focus {\n    outline: none; }\n\nvideo-brick {\n  position: relative;\n  display: block; }\n  video-brick iframe {\n    width: 100%; }\n  video-brick .w-panel {\n    width: 80%;\n    position: absolute;\n    max-width: 450px;\n    visibility: hidden;\n    opacity: 0;\n    transform: translate(12%, -12px);\n    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear; }\n  video-brick .show {\n    z-index: 10;\n    opacity: 1;\n    visibility: visible;\n    transition-delay: 0s;\n    transform: translate(12%, -10px); }\n\n.pick-out-area {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #c8c8c8; }\n\n.tow-placeholder {\n  opacity: 0.5;\n  position: fixed;\n  background-color: #78bed4;\n  border-radius: 2px; }", ""]);
 
 // exports
 
