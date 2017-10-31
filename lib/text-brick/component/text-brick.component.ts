@@ -1,5 +1,7 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { onWallFocus, WallApi } from '../../wall';
+import { Observable } from 'rxjs/Observable';
+import { TextBrickState } from '../text-brick-state.interface';
 
 @Component({
     selector: 'text-brick',
@@ -8,27 +10,31 @@ import { onWallFocus, WallApi } from '../../wall';
 export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
 
+    @Input() state: Observable<TextBrickState | null>;
+
+    @Output() stateChanges: EventEmitter<TextBrickState> = new EventEmitter();
+
     @ViewChild('editor') editor: ElementRef;
 
-    state: any = {};
+    scope: TextBrickState = {
+        text: ''
+    };
 
-    store: any = null;
-
-    constructor(private wallApi: WallApi, private el: ElementRef) {
+    constructor(private wallApi: WallApi) {
     }
 
     ngOnInit() {
-        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.state.subscribe((newState) => {
+            if (newState && newState.text !== this.scope.text) {
+                this.scope.text = newState.text || '';
 
-        this.state = this.store.get();
-
-        this.state.text = this.state.text || '';
-
-        this.editor.nativeElement.innerText = this.state.text;
+                this.editor.nativeElement.innerText = this.scope.text;
+            }
+        });
     }
 
     onTextChanged() {
-        this.state.text = this.editor.nativeElement.innerText;
+        this.scope.text = this.editor.nativeElement.innerText;
 
         this.save();
     }
@@ -58,7 +64,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
 
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
 
             this.wallApi.core.removeBrick(this.id);
@@ -67,11 +73,11 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.state.text[0] === '/') {
-                const tag = this.state.text.slice(1);
+            if (this.scope.text[0] === '/') {
+                const tag = this.scope.text.slice(1);
 
                 if (this.wallApi.core.isRegisteredBrick(tag)) {
-                    this.wallApi.core.turnBrickInto(this.id, this.state.text.slice(1));
+                    this.wallApi.core.turnBrickInto(this.id, this.scope.text.slice(1));
 
                     // d - divider tag
                     if (tag === 'd') {
@@ -142,6 +148,6 @@ export class TextBrickComponent implements OnInit, onWallFocus {
     }
 
     save() {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     }
 }

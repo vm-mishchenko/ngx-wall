@@ -4,14 +4,13 @@ import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { WALL } from './wall.constant';
 import { WallEditorRegistry } from '../../wall-editor.registry';
-import { WallConfiguration } from './wall.interfaces';
 import { Subject } from 'rxjs/Subject';
-import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent } from './wall.events';
+import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent, UpdateBrickStateEvent } from './wall.events';
 import { Subscription } from 'rxjs/Subscription';
-import { WallDefinition } from "./interfaces/wall-definition.interface";
-import { BrickRegistry } from "../../registry/brick-registry.service";
-import { ReactiveProperty, ReactiveReadOnlyProperty } from "../../../reactive-property";
-import { WallState } from "./interfaces/wall-state.interface";
+import { WallDefinition } from './interfaces/wall-definition.interface';
+import { BrickRegistry } from '../../registry/brick-registry.service';
+import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
+import { WallState } from './interfaces/wall-state.interface';
 
 /**
  * @desc Responsible for storing wall state.
@@ -22,8 +21,10 @@ export class WallModel {
     id: string = String(Math.random());
 
     events: Subject<any> = new Subject();
+
     // UI
     focusedBrickId: string = null;
+
     selectedBricks: string[] = [];
 
     private writeState = {
@@ -41,14 +42,13 @@ export class WallModel {
                 private brickRegistry: BrickRegistry,
                 private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
-
     }
 
     get canvasLayout(): boolean {
         return this.layoutStore.canvasLayout;
     }
 
-    initialize(plan: WallDefinition, configuration: WallConfiguration) {
+    initialize(plan: WallDefinition) {
         this.wallEditorRegistry.registerEditor(this.id, this);
 
         // initialize core API
@@ -96,8 +96,7 @@ export class WallModel {
 
             // BRICk
             'isRegisteredBrick',
-            'turnBrickInto',
-            'getBrickStore'
+            'turnBrickInto'
 
         ].reduce((result, methodName) => {
             if (this[methodName].bind) {
@@ -176,8 +175,10 @@ export class WallModel {
         }
     }
 
-    getBrickStore(brickId: string) {
-        return this.brickStore.getBrickStore(brickId);
+    updateBrickState(brickId, brickState) {
+        this.brickStore.updateBrickState(brickId, brickState);
+
+        this.events.next(new UpdateBrickStateEvent(brickId, brickState));
     }
 
     turnBrickInto(brickId: string, newTag: string) {
@@ -203,7 +204,7 @@ export class WallModel {
     /* Add brick to existing row and existing column */
     addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
         if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
-            const newBrick = this.brickStore.addBrick(tag);
+            const newBrick = this.brickStore.create(tag);
 
             this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
 
@@ -223,7 +224,7 @@ export class WallModel {
             targetRowIndex = lastRowIndex + 1;
         }
 
-        const newBrick = this.brickStore.addBrick(tag);
+        const newBrick = this.brickStore.create(tag);
 
         this.layoutStore.addBrickToNewRow(newBrick.id, targetRowIndex);
 
@@ -328,7 +329,7 @@ export class WallModel {
             const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
             const nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
 
-            this.brickStore.removeBrick(brickId);
+            this.brickStore.remove(brickId);
             this.layoutStore.removeBrick(brickId);
 
             if (previousTextBrickId) {
@@ -354,7 +355,7 @@ export class WallModel {
             const nextTextBrickId = this.layoutStore.getNextTextBrick(brickIds[brickIds.length - 1]);
 
             brickIds.forEach((brickId) => {
-                this.brickStore.removeBrick(brickId);
+                this.brickStore.remove(brickId);
                 this.layoutStore.removeBrick(brickId);
             });
 
@@ -425,6 +426,15 @@ export class WallModel {
         this.writeState.isMediaInteractionEnabled.setValue(false);
     };
 
+    reset() {
+        this.brickStore.reset();
+        this.layoutStore.reset();
+
+        this.focusedBrickId = null;
+
+        this.unSelectBricks();
+    }
+
     private moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickAfterInNewRow(targetBrickIds, beforeBrickId);
     }
@@ -453,7 +463,7 @@ export class WallModel {
         const lastBrickId = this.layoutStore.getLastBrickId();
 
         if (lastBrickId) {
-            const lastBrick = this.brickStore.getBrickById(lastBrickId);
+            const lastBrick = this.brickStore.getBrickStorageById(lastBrickId);
 
             if (lastBrick.tag === 'text' && !lastBrick.data['text']) {
                 return lastBrick;

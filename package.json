@@ -1,6 +1,6 @@
 {
-  "name": "wall",
-  "version": "1.0.0",
+  "name": "ngx-wall",
+  "version": "1.0.2",
   "description": "Wall web based editor",
   "main": "./dist/wall.umd.js",
   "module": "./dist/index.js",
@@ -26,7 +26,7 @@
     "type": "git",
     "url": "git+https://github.com/vm-mishchenko/wall.git"
   },
-  "author": "",
+  "author": "Vitalii Mishchenko",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/vm-mishchenko/wall/issues"
@@ -34,7 +34,8 @@
   "homepage": "https://github.com/vm-mishchenko/wall#readme",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
-    "lodash": "^4.17.4"
+    "@angular/common": "^4.0.0",
+    "rxjs": "^5.4.3"
   },
   "devDependencies": {
     "@angular/common": "4.4.5",

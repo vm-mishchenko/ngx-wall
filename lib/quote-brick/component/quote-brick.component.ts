@@ -1,36 +1,40 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { WALL, WallApi } from "../../wall";
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { WallApi } from "../../wall";
+import { QuoteBrickState } from "../quote-brick-state.interface";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: 'quote-brick',
     templateUrl: './quote-brick.component.html'
 })
-
 export class QuoteBrickComponent implements OnInit {
+    @Input() id: string;
+    @Input() state: Observable<QuoteBrickState | null>;
+
+    @Output() stateChanges: EventEmitter<QuoteBrickState> = new EventEmitter();
+
     @ViewChild('editor') editor: ElementRef;
 
-    @Input() id: string;
-
-    state: any = {};
-
-    store: any = null;
+    scope: QuoteBrickState = {
+        text: ''
+    };
 
     constructor(private wallApi: WallApi) {
     }
 
     ngOnInit() {
-        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.state.subscribe((newState) => {
+            if (newState && newState.text !== this.scope.text) {
+                this.scope.text = newState.text || '';
 
-        this.state = this.store.get();
-
-        this.state.text = this.state.text || '';
-
-        this.editor.nativeElement.innerText = this.state.text;
+                this.editor.nativeElement.innerText = this.scope.text;
+            }
+        });
     }
 
     onTextChanged() {
-        this.state.text = this.editor.nativeElement.innerText;
-
+        this.scope.text = this.editor.nativeElement.innerText;
+        
         this.save();
     }
 
@@ -59,7 +63,7 @@ export class QuoteBrickComponent implements OnInit {
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
 
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.state.text === '') {
+        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
 
             this.wallApi.core.removeBrick(this.id);
@@ -128,6 +132,6 @@ export class QuoteBrickComponent implements OnInit {
     }
 
     save() {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     }
 }

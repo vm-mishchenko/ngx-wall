@@ -13,7 +13,7 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { WallCanvasApi } from './wall-canvas.api';
 import { WallCanvasController } from './wall-canvas.controller';
-import { Layout } from "./interfaces/layout.interface";
+import { Layout } from './interfaces/layout.interface';
 
 @Component({
     selector: 'wall-canvas',
@@ -31,6 +31,7 @@ export class WallCanvasComponent implements OnInit, OnChanges {
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
     @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
+    @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
 
     doc: any = null;
 
@@ -83,7 +84,22 @@ export class WallCanvasComponent implements OnInit, OnChanges {
         }
     }
 
-    trackBricksBy(index, item) {
-        return JSON.stringify(item);
+    brickStateChanged(brickId: string, brickState: any) {
+        this.onBrickStateChanged.emit({
+            brickId: brickId,
+            brickState: brickState
+        });
+    }
+
+    trackBricksBy(index, item ): string {
+        return item.columns.reduce((result, column) => {
+            result += column.bricks.reduce((brickResult, brick) => {
+                brickResult += brick.hash;
+
+                return brickResult;
+            }, '');
+
+            return result;
+        }, '');
     }
 }

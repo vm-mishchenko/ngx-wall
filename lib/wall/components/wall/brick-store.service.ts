@@ -1,24 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BrickDefinition } from './wall.interfaces';
-
-
-// Simple naive implementation
-class BrickItemStore {
-    constructor(private brick: any) {
-    }
-
-    get() {
-        return this.cloneObject(this.brick.data);
-    }
-
-    set(data: any) {
-        this.brick.data = data;
-    }
-
-    private cloneObject(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    }
-}
+import { BrickStorage } from './brick-storage.class';
 
 /**
  * @desc
@@ -26,71 +8,7 @@ class BrickItemStore {
  * */
 @Injectable()
 export class BrickStore {
-    bricks: BrickDefinition[];
-
-    initialize(bricks: BrickDefinition[]) {
-        this.bricks = bricks;
-    }
-
-    addBrick(tag: string) {
-        const brick = {
-            id: BrickStore.getNewGuid(),
-            tag: tag,
-            data: {},
-            meta: {}
-        };
-
-        this.bricks.push(brick);
-
-        return brick;
-    }
-
-    removeBrick(brickId: string): void {
-        let brickIndex;
-
-        this.bricks.forEach((brick, index) => {
-            if (brick.id === brickId) {
-                brickIndex = index;
-            }
-        });
-
-        this.bricks.splice(brickIndex, 1);
-    }
-
-    turnBrickInto(brickId: string, newTag: string): void {
-        const brick = this.getBrickById(brickId);
-
-        brick.tag = newTag;
-        brick.data = {};
-    }
-
-    getBricksCount() {
-        return this.bricks.length;
-    }
-
-    getBrickById(brickId: string): BrickDefinition {
-        return this.bricks.find((brick) => {
-            return brick.id === brickId;
-        });
-    }
-
-    getBrickTagById(brickId: string): string {
-        const brick = this.getBrickById(brickId);
-
-        return brick.tag;
-    }
-
-    serialize() {
-        return this.bricks;
-    }
-
-    getBrickStore(brickId: string): any {
-        const brick = this.bricks.find((brick) => {
-            return brick.id === brickId;
-        });
-
-        return new BrickItemStore(brick);
-    }
+    brickStorages: BrickStorage[] = [];
 
     static getNewGuid() {
         function s4() {
@@ -101,5 +19,89 @@ export class BrickStore {
 
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
+    }
+
+    initialize(brickDefinitions: BrickDefinition[]) {
+        this.brickStorages = brickDefinitions.map((brickDefinition) => {
+            return this.initializeBrickStorage(
+                brickDefinition.id,
+                brickDefinition.tag,
+                brickDefinition.data,
+                brickDefinition.meta
+            );
+        });
+    }
+
+    create(tag: string) {
+        const brickStorage = this.initializeBrickStorage(
+            BrickStore.getNewGuid(),
+            tag,
+            {},
+            {}
+        );
+
+        this.brickStorages.push(brickStorage);
+
+        return brickStorage;
+    }
+
+    remove(brickId: string): void {
+        let brickIndex;
+
+        this.brickStorages.forEach((brick, index) => {
+            if (brick.id === brickId) {
+                brickIndex = index;
+            }
+        });
+
+        this.brickStorages.splice(brickIndex, 1);
+    }
+
+    turnBrickInto(brickId: string, newTag: string): void {
+        const brickStorage = this.getBrickStorageById(brickId);
+
+        brickStorage.tag = newTag;
+        brickStorage.updateState({});
+    }
+
+    getBricksCount() {
+        return this.brickStorages.length;
+    }
+
+    getBrickStorageById(brickId: string): BrickStorage {
+        return this.brickStorages.find((brick) => {
+            return brick.id === brickId;
+        });
+    }
+
+    getBrickTagById(brickId: string): string {
+        const brick = this.getBrickStorageById(brickId);
+
+        return brick.tag;
+    }
+
+    serialize() {
+        return this.brickStorages.map((brick) => {
+            return {
+                id: brick.id,
+                tag: brick.tag,
+                data: brick.data,
+                meta: brick.meta
+            };
+        });
+    }
+
+    updateBrickState(brickId: string, brickState: any) {
+        const brickStorage = this.getBrickStorageById(brickId);
+
+        brickStorage.updateState(brickState);
+    }
+
+    reset() {
+        this.brickStorages = [];
+    }
+
+    private initializeBrickStorage(id: string, tag: string, data: any, meta: any): BrickStorage {
+        return new BrickStorage(id, tag, data, meta);
     }
 }

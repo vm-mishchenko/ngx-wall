@@ -6,12 +6,12 @@ import { BrickStore } from './brick-store.service';
 @Injectable()
 export class LayoutStore {
     layout: LayoutDefinition = null;
+
     canvasLayout: any = {
         bricks: []
     };
 
     constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
-
     }
 
     initialize(layout: LayoutDefinition) {
@@ -26,15 +26,18 @@ export class LayoutStore {
                 return {
                     columns: row.columns.map((column) => {
                         return {
-                            bricks: column.bricks.map((brick) => {
-                                const brickTag = this.brickStore.getBrickTagById(brick.id);
+                            bricks: column.bricks.map((brickConfig) => {
+                                const brickStorage = this.brickStore.getBrickStorageById(brickConfig.id);
+                                const component = this.brickRegistry.get(brickStorage.tag).component;
 
                                 return {
-                                    id: brick.id,
-                                    component: this.brickRegistry.get(brickTag).component
+                                    id: brickStorage.id,
+                                    hash: brickStorage.tag + brickStorage.id,
+                                    state: brickStorage.state,
+                                    component: component
                                 };
                             })
-                        }
+                        };
                     })
                 }
             })
@@ -296,6 +299,12 @@ export class LayoutStore {
         }
 
         return brickPosition;
+    }
+
+    reset() {
+        this.layout = {
+            bricks: []
+        };
     }
 
     private createNewRow(targetRowIndex: number): void {

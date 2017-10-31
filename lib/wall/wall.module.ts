@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { WallComponent } from './components/wall/wall.component';
 import { BrickRegistry } from './registry/brick-registry.service';
 import { WallCanvasComponent } from './components/wall-canvas/wall-canvas.component';
@@ -15,7 +14,6 @@ import { RadarModule } from "../modules/radar";
 
 @NgModule({
     imports: [
-        BrowserModule,
         CommonModule,
         PickOutModule,
         TowModule,

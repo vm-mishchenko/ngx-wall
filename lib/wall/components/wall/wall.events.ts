@@ -12,3 +12,8 @@ export class AddBrickEvent {
     constructor(public brickId: string) {
     }
 }
+
+export class UpdateBrickStateEvent {
+    constructor(public brickId: string, public brickState: any) {
+    }
+}
