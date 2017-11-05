@@ -1,4 +1,5 @@
 export * from './wall.module';
+export * from './wall.model';
 export * from './wall.interfaces';
 export * from './wall.tokens';
 export * from './components/wall';

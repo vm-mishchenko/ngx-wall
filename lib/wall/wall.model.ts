@@ -1,23 +1,28 @@
 import { Injectable } from '@angular/core';
-import { WallApi } from './wall-api.service';
-import { BrickStore } from './brick-store.service';
-import { LayoutStore } from './layout-store.service';
-import { WALL } from './wall.constant';
-import { WallEditorRegistry } from '../../wall-editor.registry';
+import { WallApi } from './components/wall/wall-api.service';
+import { BrickStore } from './components/wall/brick-store.service';
+import { LayoutStore } from './components/wall/layout-store.service';
+import { WALL } from './components/wall/wall.constant';
 import { Subject } from 'rxjs/Subject';
-import { AddBrickEvent, RemoveBrickEvent, RemoveBricksEvent, UpdateBrickStateEvent } from './wall.events';
+import {
+    AddBrickEvent,
+    RemoveBrickEvent,
+    RemoveBricksEvent,
+    UpdateBrickStateEvent
+} from './components/wall/wall.events';
 import { Subscription } from 'rxjs/Subscription';
-import { WallDefinition } from './interfaces/wall-definition.interface';
-import { BrickRegistry } from '../../registry/brick-registry.service';
-import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
-import { WallState } from './interfaces/wall-state.interface';
+import { WallDefinition } from './components/wall/interfaces/wall-definition.interface';
+import { BrickRegistry } from './registry/brick-registry.service';
+import { ReactiveProperty, ReactiveReadOnlyProperty } from '../reactive-property';
+import { WallState } from './components/wall/interfaces/wall-state.interface';
+import { IWallModel, IWallViewModel } from "./wall.interfaces";
 
 /**
  * @desc Responsible for storing wall state.
  * Provide core functionality
  * */
 @Injectable()
-export class WallModel {
+export class WallModel implements IWallModel, IWallViewModel {
     id: string = String(Math.random());
 
     events: Subject<any> = new Subject();
@@ -40,7 +45,6 @@ export class WallModel {
     constructor(public api: WallApi,
                 private brickStore: BrickStore,
                 private brickRegistry: BrickRegistry,
-                private wallEditorRegistry: WallEditorRegistry,
                 private layoutStore: LayoutStore) {
     }
 
@@ -49,8 +53,6 @@ export class WallModel {
     }
 
     initialize(plan: WallDefinition) {
-        this.wallEditorRegistry.registerEditor(this.id, this);
-
         // initialize core API
         const coreApi = [
             'state',
@@ -120,10 +122,8 @@ export class WallModel {
     /* SELECTION API */
 
     selectBrick(brickId: string): void {
-        if (this.isFocusedEditor()) {
-            this.selectedBricks = [brickId];
-            this.focusedBrickId = null;
-        }
+        this.selectedBricks = [brickId];
+        this.focusedBrickId = null;
     }
 
     selectBricks(brickIds: string[]) {
@@ -149,8 +149,6 @@ export class WallModel {
 
     // callback for brick selected by user
     onFocusedBrick(brickId: string) {
-        this.wallEditorRegistry.setFocusedEditor(this.id);
-
         this.focusedBrickId = brickId;
 
         this.unSelectBricks();
@@ -402,10 +400,6 @@ export class WallModel {
         if (nextTextBrickId) {
             this.focusOnBrickId(nextTextBrickId);
         }
-    }
-
-    isFocusedEditor() {
-        return this.wallEditorRegistry.isFocusedEditor(this.id);
     }
 
     subscribe(callback: any): Subscription {

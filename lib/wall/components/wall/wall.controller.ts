@@ -1,5 +1,5 @@
 import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
-import { WallModel } from './wall.model';
+import { WallModel } from '../../wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallConfiguration } from './wall.interfaces';
 import { WallDefinition } from './interfaces/wall-definition.interface';

@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { WallConfiguration } from './wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
-import { WallModel } from './wall.model';
+import { WallModel } from '../../wall.model';
 import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
 import { WallDefinition } from './interfaces/wall-definition.interface';

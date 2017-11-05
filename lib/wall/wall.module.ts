@@ -7,7 +7,6 @@ import { WallCanvasRowComponent } from './components/wall-canvas/components/wall
 import { WallCanvasBrickComponent } from './components/wall-canvas/components/wall-canvas-brick/wall-canvas-brick.component';
 import { WALL_PLUGIN } from './wall.tokens';
 import { SelectionPlugin } from './plugins/selection/selection';
-import { WallEditorRegistry } from './wall-editor.registry';
 import { PickOutModule } from '../modules/pick-out';
 import { TowModule } from '../modules/tow';
 import { RadarModule } from "../modules/radar";
@@ -21,7 +20,6 @@ import { RadarModule } from "../modules/radar";
     ],
 
     providers: [
-        WallEditorRegistry,
         BrickRegistry,
         {
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
