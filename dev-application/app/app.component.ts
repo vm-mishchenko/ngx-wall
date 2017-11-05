@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { WALL, WallApi, WallConfiguration, WallDefinition } from 'wall';
+import { Component, OnInit } from '@angular/core';
+import { WALL, WallApi, WallConfiguration, WallDefinition, WallModelFactory } from 'wall';
 
 @Component({
     selector: 'my-app',
@@ -11,7 +11,7 @@ import { WALL, WallApi, WallConfiguration, WallDefinition } from 'wall';
         }
     `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
     plan: any = null;
 
     wallApi: WallApi = null;
@@ -297,6 +297,16 @@ export class AppComponent {
             ]
         }
     };
+
+    wall2Model: any;
+
+    constructor(private wallModelFactory: WallModelFactory) {
+        this.wall2Model = this.wallModelFactory.create(this.wallPlan);
+    }
+
+    ngOnInit() {
+
+    }
 
     onRegisterApi(wallApi: WallApi) {
         this.wallApi = wallApi;

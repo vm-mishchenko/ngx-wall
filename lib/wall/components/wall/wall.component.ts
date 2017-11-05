@@ -2,24 +2,24 @@ import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/
 import { WallConfiguration } from './wall.interfaces';
 import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
-import { WallModel } from '../../wall.model';
 import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
-import { WallDefinition } from './interfaces/wall-definition.interface';
+import { IWallModel } from "../../wall.interfaces";
+import { WallViewModel } from "../../model/wall-view.model";
 
 @Component({
     selector: 'wall',
     templateUrl: './wall.component.html',
     providers: [
         WallApi,
-        WallModel,
+        WallViewModel,
         BrickStore,
         LayoutStore,
         WallController
     ]
 })
 export class WallComponent implements OnChanges, OnDestroy {
-    @Input() plan: WallDefinition = null;
+    @Input() model: IWallModel = null;
     @Input() configuration: WallConfiguration = null;
 
     constructor(private wallController: WallController) {
@@ -39,8 +39,8 @@ export class WallComponent implements OnChanges, OnDestroy {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.plan) {
-            if (!changes.plan.firstChange) {
+        if (changes.model) {
+            if (!changes.model.firstChange) {
                 this.wallController.reset();
             }
 
@@ -53,6 +53,6 @@ export class WallComponent implements OnChanges, OnDestroy {
     }
 
     private initialize() {
-        this.wallController.initialize(this.plan, this.configuration);
+        this.wallController.initialize(this.model, this.configuration);
     }
 }

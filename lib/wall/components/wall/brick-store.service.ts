@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BrickDefinition } from './wall.interfaces';
 import { BrickStorage } from './brick-storage.class';
+import { BrickDefinition } from "../../wall.interfaces";
 
 /**
  * @desc

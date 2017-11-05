@@ -1,6 +1,6 @@
 import { Subscription } from "rxjs/Subscription";
-import { WallDefinition } from "./wall-definition.interface";
 import { WallState } from "./wall-state.interface";
+import { WallDefinition } from "../../../wall.interfaces";
 
 export interface WallCoreApi {
     state: WallState;

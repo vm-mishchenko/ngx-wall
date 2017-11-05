@@ -1,25 +1,32 @@
 import { Injectable, Injector, ReflectiveInjector } from '@angular/core';
-import { WallModel } from '../../wall.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallConfiguration } from './wall.interfaces';
-import { WallDefinition } from './interfaces/wall-definition.interface';
+import { IWallModel } from "../../wall.interfaces";
+import { WallViewModel } from "../../model/wall-view.model";
+import { WallApi } from "./wall-api.service";
 
 @Injectable()
 export class WallController {
+    // todo
+    public wallModel: any;
     private initializedPlugins: any[] = [];
 
-    constructor(public wallModel: WallModel, private injector: Injector) {
+    constructor(public api: WallApi,
+                public wallViewModel: WallViewModel,
+                private injector: Injector) {
     }
 
-    initialize(plan: WallDefinition, configuration: WallConfiguration) {
+    initialize(wallModel: IWallModel, configuration: WallConfiguration) {
+        this.wallModel = wallModel;
+
         // initialize core functionality
-        this.wallModel.initialize(plan || this.getDefaultPlan());
+        this.wallViewModel.initialize(wallModel);
 
         this.initializePlugins();
 
         // pass initialized API back to the client
         if (configuration && configuration.onRegisterApi) {
-            configuration.onRegisterApi(this.wallModel.api);
+            configuration.onRegisterApi(this.api);
         }
     }
 
@@ -49,7 +56,7 @@ export class WallController {
         this.destroyPlugins();
     }
 
-    getDefaultPlan() {
+    /*getDefaultPlan() {
         return {
             bricks: [],
 
@@ -65,5 +72,5 @@ export class WallController {
                 ]
             }
         };
-    }
+    }*/
 }

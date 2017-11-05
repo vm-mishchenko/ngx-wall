@@ -1,6 +1,4 @@
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
-import { WallDefinition } from "./components/wall/interfaces/wall-definition.interface";
-import { Subscription } from 'rxjs/Subscription';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
@@ -9,6 +7,35 @@ export interface BrickSpecification {
     tag: string;
     component: any;
     supportText?: true;
+}
+
+export interface WallDefinition {
+    bricks: BrickDefinition[];
+    layout: LayoutDefinition;
+}
+
+export interface BrickDefinition {
+    id: string;
+    tag: string;
+
+    // user specific data
+    data: {};
+
+    meta: {
+        comments?: any[]
+    }
+}
+
+export interface LayoutDefinition {
+    bricks: RowLayoutDefinition[];
+}
+
+export interface RowLayoutDefinition {
+    columns: ColumnLayoutDefinition[];
+}
+
+export interface ColumnLayoutDefinition {
+    bricks: { id: string }[]
 }
 
 export interface IWallViewModel {
@@ -39,8 +66,6 @@ export interface IWallViewModel {
     enableMediaInteraction(): void;
 
     disableMediaInteraction(): void;
-
-
 }
 
 export interface IWallModel {
@@ -56,6 +81,7 @@ export interface IWallModel {
 
     turnBrickInto(brickId: string, newTag: string);
 
+    // move to separate service
     isRegisteredBrick(tag: string): boolean;
 
     addDefaultBrick(): void;
@@ -83,6 +109,4 @@ export interface IWallModel {
     removeBricks(brickIds): void;
 
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean;
-
-    subscribe(callback: any): Subscription;
 }

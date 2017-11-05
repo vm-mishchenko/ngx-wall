@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { LayoutDefinition } from './wall.interfaces';
 import { BrickRegistry } from '../../registry/brick-registry.service';
 import { BrickStore } from './brick-store.service';
+import { LayoutDefinition } from "../../wall.interfaces";
 
 @Injectable()
 export class LayoutStore {

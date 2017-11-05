@@ -1,161 +1,39 @@
-import { Injectable } from '@angular/core';
-import { WallApi } from './components/wall/wall-api.service';
-import { BrickStore } from './components/wall/brick-store.service';
-import { LayoutStore } from './components/wall/layout-store.service';
-import { WALL } from './components/wall/wall.constant';
-import { Subject } from 'rxjs/Subject';
+import { WallDefinition } from "../wall.interfaces";
+import { LayoutStore } from "../components/wall/layout-store.service";
+import { BrickRegistry } from "../registry/brick-registry.service";
+import { BrickStore } from "../components/wall/brick-store.service";
+import { Subscription } from 'rxjs/Subscription';
 import {
     AddBrickEvent,
     RemoveBrickEvent,
     RemoveBricksEvent,
     UpdateBrickStateEvent
-} from './components/wall/wall.events';
-import { Subscription } from 'rxjs/Subscription';
-import { WallDefinition } from './components/wall/interfaces/wall-definition.interface';
-import { BrickRegistry } from './registry/brick-registry.service';
-import { ReactiveProperty, ReactiveReadOnlyProperty } from '../reactive-property';
-import { WallState } from './components/wall/interfaces/wall-state.interface';
-import { IWallModel, IWallViewModel } from "./wall.interfaces";
+} from "../components/wall/wall.events";
+import { Subject } from 'rxjs/Subject';
 
 /**
- * @desc Responsible for storing wall state.
- * Provide core functionality
+ *
+ * STEP BY STEP REFACTORING
+ *
+ * - move layout and brick storage to the model
+ * - eliminate API dependency
+ * - refactor storage
+ *
  * */
-@Injectable()
-export class WallModel implements IWallModel, IWallViewModel {
-    id: string = String(Math.random());
+
+export class Wall2Model {
+    layout: any;
 
     events: Subject<any> = new Subject();
 
-    // UI
-    focusedBrickId: string = null;
-
-    selectedBricks: string[] = [];
-
-    private writeState = {
-        mode: new ReactiveProperty<string>(WALL.MODES.EDIT),
-        isMediaInteractionEnabled: new ReactiveProperty<boolean>(true)
-    };
-
-    state: WallState = {
-        mode: new ReactiveReadOnlyProperty(this.writeState.mode.getValue(), this.writeState.mode.valueChanged),
-        isMediaInteractionEnabled: new ReactiveReadOnlyProperty(this.writeState.isMediaInteractionEnabled.getValue(), this.writeState.isMediaInteractionEnabled.valueChanged)
-    };
-
-    constructor(public api: WallApi,
-                private brickStore: BrickStore,
-                private brickRegistry: BrickRegistry,
-                private layoutStore: LayoutStore) {
-    }
-
-    get canvasLayout(): boolean {
-        return this.layoutStore.canvasLayout;
+    constructor(public brickStore: BrickStore,
+                public brickRegistry: BrickRegistry,
+                public layoutStore: LayoutStore) {
     }
 
     initialize(plan: WallDefinition) {
-        // initialize core API
-        const coreApi = [
-            'state',
-
-            // SELECTION
-            'getSelectedBrickIds',
-            'selectBrick',
-            'selectBricks',
-            'addBrickToSelection',
-            'removeBrickFromSelection',
-            'unSelectBricks',
-
-            // FOCUS
-            'focusOnBrickId',
-            'getFocusedBrickId',
-            'focusOnPreviousTextBrick',
-            'focusOnNextTextBrick',
-
-            // ADD BRICK
-            'addBrickAfterBrickId',
-
-            // MOVE BRICK
-            'moveBrickAfterBrickId',
-            'moveBrickBeforeBrickId',
-            'moveBrickToNewColumn',
-
-            // REMOVE BRICK
-            'removeBrick',
-            'removeBricks',
-
-            // NAVIGATION
-            'getPreviousBrickId',
-            'getNextBrickId',
-            'isBrickAheadOf',
-
-            // BEHAVIOUR
-            'enableMediaInteraction',
-            'disableMediaInteraction',
-
-            // CLIENT
-            'getPlan',
-            'subscribe',
-
-            // BRICk
-            'isRegisteredBrick',
-            'turnBrickInto'
-
-        ].reduce((result, methodName) => {
-            if (this[methodName].bind) {
-                result[methodName] = this[methodName].bind(this);
-            } else {
-                result[methodName] = this[methodName];
-            }
-
-            return result;
-        }, {});
-
-        this.api.registerCoreApi(coreApi);
-
-        // protect API from extending
-        Object.seal(this.api.core);
-
         this.brickStore.initialize(plan.bricks);
         this.layoutStore.initialize(plan.layout);
-    }
-
-    /* SELECTION API */
-
-    selectBrick(brickId: string): void {
-        this.selectedBricks = [brickId];
-        this.focusedBrickId = null;
-    }
-
-    selectBricks(brickIds: string[]) {
-        this.selectedBricks = brickIds;
-    }
-
-    addBrickToSelection(brickId: string): void {
-        this.selectedBricks = this.selectedBricks.slice(0);
-        this.selectedBricks.push(brickId);
-    }
-
-    removeBrickFromSelection(brickId: string): void {
-        const brickIdIndex = this.selectedBricks.indexOf(brickId);
-
-        this.selectedBricks.splice(brickIdIndex, 1);
-
-        this.selectedBricks = this.selectedBricks.slice(0);
-    }
-
-    unSelectBricks(): void {
-        this.selectedBricks = [];
-    }
-
-    // callback for brick selected by user
-    onFocusedBrick(brickId: string) {
-        this.focusedBrickId = brickId;
-
-        this.unSelectBricks();
-    }
-
-    getSelectedBrickIds(): string[] {
-        return this.selectedBricks;
     }
 
     getNextBrickId(brickId: string): string {
@@ -183,7 +61,8 @@ export class WallModel implements IWallModel, IWallViewModel {
         this.brickStore.turnBrickInto(brickId, newTag);
         this.layoutStore.updateCanvasLayout();
 
-        this.focusOnBrickId(brickId);
+        // todo refactoring
+        // this.focusOnBrickId(brickId);
     }
 
     isRegisteredBrick(tag: string) {
@@ -206,7 +85,8 @@ export class WallModel implements IWallModel, IWallViewModel {
 
             this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
 
-            this.focusOnBrickId(newBrick.id);
+            // todo refactoring
+            // this.focusOnBrickId(newBrick.id);
 
             this.events.next(new AddBrickEvent(newBrick.id));
         }
@@ -226,7 +106,8 @@ export class WallModel implements IWallModel, IWallViewModel {
 
         this.layoutStore.addBrickToNewRow(newBrick.id, targetRowIndex);
 
-        this.focusOnBrickId(newBrick.id);
+        // todo refactoring
+        // this.focusOnBrickId(newBrick.id);
 
         this.events.next(new AddBrickEvent(newBrick.id));
     }
@@ -264,7 +145,8 @@ export class WallModel implements IWallModel, IWallViewModel {
         const isLastBrickEmptyText = this.isLastBrickEmptyText();
 
         if (tag === 'text' && isLastBrickEmptyText) {
-            this.focusOnBrickId(isLastBrickEmptyText.id);
+            // todo refactoring
+            // this.focusOnBrickId(isLastBrickEmptyText.id);
         } else {
             this.addBrickToNewRow(tag, this.layoutStore.getRowCount());
         }
@@ -284,7 +166,8 @@ export class WallModel implements IWallModel, IWallViewModel {
                 this.moveBrickAfterInSameColumn(targetBrickIds, beforeBrickId);
             }
 
-            this.unSelectBricks();
+            // todo refactoring
+            // this.unSelectBricks();
         }
     }
 
@@ -302,7 +185,8 @@ export class WallModel implements IWallModel, IWallViewModel {
                 this.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
             }
 
-            this.unSelectBricks();
+            // todo refactoring
+            // this.unSelectBricks();
         }
     }
 
@@ -313,7 +197,8 @@ export class WallModel implements IWallModel, IWallViewModel {
         if (targetBrickIds.indexOf(beforeBrickId) === -1) {
             this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
 
-            this.unSelectBricks();
+            // todo refactoring
+            // this.unSelectBricks();
         }
     }
 
@@ -321,7 +206,8 @@ export class WallModel implements IWallModel, IWallViewModel {
         const isOnlyOneBrickEmptyText = this.isOnlyOneBrickEmptyText();
 
         if (isOnlyOneBrickEmptyText) {
-            this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
+            // todo refactoring
+            // this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
         } else {
             // should find next/prev brick before remove target brick
             const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
@@ -331,9 +217,11 @@ export class WallModel implements IWallModel, IWallViewModel {
             this.layoutStore.removeBrick(brickId);
 
             if (previousTextBrickId) {
-                this.focusOnBrickId(previousTextBrickId);
+                // todo refactoring
+                // this.focusOnBrickId(previousTextBrickId);
             } else if (nextTextBrickId) {
-                this.focusOnBrickId(nextTextBrickId);
+                // todo refactoring
+                // this.focusOnBrickId(nextTextBrickId);
             }
 
             this.events.next(new RemoveBrickEvent(brickId));
@@ -344,7 +232,8 @@ export class WallModel implements IWallModel, IWallViewModel {
         const isOnlyOneBrickEmptyText = this.isOnlyOneBrickEmptyText();
 
         if (isOnlyOneBrickEmptyText) {
-            this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
+            // todo refactoring
+            // this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
         } else {
             brickIds = this.layoutStore.sortBrickIds(brickIds);
 
@@ -358,9 +247,11 @@ export class WallModel implements IWallModel, IWallViewModel {
             });
 
             if (previousTextBrickId) {
-                this.focusOnBrickId(previousTextBrickId);
+                // todo refactoring
+                // this.focusOnBrickId(previousTextBrickId);
             } else if (nextTextBrickId) {
-                this.focusOnBrickId(nextTextBrickId);
+                // todo refactoring
+                // this.focusOnBrickId(nextTextBrickId);
             } else if (!this.brickStore.getBricksCount()) {
                 this.addBrick('text', 0, 0, 0);
             }
@@ -373,60 +264,18 @@ export class WallModel implements IWallModel, IWallViewModel {
         return this.layoutStore.isBrickAheadOf(firstBrickId, secondBrickId);
     }
 
-    getFocusedBrickId(): string {
-        return this.focusedBrickId;
-    }
-
-    focusOnBrickId(brickId: string): void {
-        this.focusedBrickId = null;
-
-        // wait until new brick will be rendered
-        setTimeout(() => {
-            this.focusedBrickId = brickId;
-        });
-    }
-
-    focusOnPreviousTextBrick(brickId: string) {
-        const previousTextBrickId = this.layoutStore.getPreviousTextBrick(brickId);
-
-        if (previousTextBrickId) {
-            this.focusOnBrickId(previousTextBrickId);
-        }
-    }
-
-    focusOnNextTextBrick(brickId: string) {
-        const nextTextBrickId = this.layoutStore.getNextTextBrick(brickId);
-
-        if (nextTextBrickId) {
-            this.focusOnBrickId(nextTextBrickId);
-        }
-    }
-
     subscribe(callback: any): Subscription {
         return this.events.subscribe(callback);
     }
-
-    /**
-     * @public
-     * */
-    enableMediaInteraction() {
-        this.writeState.isMediaInteractionEnabled.setValue(true);
-    };
-
-    /**
-     * @public
-     * */
-    disableMediaInteraction() {
-        this.writeState.isMediaInteractionEnabled.setValue(false);
-    };
 
     reset() {
         this.brickStore.reset();
         this.layoutStore.reset();
 
-        this.focusedBrickId = null;
+        // todo refactoring
+        // this.focusedBrickId = null;
 
-        this.unSelectBricks();
+        // this.unSelectBricks();
     }
 
     private moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {

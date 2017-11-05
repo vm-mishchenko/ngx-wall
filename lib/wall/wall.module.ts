@@ -10,6 +10,7 @@ import { SelectionPlugin } from './plugins/selection/selection';
 import { PickOutModule } from '../modules/pick-out';
 import { TowModule } from '../modules/tow';
 import { RadarModule } from "../modules/radar";
+import { WallModelFactory } from "./model/wall-model.factory";
 
 @NgModule({
     imports: [
@@ -21,6 +22,7 @@ import { RadarModule } from "../modules/radar";
 
     providers: [
         BrickRegistry,
+        WallModelFactory,
         {
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
         }
