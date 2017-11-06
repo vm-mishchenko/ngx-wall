@@ -1,6 +1,5 @@
 import { IWallModel, WallDefinition } from '../wall.interfaces';
 import { LayoutStore } from '../components/wall/layout-store.service';
-import { BrickRegistry } from '../registry/brick-registry.service';
 import { BrickStore } from '../components/wall/brick-store.service';
 import { Subscription } from 'rxjs/Subscription';
 import {
@@ -17,9 +16,11 @@ import { Subject } from 'rxjs/Subject';
  *
  * STEP BY STEP REFACTORING
  *
- * - move layout and brick storage to the model
- * - eliminate API dependency
- * - refactor storage
+ * + move layout and brick storage to the model
+ * + eliminate API dependency
+ * - wall-view.model should build layout based on the wall.model
+ * - eliminate layout storage and brick storage - create one tree storage
+ * - add version for the Wall Definition
  *
  * */
 
@@ -27,7 +28,6 @@ export class WallModel implements IWallModel {
     private events: Subject<any> = new Subject();
 
     constructor(public brickStore: BrickStore,
-                public brickRegistry: BrickRegistry,
                 public layoutStore: LayoutStore) {
     }
 
@@ -68,16 +68,11 @@ export class WallModel implements IWallModel {
     turnBrickInto(brickId: string, newTag: string) {
         const oldTag = this.brickStore.getBrickTagById(brickId);
         this.brickStore.turnBrickInto(brickId, newTag);
-        this.layoutStore.updateCanvasLayout();
 
         this.events.next(new TurnBrickIntoEvent(brickId, newTag, oldTag));
     }
 
-    isRegisteredBrick(tag: string) {
-        return Boolean(this.brickRegistry.get(tag));
-    }
-
-    /* Add text brick to the bottom of wall in the new row */
+    // Add text brick to the bottom of wall in the new row
     addDefaultBrick() {
         if (!this.brickStore.getBricksCount()) {
             this.addBrick('text', 0, 0, 0);
@@ -86,7 +81,7 @@ export class WallModel implements IWallModel {
         }
     }
 
-    /* Add brick to existing row and existing column */
+    // Add brick to existing row and existing column
     addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
         if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
             const newBrick = this.brickStore.create(tag);
@@ -97,7 +92,7 @@ export class WallModel implements IWallModel {
         }
     }
 
-    /* Create new row and and put brick to it */
+    // Create new row and and put brick to it
     addBrickToNewRow(tag: string, targetRowIndex: number) {
         const totalRowCount = this.layoutStore.getRowCount();
         const lastRowIndex = totalRowCount - 1;
@@ -155,7 +150,6 @@ export class WallModel implements IWallModel {
         this.events.next(new MoveBrickEvent(targetBrickIds, beforeBrickId));
     }
 
-
     moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string) {
         const brickPosition = this.layoutStore.getBrickPositionByBrickId(beforeBrickId);
         const columnCount = this.layoutStore.getColumnCount(brickPosition.rowIndex);
@@ -168,7 +162,6 @@ export class WallModel implements IWallModel {
 
         this.events.next(new MoveBrickEvent(targetBrickIds, beforeBrickId));
     }
-
 
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
         this.layoutStore.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
@@ -236,8 +229,26 @@ export class WallModel implements IWallModel {
         }
     }
 
-    getCanvasLayout() {
-        return this.layoutStore.canvasLayout;
+    traverse(fn: Function) {
+        return this.layoutStore.layout.bricks.map((row) => {
+            const preparedRow = {
+                columns: row.columns.map((column) => {
+                    return {
+                        bricks: column.bricks.map((brickConfig) => {
+                            const brickStorage = this.brickStore.getBrickStorageById(brickConfig.id);
+
+                            return {
+                                id: brickConfig.id,
+                                tag: brickStorage.tag,
+                                state: brickStorage.state
+                            }
+                        })
+                    }
+                })
+            };
+
+            fn(preparedRow);
+        });
     }
 
     private moveBrickAfterInNewRow(targetBrickIds: string[], beforeBrickId: string) {
@@ -255,6 +266,4 @@ export class WallModel implements IWallModel {
     private moveBrickBeforeInSameColumn(targetBrickIds: string[], beforeBrickId: string) {
         this.layoutStore.moveBrickBeforeInSameColumn(targetBrickIds, beforeBrickId);
     }
-
-
 }

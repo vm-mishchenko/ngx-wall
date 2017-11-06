@@ -14,6 +14,7 @@ import {
     RemoveBricksEvent,
     TurnBrickIntoEvent
 } from '../../model/wall.events';
+import { BrickRegistry } from '../../registry/brick-registry.service';
 
 @Injectable()
 export class WallViewModel implements IWallViewModel {
@@ -36,11 +37,39 @@ export class WallViewModel implements IWallViewModel {
         isMediaInteractionEnabled: new ReactiveReadOnlyProperty(this.writeState.isMediaInteractionEnabled.getValue(), this.writeState.isMediaInteractionEnabled.valueChanged)
     };
 
-    constructor(public api: WallApi) {
+    constructor(public api: WallApi,
+                private brickRegistry: BrickRegistry) {
     }
 
-    get canvasLayout(): boolean {
-        return this.wallModel ? this.wallModel.getCanvasLayout() : null;
+    get canvasLayout() {
+        return this.wallModel ? this.getCanvasLayout() : null;
+    }
+
+    getCanvasLayout() {
+        const canvasLayout = {
+            rows: []
+        };
+
+        this.wallModel.traverse((row) => {
+            canvasLayout.rows.push({
+                columns: row.columns.map((column) => {
+                    return {
+                        bricks: column.bricks.map((brickConfig) => {
+                            const component = this.brickRegistry.get(brickConfig.tag).component;
+
+                            return {
+                                id: brickConfig.id,
+                                hash: brickConfig.tag + brickConfig.id,
+                                state: brickConfig.state,
+                                component: component
+                            };
+                        })
+                    };
+                })
+            });
+        });
+
+        return canvasLayout;
     }
 
     initialize(wallModel: IWallModel) {
@@ -315,6 +344,10 @@ export class WallViewModel implements IWallViewModel {
         this.focusedBrickId = brickId;
 
         this.unSelectBricks();
+    }
+
+    isRegisteredBrick(tag: string) {
+        return Boolean(this.brickRegistry.get(tag));
     }
 
     reset() {

@@ -8,6 +8,7 @@ import { WallModel } from './wall.model';
 @Injectable()
 export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
+        console.log(brickRegistry);
     }
 
     create(plan: WallDefinition): IWallModel {
@@ -16,7 +17,6 @@ export class WallModelFactory {
 
         const wallModel = new WallModel(
             brickStore,
-            this.brickRegistry,
             layoutStore
         );
 

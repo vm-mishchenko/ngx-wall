@@ -1,5 +1,10 @@
 'use strict';
 
+const path = require('path');
+const webpack = require('webpack');
+const libraryConfig = require('./library.config');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 module.exports = {
     devtool: 'inline-source-map',
 
@@ -11,7 +16,10 @@ module.exports = {
         rules: [
             {
                 test: /\.ts$/,
-                loader: ['awesome-typescript-loader', 'angular2-template-loader']
+                loader: [
+                    'awesome-typescript-loader',
+                    'angular2-template-loader'
+                ]
             },
             {
                 test: /\.html$/,
@@ -19,12 +27,22 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: [
-                    'to-string-loader',
-                    'css-loader',
-                    'sass-loader'
-                ]
+                include: root('lib/resources'),
+                loader: ExtractTextPlugin.extract({
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ]
+                })
             }
         ]
-    }
+    },
+
+    plugins: [
+        new ExtractTextPlugin(`${libraryConfig.libraryName}.css`)
+    ]
 };
+
+function root(p) {
+    return path.join(process.cwd(), p);
+}

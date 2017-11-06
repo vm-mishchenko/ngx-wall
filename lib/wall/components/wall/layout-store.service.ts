@@ -7,41 +7,11 @@ import { LayoutDefinition } from '../../wall.interfaces';
 export class LayoutStore {
     layout: LayoutDefinition = null;
 
-    canvasLayout: any = {
-        bricks: []
-    };
-
     constructor(private brickRegistry: BrickRegistry, private brickStore: BrickStore) {
     }
 
     initialize(layout: LayoutDefinition) {
         this.layout = layout;
-
-        this.updateCanvasLayout();
-    }
-
-    updateCanvasLayout() {
-        this.canvasLayout = {
-            rows: this.layout.bricks.map((row) => {
-                return {
-                    columns: row.columns.map((column) => {
-                        return {
-                            bricks: column.bricks.map((brickConfig) => {
-                                const brickStorage = this.brickStore.getBrickStorageById(brickConfig.id);
-                                const component = this.brickRegistry.get(brickStorage.tag).component;
-
-                                return {
-                                    id: brickStorage.id,
-                                    hash: brickStorage.tag + brickStorage.id,
-                                    state: brickStorage.state,
-                                    component: component
-                                };
-                            })
-                        };
-                    })
-                }
-            })
-        };
     }
 
     serialize() {
@@ -57,8 +27,6 @@ export class LayoutStore {
         };
 
         column.bricks.splice(positionIndex, 0, brick);
-
-        this.updateCanvasLayout();
     }
 
     // TODO: remove this method, instead use addBrickToNewRowAfterBrickId
@@ -187,8 +155,6 @@ export class LayoutStore {
             }
         }
 
-        this.updateCanvasLayout();
-
         return removedBrick[0];
     }
 
@@ -240,7 +206,6 @@ export class LayoutStore {
         });
     }
 
-    /*Helpers*/
     isRowExists(targetRowIndex: number): boolean {
         return Boolean(this.layout.bricks[targetRowIndex]);
     }

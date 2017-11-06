@@ -6,11 +6,12 @@ import {
     DividerBrickModule,
     HeaderBrickModule,
     ImgBrickModule,
-    PickOutModule,
     QuoteBrickModule,
     TextBrickModule,
-    TowModule,
     VideoBrickModule,
+
+    TowModule,
+    PickOutModule,
     WALL_PLUGIN,
     WallApi,
     WallModule

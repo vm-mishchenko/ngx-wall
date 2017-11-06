@@ -37,7 +37,7 @@ export interface RowLayoutDefinition {
 }
 
 export interface ColumnLayoutDefinition {
-    bricks: { id: string }[]
+    bricks: { id: string }[];
 }
 
 export interface IWallViewModel {
@@ -58,6 +58,8 @@ export interface IWallViewModel {
     getSelectedBrickIds(): void;
 
     getFocusedBrickId(): string;
+
+    isRegisteredBrick(tag: string): boolean;
 
     focusOnBrickId(brickId: string): void
 
@@ -84,9 +86,6 @@ export interface IWallModel {
     updateBrickState(brickId, brickState): void;
 
     turnBrickInto(brickId: string, newTag: string);
-
-    // move to separate service
-    isRegisteredBrick(tag: string): boolean;
 
     addDefaultBrick(): void;
 
@@ -118,7 +117,7 @@ export interface IWallModel {
 
     subscribe(fn: any): Subscription;
 
-    getCanvasLayout(): any;
+    traverse(fn: Function): void;
 
     isOnlyOneBrickEmptyText(): any;
 }

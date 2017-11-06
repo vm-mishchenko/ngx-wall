@@ -57,6 +57,7 @@ export class WallCanvasComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
+
         if (changes.focusedBrickId) {
             if (changes.focusedBrickId.currentValue) {
                 this.wallCanvasController.focusBrickById(changes.focusedBrickId.currentValue);
