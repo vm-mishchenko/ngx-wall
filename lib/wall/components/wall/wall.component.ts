@@ -1,11 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges } from '@angular/core';
 import { WallConfiguration } from './wall.interfaces';
-import { WallController } from './wall.controller';
 import { WallApi } from './wall-api.service';
 import { BrickStore } from './brick-store.service';
 import { LayoutStore } from './layout-store.service';
-import { IWallModel } from "../../wall.interfaces";
-import { WallViewModel } from "../../model/wall-view.model";
+import { IWallModel } from '../../wall.interfaces';
+import { WallViewModel } from './wall-view.model';
+import { WALL_PLUGIN } from '../../wall.tokens';
 
 @Component({
     selector: 'wall',
@@ -14,45 +14,81 @@ import { WallViewModel } from "../../model/wall-view.model";
         WallApi,
         WallViewModel,
         BrickStore,
-        LayoutStore,
-        WallController
+        LayoutStore
     ]
 })
 export class WallComponent implements OnChanges, OnDestroy {
     @Input() model: IWallModel = null;
     @Input() configuration: WallConfiguration = null;
+    private initializedPlugins: any[] = [];
 
-    constructor(private wallController: WallController) {
+    constructor(private injector: Injector,
+                public api: WallApi,
+                private wallViewModel: WallViewModel) {
     }
 
     onCanvasClick() {
-        this.wallController.wallModel.addDefaultBrick();
+        this.model.addDefaultBrick();
     }
 
     // callback when user focused to some brick by mouse click
     onFocusedBrick(brickId: string) {
-        this.wallController.wallModel.onFocusedBrick(brickId);
+        this.wallViewModel.onFocusedBrick(brickId);
     }
 
     onBrickStateChanged(event) {
-        this.wallController.wallModel.updateBrickState(event.brickId, event.brickState);
+        this.model.updateBrickState(event.brickId, event.brickState);
     }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.model) {
             if (!changes.model.firstChange) {
-                this.wallController.reset();
+                this.cleanUp();
             }
+
 
             this.initialize();
         }
     }
 
     ngOnDestroy() {
-        this.wallController.reset();
+        this.cleanUp();
     }
 
     private initialize() {
-        this.wallController.initialize(this.model, this.configuration);
+        // initialize view model by business model
+        this.wallViewModel.initialize(this.model);
+
+        this.initializePlugins();
+
+        // pass initialized API back to the client
+        if (this.configuration && this.configuration.onRegisterApi) {
+            this.configuration.onRegisterApi(this.api);
+        }
+    }
+
+    private cleanUp() {
+        this.wallViewModel.reset();
+        this.destroyPlugins();
+    }
+
+    private initializePlugins() {
+        // initialize plugins
+        const plugins = this.injector.get(WALL_PLUGIN);
+        const pluginInjector = ReflectiveInjector.resolveAndCreate(plugins, this.injector);
+
+        plugins.forEach((plugin) => {
+            this.initializedPlugins.push(pluginInjector.resolveAndInstantiate(plugin));
+        });
+    }
+
+    private destroyPlugins() {
+        this.initializedPlugins.forEach((plugin) => {
+            if (plugin.destroy) {
+                plugin.destroy();
+            }
+        });
+
+        this.initializedPlugins = [];
     }
 }

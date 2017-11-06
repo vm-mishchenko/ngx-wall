@@ -1,7 +1,7 @@
 import { WallCanvasApi } from './wall-canvas.api';
 import { EventEmitter, Injectable } from '@angular/core';
 import { RemoveBrickEvent, WallApi } from '../wall';
-import { RemoveBricksEvent } from '../wall/wall.events';
+import { RemoveBricksEvent } from '../../model/wall.events';
 
 @Injectable()
 export class WallCanvasController {

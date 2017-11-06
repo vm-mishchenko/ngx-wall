@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrickRegistry } from '../../registry/brick-registry.service';
 import { BrickStore } from './brick-store.service';
-import { LayoutDefinition } from "../../wall.interfaces";
+import { LayoutDefinition } from '../../wall.interfaces';
 
 @Injectable()
 export class LayoutStore {
@@ -299,12 +299,6 @@ export class LayoutStore {
         }
 
         return brickPosition;
-    }
-
-    reset() {
-        this.layout = {
-            bricks: []
-        };
     }
 
     private createNewRow(targetRowIndex: number): void {

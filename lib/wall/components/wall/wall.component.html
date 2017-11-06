@@ -1,9 +1,9 @@
-<wall-canvas *ngIf="wallController.wallViewModel.canvasLayout"
+<wall-canvas *ngIf="wallViewModel.canvasLayout"
              (canvasClick)="onCanvasClick()"
              (onFocusedBrick)="onFocusedBrick($event)"
              (onBrickStateChanged)="onBrickStateChanged($event)"
-             [isMediaInteractionEnabled]="wallController.wallViewModel.state.isMediaInteractionEnabled.getValue()"
-             [focusedBrickId]="wallController.wallViewModel.focusedBrickId"
-             [selectedBricks]="wallController.wallViewModel.selectedBricks"
-             [layout]="wallController.wallViewModel.canvasLayout">
+             [isMediaInteractionEnabled]="wallViewModel.state.isMediaInteractionEnabled.getValue()"
+             [focusedBrickId]="wallViewModel.focusedBrickId"
+             [selectedBricks]="wallViewModel.selectedBricks"
+             [layout]="wallViewModel.canvasLayout">
 </wall-canvas>

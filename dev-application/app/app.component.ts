@@ -302,6 +302,11 @@ export class AppComponent implements OnInit {
 
     constructor(private wallModelFactory: WallModelFactory) {
         this.wall2Model = this.wallModelFactory.create(this.wallPlan);
+
+        setTimeout(() => {
+            console.log(`add!`);
+            this.wall2Model.removeBrick('669f8a76-a4a7-8cbe-a15a-c77149194a85');
+        }, 2000);
     }
 
     ngOnInit() {

@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
-import { WallDefinition } from "../wall.interfaces";
-import { BrickStore } from "../components/wall/brick-store.service";
-import { LayoutStore } from "../components/wall/layout-store.service";
-import { BrickRegistry } from "../registry/brick-registry.service";
-import { Wall2Model } from "./wall2.model";
+import { IWallModel, WallDefinition } from '../wall.interfaces';
+import { BrickStore } from '../components/wall/brick-store.service';
+import { LayoutStore } from '../components/wall/layout-store.service';
+import { BrickRegistry } from '../registry/brick-registry.service';
+import { WallModel } from './wall.model';
 
 @Injectable()
 export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
-    create(plan: WallDefinition): any {
+    create(plan: WallDefinition): IWallModel {
         const brickStore = new BrickStore();
         const layoutStore = new LayoutStore(this.brickRegistry, brickStore);
 
-        const wallModel = new Wall2Model(
+        const wallModel = new WallModel(
             brickStore,
             this.brickRegistry,
             layoutStore

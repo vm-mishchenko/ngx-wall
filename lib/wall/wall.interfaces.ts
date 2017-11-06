@@ -1,5 +1,7 @@
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
 
+import { Subscription } from 'rxjs/Subscription';
+
 export const awesomeTypescriptLoaderBug2 = true;
 
 // Register new brick
@@ -69,9 +71,11 @@ export interface IWallViewModel {
 }
 
 export interface IWallModel {
-    id: string;
-
     getNextBrickId(brickId: string): string;
+
+    getNextTextBrick(brickId: string): string;
+
+    getPreviousTextBrick(brickId: string): string;
 
     getPreviousBrickId(brickId: string): string;
 
@@ -108,5 +112,13 @@ export interface IWallModel {
 
     removeBricks(brickIds): void;
 
+    getBricksCount(): number;
+
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean;
+
+    subscribe(fn: any): Subscription;
+
+    getCanvasLayout(): any;
+
+    isOnlyOneBrickEmptyText(): any;
 }
