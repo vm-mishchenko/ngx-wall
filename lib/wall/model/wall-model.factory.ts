@@ -8,7 +8,6 @@ import { WallModel } from './wall.model';
 @Injectable()
 export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
-        console.log(brickRegistry);
     }
 
     create(plan: WallDefinition): IWallModel {

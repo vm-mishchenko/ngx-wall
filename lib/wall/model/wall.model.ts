@@ -11,6 +11,7 @@ import {
     UpdateBrickStateEvent
 } from './wall.events';
 import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 /**
  *
@@ -18,13 +19,72 @@ import { Subject } from 'rxjs/Subject';
  *
  * + move layout and brick storage to the model
  * + eliminate API dependency
- * - wall-view.model should build layout based on the wall.model
+ * + wall-view.model should build layout based on the wall.model
  * - eliminate layout storage and brick storage - create one tree storage
  * - add version for the Wall Definition
  *
  * */
 
+class WallLayout {
+    private rows: WallRow[] = [];
+
+    addBrick(rowIndex, columnIndex, brickIndex, brick: WallBrick) {
+        let row = this.rows[rowIndex];
+
+        if (!row) {
+            this.addRow(rowIndex);
+        }
+    }
+
+    private addRow(index: number) {
+        const wallRow = new WallRow();
+
+        this.rows.splice(index, 0, wallRow);
+
+        return wallRow;
+    }
+}
+
+class WallRow {
+    private columns: WallColumn[] = [];
+
+    addColumn(index: number) {
+        this.columns.splice(index, 0, new WallColumn());
+    }
+
+    addBrick(tag: string, columnIndex: number, brickIndex: number) {
+        this.columns[columnIndex].addBrick(tag, brickIndex);
+    }
+}
+
+class WallColumn {
+    private bricks: WallBrick[] = [];
+
+    addBrick(tag: string, index: number) {
+        this.bricks.splice(index, 0);
+    }
+}
+
+class WallBrick {
+    id: string;
+    tag: string;
+    meta: any;
+    state: BehaviorSubject<any> = new BehaviorSubject({});
+
+    constructor(id: string, tag: string, meta: any) {
+        this.id = id;
+        this.tag = tag;
+        this.meta = meta;
+    }
+
+    updateState(newState) {
+        this.state.next(newState);
+    }
+}
+
 export class WallModel implements IWallModel {
+    layout: WallLayout;
+
     private events: Subject<any> = new Subject();
 
     constructor(public brickStore: BrickStore,
@@ -32,9 +92,56 @@ export class WallModel implements IWallModel {
     }
 
     initialize(plan: WallDefinition) {
+        this.layout = new WallLayout();
+
+        plan.layout.bricks.forEach((row, rowIndex) => {
+            row.columns.forEach((column, columnIndex) => {
+                const wallColumn = new WallColumn();
+
+                column.bricks.forEach((brick, brickIndex) => {
+                    const planBrick = plan.bricks.find((planBrick) => {
+                        return brick.id === planBrick.id;
+                    });
+
+                    const wallBrick = this.restoreBrick(planBrick.id, planBrick.tag, planBrick.meta, planBrick.data);
+
+                    this.layout.addBrick(rowIndex, columnIndex, brickIndex, wallBrick);
+                });
+            });
+        });
+
         this.brickStore.initialize(plan.bricks);
         this.layoutStore.initialize(plan.layout);
     }
+
+
+    private restoreBrick(id, tag, meta, data) {
+        const brick = new WallBrick(id, tag, meta);
+
+        brick.updateState(data);
+
+        return brick;
+    }
+
+    // commands
+
+    addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
+        const targetRow = this.rows[targetRowIndex];
+
+        const newBrick = targetRow.addBrick(tag, targetColumnIndex, positionIndex);
+
+        this.events.next(new AddBrickEvent(newBrick.id));
+    }
+
+    // Add text brick to the bottom of wall in the new row
+    addDefaultBrick() {
+        if (!this.brickStore.getBricksCount()) {
+            this.addBrick('text', 0, 0, 0);
+        } else {
+            this.addBrickAtTheEnd('text');
+        }
+    }
+
 
     getNextBrickId(brickId: string): string {
         return this.layoutStore.getNextBrickId(brickId);
@@ -72,25 +179,6 @@ export class WallModel implements IWallModel {
         this.events.next(new TurnBrickIntoEvent(brickId, newTag, oldTag));
     }
 
-    // Add text brick to the bottom of wall in the new row
-    addDefaultBrick() {
-        if (!this.brickStore.getBricksCount()) {
-            this.addBrick('text', 0, 0, 0);
-        } else {
-            this.addBrickAtTheEnd('text');
-        }
-    }
-
-    // Add brick to existing row and existing column
-    addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number) {
-        if (this.layoutStore.isColumnExist(targetRowIndex, targetColumnIndex)) {
-            const newBrick = this.brickStore.create(tag);
-
-            this.layoutStore.addBrick(newBrick.id, targetRowIndex, targetColumnIndex, positionIndex);
-
-            this.events.next(new AddBrickEvent(newBrick.id));
-        }
-    }
 
     // Create new row and and put brick to it
     addBrickToNewRow(tag: string, targetRowIndex: number) {

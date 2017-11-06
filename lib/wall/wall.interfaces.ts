@@ -29,6 +29,7 @@ export interface BrickDefinition {
 }
 
 export interface LayoutDefinition {
+    // todo rename to rows
     bricks: RowLayoutDefinition[];
 }
 
