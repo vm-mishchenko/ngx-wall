@@ -129,8 +129,6 @@ export class WallModel implements IWallModel {
     }
 
     moveBrickAfterBrickId(movedBrickIds: string[], afterBrickId: string): void {
-        debugger
-
         const afterBrickPosition = this.layout.getBrickPosition(afterBrickId);
         const columnCount = this.layout.getColumnCount(afterBrickPosition.rowIndex);
 
