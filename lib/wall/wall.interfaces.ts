@@ -76,9 +76,9 @@ export interface IWallViewModel {
 export interface IWallModel {
     getNextBrickId(brickId: string): string;
 
-    getNextTextBrick(brickId: string): string;
+    getNextTextBrickId(brickId: string): string;
 
-    getPreviousTextBrick(brickId: string): string;
+    getPreviousTextBrickId(brickId: string): string;
 
     getPreviousBrickId(brickId: string): string;
 
@@ -90,17 +90,7 @@ export interface IWallModel {
 
     addDefaultBrick(): void;
 
-    addBrick(tag: string, targetRowIndex: number, targetColumnIndex: number, positionIndex: number): void;
-
-    addBrickToNewRow(tag: string, targetRowIndex: number): void;
-
-    addBrickAfterInSameColumn(brickId: string, tag: string): void;
-
-    addBrickAfterInNewRow(brickId: string, tag: string): void;
-
     addBrickAfterBrickId(brickId: string, tag: string): void;
-
-    addBrickAtTheEnd(tag: string): void;
 
     moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string): void;
 
@@ -120,5 +110,7 @@ export interface IWallModel {
 
     traverse(fn: Function): void;
 
-    isOnlyOneBrickEmptyText(): any;
+    getBrickIds(): string[];
+
+    getBrickTag(brickId: string): string;
 }

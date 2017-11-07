@@ -120,9 +120,7 @@ export class WallViewModel implements IWallViewModel {
             'moveBrickToNewColumn',
 
             // ADD BRICK
-            'addBrickAfterBrickId',
-
-
+            'addBrickAfterBrickId'
         ].reduce((result, methodName) => {
             let method;
 
@@ -171,7 +169,7 @@ export class WallViewModel implements IWallViewModel {
                 } else if (event.nextBrickId) {
                     this.focusOnBrickId(event.nextBrickId);
                 } else if (!this.wallModel.getBricksCount()) {
-                    this.wallModel.addBrick('text', 0, 0, 0);
+                    // this.wallModel.addBrick('text', 0, 0, 0);
                 }
             }
         });
@@ -248,7 +246,7 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     focusOnPreviousTextBrick(brickId: string) {
-        const previousTextBrickId = this.wallModel.getPreviousTextBrick(brickId);
+        const previousTextBrickId = this.wallModel.getPreviousTextBrickId(brickId);
 
         if (previousTextBrickId) {
             this.focusOnBrickId(previousTextBrickId);
@@ -259,7 +257,7 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     focusOnNextTextBrick(brickId: string) {
-        const nextTextBrickId = this.wallModel.getNextTextBrick(brickId);
+        const nextTextBrickId = this.wallModel.getNextTextBrickId(brickId);
 
         if (nextTextBrickId) {
             this.focusOnBrickId(nextTextBrickId);
@@ -318,10 +316,10 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     removeBrick(brickId: string) {
-        const isOnlyOneBrickEmptyText = this.wallModel.isOnlyOneBrickEmptyText();
+        const brickIds = this.wallModel.getBrickIds();
 
-        if (isOnlyOneBrickEmptyText) {
-            this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
+        if (brickIds.length === 1 && this.wallModel.getBrickTag(brickIds[0]) === 'text') {
+            this.focusOnBrickId(brickIds[0]);
         } else {
             this.wallModel.removeBrick(brickId);
         }
@@ -331,10 +329,10 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     removeBricks(brickIds: string[]) {
-        const isOnlyOneBrickEmptyText = this.wallModel.isOnlyOneBrickEmptyText();
+        const currentBrickIds = this.wallModel.getBrickIds();
 
-        if (isOnlyOneBrickEmptyText) {
-            this.focusOnBrickId(isOnlyOneBrickEmptyText.id);
+        if (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) === 'text') {
+            this.focusOnBrickId(currentBrickIds[0]);
         } else {
             this.wallModel.removeBricks(brickIds);
         }

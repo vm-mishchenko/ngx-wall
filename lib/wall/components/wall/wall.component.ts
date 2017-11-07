@@ -1,8 +1,6 @@
 import { Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges } from '@angular/core';
 import { WallConfiguration } from './wall.interfaces';
 import { WallApi } from './wall-api.service';
-import { BrickStore } from './brick-store.service';
-import { LayoutStore } from './layout-store.service';
 import { IWallModel } from '../../wall.interfaces';
 import { WallViewModel } from './wall-view.model';
 import { WALL_PLUGIN } from '../../wall.tokens';
@@ -12,9 +10,7 @@ import { WALL_PLUGIN } from '../../wall.tokens';
     templateUrl: './wall.component.html',
     providers: [
         WallApi,
-        WallViewModel,
-        BrickStore,
-        LayoutStore
+        WallViewModel
     ]
 })
 export class WallComponent implements OnChanges, OnDestroy {
