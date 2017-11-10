@@ -1,6 +1,8 @@
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
 
 import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { EventEmitter } from '@angular/core';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
@@ -39,6 +41,12 @@ export interface RowLayoutDefinition {
 
 export interface ColumnLayoutDefinition {
     bricks: { id: string }[];
+}
+
+export interface IWallComponent {
+    id: string;
+    state: BehaviorSubject<any>;
+    stateChanges: EventEmitter<any>;
 }
 
 export interface IWallViewModel {
