@@ -301,11 +301,10 @@ export class AppComponent implements OnInit {
     wall2Model: any;
 
     constructor(private wallModelFactory: WallModelFactory) {
-        this.wall2Model = this.wallModelFactory.create(this.wallPlan);
+        this.wall2Model = this.wallModelFactory.create();
     }
 
     ngOnInit() {
-
     }
 
     onRegisterApi(wallApi: WallApi) {

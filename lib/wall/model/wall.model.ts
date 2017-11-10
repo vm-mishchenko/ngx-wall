@@ -99,8 +99,8 @@ export class WallModel implements IWallModel {
 
         this.events.next(new RemoveBrickEvent(
             brickId,
-            previousTextBrick.id,
-            nextTextBrick.id
+            previousTextBrick && previousTextBrick.id,
+            nextTextBrick && nextTextBrick.id
         ));
     }
 
@@ -114,8 +114,8 @@ export class WallModel implements IWallModel {
 
         this.events.next(new RemoveBricksEvent(
             brickIds,
-            previousTextBrick.id,
-            nextTextBrick.id
+            previousTextBrick && previousTextBrick.id,
+            nextTextBrick && nextTextBrick.id
         ));
     }
 

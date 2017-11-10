@@ -353,4 +353,6 @@ export class WallViewModel implements IWallViewModel {
 
         this.unSelectBricks();
     }
+
+    // QUERIES
 }
