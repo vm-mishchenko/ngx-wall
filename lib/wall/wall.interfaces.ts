@@ -82,6 +82,8 @@ export interface IWallModel {
 
     getPreviousBrickId(brickId: string): string;
 
+    initialize(plan: WallDefinition);
+
     getPlan(): WallDefinition;
 
     updateBrickState(brickId, brickState): void;

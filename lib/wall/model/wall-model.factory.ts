@@ -8,11 +8,20 @@ export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
-    create(plan: WallDefinition): IWallModel {
+    create(plan?: WallDefinition): IWallModel {
         const wallModel = new WallModel(this.brickRegistry);
 
-        wallModel.initialize(plan);
+        wallModel.initialize(plan || this.getDefaultPlan());
 
         return wallModel;
+    }
+
+    getDefaultPlan() {
+        return {
+            bricks: [],
+            layout: {
+                bricks: []
+            }
+        };
     }
 }
