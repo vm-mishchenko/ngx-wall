@@ -3,18 +3,15 @@ import { IWallModel, WallDefinition } from '../wall.interfaces';
 import { BrickRegistry } from '../registry/brick-registry.service';
 import { WallModel } from './wall.model';
 
-
 @Injectable()
 export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
     create(plan?: WallDefinition): IWallModel {
-        const modelPlan = plan || this.getDefaultPlan();
-
         const wallModel = new WallModel(this.brickRegistry);
 
-        wallModel.initialize(modelPlan);
+        wallModel.initialize(plan || this.getDefaultPlan());
 
         return wallModel;
     }
@@ -25,6 +22,6 @@ export class WallModelFactory {
             layout: {
                 bricks: []
             }
-        }
+        };
     }
 }
