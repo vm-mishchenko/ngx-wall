@@ -3,6 +3,7 @@
 import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EventEmitter } from '@angular/core';
+import { WallBrick } from './model/wall-brick.model';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
@@ -119,6 +120,8 @@ export interface IWallModel {
     subscribe(fn: any): Subscription;
 
     traverse(fn: Function): void;
+
+    filterBricks(predictor: Function): WallBrick[];
 
     getBrickIds(): string[];
 

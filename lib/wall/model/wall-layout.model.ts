@@ -211,6 +211,12 @@ export class WallLayout {
         });
     }
 
+    filterBricks(predictor: Function) {
+        return this.getBrickSequence((wallBrick) => {
+            return predictor(wallBrick);
+        });
+    }
+
     getBrickPosition(brickId: string) {
         const brickPosition = {
             rowIndex: null,

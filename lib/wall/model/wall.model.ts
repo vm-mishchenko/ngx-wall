@@ -225,6 +225,10 @@ export class WallModel implements IWallModel {
         return previousTextBrick && previousTextBrick.id;
     }
 
+    filterBricks(predictor: Function) {
+        return this.layout.filterBricks(predictor);
+    }
+
     traverse(fn: Function) {
         return this.layout.traverse((row: IWallRow) => {
             const preparedRow = {
@@ -237,7 +241,7 @@ export class WallModel implements IWallModel {
                                 state: brickConfig.state
                             }
                         })
-                    }
+                    };
                 })
             };
 
