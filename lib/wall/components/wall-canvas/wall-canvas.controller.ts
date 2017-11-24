@@ -24,12 +24,12 @@ export class WallCanvasController {
 
         this.wallApi.core.subscribe((e) => {
             if (e instanceof RemoveBrickEvent) {
-                this.removeCanvasBrickInstance(e.brickId);
+                this.removeCanvasBrickInstance(e.brick.id);
             }
 
             if (e instanceof RemoveBricksEvent) {
-                e.brickIds.forEach((brickId) => {
-                    this.removeCanvasBrickInstance(brickId);
+                e.bricks.forEach((removedBrick) => {
+                    this.removeCanvasBrickInstance(removedBrick.id);
                 });
             }
         });

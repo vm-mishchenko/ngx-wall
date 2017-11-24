@@ -95,10 +95,16 @@ export class WallModel implements IWallModel {
         const nextTextBrick = this.layout.getNextTextBrick(brickId);
         const previousTextBrick = this.layout.getPreviousTextBrick(brickId);
 
+        const removedBrick = this.getBrickById(brickId);
+
         this.layout.removeBrick(brickId);
 
         this.events.next(new RemoveBrickEvent(
-            brickId,
+            {
+                id: removedBrick.id,
+                tag: removedBrick.tag,
+                state: removedBrick.state.getValue()
+            },
             previousTextBrick && previousTextBrick.id,
             nextTextBrick && nextTextBrick.id
         ));
@@ -108,12 +114,20 @@ export class WallModel implements IWallModel {
         const nextTextBrick = this.layout.getNextTextBrick(brickIds[brickIds.length - 1]);
         const previousTextBrick = this.layout.getPreviousTextBrick(brickIds[0]);
 
-        brickIds.forEach((brickId) => {
+        const removedBricks = brickIds.map((brickId) => {
+            const removedBrick = this.getBrickById(brickId);
+
             this.layout.removeBrick(brickId);
+
+            return {
+                id: removedBrick.id,
+                tag: removedBrick.tag,
+                state: removedBrick.state.getValue()
+            };
         });
 
         this.events.next(new RemoveBricksEvent(
-            brickIds,
+            removedBricks,
             previousTextBrick && previousTextBrick.id,
             nextTextBrick && nextTextBrick.id
         ));
@@ -247,6 +261,10 @@ export class WallModel implements IWallModel {
 
             fn(preparedRow);
         });
+    }
+
+    getBrickById(brickId: string): WallBrick {
+        return this.layout.getBrickById(brickId);
     }
 
     getBrickIds(): string[] {

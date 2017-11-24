@@ -169,7 +169,7 @@ export class WallViewModel implements IWallViewModel {
                 } else if (event.nextBrickId) {
                     this.focusOnBrickId(event.nextBrickId);
                 } else if (!this.wallModel.getBricksCount()) {
-                    // this.wallModel.addBrick('text', 0, 0, 0);
+                    // todo:  this.wallModel.addBrick('text', 0, 0, 0);
                 }
             }
         });
