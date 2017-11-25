@@ -56,10 +56,10 @@ export class WallModel implements IWallModel {
     }
 
     // COMMAND METHODS
-    addBrickAfterBrickId(brickId: string, tag: string) {
+    addBrickAfterBrickId(brickId: string, tag: string, state?: any) {
         const brickPosition = this.layout.getBrickPosition(brickId);
         const columnCount = this.layout.getColumnCount(brickPosition.rowIndex);
-        const newBrick = this.createBrick(tag);
+        const newBrick = this.createBrick(tag, state);
 
         if (columnCount === 1) {
             this.layout.addBrickToNewRow(brickPosition.rowIndex + 1, newBrick);
@@ -287,11 +287,16 @@ export class WallModel implements IWallModel {
         return this.events.subscribe(callback);
     }
 
-    private createBrick(tag) {
+    private createBrick(tag, state?: any) {
         const id = this.generateGuid();
         const meta = {};
+        const brick = new WallBrick(id, tag, meta);
 
-        return new WallBrick(id, tag, meta);
+        if (state) {
+            brick.updateState(state);
+        }
+
+        return brick;
     }
 
     private restoreBrick(id, tag, meta, data) {

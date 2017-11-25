@@ -30,7 +30,7 @@ export interface WallCoreApi {
 
 
     // ADD BRICK
-    addBrickAfterBrickId(brickId: string, tag: string): void;
+    addBrickAfterBrickId(brickId: string, tag: string, state?: any): void;
 
 
     // MOVE BRICK

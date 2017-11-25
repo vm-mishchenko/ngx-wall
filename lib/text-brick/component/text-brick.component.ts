@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { onWallFocus, WallApi } from '../../wall';
 import { Observable } from 'rxjs/Observable';
+import { onWallFocus, WallApi } from '../../wall';
 import { TextBrickState } from '../text-brick-state.interface';
 
 @Component({
@@ -73,23 +73,41 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.scope.text[0] === '/') {
-                const tag = this.scope.text.slice(1);
+            /*const sel = window.getSelection();
 
-                if (this.wallApi.core.isRegisteredBrick(tag)) {
-                    this.wallApi.core.turnBrickInto(this.id, this.scope.text.slice(1));
+            console.log(this.scope.text.slice(0, sel.focusOffset));*/
 
-                    // d - divider tag
-                    if (tag === 'd') {
-                        this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                    }
-                } else {
+            if (this.isTag()) {
+                const newTag = this.scope.text.slice(1);
+
+                this.wallApi.core.turnBrickInto(this.id, newTag);
+
+                // d - divider tag
+                // if there is divider tag - after it automatically add text tag
+                if (newTag === 'd') {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }
             } else {
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                const sel = window.getSelection();
+
+                const initialTextState = {
+                    text: this.scope.text.slice(sel.baseOffset)
+                };
+
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text', initialTextState);
+
+                // update current brick
+                this.scope.text = this.scope.text.slice(0, sel.baseOffset);
+
+                this.save();
             }
         }
+    }
+
+    isTag(): boolean {
+        return this.scope.text &&
+            this.scope.text[0] === '/' &&
+            this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
     }
 
     onWallFocus(): void {
