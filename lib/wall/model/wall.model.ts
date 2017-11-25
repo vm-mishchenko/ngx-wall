@@ -288,7 +288,7 @@ export class WallModel implements IWallModel {
     }
 
     private createBrick(tag) {
-        const id = String(Math.random());
+        const id = this.generateGuid();
         const meta = {};
 
         return new WallBrick(id, tag, meta);
@@ -300,5 +300,16 @@ export class WallModel implements IWallModel {
         brick.updateState(data);
 
         return brick;
+    }
+
+    private generateGuid(): string {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
     }
 }
