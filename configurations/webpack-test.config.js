@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const webpack = require('webpack');
 const libraryConfig = require('./library.config');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 

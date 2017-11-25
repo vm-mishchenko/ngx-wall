@@ -29,12 +29,12 @@ npm i
 
 Build umd version of library in watch mode
 ``` bash
-npm run build:umd:watch
+npm run build:watch
 ```
 
 Start development server on `http://localhost:9000`. Once you update library or dev server browser page will be reloaded automatically 
 ``` bash
-npm run dev:server
+npm run application
 ```
 
 ### Create own brick
