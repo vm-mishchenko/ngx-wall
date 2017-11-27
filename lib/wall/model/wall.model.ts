@@ -2,6 +2,7 @@ import { IWallModel, WallDefinition } from '../wall.interfaces';
 import { Subscription } from 'rxjs/Subscription';
 import {
     AddBrickEvent,
+    BrickSnapshot,
     MoveBrickEvent,
     RemoveBrickEvent,
     RemoveBricksEvent,
@@ -215,6 +216,14 @@ export class WallModel implements IWallModel {
         return plan;
     }
 
+    getRowCount(): number {
+        return this.layout.getRowCount();
+    }
+
+    getColumnCount(rowIndex: number): number {
+        return this.layout.getColumnCount(rowIndex);
+    }
+
     getNextBrickId(brickId: string): string {
         const nextBrick = this.layout.getNextBrick(brickId);
 
@@ -239,11 +248,11 @@ export class WallModel implements IWallModel {
         return previousTextBrick && previousTextBrick.id;
     }
 
-    filterBricks(predictor: Function) {
+    filterBricks(predictor: Function): WallBrick[] {
         return this.layout.filterBricks(predictor);
     }
 
-    traverse(fn: Function) {
+    traverse(fn: Function): void {
         return this.layout.traverse((row: IWallRow) => {
             const preparedRow = {
                 columns: row.columns.map((column) => {
@@ -263,16 +272,22 @@ export class WallModel implements IWallModel {
         });
     }
 
-    getBrickById(brickId: string): WallBrick {
-        return this.layout.getBrickById(brickId);
-    }
-
     getBrickIds(): string[] {
         return this.layout.getBrickSequence(() => true).map(brick => brick.id)
     }
 
     getBrickTag(brickId: string): string {
         return this.layout.getBrickById(brickId).tag;
+    }
+
+    getBrickSnapshot(brickId: string): BrickSnapshot {
+        const brick = this.getBrickById(brickId);
+
+        return {
+            id: brick.id,
+            tag: brick.tag,
+            state: brick.state.getValue()
+        };
     }
 
     getBricksCount(): number {
@@ -285,6 +300,10 @@ export class WallModel implements IWallModel {
 
     subscribe(callback: any): Subscription {
         return this.events.subscribe(callback);
+    }
+
+    private getBrickById(brickId: string): WallBrick {
+        return this.layout.getBrickById(brickId);
     }
 
     private createBrick(tag) {

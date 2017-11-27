@@ -172,6 +172,8 @@ export class WallViewModel implements IWallViewModel {
                     // todo:  this.wallModel.addBrick('text', 0, 0, 0);
                 }
             }
+
+            this.events.next(event);
         });
     }
 
@@ -338,12 +340,42 @@ export class WallViewModel implements IWallViewModel {
         }
     }
 
+    // canvas interaction
     onFocusedBrick(brickId: string) {
         this.focusedBrickId = brickId;
 
         this.unSelectBricks();
     }
 
+    // canvas interaction
+    onCanvasClick() {
+        // check whether the last element is empty text brick
+        // which is inside one column row
+
+        const rowCount = this.wallModel.getRowCount();
+
+        if (rowCount > 0 && this.wallModel.getColumnCount(rowCount - 1) === 1) {
+            const brickIds = this.wallModel.getBrickIds();
+            const lastBrickSnapshot = this.wallModel.getBrickSnapshot(brickIds[brickIds.length - 1]);
+
+            if (lastBrickSnapshot.tag === 'text' && !lastBrickSnapshot.state.text) {
+                this.focusOnBrickId(lastBrickSnapshot.id);
+            } else {
+                this.wallModel.addDefaultBrick();
+            }
+        } else {
+            this.wallModel.addDefaultBrick();
+        }
+    }
+
+    // canvas interaction
+    onBrickStateChanged(brickId: string, brickState: any): void {
+        this.wallModel.updateBrickState(brickId, brickState);
+    }
+
+    /**
+     * @public-api
+     * */
     isRegisteredBrick(tag: string) {
         return Boolean(this.brickRegistry.get(tag));
     }
@@ -353,6 +385,4 @@ export class WallViewModel implements IWallViewModel {
 
         this.unSelectBricks();
     }
-
-    // QUERIES
 }

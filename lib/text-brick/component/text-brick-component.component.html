@@ -1,6 +1,7 @@
 <div #editor
+     (input)="onChange()"
+     [(ngModel)]="scope.text"
      (keydown)="onKeyPress($event)"
-     (keyup)="onTextChanged()"
      class="text-brick__editor"
      contenteditable>
 </div>

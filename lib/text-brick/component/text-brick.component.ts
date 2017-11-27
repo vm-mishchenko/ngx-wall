@@ -5,11 +5,15 @@ import { TextBrickState } from '../text-brick-state.interface';
 
 @Component({
     selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html'
+    templateUrl: './text-brick-component.component.html',
+    styles: [`
+        p {
+            min-height: 24px;
+        }
+    `]
 })
 export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
-
     @Input() state: Observable<TextBrickState | null>;
 
     @Output() stateChanges: EventEmitter<TextBrickState> = new EventEmitter();
@@ -27,16 +31,12 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         this.state.subscribe((newState) => {
             if (newState && newState.text !== this.scope.text) {
                 this.scope.text = newState.text || '';
-
-                this.editor.nativeElement.innerText = this.scope.text;
             }
         });
     }
 
-    onTextChanged() {
-        this.scope.text = this.editor.nativeElement.innerText;
-
-        this.save();
+    onChange() {
+        this.stateChanges.emit(this.scope);
     }
 
     onKeyPress(e: any) {
@@ -73,17 +73,13 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            if (this.scope.text[0] === '/') {
-                const tag = this.scope.text.slice(1);
+            if (this.isTag()) {
+                const newTag = this.scope.text.slice(1);
 
-                if (this.wallApi.core.isRegisteredBrick(tag)) {
-                    this.wallApi.core.turnBrickInto(this.id, this.scope.text.slice(1));
+                this.wallApi.core.turnBrickInto(this.id, newTag);
 
-                    // d - divider tag
-                    if (tag === 'd') {
-                        this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                    }
-                } else {
+                // d - divider tag
+                if (newTag === 'd') {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }
             } else {
@@ -94,6 +90,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
     onWallFocus(): void {
         this.editor.nativeElement.focus();
+
         this.placeCaretAtEnd();
     }
 
@@ -147,7 +144,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         return atEnd;
     }
 
-    save() {
-        this.stateChanges.emit(this.scope);
+    private isTag() {
+        return this.scope.text && this.scope.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
     }
 }
