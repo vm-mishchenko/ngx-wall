@@ -5,26 +5,21 @@ import {
     Inject,
     Input,
     OnChanges,
-    OnInit,
     Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { WallCanvasApi } from './wall-canvas.api';
-import { WallCanvasController } from './wall-canvas.controller';
 import { Layout } from './interfaces/layout.interface';
+import { Subject } from "rxjs/Subject";
 
 @Component({
     selector: 'wall-canvas',
-    templateUrl: './wall-canvas-component.component.html',
-    providers: [
-        WallCanvasApi,
-        WallCanvasController
-    ]
+    templateUrl: './wall-canvas-component.component.html'
 })
-export class WallCanvasComponent implements OnInit, OnChanges {
+export class WallCanvasComponent implements OnChanges {
     @Input() layout: Layout = {rows: []};
+
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrickId: string = null;
     @Input() isMediaInteractionEnabled: boolean = true;
@@ -33,17 +28,17 @@ export class WallCanvasComponent implements OnInit, OnChanges {
     @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
     @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
 
+    // public API for sub components
+    focusedBrickId$: Subject<string> = new Subject();
+    selectedBricks$: Subject<string[]> = new Subject();
+    isMediaInteractionEnabled$: Subject<boolean> = new Subject();
+
     doc: any = null;
 
     @ViewChild('expander') expander: ElementRef;
 
-    constructor(private wallCanvasController: WallCanvasController,
-                @Inject(DOCUMENT) doc) {
+    constructor(@Inject(DOCUMENT) doc) {
         this.doc = doc;
-
-        this.wallCanvasController.onFocusedEvent.subscribe((brickId: string) => {
-            this.onFocusedBrick.next(brickId);
-        });
     }
 
     onEditorClick(e: any) {
@@ -52,36 +47,25 @@ export class WallCanvasComponent implements OnInit, OnChanges {
         }
     }
 
-    ngOnInit() {
-        this.wallCanvasController.initialize();
+    onFocused(brickId: string) {
+        this.onFocusedBrick.next(brickId);
     }
 
     ngOnChanges(changes: SimpleChanges) {
-
         if (changes.focusedBrickId) {
-            if (changes.focusedBrickId.currentValue) {
-                this.wallCanvasController.focusBrickById(changes.focusedBrickId.currentValue);
-            } else {
+            if (!changes.focusedBrickId.currentValue) {
                 this.doc.activeElement.blur();
-
-                this.wallCanvasController.clearFocusedBrickId();
             }
+
+            this.focusedBrickId$.next(changes.focusedBrickId.currentValue);
         }
 
         if (changes.selectedBricks) {
-            if (changes.selectedBricks.currentValue.length) {
-                this.wallCanvasController.selectBricks(changes.selectedBricks.currentValue);
-            } else {
-                this.wallCanvasController.unselectBricks();
-            }
+            this.selectedBricks$.next(changes.selectedBricks.currentValue || []);
         }
 
         if (changes.isMediaInteractionEnabled) {
-            if (changes.isMediaInteractionEnabled.currentValue) {
-                this.wallCanvasController.enableMediaInteraction();
-            } else {
-                this.wallCanvasController.disableMediaInteraction();
-            }
+            this.isMediaInteractionEnabled$.next(changes.isMediaInteractionEnabled.currentValue);
         }
     }
 
@@ -92,7 +76,7 @@ export class WallCanvasComponent implements OnInit, OnChanges {
         });
     }
 
-    trackBricksBy(index, item ): string {
+    trackBricksBy(index, item): string {
         return item.columns.reduce((result, column) => {
             result += column.bricks.reduce((brickResult, brick) => {
                 brickResult += brick.hash;

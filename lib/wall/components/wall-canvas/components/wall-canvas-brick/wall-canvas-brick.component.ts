@@ -1,6 +1,7 @@
 import {
     Component,
     ComponentFactoryResolver,
+    ComponentRef,
     Injector,
     Input,
     OnDestroy,
@@ -8,7 +9,6 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { WallCanvasApi } from '../../wall-canvas.api';
 import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
 import { Subscription } from 'rxjs/Subscription';
 import { WallCanvasComponent } from '../../wall-canvas.component';
@@ -18,33 +18,36 @@ import { WallCanvasComponent } from '../../wall-canvas.component';
     templateUrl: './wall-canvas-brick.component.html'
 })
 export class WallCanvasBrickComponent implements OnInit, OnDestroy {
+    // todo add type
     @Input() brick: any;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    private stateChangesSubscription: Subscription;
+    private componentReference: ComponentRef<any>;
 
-    private selected: boolean = false;
+    private selected = false;
 
-    private isMediaInteractionEnabled: boolean = true;
+    private isMouseNear = false;
 
-    private isMouseNear: boolean = false;
+    private isMediaInteractionEnabled = true;
 
     private minimalDistanceToMouse = 100;
 
+    // subscriptions
+    private stateChangesSubscription: Subscription;
     private radarSubscription: Subscription;
+    private focusedBrickIdSubscription: Subscription;
+    private selectedBricksSubscription: Subscription;
+    private isMediaInteractionEnabledSubscription: Subscription;
 
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
-                private wallCanvasComponent: WallCanvasComponent,
-                private wallCanvasApi: WallCanvasApi) {
+                private wallCanvasComponent: WallCanvasComponent) {
     }
 
     ngOnInit() {
-        const componentReference = this.renderBrick();
-
-        this.wallCanvasApi.core.registerCanvasBrickInstance(this.brick.id, this, componentReference.instance);
+        this.componentReference = this.renderBrick();
 
         // todo maybe move it to model API?
         this.radarSubscription = this.radar.subscribe((e) => {
@@ -60,12 +63,27 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
                 }
             }
         });
+
+        this.focusedBrickIdSubscription = this.wallCanvasComponent.focusedBrickId$.subscribe((brickId) => {
+            if (brickId === this.brick.id) {
+                this.callInstanceApi('onWallFocus');
+            }
+        });
+
+        this.selectedBricksSubscription = this.wallCanvasComponent.selectedBricks$.subscribe((selectedBricks) => {
+            this.selected = !Boolean(selectedBricks.indexOf(this.brick.id) === -1);
+        });
+
+        this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$.subscribe((isMediaInteractionEnabled) => {
+            this.isMediaInteractionEnabled = isMediaInteractionEnabled;
+        });
     }
 
     ngOnDestroy() {
-        this.wallCanvasApi.core.removeCanvasBrickInstance(this.brick.id);
-
         this.radarSubscription.unsubscribe();
+        this.focusedBrickIdSubscription.unsubscribe();
+        this.selectedBricksSubscription.unsubscribe();
+        this.isMediaInteractionEnabledSubscription.unsubscribe();
 
         if (this.stateChangesSubscription) {
             this.stateChangesSubscription.unsubscribe();
@@ -73,23 +91,13 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     }
 
     onFocused() {
-        this.wallCanvasApi.core.onFocused(this.brick.id);
+        this.wallCanvasComponent.onFocused(this.brick.id);
     }
 
-    select() {
-        this.selected = true;
-    }
-
-    unselect() {
-        this.selected = false;
-    }
-
-    enableMediaInteraction() {
-        this.isMediaInteractionEnabled = true;
-    }
-
-    disableMediaInteraction() {
-        this.isMediaInteractionEnabled = false;
+    private callInstanceApi(methodName: string, data?: any) {
+        if (this.componentReference.instance[methodName]) {
+            this.componentReference.instance[methodName](data);
+        }
     }
 
     private renderBrick() {

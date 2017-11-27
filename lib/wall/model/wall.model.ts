@@ -82,6 +82,8 @@ export class WallModel implements IWallModel {
         const rowIndex = brickCount ? this.layout.getRowCount() + 1 : 0;
 
         this.layout.addBrickToNewRow(rowIndex, newBrick);
+
+        this.events.next(new AddBrickEvent(newBrick.id));
     }
 
     updateBrickState(brickId, brickState): void {

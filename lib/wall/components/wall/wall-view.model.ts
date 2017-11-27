@@ -318,11 +318,9 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     removeBrick(brickId: string) {
-        const brickIds = this.wallModel.getBrickIds();
+        const currentBrickIds = this.wallModel.getBrickIds();
 
-        if (brickIds.length === 1 && this.wallModel.getBrickTag(brickIds[0]) === 'text') {
-            this.focusOnBrickId(brickIds[0]);
-        } else {
+        if (currentBrickIds.length > 1 || (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) !== 'text')) {
             this.wallModel.removeBrick(brickId);
         }
     }
@@ -333,10 +331,10 @@ export class WallViewModel implements IWallViewModel {
     removeBricks(brickIds: string[]) {
         const currentBrickIds = this.wallModel.getBrickIds();
 
-        if (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) === 'text') {
-            this.focusOnBrickId(currentBrickIds[0]);
-        } else {
+        if (currentBrickIds.length > 1 || (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) !== 'text')) {
             this.wallModel.removeBricks(brickIds);
+        } else {
+            this.focusOnBrickId(currentBrickIds[0]);
         }
     }
 
@@ -353,9 +351,11 @@ export class WallViewModel implements IWallViewModel {
         // which is inside one column row
 
         const rowCount = this.wallModel.getRowCount();
+        const brickIds = this.wallModel.getBrickIds();
 
-        if (rowCount > 0 && this.wallModel.getColumnCount(rowCount - 1) === 1) {
-            const brickIds = this.wallModel.getBrickIds();
+        if (rowCount > 0
+            && this.wallModel.getColumnCount(rowCount - 1) === 1
+            && brickIds.length) {
             const lastBrickSnapshot = this.wallModel.getBrickSnapshot(brickIds[brickIds.length - 1]);
 
             if (lastBrickSnapshot.tag === 'text' && !lastBrickSnapshot.state.text) {
