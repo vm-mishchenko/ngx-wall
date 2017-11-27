@@ -57,10 +57,10 @@ export class WallModel implements IWallModel {
     }
 
     // COMMAND METHODS
-    addBrickAfterBrickId(brickId: string, tag: string) {
+    addBrickAfterBrickId(brickId: string, tag: string, state?: any) {
         const brickPosition = this.layout.getBrickPosition(brickId);
         const columnCount = this.layout.getColumnCount(brickPosition.rowIndex);
-        const newBrick = this.createBrick(tag);
+        const newBrick = this.createBrick(tag, state);
 
         if (columnCount === 1) {
             this.layout.addBrickToNewRow(brickPosition.rowIndex + 1, newBrick);
@@ -233,12 +233,14 @@ export class WallModel implements IWallModel {
     }
 
     getPreviousBrickId(brickId: string): string {
+        // todo: layout should not care about supportText registry flag
         const previousBrick = this.layout.getPreviousBrick(brickId);
 
         return previousBrick && previousBrick.id;
     }
 
     getNextTextBrickId(brickId: string): string {
+        // todo: layout should not care about supportText registry flag
         const nextTextBrick = this.layout.getNextTextBrick(brickId);
 
         return nextTextBrick && nextTextBrick.id;
@@ -250,8 +252,10 @@ export class WallModel implements IWallModel {
         return previousTextBrick && previousTextBrick.id;
     }
 
-    filterBricks(predictor: Function): WallBrick[] {
-        return this.layout.filterBricks(predictor);
+    filterBricks(predictor: Function): BrickSnapshot[] {
+        return this.layout.filterBricks((wallBrick) => {
+            return predictor(this.createBrickSnapshot(wallBrick));
+        });
     }
 
     traverse(fn: Function): void {
@@ -285,11 +289,7 @@ export class WallModel implements IWallModel {
     getBrickSnapshot(brickId: string): BrickSnapshot {
         const brick = this.getBrickById(brickId);
 
-        return {
-            id: brick.id,
-            tag: brick.tag,
-            state: brick.state.getValue()
-        };
+        return this.createBrickSnapshot(brick);
     }
 
     getBricksCount(): number {
@@ -308,11 +308,16 @@ export class WallModel implements IWallModel {
         return this.layout.getBrickById(brickId);
     }
 
-    private createBrick(tag) {
+    private createBrick(tag, state?: any) {
         const id = this.generateGuid();
         const meta = {};
+        const brick = new WallBrick(id, tag, meta);
 
-        return new WallBrick(id, tag, meta);
+        if (state) {
+            brick.updateState(state);
+        }
+
+        return brick;
     }
 
     private restoreBrick(id, tag, meta, data) {
@@ -332,5 +337,13 @@ export class WallModel implements IWallModel {
 
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
+    }
+
+    private createBrickSnapshot(brick: WallBrick): BrickSnapshot {
+        return {
+            id: brick.id,
+            tag: brick.tag,
+            state: brick.state.getValue()
+        };
     }
 }

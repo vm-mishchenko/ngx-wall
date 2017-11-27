@@ -37,7 +37,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
     }
 
     onChange() {
-        this.stateChanges.emit(this.scope);
+        this.saveCurrentState();
     }
 
     onKeyPress(e: any) {
@@ -50,10 +50,14 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         const BOTTOM_KEY = 40;
 
         if (e.keyCode === TOP_KEY) {
+            e.preventDefault();
+
             this.wallApi.core.focusOnPreviousTextBrick(this.id);
         }
 
         if (e.keyCode === BOTTOM_KEY) {
+            e.preventDefault();
+
             this.wallApi.core.focusOnNextTextBrick(this.id);
         }
 
@@ -63,6 +67,22 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
         if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
             this.wallApi.core.focusOnNextTextBrick(this.id);
+        }
+
+        if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
+            const previousTextBrickId = this.wallApi.core.getPreviousTextBrickId(this.id);
+
+            if (previousTextBrickId) {
+                const previousBreakSnapshot = this.wallApi.core.getBrickSnapshot(previousTextBrickId);
+
+                this.wallApi.core.updateBrickState(previousTextBrickId, {
+                    text: previousBreakSnapshot.state.text + this.scope.text
+                });
+
+                this.wallApi.core.removeBrick(this.id);
+
+                this.wallApi.core.focusOnBrickId(previousTextBrickId);
+            }
         }
 
         if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
@@ -84,7 +104,18 @@ export class TextBrickComponent implements OnInit, onWallFocus {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }
             } else {
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
+                const sel = window.getSelection();
+
+                const initialTextState = {
+                    text: this.scope.text.slice(sel.baseOffset)
+                };
+
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text', initialTextState);
+
+                // update current brick
+                this.scope.text = this.scope.text.slice(0, sel.baseOffset);
+
+                this.saveCurrentState();
             }
         }
     }
@@ -147,5 +178,9 @@ export class TextBrickComponent implements OnInit, onWallFocus {
 
     private isTag() {
         return this.scope.text && this.scope.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
+    }
+
+    private saveCurrentState() {
+        this.stateChanges.emit(this.scope);
     }
 }

@@ -1,6 +1,7 @@
 import { Subscription } from "rxjs/Subscription";
 import { WallState } from "./wall-state.interface";
 import { WallDefinition } from "../../../wall.interfaces";
+import { BrickSnapshot } from "../../../model/wall.events";
 
 export interface WallCoreApi {
     state: WallState;
@@ -52,6 +53,10 @@ export interface WallCoreApi {
 
     getNextBrickId(brickId: string): string;
 
+    getPreviousTextBrickId(brickId: string): string;
+
+    getNextTextBrickId(brickId: string): string;
+
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean
 
 
@@ -71,4 +76,10 @@ export interface WallCoreApi {
     isRegisteredBrick(tag: string): boolean;
 
     turnBrickInto(brickId: string, newTag: string): void;
+
+    filterBricks(predictor: Function): BrickSnapshot[];
+
+    updateBrickState(brickId: string, state: any): void;
+
+    getBrickSnapshot(brickId: string): BrickSnapshot;
 }

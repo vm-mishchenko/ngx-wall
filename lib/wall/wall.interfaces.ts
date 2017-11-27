@@ -126,7 +126,7 @@ export interface IWallModel {
 
     traverse(fn: Function): void;
 
-    filterBricks(predictor: Function): WallBrick[];
+    filterBricks(predictor: Function): BrickSnapshot[];
 
     getBrickIds(): string[];
 

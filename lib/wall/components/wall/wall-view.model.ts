@@ -100,6 +100,8 @@ export class WallViewModel implements IWallViewModel {
             // NAVIGATION
             'getPreviousBrickId',
             'getNextBrickId',
+            'getNextTextBrickId',
+            'getPreviousTextBrickId',
             'isBrickAheadOf',
 
             // BEHAVIOUR
@@ -113,6 +115,8 @@ export class WallViewModel implements IWallViewModel {
             // BRICk
             'isRegisteredBrick',
             'turnBrickInto',
+            'updateBrickState',
+            'getBrickSnapshot',
 
             // MOVE BRICK
             'moveBrickAfterBrickId',
