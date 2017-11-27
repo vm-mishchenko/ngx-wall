@@ -1,18 +1,18 @@
-export interface RemovedBrick {
+export interface BrickSnapshot {
     id: string;
     tag: string;
     state: any;
 }
 
 export class RemoveBrickEvent {
-    constructor(public brick: RemovedBrick,
+    constructor(public brick: BrickSnapshot,
                 public previousBrickId: string,
                 public nextBrickId: string) {
     }
 }
 
 export class RemoveBricksEvent {
-    constructor(public bricks: RemovedBrick[],
+    constructor(public bricks: BrickSnapshot[],
                 public previousBrickId: string,
                 public nextBrickId: string) {
     }

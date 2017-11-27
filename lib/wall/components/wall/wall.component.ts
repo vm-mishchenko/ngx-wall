@@ -23,8 +23,9 @@ export class WallComponent implements OnChanges, OnDestroy {
                 private wallViewModel: WallViewModel) {
     }
 
+    // click on empty space
     onCanvasClick() {
-        this.model.addDefaultBrick();
+        this.wallViewModel.onCanvasClick();
     }
 
     // callback when user focused to some brick by mouse click
@@ -33,7 +34,7 @@ export class WallComponent implements OnChanges, OnDestroy {
     }
 
     onBrickStateChanged(event) {
-        this.model.updateBrickState(event.brickId, event.brickState);
+        this.wallViewModel.onBrickStateChanged(event.brickId, event.brickState);
     }
 
     ngOnChanges(changes: SimpleChanges) {

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EventEmitter } from '@angular/core';
 import { WallBrick } from './model/wall-brick.model';
+import { BrickSnapshot } from "./model/wall.events";
 
 export const awesomeTypescriptLoaderBug2 = true;
 
@@ -95,6 +96,10 @@ export interface IWallModel {
 
     getPlan(): WallDefinition;
 
+    getRowCount(): number;
+
+    getColumnCount(rowIndex: number): number;
+
     updateBrickState(brickId, brickState): void;
 
     turnBrickInto(brickId: string, newTag: string);
@@ -126,4 +131,6 @@ export interface IWallModel {
     getBrickIds(): string[];
 
     getBrickTag(brickId: string): string;
+
+    getBrickSnapshot(brickId: string): BrickSnapshot;
 }

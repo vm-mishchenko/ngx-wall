@@ -1,15 +1,20 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { onWallFocus, WallApi } from '../../wall';
+import { Observable } from 'rxjs/Observable';
 import { TextBrickState } from '../text-brick-state.interface';
 
 @Component({
     selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html'
+    templateUrl: './text-brick-component.component.html',
+    styles: [`
+        p {
+            min-height: 24px;
+            margin: 0;
+        }
+    `]
 })
 export class TextBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
-
     @Input() state: Observable<TextBrickState | null>;
 
     @Output() stateChanges: EventEmitter<TextBrickState> = new EventEmitter();
@@ -27,16 +32,12 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         this.state.subscribe((newState) => {
             if (newState && newState.text !== this.scope.text) {
                 this.scope.text = newState.text || '';
-
-                this.editor.nativeElement.innerText = this.scope.text;
             }
         });
     }
 
-    onTextChanged() {
-        this.scope.text = this.editor.nativeElement.innerText;
-
-        this.save();
+    onChange() {
+        this.stateChanges.emit(this.scope);
     }
 
     onKeyPress(e: any) {
@@ -73,45 +74,24 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === ENTER_KEY) {
             e.preventDefault();
 
-            /*const sel = window.getSelection();
-
-            console.log(this.scope.text.slice(0, sel.focusOffset));*/
-
             if (this.isTag()) {
                 const newTag = this.scope.text.slice(1);
 
                 this.wallApi.core.turnBrickInto(this.id, newTag);
 
                 // d - divider tag
-                // if there is divider tag - after it automatically add text tag
                 if (newTag === 'd') {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }
             } else {
-                const sel = window.getSelection();
-
-                const initialTextState = {
-                    text: this.scope.text.slice(sel.baseOffset)
-                };
-
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text', initialTextState);
-
-                // update current brick
-                this.scope.text = this.scope.text.slice(0, sel.baseOffset);
-
-                this.save();
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
             }
         }
     }
 
-    isTag(): boolean {
-        return this.scope.text &&
-            this.scope.text[0] === '/' &&
-            this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
-    }
-
     onWallFocus(): void {
         this.editor.nativeElement.focus();
+
         this.placeCaretAtEnd();
     }
 
@@ -165,7 +145,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         return atEnd;
     }
 
-    save() {
-        this.stateChanges.emit(this.scope);
+    private isTag() {
+        return this.scope.text && this.scope.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
     }
 }
