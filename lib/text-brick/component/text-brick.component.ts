@@ -180,6 +180,8 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             if (context.details.bottomKey || context.details.topKey) {
                 this.placeCaretAtPosition(context.details.caretPosition);
             }
+        } else {
+            this.placeCaretAtEnd();
         }
     }
 
