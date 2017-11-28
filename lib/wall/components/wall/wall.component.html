@@ -3,7 +3,7 @@
              (onFocusedBrick)="onFocusedBrick($event)"
              (onBrickStateChanged)="onBrickStateChanged($event)"
              [isMediaInteractionEnabled]="wallViewModel.state.isMediaInteractionEnabled.getValue()"
-             [focusedBrickId]="wallViewModel.focusedBrickId"
+             [focusedBrick]="wallViewModel.focusedBrick"
              [selectedBricks]="wallViewModel.selectedBricks"
              [layout]="wallViewModel.canvasLayout">
 </wall-canvas>

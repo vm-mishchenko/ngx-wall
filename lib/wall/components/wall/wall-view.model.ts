@@ -15,6 +15,7 @@ import {
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
+import { FocusContext } from "./wall.interfaces";
 
 @Injectable()
 export class WallViewModel implements IWallViewModel {
@@ -23,7 +24,7 @@ export class WallViewModel implements IWallViewModel {
     events: Subject<any> = new Subject();
 
     // UI
-    focusedBrickId: string = null;
+    focusedBrick: { id: string, context?: FocusContext } = null;
 
     selectedBricks: string[] = [];
 
@@ -186,7 +187,8 @@ export class WallViewModel implements IWallViewModel {
      * */
     selectBrick(brickId: string): void {
         this.selectedBricks = [brickId];
-        this.focusedBrickId = null;
+
+        this.focusedBrick = null;
     }
 
     /**
@@ -233,40 +235,43 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     getFocusedBrickId(): string {
-        return this.focusedBrickId;
+        return this.focusedBrick && this.focusedBrick.id;
     }
 
     /**
      * @public-api
      * */
-    focusOnBrickId(brickId: string): void {
-        this.focusedBrickId = null;
+    focusOnBrickId(brickId: string, focusContext?: FocusContext): void {
+        this.focusedBrick = null;
 
         // wait until new brick will be rendered
         setTimeout(() => {
-            this.focusedBrickId = brickId;
+            this.focusedBrick = {
+                id: brickId,
+                context: focusContext
+            };
         });
     }
 
     /**
      * @public-api
      * */
-    focusOnPreviousTextBrick(brickId: string) {
+    focusOnPreviousTextBrick(brickId: string, focusContext?: FocusContext) {
         const previousTextBrickId = this.wallModel.getPreviousTextBrickId(brickId);
 
         if (previousTextBrickId) {
-            this.focusOnBrickId(previousTextBrickId);
+            this.focusOnBrickId(previousTextBrickId, focusContext);
         }
     }
 
     /**
      * @public-api
      * */
-    focusOnNextTextBrick(brickId: string) {
+    focusOnNextTextBrick(brickId: string, focusContext?: FocusContext) {
         const nextTextBrickId = this.wallModel.getNextTextBrickId(brickId);
 
         if (nextTextBrickId) {
-            this.focusOnBrickId(nextTextBrickId);
+            this.focusOnBrickId(nextTextBrickId, focusContext);
         }
     }
 
@@ -344,7 +349,10 @@ export class WallViewModel implements IWallViewModel {
 
     // canvas interaction
     onFocusedBrick(brickId: string) {
-        this.focusedBrickId = brickId;
+        this.focusedBrick = {
+            id: brickId,
+            context: undefined
+        };
 
         this.unSelectBricks();
     }
@@ -385,7 +393,7 @@ export class WallViewModel implements IWallViewModel {
     }
 
     reset() {
-        this.focusedBrickId = null;
+        this.focusedBrick = null;
 
         this.unSelectBricks();
     }

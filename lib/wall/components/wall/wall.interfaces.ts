@@ -9,5 +9,10 @@ export interface WallConfiguration {
 
 // Custom wall component interface
 export interface onWallFocus {
-    onWallFocus(): void;
+    onWallFocus(focusContext?: FocusContext): void;
+}
+
+export interface FocusContext {
+    initiator: string;
+    details?: any;
 }

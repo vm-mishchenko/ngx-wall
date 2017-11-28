@@ -12,6 +12,8 @@ import {
 import { DOCUMENT } from '@angular/common';
 import { Layout } from './interfaces/layout.interface';
 import { Subject } from "rxjs/Subject";
+import { FocusedBrick } from "./wall-canvas.interfaces";
+
 
 @Component({
     selector: 'wall-canvas',
@@ -21,7 +23,7 @@ export class WallCanvasComponent implements OnChanges {
     @Input() layout: Layout = {rows: []};
 
     @Input() selectedBricks: string[] = null;
-    @Input() focusedBrickId: string = null;
+    @Input() focusedBrick: FocusedBrick = null;
     @Input() isMediaInteractionEnabled: boolean = true;
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
@@ -29,7 +31,7 @@ export class WallCanvasComponent implements OnChanges {
     @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
 
     // public API for sub components
-    focusedBrickId$: Subject<string> = new Subject();
+    focusedBrick$: Subject<FocusedBrick> = new Subject();
     selectedBricks$: Subject<string[]> = new Subject();
     isMediaInteractionEnabled$: Subject<boolean> = new Subject();
 
@@ -52,12 +54,12 @@ export class WallCanvasComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.focusedBrickId) {
-            if (!changes.focusedBrickId.currentValue) {
+        if (changes.focusedBrick) {
+            if (!changes.focusedBrick.currentValue) {
                 this.doc.activeElement.blur();
+            } else {
+                this.focusedBrick$.next(changes.focusedBrick.currentValue);
             }
-
-            this.focusedBrickId$.next(changes.focusedBrickId.currentValue);
         }
 
         if (changes.selectedBricks) {

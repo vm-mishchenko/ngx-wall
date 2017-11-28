@@ -36,7 +36,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     // subscriptions
     private stateChangesSubscription: Subscription;
     private radarSubscription: Subscription;
-    private focusedBrickIdSubscription: Subscription;
+    private focusedBrickSubscription: Subscription;
     private selectedBricksSubscription: Subscription;
     private isMediaInteractionEnabledSubscription: Subscription;
 
@@ -64,9 +64,9 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.focusedBrickIdSubscription = this.wallCanvasComponent.focusedBrickId$.subscribe((brickId) => {
-            if (brickId === this.brick.id) {
-                this.callInstanceApi('onWallFocus');
+        this.focusedBrickSubscription = this.wallCanvasComponent.focusedBrick$.subscribe((focusedBrick) => {
+            if (focusedBrick.id === this.brick.id) {
+                this.callInstanceApi('onWallFocus', focusedBrick.context);
             }
         });
 
@@ -81,7 +81,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.radarSubscription.unsubscribe();
-        this.focusedBrickIdSubscription.unsubscribe();
+        this.focusedBrickSubscription.unsubscribe();
         this.selectedBricksSubscription.unsubscribe();
         this.isMediaInteractionEnabledSubscription.unsubscribe();
 

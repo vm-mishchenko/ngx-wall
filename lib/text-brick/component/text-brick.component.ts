@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { onWallFocus, WallApi } from '../../wall';
 import { Observable } from 'rxjs/Observable';
 import { TextBrickState } from '../text-brick-state.interface';
+import { FocusContext } from "../../wall/components/wall";
 
 @Component({
     selector: 'text-brick',
@@ -52,21 +53,51 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         if (e.keyCode === TOP_KEY) {
             e.preventDefault();
 
-            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+            const focusContext: FocusContext = {
+                initiator: 'text-brick',
+                details: {
+                    topKey: true,
+                    caretPosition: this.getCaretPosition()
+                }
+            };
+
+            this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
         }
 
         if (e.keyCode === BOTTOM_KEY) {
             e.preventDefault();
 
-            this.wallApi.core.focusOnNextTextBrick(this.id);
+            const focusContext: FocusContext = {
+                initiator: 'text-brick',
+                details: {
+                    bottomKey: true,
+                    caretPosition: this.getCaretPosition()
+                }
+            };
+
+            this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
         }
 
         if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
-            this.wallApi.core.focusOnPreviousTextBrick(this.id);
+            const focusContext: FocusContext = {
+                initiator: 'text-brick',
+                details: {
+                    leftKey: true
+                }
+            };
+
+            this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
         }
 
         if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
-            this.wallApi.core.focusOnNextTextBrick(this.id);
+            const focusContext: FocusContext = {
+                initiator: 'text-brick',
+                details: {
+                    rightKey: true
+                }
+            };
+
+            this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
         }
 
         if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
@@ -75,13 +106,23 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             if (previousTextBrickId) {
                 const previousBreakSnapshot = this.wallApi.core.getBrickSnapshot(previousTextBrickId);
 
+                const caretPosition = previousBreakSnapshot.state.text.length;
+
                 this.wallApi.core.updateBrickState(previousTextBrickId, {
                     text: previousBreakSnapshot.state.text + this.scope.text
                 });
 
                 this.wallApi.core.removeBrick(this.id);
 
-                this.wallApi.core.focusOnBrickId(previousTextBrickId);
+                const focusContext: FocusContext = {
+                    initiator: 'text-brick',
+                    details: {
+                        concatText: true,
+                        caretPosition: caretPosition
+                    }
+                };
+
+                this.wallApi.core.focusOnBrickId(previousTextBrickId, focusContext);
             }
         }
 
@@ -106,11 +147,11 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             } else {
                 const sel = window.getSelection();
 
-                const initialTextState = {
+                const textState = {
                     text: this.scope.text.slice(sel.baseOffset)
                 };
 
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text', initialTextState);
+                this.wallApi.core.addBrickAfterBrickId(this.id, 'text', textState);
 
                 // update current brick
                 this.scope.text = this.scope.text.slice(0, sel.baseOffset);
@@ -120,22 +161,49 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         }
     }
 
-    onWallFocus(): void {
+    onWallFocus(context?: FocusContext): void {
         this.editor.nativeElement.focus();
 
-        this.placeCaretAtEnd();
+        if (context && context.initiator === 'text-brick') {
+            if (context.details.concatText) {
+                this.placeCaretAtPosition(context.details.caretPosition);
+            }
+
+            if (context.details.leftKey) {
+                this.placeCaretAtEnd();
+            }
+
+            if (context.details.rightKey) {
+                this.placeCaretAtStart();
+            }
+
+            if (context.details.bottomKey || context.details.topKey) {
+                this.placeCaretAtPosition(context.details.caretPosition);
+            }
+        }
     }
 
-    placeCaretAtEnd() {
-        // place caret at the end
-        // https://stackoverflow.com/questions/4233265/contenteditable-set-caret-at-the-end-of-the-text-cross-browser
-        if (typeof window.getSelection != 'undefined' && typeof document.createRange != 'undefined') {
+    private placeCaretAtStart(): void {
+        this.placeCaretAtPosition(0);
+    }
+
+    private placeCaretAtEnd(): void {
+        this.placeCaretAtPosition(this.scope.text.length);
+    }
+
+    private placeCaretAtPosition(position: number) {
+        if (this.scope.text.length) {
+            const el = this.editor.nativeElement;
+
             const range = document.createRange();
-
-            range.selectNodeContents(this.editor.nativeElement);
-            range.collapse(false);
-
             const sel = window.getSelection();
+
+            // position might be less than text length
+            if (this.scope.text.length < position) {
+                position = this.scope.text.length;
+            }
+
+            range.setStart(el.firstChild, position);
 
             sel.removeAllRanges();
             sel.addRange(range);
@@ -174,6 +242,14 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         }
 
         return atEnd;
+    }
+
+    private getCaretPosition() {
+        const sel = window.getSelection();
+
+        if (sel.rangeCount) {
+            return sel.getRangeAt(0).endOffset;
+        }
     }
 
     private isTag() {

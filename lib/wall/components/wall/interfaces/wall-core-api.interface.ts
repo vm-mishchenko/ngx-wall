@@ -2,6 +2,7 @@ import { Subscription } from "rxjs/Subscription";
 import { WallState } from "./wall-state.interface";
 import { WallDefinition } from "../../../wall.interfaces";
 import { BrickSnapshot } from "../../../model/wall.events";
+import { FocusContext } from "../wall.interfaces";
 
 export interface WallCoreApi {
     state: WallState;
@@ -21,13 +22,13 @@ export interface WallCoreApi {
 
 
     // FOCUS
-    focusOnBrickId(brickId: string): void;
+    focusOnBrickId(brickId: string, focusContext?: FocusContext): void;
 
     getFocusedBrickId(): string;
 
-    focusOnPreviousTextBrick(brickId: string);
+    focusOnPreviousTextBrick(brickId: string, focusContext?: FocusContext);
 
-    focusOnNextTextBrick(brickId: string);
+    focusOnNextTextBrick(brickId: string, focusContext?: FocusContext);
 
 
     // ADD BRICK
