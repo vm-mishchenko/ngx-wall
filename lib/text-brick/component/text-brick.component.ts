@@ -1,8 +1,7 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { onWallFocus, WallApi } from '../../wall';
-import { Observable } from 'rxjs/Observable';
-import { TextBrickState } from '../text-brick-state.interface';
 import { FocusContext } from "../../wall/components/wall";
+import { BaseTextBrickComponent } from "../../base-text-brick/base-text-brick.component";
 
 @Component({
     selector: 'text-brick',
@@ -14,27 +13,9 @@ import { FocusContext } from "../../wall/components/wall";
         }
     `]
 })
-export class TextBrickComponent implements OnInit, onWallFocus {
-    @Input() id: string;
-    @Input() state: Observable<TextBrickState | null>;
-
-    @Output() stateChanges: EventEmitter<TextBrickState> = new EventEmitter();
-
-    @ViewChild('editor') editor: ElementRef;
-
-    scope: TextBrickState = {
-        text: ''
-    };
-
+export class TextBrickComponent extends BaseTextBrickComponent implements onWallFocus {
     constructor(private wallApi: WallApi) {
-    }
-
-    ngOnInit() {
-        this.state.subscribe((newState) => {
-            if (newState && newState.text !== this.scope.text) {
-                this.scope.text = newState.text || '';
-            }
-        });
+        super();
     }
 
     onChange() {
@@ -104,12 +85,12 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             const previousTextBrickId = this.wallApi.core.getPreviousTextBrickId(this.id);
 
             if (previousTextBrickId) {
-                const previousBreakSnapshot = this.wallApi.core.getBrickSnapshot(previousTextBrickId);
+                const previousBrickSnapshot = this.wallApi.core.getBrickSnapshot(previousTextBrickId);
 
-                const caretPosition = previousBreakSnapshot.state.text.length;
+                const caretPosition = previousBrickSnapshot.state.text.length;
 
                 this.wallApi.core.updateBrickState(previousTextBrickId, {
-                    text: previousBreakSnapshot.state.text + this.scope.text
+                    text: previousBrickSnapshot.state.text + (this.scope.text || '')
                 });
 
                 this.wallApi.core.removeBrick(this.id);
@@ -126,10 +107,43 @@ export class TextBrickComponent implements OnInit, onWallFocus {
             }
         }
 
+        if (e.keyCode === DELETE_KEY && this.isCaretAtEnd()) {
+            const nextTextBrickId = this.wallApi.core.getNextTextBrickId(this.id);
+
+            if (nextTextBrickId) {
+                const nextTextBrickSnapshot = this.wallApi.core.getBrickSnapshot(nextTextBrickId);
+
+                const caretPosition = this.scope.text.length;
+
+                this.scope.text += nextTextBrickSnapshot.state.text;
+
+                this.wallApi.core.removeBrick(nextTextBrickId);
+
+                setTimeout(() => {
+                    this.placeCaretAtPosition(caretPosition);
+                }, 0);
+
+                this.saveCurrentState();
+            }
+        }
+
         if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
             e.preventDefault();
 
+            const previousTextBrickId = this.wallApi.core.getPreviousTextBrickId(this.id);
+
             this.wallApi.core.removeBrick(this.id);
+
+            if (previousTextBrickId) {
+                const focusContext: FocusContext = {
+                    initiator: 'text-brick',
+                    details: {
+                        deletePreviousText: true
+                    }
+                };
+
+                this.wallApi.core.focusOnBrickId(previousTextBrickId, focusContext);
+            }
         }
 
         if (e.keyCode === ENTER_KEY) {
@@ -161,104 +175,7 @@ export class TextBrickComponent implements OnInit, onWallFocus {
         }
     }
 
-    onWallFocus(context?: FocusContext): void {
-        this.editor.nativeElement.focus();
-
-        if (context && context.initiator === 'text-brick') {
-            if (context.details.concatText) {
-                this.placeCaretAtPosition(context.details.caretPosition);
-            }
-
-            if (context.details.leftKey) {
-                this.placeCaretAtEnd();
-            }
-
-            if (context.details.rightKey) {
-                this.placeCaretAtStart();
-            }
-
-            if (context.details.bottomKey || context.details.topKey) {
-                this.placeCaretAtPosition(context.details.caretPosition);
-            }
-        } else {
-            this.placeCaretAtEnd();
-        }
-    }
-
-    private placeCaretAtStart(): void {
-        this.placeCaretAtPosition(0);
-    }
-
-    private placeCaretAtEnd(): void {
-        this.placeCaretAtPosition(this.scope.text.length);
-    }
-
-    private placeCaretAtPosition(position: number) {
-        if (this.scope.text.length) {
-            const el = this.editor.nativeElement;
-
-            const range = document.createRange();
-            const sel = window.getSelection();
-
-            // position might be less than text length
-            if (this.scope.text.length < position) {
-                position = this.scope.text.length;
-            }
-
-            range.setStart(el.firstChild, position);
-
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }
-
-    isCaretAtStart(): boolean {
-        let atStart = false;
-
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            const selRange = sel.getRangeAt(0);
-            const testRange = selRange.cloneRange();
-
-            testRange.selectNodeContents(this.editor.nativeElement);
-            testRange.setEnd(selRange.startContainer, selRange.startOffset);
-            atStart = (testRange.toString() == '');
-        }
-
-        return atStart;
-    }
-
-    isCaretAtEnd(): boolean {
-        let atEnd = false;
-
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            const selRange = sel.getRangeAt(0);
-            const testRange = selRange.cloneRange();
-
-            testRange.selectNodeContents(this.editor.nativeElement);
-            testRange.setStart(selRange.endContainer, selRange.endOffset);
-            atEnd = (testRange.toString() == '');
-        }
-
-        return atEnd;
-    }
-
-    private getCaretPosition() {
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            return sel.getRangeAt(0).endOffset;
-        }
-    }
-
     private isTag() {
         return this.scope.text && this.scope.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
-    }
-
-    private saveCurrentState() {
-        this.stateChanges.emit(this.scope);
     }
 }
