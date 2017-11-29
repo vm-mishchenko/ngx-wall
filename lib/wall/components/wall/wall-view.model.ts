@@ -349,10 +349,12 @@ export class WallViewModel implements IWallViewModel {
 
     // canvas interaction
     onFocusedBrick(brickId: string) {
-        this.focusedBrick = {
-            id: brickId,
-            context: undefined
-        };
+        if (!this.focusedBrick || (this.focusedBrick.id !== brickId)) {
+            this.focusedBrick = {
+                id: brickId,
+                context: undefined
+            };
+        }
 
         this.unSelectBricks();
     }

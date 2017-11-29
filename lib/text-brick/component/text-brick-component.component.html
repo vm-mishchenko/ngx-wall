@@ -1,5 +1,5 @@
 <p #editor
-   (input)="onChange()"
+   (input)="onTextChange()"
    [(ngModel)]="scope.text"
    (keydown)="onKeyPress($event)"
    class="text-brick__editor"

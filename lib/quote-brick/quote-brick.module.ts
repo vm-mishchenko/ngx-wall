@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrickRegistry } from "../wall/registry/brick-registry.service";
 import { QuoteBrickComponent } from "./component/quote-brick.component";
+import { FormsModule } from "@angular/forms";
+import { ContenteditableModule } from "../modules/contenteditable/contenteditable..module";
 
 @NgModule({
+    imports: [
+        FormsModule,
+        ContenteditableModule
+    ],
     exports: [QuoteBrickComponent],
     declarations: [QuoteBrickComponent],
     entryComponents: [QuoteBrickComponent]

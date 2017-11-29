@@ -18,5 +18,7 @@ export class WallBrick {
 
     turnInto(tag: string) {
         this.tag = tag;
+
+        this.updateState({});
     }
 }
