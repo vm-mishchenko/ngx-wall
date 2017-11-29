@@ -28,6 +28,8 @@ export class WallViewModel implements IWallViewModel {
 
     selectedBricks: string[] = [];
 
+    private wallModelSubscription: Subscription;
+
     private writeState = {
         mode: new ReactiveProperty<string>(WALL.MODES.EDIT),
         isMediaInteractionEnabled: new ReactiveProperty<boolean>(true)
@@ -147,7 +149,7 @@ export class WallViewModel implements IWallViewModel {
         // protect API from extending
         Object.seal(this.api.core);
 
-        this.wallModel.subscribe((event) => {
+        this.wallModelSubscription = this.wallModel.subscribe((event) => {
             if (event instanceof AddBrickEvent) {
                 this.focusOnBrickId(event.brickId);
             }
@@ -327,11 +329,7 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      * */
     removeBrick(brickId: string) {
-        const currentBrickIds = this.wallModel.getBrickIds();
-
-        if (currentBrickIds.length > 1 || (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) !== 'text')) {
-            this.wallModel.removeBrick(brickId);
-        }
+        this.removeBricks([brickId]);
     }
 
     /**
@@ -340,8 +338,16 @@ export class WallViewModel implements IWallViewModel {
     removeBricks(brickIds: string[]) {
         const currentBrickIds = this.wallModel.getBrickIds();
 
-        if (currentBrickIds.length > 1 || (currentBrickIds.length === 1 && this.wallModel.getBrickTag(currentBrickIds[0]) !== 'text')) {
+        if (currentBrickIds.length > 1) {
             this.wallModel.removeBricks(brickIds);
+        } else if (currentBrickIds.length === 1) {
+            const brickSnapshot = this.wallModel.getBrickSnapshot(currentBrickIds[0]);
+
+            if (brickSnapshot.tag !== 'text' || brickSnapshot.state.text) {
+                this.wallModel.removeBricks(brickIds);
+            } else {
+                this.focusOnBrickId(currentBrickIds[0]);
+            }
         } else {
             this.focusOnBrickId(currentBrickIds[0]);
         }
@@ -395,6 +401,10 @@ export class WallViewModel implements IWallViewModel {
     }
 
     reset() {
+        this.wallModelSubscription.unsubscribe();
+
+        this.wallModelSubscription = null;
+
         this.focusedBrick = null;
 
         this.unSelectBricks();

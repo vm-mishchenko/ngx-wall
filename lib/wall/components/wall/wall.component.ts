@@ -43,7 +43,6 @@ export class WallComponent implements OnChanges, OnDestroy {
                 this.cleanUp();
             }
 
-
             this.initialize();
         }
     }
@@ -66,6 +65,7 @@ export class WallComponent implements OnChanges, OnDestroy {
 
     private cleanUp() {
         this.wallViewModel.reset();
+
         this.destroyPlugins();
     }
 

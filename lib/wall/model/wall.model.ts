@@ -68,7 +68,7 @@ export class WallModel implements IWallModel {
             this.layout.addBrickToExistingColumn(
                 brickPosition.rowIndex,
                 brickPosition.columnIndex,
-                brickPosition.columnIndex + 1,
+                brickPosition.brickIndex + 1,
                 newBrick);
         }
 

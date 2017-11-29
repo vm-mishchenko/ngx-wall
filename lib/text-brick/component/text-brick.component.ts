@@ -9,6 +9,7 @@ import { BaseTextBrickComponent } from "../../base-text-brick/base-text-brick.co
         p {
             min-height: 24px;
             margin: 0;
+            box-sizing: content-box;
         }
     `]
 })

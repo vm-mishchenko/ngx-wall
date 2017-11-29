@@ -6,17 +6,17 @@ import {
     DividerBrickModule,
     HeaderBrickModule,
     ImgBrickModule,
+    PickOutModule,
     QuoteBrickModule,
     TextBrickModule,
-    VideoBrickModule,
-
     TowModule,
-    PickOutModule,
+    VideoBrickModule,
     WALL_PLUGIN,
     WallApi,
     WallModule
 } from 'wall';
 import { DebugService } from "./debug/debug.service";
+import { Subscription } from "rxjs/Subscription";
 
 @Injectable()
 class LoggerPlugin {
@@ -31,10 +31,20 @@ class LoggerPlugin {
 
 @Injectable()
 class EventLoggerPlugin {
+    private apiSubscription: Subscription;
+
     constructor(wallApi: WallApi) {
-        wallApi.core.subscribe((event: any) => {
+        this.apiSubscription = wallApi.core.subscribe((event: any) => {
             wallApi.features.logger.log(event);
         });
+    }
+
+    destroy() {
+        console.log(`EventLoggerPlugin destroy`);
+
+        this.apiSubscription.unsubscribe();
+
+        this.apiSubscription = null;
     }
 }
 

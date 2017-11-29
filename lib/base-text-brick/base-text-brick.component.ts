@@ -207,13 +207,13 @@ export abstract class BaseTextBrickComponent implements OnInit {
         const sel = window.getSelection();
 
         const textState = {
-            text: this.scope.text.slice(sel.baseOffset)
+            text: this.scope.text.slice(sel.focusOffset)
         };
 
         this.wallApi.core.addBrickAfterBrickId(this.id, 'text', textState);
 
         // update current brick
-        this.scope.text = this.scope.text.slice(0, sel.baseOffset);
+        this.scope.text = this.scope.text.slice(0, sel.focusOffset);
 
         this.saveCurrentState();
     }
@@ -250,6 +250,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
         this.stateChanges.emit(this.scope);
     }
 
+    // caret helpers
     getCaretPosition() {
         const sel = window.getSelection();
 
