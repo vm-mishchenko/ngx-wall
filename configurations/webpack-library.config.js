@@ -21,16 +21,13 @@ module.exports = {
     },
 
     externals: [
-        'rxjs/Subject',
-        'rxjs/Subscription',
-        'rxjs/Observable',
-        'rxjs/add/observable/fromEvent',
-        'rxjs/add/operator/throttleTime',
-        'rxjs/add/operator/elementAt',
-        'rxjs/add/operator/skipWhile',
-        'rxjs/add/operator/bufferTime',
-        '@angular/core',
-        '@angular/common'
+        function (context, request, callback) {
+            if (/^@angular/.test(request) || /^rxjs/.test(request)) {
+                return callback(null, 'commonjs ' + request);
+            }
+
+            callback();
+        }
     ],
 
     resolve: {
@@ -74,8 +71,7 @@ module.exports = {
 
         new ExtractTextPlugin(`${libraryConfig.libraryName}.css`)
     ]
-}
-;
+};
 
 function root(p) {
     return path.join(process.cwd(), p);
