@@ -21,14 +21,8 @@ module.exports = {
     },
 
     externals: [
-        function (context, request, callback) {
-            if (/^@angular/.test(request) ||
-                /^rxjs/.test(request)) {
-                return callback(null, 'commonjs ' + request);
-            }
-
-            callback();
-        }
+        /^rxjs\/*/,
+        /^@angular\/*/
     ],
 
     resolve: {
