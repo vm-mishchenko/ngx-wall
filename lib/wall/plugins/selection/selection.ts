@@ -1,9 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { WallApi } from '../../components/wall';
+import { Inject, Injectable } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../modules/pick-out';
 import { DropEvent, StartWorkingEvent, StopWorkingEvent, TOW, TowService } from '../../../modules/tow';
-import { Subscription } from 'rxjs/Subscription';
+import { WallApi } from '../../components/wall';
 
 @Injectable()
 export class SelectionPlugin {

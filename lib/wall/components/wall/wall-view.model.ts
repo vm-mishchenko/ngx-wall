@@ -1,12 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-
-import { WallApi } from './wall-api.service';
-import { WALL } from './wall.constant';
 import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
-import { WallState } from './interfaces/wall-state.interface';
-import { IWallModel, IWallViewModel } from '../../wall.interfaces';
 import {
     AddBrickEvent,
     MoveBrickEvent,
@@ -15,7 +10,12 @@ import {
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
-import { FocusContext } from "./wall.interfaces";
+import { IWallModel, IWallViewModel } from '../../wall.interfaces';
+import { WallState } from './interfaces/wall-state.interface';
+
+import { WallApi } from './wall-api.service';
+import { WALL } from './wall.constant';
+import { FocusContext } from './wall.interfaces';
 
 @Injectable()
 export class WallViewModel implements IWallViewModel {
@@ -55,6 +55,8 @@ export class WallViewModel implements IWallViewModel {
 
         this.wallModel.traverse((row) => {
             canvasLayout.rows.push({
+                id: row.id,
+
                 columns: row.columns.map((column) => {
                     return {
                         bricks: column.bricks.map((brickConfig) => {

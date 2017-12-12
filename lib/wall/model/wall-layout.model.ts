@@ -1,6 +1,6 @@
-import { WallBrick } from './wall-brick.model';
-import { IWallColumn, IWallRow } from './model.interfaces';
 import { BrickRegistry } from '../registry/brick-registry.service';
+import { IWallColumn, IWallRow } from './model.interfaces';
+import { WallBrick } from './wall-brick.model';
 
 export class WallLayout {
     private rows: IWallRow[] = [];
@@ -181,11 +181,7 @@ export class WallLayout {
 
                 // if there are no rows, create default
                 if (this.rows.length === 0) {
-                    this.rows.push({
-                        columns: [{
-                            bricks: []
-                        }]
-                    });
+                    this.rows.push(this.initializeNewRow());
                 }
             }
         }
@@ -338,6 +334,7 @@ export class WallLayout {
 
     private initializeNewRow(): IWallRow {
         return {
+            id: String(Math.random()),
             columns: [
                 this.initializeNewColumn()
             ]

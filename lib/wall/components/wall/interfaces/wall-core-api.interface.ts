@@ -1,8 +1,8 @@
 import { Subscription } from "rxjs/Subscription";
-import { WallState } from "./wall-state.interface";
-import { WallDefinition } from "../../../wall.interfaces";
 import { BrickSnapshot } from "../../../model/wall.events";
+import { WallDefinition } from "../../../wall.interfaces";
 import { FocusContext } from "../wall.interfaces";
+import { WallState } from "./wall-state.interface";
 
 export interface WallCoreApi {
     state: WallState;

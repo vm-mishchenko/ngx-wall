@@ -1,6 +1,6 @@
 import { BrickRegistry } from '../registry/brick-registry.service';
-import { WallModelFactory } from './wall-model.factory';
 import { WallDefinition } from '../wall.interfaces';
+import { WallModelFactory } from './wall-model.factory';
 
 describe('Wall Model', function () {
     let brickRegistry = new BrickRegistry();

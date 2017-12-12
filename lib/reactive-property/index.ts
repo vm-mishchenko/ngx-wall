@@ -1,13 +1,8 @@
 import { Subject } from "rxjs/Subject";
 
 export class ReactiveReadOnlyProperty<T> {
-    private value: T;
-
     valueChanged: Subject<T>;
-
-    getValue(): T {
-        return this.value;
-    }
+    private value: T;
 
     constructor(value, valueChanged) {
         this.value = value;
@@ -17,6 +12,10 @@ export class ReactiveReadOnlyProperty<T> {
         this.valueChanged.subscribe((value) => {
             this.value = value;
         });
+    }
+
+    getValue(): T {
+        return this.value;
     }
 }
 

@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { WindowReference } from '../pick-out.tokens';
 import { PickOutCoordinator } from "../pick-out-coordinator.service";
+import { WindowReference } from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-item]'

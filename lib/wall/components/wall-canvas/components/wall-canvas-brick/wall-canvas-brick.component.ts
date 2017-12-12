@@ -9,8 +9,8 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
 import { Subscription } from 'rxjs/Subscription';
+import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
 import { WallCanvasComponent } from '../../wall-canvas.component';
 
 @Component({

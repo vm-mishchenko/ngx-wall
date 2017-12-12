@@ -1,5 +1,5 @@
-import { PickOutModelDestroyEvent } from './pick-out-model-destroy.event';
 import { Subject } from 'rxjs/Subject';
+import { PickOutModelDestroyEvent } from './pick-out-model-destroy.event';
 
 export class PickOutAreaModel {
     changes: Subject<any> = new Subject();

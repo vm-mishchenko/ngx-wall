@@ -1,3 +1,4 @@
+import { DOCUMENT } from '@angular/common';
 import {
     ApplicationRef,
     ComponentFactoryResolver,
@@ -9,13 +10,12 @@ import {
     Injector,
     OnDestroy
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { PickOutAreaModel } from './pick-out-area.model';
-import { PickOutAreaComponent } from './pick-out-area.component';
-import { WindowReference } from '../pick-out.tokens';
-import { StopPickOut } from '../pick-out.events';
 import { Subscription } from 'rxjs/Subscription';
 import { PickOutCoordinator } from "../pick-out-coordinator.service";
+import { StopPickOut } from '../pick-out.events';
+import { WindowReference } from '../pick-out.tokens';
+import { PickOutAreaComponent } from './pick-out-area.component';
+import { PickOutAreaModel } from './pick-out-area.model';
 
 @Directive({
     selector: '[pick-out-area]'

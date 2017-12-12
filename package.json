@@ -11,7 +11,7 @@
     "build": "webpack --config=./configurations/webpack-library.config.js",
     "build:watch": "webpack --watch --config=./configurations/webpack-library.config.js",
     "application": "webpack-dev-server --config=./configurations/webpack-dev-application.config.js",
-    "lint": "tslint -c tslint.json lib/**/*.ts",
+    "lint": "tslint -c tslint.json './lib/**/*.ts'",
     "test": "karma start ./configurations/karma.conf.js",
     "test:once": "karma start configurations/karma.conf.js --single-run",
     "explorer": "source-map-explorer ./dist/wall.umd.js",

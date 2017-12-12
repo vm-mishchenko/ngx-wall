@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { BeaconRegistry } from './beacon.registry.service';
 import { WindowReference } from '../tow.tokens';
+import { BeaconRegistry } from './beacon.registry.service';
 
 @Directive({selector: '[beacon]'})
 export class BeaconDirective implements OnInit, OnDestroy {

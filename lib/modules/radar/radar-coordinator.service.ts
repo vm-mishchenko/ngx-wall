@@ -1,15 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
-import { SpotDirective } from "./directive/radar.directive";
-import { Subject } from "rxjs/Subject";
 import { DOCUMENT } from "@angular/common";
-import { Subscription } from "rxjs/Subscription";
-import { Observable } from 'rxjs/Observable';
+import { Inject, Injectable } from '@angular/core';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/throttleTime';
-import { SpotModel } from "./spot.model";
-import { WindowReference } from "./radar.tokens";
+import { Observable } from 'rxjs/Observable';
+import { Subject } from "rxjs/Subject";
+import { Subscription } from "rxjs/Subscription";
+import { SpotDirective } from "./directive/radar.directive";
 import { LocationUpdatedEvent } from "./events/location-updated.event";
 import { DistanceToSpot } from "./interfaces/distance-to-spot.interface";
+import { WindowReference } from "./radar.tokens";
+import { SpotModel } from "./spot.model";
 
 @Injectable()
 export class RadarCoordinator {
