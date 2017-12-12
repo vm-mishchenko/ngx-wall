@@ -3,7 +3,10 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
 import {
-    AddBrickEvent, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent,
+    AddBrickEvent,
+    MoveBrickEvent,
+    RemoveBrickEvent,
+    RemoveBricksEvent,
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';

@@ -1,6 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
@@ -71,7 +78,7 @@ export class WallCanvasComponent implements OnChanges {
         });
     }
 
-    trackBricksBy(index, item): string {
+    trackRowsBy(index, item): string {
         return item.id;
     }
 }

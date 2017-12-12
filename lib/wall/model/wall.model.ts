@@ -6,7 +6,12 @@ import { IWallColumn, IWallRow } from './model.interfaces';
 import { WallBrick } from './wall-brick.model';
 import { WallLayout } from './wall-layout.model';
 import {
-    AddBrickEvent, BrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent,
+    AddBrickEvent,
+    BrickSnapshot,
+    MoveBrickEvent,
+    RemoveBrickEvent,
+    RemoveBricksEvent,
+    TurnBrickIntoEvent,
     UpdateBrickStateEvent
 } from './wall.events';
 
@@ -257,7 +262,7 @@ export class WallModel implements IWallModel {
         return this.layout.traverse((row: IWallRow) => {
             const preparedRow = {
                 id: row.id,
-                
+
                 columns: row.columns.map((column) => {
                     return {
                         bricks: column.bricks.map((brickConfig) => {

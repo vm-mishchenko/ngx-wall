@@ -1,8 +1,8 @@
-import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
-import { EndPickOut, PickOutItems, StartPickOut, StopPickOut } from './pick-out.events';
-import { PickOutItemConfig } from "./interfaces/pick-out-item-config.interface";
+import { Subject } from 'rxjs/Subject';
 import { PickItemPosition } from "./interfaces/pick-item-posiiton";
+import { PickOutItemConfig } from "./interfaces/pick-out-item-config.interface";
+import { EndPickOut, PickOutItems, StartPickOut, StopPickOut } from './pick-out.events';
 
 @Injectable()
 export class PickOutCoordinator {

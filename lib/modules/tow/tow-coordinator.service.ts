@@ -1,16 +1,16 @@
-import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { WindowReference } from './tow.tokens';
-import { BeaconDetector } from './beacon-detector/beacon-detector.service';
-import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
-import { BeaconRegistry } from './beacon/beacon.registry.service';
+import { Inject, Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { StartWorkingEvent } from './events/start-working.event';
-import { WorkInProgressEvent } from './events/work-in-progress.event';
-import { StopWorkingEvent } from './events/stop-working.event';
-import { DropEvent } from './events/drop.event';
+import { BeaconDetector } from './beacon-detector/beacon-detector.service';
 import { DetectedBeacon } from './beacon-detector/detected-beacon';
+import { BeaconRegistry } from './beacon/beacon.registry.service';
+import { DropEvent } from './events/drop.event';
+import { StartWorkingEvent } from './events/start-working.event';
+import { StopWorkingEvent } from './events/stop-working.event';
+import { WorkInProgressEvent } from './events/work-in-progress.event';
+import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
 import { TOW } from './tow.constant';
+import { WindowReference } from './tow.tokens';
 
 @Injectable()
 export class TowCoordinator {

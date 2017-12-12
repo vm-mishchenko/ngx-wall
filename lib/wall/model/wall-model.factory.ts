@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { IWallModel, WallDefinition } from '../wall.interfaces';
 import { BrickRegistry } from '../registry/brick-registry.service';
+import { IWallModel, WallDefinition } from '../wall.interfaces';
 import { WallModel } from './wall.model';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { WallApi } from '../../wall';
 import { BaseTextBrickComponent } from "../../base-text-brick/base-text-brick.component";
+import { WallApi } from '../../wall';
 
 @Component({
     selector: 'header-brick',

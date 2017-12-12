@@ -1,8 +1,8 @@
 import { ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable } from "rxjs/Observable";
+import { WallApi } from "../wall";
 import { FocusContext } from "../wall/components/wall";
 import { FOCUS_INITIATOR } from "./base-text-brick.constant";
-import { WallApi } from "../wall";
 
 export interface BaseTextState {
     text: string

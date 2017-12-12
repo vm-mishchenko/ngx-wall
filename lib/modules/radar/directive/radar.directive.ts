@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy } from '@angular/core';
-import { WindowReference } from "../radar.tokens";
 import { RadarCoordinator } from "../radar-coordinator.service";
+import { WindowReference } from "../radar.tokens";
 
 @Directive({selector: '[spot]'})
 export class SpotDirective implements OnDestroy {

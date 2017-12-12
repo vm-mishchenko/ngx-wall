@@ -7,8 +7,8 @@ import { Component, Input } from '@angular/core';
 export class WallCanvasRowComponent {
     @Input() row: any;
 
-    trackColumnsBy(index, item) {
-        return true;
+    trackColumnsBy(index): number {
+        return index;
     }
 
     trackBricksBy(index, item) {

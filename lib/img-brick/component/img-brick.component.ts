@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { onWallFocus, WallApi } from '../../index';
 import { Observable } from 'rxjs/Observable';
+import { onWallFocus, WallApi } from '../../index';
 import { ImgBrickState } from "../img-brick-state.interface";
 
 @Component({

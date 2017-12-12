@@ -1,9 +1,8 @@
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
 
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { EventEmitter } from '@angular/core';
-import { WallBrick } from './model/wall-brick.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { BrickSnapshot } from "./model/wall.events";
 
 export const awesomeTypescriptLoaderBug2 = true;

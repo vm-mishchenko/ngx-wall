@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { Radar } from "./radar.service";
 import { SpotDirective } from "./directive/radar.directive";
-import { WindowReference } from "./radar.tokens";
 import { RadarCoordinator } from "./radar-coordinator.service";
+import { Radar } from "./radar.service";
+import { WindowReference } from "./radar.tokens";
 
 @NgModule({
     exports: [SpotDirective],
