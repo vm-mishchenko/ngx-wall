@@ -8,11 +8,7 @@ export class WallCanvasRowComponent {
     @Input() row: any;
 
     trackColumnsBy(index, item) {
-        return item.bricks.reduce((result, brick) => {
-            result += brick.hash;
-
-            return result;
-        }, '');
+        return true;
     }
 
     trackBricksBy(index, item) {

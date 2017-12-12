@@ -1,19 +1,14 @@
-import { IWallModel, WallDefinition } from '../wall.interfaces';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { BrickRegistry } from '../registry/brick-registry.service';
+import { IWallModel, WallDefinition } from '../wall.interfaces';
+import { IWallColumn, IWallRow } from './model.interfaces';
+import { WallBrick } from './wall-brick.model';
+import { WallLayout } from './wall-layout.model';
 import {
-    AddBrickEvent,
-    BrickSnapshot,
-    MoveBrickEvent,
-    RemoveBrickEvent,
-    RemoveBricksEvent,
-    TurnBrickIntoEvent,
+    AddBrickEvent, BrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent,
     UpdateBrickStateEvent
 } from './wall.events';
-import { Subject } from 'rxjs/Subject';
-import { WallLayout } from './wall-layout.model';
-import { WallBrick } from './wall-brick.model';
-import { IWallColumn, IWallRow } from './model.interfaces';
-import { BrickRegistry } from '../registry/brick-registry.service';
 
 export class WallModel implements IWallModel {
     layout: WallLayout;
@@ -261,6 +256,8 @@ export class WallModel implements IWallModel {
     traverse(fn: Function): void {
         return this.layout.traverse((row: IWallRow) => {
             const preparedRow = {
+                id: row.id,
+                
                 columns: row.columns.map((column) => {
                     return {
                         bricks: column.bricks.map((brickConfig) => {

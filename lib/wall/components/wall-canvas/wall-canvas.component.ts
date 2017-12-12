@@ -1,18 +1,11 @@
+import { DOCUMENT } from '@angular/common';
 import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Inject,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
+    Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges,
     ViewChild
 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Subject } from 'rxjs/Subject';
 import { Layout } from './interfaces/layout.interface';
-import { Subject } from "rxjs/Subject";
-import { FocusedBrick } from "./wall-canvas.interfaces";
+import { FocusedBrick } from './wall-canvas.interfaces';
 
 
 @Component({
@@ -79,14 +72,6 @@ export class WallCanvasComponent implements OnChanges {
     }
 
     trackBricksBy(index, item): string {
-        return item.columns.reduce((result, column) => {
-            result += column.bricks.reduce((brickResult, brick) => {
-                brickResult += brick.hash;
-
-                return brickResult;
-            }, '');
-
-            return result;
-        }, '');
+        return item.id;
     }
 }
