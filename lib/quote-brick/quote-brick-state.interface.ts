@@ -1,3 +1,3 @@
-export interface QuoteBrickState {
+export interface IQuoteBrickState {
     text: string;
 }

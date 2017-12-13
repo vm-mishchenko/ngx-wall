@@ -1,9 +1,5 @@
 import {
-    ApplicationRef,
-    ComponentFactoryResolver,
-    ComponentRef,
-    EmbeddedViewRef,
-    Injectable,
+    ApplicationRef, ComponentFactoryResolver, ComponentRef, EmbeddedViewRef, Injectable,
     Injector
 } from '@angular/core';
 import { PlaceholderComponent } from './component/placeholder.component';

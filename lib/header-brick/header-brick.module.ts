@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from "@angular/forms";
-import { ContenteditableModule } from "../modules/contenteditable/contenteditable..module";
+import { FormsModule } from '@angular/forms';
+import { ContenteditableModule } from '../modules/contenteditable/contenteditable..module';
 import { BrickRegistry } from '../wall';
 import { HeaderBrickComponent } from './component/header-brick.component';
 

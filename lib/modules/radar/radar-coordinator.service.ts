@@ -1,15 +1,15 @@
-import { DOCUMENT } from "@angular/common";
+import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/throttleTime';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from "rxjs/Subject";
-import { Subscription } from "rxjs/Subscription";
-import { SpotDirective } from "./directive/radar.directive";
-import { LocationUpdatedEvent } from "./events/location-updated.event";
-import { DistanceToSpot } from "./interfaces/distance-to-spot.interface";
-import { WindowReference } from "./radar.tokens";
-import { SpotModel } from "./spot.model";
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+import { SpotDirective } from './directive/radar.directive';
+import { LocationUpdatedEvent } from './events/location-updated.event';
+import { IDistanceToSpot } from './interfaces/distance-to-spot.interface';
+import { windowToken } from './radar.tokens';
+import { SpotModel } from './spot.model';
 
 @Injectable()
 export class RadarCoordinator {
@@ -22,7 +22,7 @@ export class RadarCoordinator {
     private throttleMouseTime = 30;
 
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(WindowReference) _window: any) {
+                @Inject(windowToken) windowReference: any) {
         this.moveObservable = Observable.fromEvent(doc, 'mousemove');
 
         this.moveObservable
@@ -31,7 +31,7 @@ export class RadarCoordinator {
                 this.updateSpotPosition();
 
                 const x = event.x;
-                const y = event.y + _window.pageYOffset;
+                const y = event.y + windowReference.pageYOffset;
 
                 this.updateLocationPosition(x, y);
             });
@@ -50,7 +50,7 @@ export class RadarCoordinator {
     }
 
     private updateLocationPosition(x: number, y: number) {
-        const sortedSpots: DistanceToSpot[] = [];
+        const sortedSpots: IDistanceToSpot[] = [];
 
         this.spots.forEach((spot) => {
             const minimalDistance = spot.getMinimalDistanceToPoint(x, y);
@@ -60,11 +60,11 @@ export class RadarCoordinator {
             const isCross13Line = spot.isCross13Line(y);
 
             sortedSpots.push({
-                minimalDistance: minimalDistance,
-                topLeftPointDistance: topLeftPointDistance,
-                bottomLeftPointDistance: bottomLeftPointDistance,
-                centerLeftPointDistance: centerLeftPointDistance,
-                isCross13Line: isCross13Line,
+                minimalDistance,
+                topLeftPointDistance,
+                bottomLeftPointDistance,
+                centerLeftPointDistance,
+                isCross13Line,
                 data: spot.instance.data
             });
         });

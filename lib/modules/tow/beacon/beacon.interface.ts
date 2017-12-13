@@ -1,17 +1,17 @@
-export interface BeaconConfig {
+export interface IBeaconConfig {
     id: string;
     api: {
-        getPosition(): BeaconPosition;
-    }
+        getPosition(): IBeaconPosition;
+    };
 }
 
-export interface BeaconPosition {
+export interface IBeaconPosition {
     x: number;
     y: number;
     width: number;
     height: number;
 }
 
-export interface Beacon extends BeaconPosition {
+export interface IBeacon extends IBeaconPosition {
     id: string;
 }

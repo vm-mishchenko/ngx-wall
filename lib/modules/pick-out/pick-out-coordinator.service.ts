@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { PickItemPosition } from "./interfaces/pick-item-posiiton";
-import { PickOutItemConfig } from "./interfaces/pick-out-item-config.interface";
-import { EndPickOut, PickOutItems, StartPickOut, StopPickOut } from './pick-out.events';
+import { EndPickOut } from './events/end-pick-out.event';
+import { PickOutItems } from './events/pick-out-items.event';
+import { StartPickOut } from './events/start-pick-out.event';
+import { StopPickOut } from './events/stop-pick-out.event';
+import { PickItemPosition } from './interfaces/pick-item-posiiton';
+import { IPickOutItemConfig } from './interfaces/pick-out-item-config.interface';
 
 @Injectable()
 export class PickOutCoordinator {
     changes: Subject<any> = new Subject();
 
-    private pickOutItems: Map<string, PickOutItemConfig> = new Map();
+    private pickOutItems: Map<string, IPickOutItemConfig> = new Map();
 
     private pickOutItemPositions: Map<string, PickItemPosition> = new Map();
 
     private isPickOutAllowed: boolean = true;
 
-    registerPickOutItem(config: PickOutItemConfig) {
+    registerPickOutItem(config: IPickOutItemConfig) {
         this.pickOutItems.set(config.id, config);
     }
 

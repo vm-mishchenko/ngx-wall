@@ -1,5 +1,5 @@
-import { Brick } from "./brick.interface";
+import { IBrick } from './brick.interface';
 
-export interface Column {
-    bricks: Brick[];
+export interface IColumn {
+    bricks: IBrick[];
 }

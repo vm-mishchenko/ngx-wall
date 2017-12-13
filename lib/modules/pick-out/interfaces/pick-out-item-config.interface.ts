@@ -1,6 +1,6 @@
-import { PickItemApi } from "./pick-item-api.interface";
+import { IPickItemApi } from './pick-item-api.interface';
 
-export interface PickOutItemConfig {
+export interface IPickOutItemConfig {
     id: string;
-    api: PickItemApi;
+    api: IPickItemApi;
 }

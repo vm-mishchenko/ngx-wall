@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { SpotDirective } from "./directive/radar.directive";
-import { RadarCoordinator } from "./radar-coordinator.service";
-import { Radar } from "./radar.service";
-import { WindowReference } from "./radar.tokens";
+import { SpotDirective } from './directive/radar.directive';
+import { RadarCoordinator } from './radar-coordinator.service';
+import { Radar } from './radar.service';
+import { windowToken } from './radar.tokens';
 
 @NgModule({
     exports: [SpotDirective],
@@ -11,7 +11,7 @@ import { WindowReference } from "./radar.tokens";
         Radar,
         RadarCoordinator,
         {
-            provide: WindowReference,
+            provide: windowToken,
             useValue: window
         }
     ]

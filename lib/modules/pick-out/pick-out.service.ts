@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { PickOutCoordinator } from "./pick-out-coordinator.service";
+import { PickOutCoordinator } from './pick-out-coordinator.service';
 
 @Injectable()
 export class PickOutService {

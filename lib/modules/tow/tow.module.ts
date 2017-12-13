@@ -8,7 +8,7 @@ import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer
 import { TowCoordinator } from './tow-coordinator.service';
 import { TowSlaveDirective } from './tow-slave/tow-slave.directive';
 import { TowService } from './tow.service';
-import { WindowReference } from './tow.tokens';
+import { windowToken } from './tow.tokens';
 
 @NgModule({
     imports: [
@@ -37,7 +37,7 @@ import { WindowReference } from './tow.tokens';
         TowCoordinator,
         PlaceholderRenderer,
         {
-            provide: WindowReference,
+            provide: windowToken,
             useValue: window
         }
     ]

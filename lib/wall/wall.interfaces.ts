@@ -3,23 +3,23 @@
 import { EventEmitter } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { BrickSnapshot } from "./model/wall.events";
+import { IBrickSnapshot } from './model/wall.events';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
 // Register new brick
-export interface BrickSpecification {
+export interface IBrickSpecification {
     tag: string;
     component: any;
     supportText?: true;
 }
 
-export interface WallDefinition {
-    bricks: BrickDefinition[];
-    layout: LayoutDefinition;
+export interface IWallDefinition {
+    bricks: IBrickDefinition[];
+    layout: ILayoutDefinition;
 }
 
-export interface BrickDefinition {
+export interface IBrickDefinition {
     id: string;
     tag: string;
 
@@ -28,26 +28,26 @@ export interface BrickDefinition {
 
     meta: {
         comments?: any[]
-    }
+    };
 }
 
-export interface LayoutDefinition {
+export interface ILayoutDefinition {
     // todo rename to rows
-    bricks: RowLayoutDefinition[];
+    bricks: IRowLayoutDefinition[];
 }
 
-export interface RowLayoutDefinition {
-    columns: ColumnLayoutDefinition[];
+export interface IRowLayoutDefinition {
+    columns: IColumnLayoutDefinition[];
 }
 
-export interface ColumnLayoutDefinition {
-    bricks: { id: string }[];
+export interface IColumnLayoutDefinition {
+    bricks: Array<{ id: string }>;
 }
 
 export interface IWallComponent {
     id: string;
     state: BehaviorSubject<any>;
-    stateChanges: EventEmitter<any>;
+    stateChanges?: EventEmitter<any>;
 }
 
 export interface IWallViewModel {
@@ -71,7 +71,7 @@ export interface IWallViewModel {
 
     isRegisteredBrick(tag: string): boolean;
 
-    focusOnBrickId(brickId: string): void
+    focusOnBrickId(brickId: string): void;
 
     focusOnPreviousTextBrick(brickId: string): void;
 
@@ -91,9 +91,9 @@ export interface IWallModel {
 
     getPreviousBrickId(brickId: string): string;
 
-    initialize(plan: WallDefinition);
+    initialize(plan: IWallDefinition);
 
-    getPlan(): WallDefinition;
+    getPlan(): IWallDefinition;
 
     getRowCount(): number;
 
@@ -123,13 +123,13 @@ export interface IWallModel {
 
     subscribe(fn: any): Subscription;
 
-    traverse(fn: Function): void;
+    traverse(fn: (row: any) => any): void;
 
-    filterBricks(predictor: Function): BrickSnapshot[];
+    filterBricks(predictor: () => any): IBrickSnapshot[];
 
     getBrickIds(): string[];
 
     getBrickTag(brickId: string): string;
 
-    getBrickSnapshot(brickId: string): BrickSnapshot;
+    getBrickSnapshot(brickId: string): IBrickSnapshot;
 }

@@ -1,5 +1,5 @@
-import { PickItemPosition } from "./pick-item-posiiton";
+import { PickItemPosition } from './pick-item-posiiton';
 
-export interface PickItemApi {
+export interface IPickItemApi {
     getPosition(): PickItemPosition;
 }

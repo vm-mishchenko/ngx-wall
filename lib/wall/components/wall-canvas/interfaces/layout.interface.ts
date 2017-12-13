@@ -1,5 +1,5 @@
-import { Row } from "./row.interface";
+import { IRow } from './row.interface';
 
-export interface Layout {
-    rows: Row[];
+export interface ILayout {
+    rows: IRow[];
 }

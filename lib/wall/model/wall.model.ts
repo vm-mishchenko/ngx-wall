@@ -1,17 +1,12 @@
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { BrickRegistry } from '../registry/brick-registry.service';
-import { IWallModel, WallDefinition } from '../wall.interfaces';
+import { IWallDefinition, IWallModel } from '../wall.interfaces';
 import { IWallColumn, IWallRow } from './model.interfaces';
 import { WallBrick } from './wall-brick.model';
 import { WallLayout } from './wall-layout.model';
 import {
-    AddBrickEvent,
-    BrickSnapshot,
-    MoveBrickEvent,
-    RemoveBrickEvent,
-    RemoveBricksEvent,
-    TurnBrickIntoEvent,
+    AddBrickEvent, IBrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent,
     UpdateBrickStateEvent
 } from './wall.events';
 
@@ -25,14 +20,14 @@ export class WallModel implements IWallModel {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
-    initialize(plan: WallDefinition) {
+    initialize(plan: IWallDefinition) {
         this.layout = new WallLayout(this.brickRegistry);
 
         plan.layout.bricks.forEach((row, rowIndex) => {
             row.columns.forEach((column, columnIndex) => {
                 column.bricks.forEach((brick, brickIndex) => {
-                    const planBrick = plan.bricks.find((planBrick) => {
-                        return brick.id === planBrick.id;
+                    const planBrick = plan.bricks.find((currentPlanBrick) => {
+                        return brick.id === currentPlanBrick.id;
                     });
 
                     const wallBrick = this.restoreBrick(planBrick.id, planBrick.tag, planBrick.meta, planBrick.data);
@@ -178,7 +173,7 @@ export class WallModel implements IWallModel {
     }
 
     // QUERY METHODS
-    getPlan(): WallDefinition {
+    getPlan(): IWallDefinition {
         const plan = {
             bricks: [],
             layout: {
@@ -210,9 +205,7 @@ export class WallModel implements IWallModel {
                 columns.push(planColumn);
             });
 
-            plan.layout.bricks.push({
-                columns: columns
-            });
+            plan.layout.bricks.push({columns});
         });
 
         return plan;
@@ -252,13 +245,13 @@ export class WallModel implements IWallModel {
         return previousTextBrick && previousTextBrick.id;
     }
 
-    filterBricks(predictor: Function): BrickSnapshot[] {
+    filterBricks(predictor): IBrickSnapshot[] {
         return this.layout.filterBricks((wallBrick) => {
             return predictor(this.createBrickSnapshot(wallBrick));
         });
     }
 
-    traverse(fn: Function): void {
+    traverse(fn): void {
         return this.layout.traverse((row: IWallRow) => {
             const preparedRow = {
                 id: row.id,
@@ -270,7 +263,7 @@ export class WallModel implements IWallModel {
                                 id: brickConfig.id,
                                 tag: brickConfig.tag,
                                 state: brickConfig.state
-                            }
+                            };
                         })
                     };
                 })
@@ -281,14 +274,14 @@ export class WallModel implements IWallModel {
     }
 
     getBrickIds(): string[] {
-        return this.layout.getBrickSequence(() => true).map(brick => brick.id)
+        return this.layout.getBrickSequence(() => true).map((brick) => brick.id);
     }
 
     getBrickTag(brickId: string): string {
         return this.layout.getBrickById(brickId).tag;
     }
 
-    getBrickSnapshot(brickId: string): BrickSnapshot {
+    getBrickSnapshot(brickId: string): IBrickSnapshot {
         const brick = this.getBrickById(brickId);
 
         return this.createBrickSnapshot(brick);
@@ -341,7 +334,7 @@ export class WallModel implements IWallModel {
             s4() + '-' + s4() + s4() + s4();
     }
 
-    private createBrickSnapshot(brick: WallBrick): BrickSnapshot {
+    private createBrickSnapshot(brick: WallBrick): IBrickSnapshot {
         return {
             id: brick.id,
             tag: brick.tag,

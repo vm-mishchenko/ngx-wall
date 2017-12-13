@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Beacon } from '../beacon/beacon.interface';
-import { TOW } from "../tow.constant";
-import { DetectedBeacon } from "./detected-beacon";
+import { IBeacon } from '../beacon/beacon.interface';
+import { TOW } from '../tow.constant';
+import { DetectedBeacon } from './detected-beacon';
 
 @Injectable()
 export class BeaconDetector {
-    getNearestBeacon(beacons: Beacon[], x: number, y: number): DetectedBeacon {
-        let detected = new DetectedBeacon();
+    getNearestBeacon(beacons: IBeacon[], x: number, y: number): DetectedBeacon {
+        const detected = new DetectedBeacon();
 
         beacons.forEach((currentBeacon) => {
             if (!detected.beacon) {
@@ -51,7 +51,7 @@ export class BeaconDetector {
         return detected;
     }
 
-    private getMinimumDistance(beacon: Beacon, x: number, y: number) {
+    private getMinimumDistance(beacon: IBeacon, x: number, y: number) {
         const position = {
             minDistanceToBeacon: null,
             pointInsideBeacon: false
@@ -76,7 +76,12 @@ export class BeaconDetector {
             position.minDistanceToBeacon = minDistanceToVerticalLine;
         } else {
             // point doesn't cross beacon, calculate shortest distance to beacon
-            position.minDistanceToBeacon = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
+            position.minDistanceToBeacon = Math.sqrt(
+                minDistanceToHorizontalLine *
+                minDistanceToHorizontalLine +
+                minDistanceToVerticalLine *
+                minDistanceToVerticalLine
+            );
         }
 
         if ((x > beacon.x) && (x < beacon.x + beacon.width) && (y > beacon.y) && (y < beacon.y + beacon.height)) {

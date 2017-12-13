@@ -1,4 +1,4 @@
-import { SpotDirective } from "./directive/radar.directive";
+import { SpotDirective } from './directive/radar.directive';
 
 export class SpotModel {
     instance: SpotDirective;
@@ -46,7 +46,12 @@ export class SpotModel {
             minimalDistance = minDistanceToVerticalLine;
         } else {
             // point doesn't cross beacon, calculate shortest distance to beacon
-            minimalDistance = Math.sqrt(minDistanceToHorizontalLine * minDistanceToHorizontalLine + minDistanceToVerticalLine * minDistanceToVerticalLine);
+            minimalDistance = Math.sqrt(
+                minDistanceToHorizontalLine *
+                minDistanceToHorizontalLine +
+                minDistanceToVerticalLine *
+                minDistanceToVerticalLine
+            );
         }
 
         return minimalDistance;

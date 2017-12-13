@@ -2,6 +2,81 @@
   "rulesDirectory": [
     "node_modules/codelyzer"
   ],
+  "extends": "tslint:recommended",
   "rules": {
+    "member-access": [
+      true,
+      "no-public"
+    ],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-instance-field",
+          "protected-static-field",
+          "protected-instance-field",
+          "private-static-field",
+          "private-instance-field",
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor",
+          "public-static-method",
+          "public-instance-method",
+          "protected-static-method",
+          "protected-instance-method",
+          "private-static-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "no-empty": false,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "object-literal-sort-keys": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
+    "triple-equals": true,
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format"
+    ],
+    "angular-whitespace": [
+      true,
+      "check-interpolation",
+      "check-pipe"
+    ],
+    "banana-in-box": true,
+    "templates-no-negated-async": true,
+    "use-input-property-decorator": true,
+    "use-output-property-decorator": true,
+    "use-host-property-decorator": true,
+    "no-attribute-parameter-decorator": true,
+    "no-input-rename": false,
+    "no-output-rename": true,
+    "no-forward-ref": true,
+    "use-view-encapsulation": true,
+    "use-life-cycle-interface": true,
+    "use-pipe-transform-interface": true,
+    "pipe-naming": [
+      true,
+      "camelCase"
+    ],
+    "component-class-suffix": true,
+    "directive-class-suffix": true,
+    "pipe-impure": true
   }
 }

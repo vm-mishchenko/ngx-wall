@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseTextBrickComponent } from "../../base-text-brick/base-text-brick.component";
+import { BaseTextBrickComponent } from '../../base-text-brick/base-text-brick.component';
 import { WallApi } from '../../wall';
 
 @Component({

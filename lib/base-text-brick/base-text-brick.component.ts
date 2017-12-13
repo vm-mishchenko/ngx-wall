@@ -1,22 +1,22 @@
 import { ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable } from "rxjs/Observable";
-import { WallApi } from "../wall";
-import { FocusContext } from "../wall/components/wall";
-import { FOCUS_INITIATOR } from "./base-text-brick.constant";
+import { Observable } from 'rxjs/Observable';
+import { WallApi } from '../wall';
+import { IFocusContext } from '../wall/components/wall';
+import { FOCUS_INITIATOR } from './base-text-brick.constant';
 
-export interface BaseTextState {
-    text: string
+export interface IBaseTextState {
+    text: string;
 }
 
 export abstract class BaseTextBrickComponent implements OnInit {
     @Input() id: string;
-    @Input() state: Observable<BaseTextState>;
+    @Input() state: Observable<IBaseTextState>;
 
-    @Output() stateChanges: EventEmitter<BaseTextState> = new EventEmitter();
+    @Output() stateChanges: EventEmitter<IBaseTextState> = new EventEmitter();
 
     @ViewChild('editor') editor: ElementRef;
 
-    scope: BaseTextState = {
+    scope: IBaseTextState = {
         text: ''
     };
 
@@ -81,7 +81,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
     topKeyPressed(e: Event) {
         e.preventDefault();
 
-        const focusContext: FocusContext = {
+        const focusContext: IFocusContext = {
             initiator: FOCUS_INITIATOR,
             details: {
                 topKey: true,
@@ -95,7 +95,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
     bottomKeyPressed(e: Event) {
         e.preventDefault();
 
-        const focusContext: FocusContext = {
+        const focusContext: IFocusContext = {
             initiator: FOCUS_INITIATOR,
             details: {
                 bottomKey: true,
@@ -109,7 +109,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
     leftKeyPressed(e: Event) {
         e.preventDefault();
 
-        const focusContext: FocusContext = {
+        const focusContext: IFocusContext = {
             initiator: FOCUS_INITIATOR,
             details: {
                 leftKey: true
@@ -122,7 +122,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
     rightKeyPressed(e) {
         e.preventDefault();
 
-        const focusContext: FocusContext = {
+        const focusContext: IFocusContext = {
             initiator: FOCUS_INITIATOR,
             details: {
                 rightKey: true
@@ -148,11 +148,11 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
             this.wallApi.core.removeBrick(this.id);
 
-            const focusContext: FocusContext = {
+            const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
                 details: {
                     concatText: true,
-                    caretPosition: caretPosition
+                    caretPosition
                 }
             };
 
@@ -190,7 +190,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
         this.wallApi.core.removeBrick(this.id);
 
         if (previousTextBrickId) {
-            const focusContext: FocusContext = {
+            const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
                 details: {
                     deletePreviousText: true
@@ -220,7 +220,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
     // key handler end
 
-    onWallFocus(context?: FocusContext): void {
+    onWallFocus(context?: IFocusContext): void {
         this.editor.nativeElement.focus();
 
         if (context && context.initiator === FOCUS_INITIATOR) {
@@ -297,7 +297,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
             testRange.selectNodeContents(this.editor.nativeElement);
             testRange.setEnd(selRange.startContainer, selRange.startOffset);
-            atStart = (testRange.toString() == '');
+            atStart = (testRange.toString() === '');
         }
 
         return atStart;
@@ -314,7 +314,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
             testRange.selectNodeContents(this.editor.nativeElement);
             testRange.setStart(selRange.endContainer, selRange.endOffset);
-            atEnd = (testRange.toString() == '');
+            atEnd = (testRange.toString() === '');
         }
 
         return atEnd;

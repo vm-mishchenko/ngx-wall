@@ -1,6 +1,6 @@
-import { ReactiveReadOnlyProperty } from "../../../../reactive-property";
+import { ReactiveReadOnlyProperty } from '../../../../reactive-property';
 
-export interface WallState {
-    mode: ReactiveReadOnlyProperty<string>
-    isMediaInteractionEnabled: ReactiveReadOnlyProperty<boolean>
+export interface IWallState {
+    mode: ReactiveReadOnlyProperty<string>;
+    isMediaInteractionEnabled: ReactiveReadOnlyProperty<boolean>;
 }

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Beacon, BeaconConfig } from './beacon.interface';
+import { IBeacon, IBeaconConfig } from './beacon.interface';
 
 @Injectable()
 export class BeaconRegistry {
-    private beaconConfigs: Map<string, BeaconConfig> = new Map();
-    private beacons: Map<string, Beacon> = new Map();
+    private beaconConfigs: Map<string, IBeaconConfig> = new Map();
+    private beacons: Map<string, IBeacon> = new Map();
 
-    register(beaconConfig: BeaconConfig) {
+    register(beaconConfig: IBeaconConfig) {
         this.beaconConfigs.set(beaconConfig.id, beaconConfig);
 
         this.updateBeaconPositions();
@@ -28,7 +28,7 @@ export class BeaconRegistry {
             const position = beacon.api.getPosition();
 
             this.beacons.set(id, {
-                id: id,
+                id,
                 x: position.x,
                 y: position.y,
                 width: position.width,

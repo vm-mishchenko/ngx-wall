@@ -1,3 +1,3 @@
-export interface Brick {
+export interface IBrick {
     id: string;
 }

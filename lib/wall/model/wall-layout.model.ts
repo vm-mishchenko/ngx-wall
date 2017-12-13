@@ -201,13 +201,13 @@ export class WallLayout {
         })[0];
     }
 
-    traverse(fn: Function) {
+    traverse(fn) {
         this.rows.forEach((row) => {
             fn(row);
         });
     }
 
-    filterBricks(predictor: Function) {
+    filterBricks(predictor) {
         return this.getBrickSequence((wallBrick) => {
             return predictor(wallBrick);
         });
@@ -293,7 +293,7 @@ export class WallLayout {
         return bricksSequence[brickIndex - 1];
     }
 
-    getBrickSequence(predicate: Function): WallBrick[] {
+    getBrickSequence(predicate): WallBrick[] {
         const brickSequence = [];
 
         this.traverse((row: IWallRow) => {
@@ -344,10 +344,10 @@ export class WallLayout {
     private initializeNewColumn(): IWallColumn {
         return {
             bricks: []
-        }
+        };
     }
 
-    private findBrickAfter(brickId: string, predicate: Function) {
+    private findBrickAfter(brickId: string, predicate) {
         const bricks = [];
 
         const bricksSequence = this.getBrickSequence(() => true);
@@ -359,21 +359,21 @@ export class WallLayout {
         if (currentBrickIdIndex !== -1) {
             const brickIdsAfter = brickIdsSequence.splice(currentBrickIdIndex + 1);
 
-            for (let i = 0; i < brickIdsAfter.length; i++) {
+            brickIdsAfter.forEach((brickIdAfter) => {
                 const currentBrick = bricksSequence.find((brick) => {
-                    return brick.id === brickIdsAfter[i];
+                    return brick.id === brickIdAfter;
                 });
 
                 if (predicate(currentBrick)) {
                     bricks.push(currentBrick);
                 }
-            }
+            });
         }
 
         return bricks;
     }
 
-    private findBrickBefore(brickId: string, predicate: Function) {
+    private findBrickBefore(brickId: string, predicate) {
         const bricks = [];
 
         const bricksSequence = this.getBrickSequence(() => true);
@@ -385,15 +385,13 @@ export class WallLayout {
         if (currentBrickIdIndex !== -1) {
             const brickIdsBefore = brickIdsSequence.splice(0, currentBrickIdIndex);
 
-            for (let i = 0; i < brickIdsBefore.length; i++) {
-                const currentBrick = bricksSequence.find((brick) => {
-                    return brick.id === brickIdsBefore[i];
-                });
+            brickIdsBefore.forEach((brickIdBefore) => {
+                const currentBrick = bricksSequence.find((brick) => brick.id === brickIdBefore);
 
                 if (predicate(currentBrick)) {
                     bricks.push(currentBrick);
                 }
-            }
+            });
         }
 
         return bricks;

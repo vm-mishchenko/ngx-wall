@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy } from '@angular/core';
-import { RadarCoordinator } from "../radar-coordinator.service";
-import { WindowReference } from "../radar.tokens";
+import { RadarCoordinator } from '../radar-coordinator.service';
+import { windowToken } from '../radar.tokens';
 
 @Directive({selector: '[spot]'})
 export class SpotDirective implements OnDestroy {
@@ -10,10 +10,10 @@ export class SpotDirective implements OnDestroy {
 
     constructor(private radarCoordinator: RadarCoordinator,
                 private el: ElementRef,
-                @Inject(WindowReference) private _window: any) {
+                @Inject(windowToken) private windowReference: any) {
         this.radarCoordinator.register(this);
 
-        this.window = _window;
+        this.window = windowReference;
     }
 
     ngOnDestroy() {

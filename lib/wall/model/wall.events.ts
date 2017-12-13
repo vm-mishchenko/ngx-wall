@@ -1,18 +1,20 @@
-export interface BrickSnapshot {
+/* tslint:disable */
+
+export interface IBrickSnapshot {
     id: string;
     tag: string;
     state: any;
 }
 
 export class RemoveBrickEvent {
-    constructor(public brick: BrickSnapshot,
+    constructor(public brick: IBrickSnapshot,
                 public previousBrickId: string,
                 public nextBrickId: string) {
     }
 }
 
 export class RemoveBricksEvent {
-    constructor(public bricks: BrickSnapshot[],
+    constructor(public bricks: IBrickSnapshot[],
                 public previousBrickId: string,
                 public nextBrickId: string) {
     }

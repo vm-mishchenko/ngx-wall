@@ -1,4 +1,4 @@
-export interface DistanceToSpot {
+export interface IDistanceToSpot {
     minimalDistance: number;
     topLeftPointDistance: number;
     bottomLeftPointDistance: number;

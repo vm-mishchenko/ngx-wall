@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BaseTextBrickComponent } from "../../base-text-brick/base-text-brick.component";
+import { BaseTextBrickComponent } from '../../base-text-brick/base-text-brick.component';
 import { WallApi } from '../../wall';
 
 @Component({
@@ -34,6 +34,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     }
 
     private isTag() {
-        return this.scope.text && this.scope.text[0] === '/' && this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
+        return this.scope.text && this.scope.text[0] === '/' &&
+            this.wallApi.core.isRegisteredBrick(this.scope.text.slice(1));
     }
 }

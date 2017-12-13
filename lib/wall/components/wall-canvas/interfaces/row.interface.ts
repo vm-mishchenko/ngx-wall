@@ -1,5 +1,5 @@
-import { Column } from "./column.interface";
+import { IColumn } from './column.interface';
 
-export interface Row {
-    columns: Column[];
+export interface IRow {
+    columns: IColumn[];
 }

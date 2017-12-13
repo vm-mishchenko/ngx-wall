@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { WindowReference } from '../tow.tokens';
+import { windowToken } from '../tow.tokens';
 import { BeaconRegistry } from './beacon.registry.service';
 
 @Directive({selector: '[beacon]'})
@@ -10,8 +10,8 @@ export class BeaconDirective implements OnInit, OnDestroy {
 
     constructor(private beaconRegistry: BeaconRegistry,
                 private el: ElementRef,
-                @Inject(WindowReference) private _window: any,) {
-        this.window = _window;
+                @Inject(windowToken) private windowReference: any) {
+        this.window = windowReference;
     }
 
     ngOnInit() {

@@ -1,4 +1,5 @@
-import { Subject } from "rxjs/Subject";
+/* tslint:disable */
+import { Subject } from 'rxjs/Subject';
 
 export class ReactiveReadOnlyProperty<T> {
     valueChanged: Subject<T>;
@@ -9,9 +10,7 @@ export class ReactiveReadOnlyProperty<T> {
 
         this.valueChanged = valueChanged;
 
-        this.valueChanged.subscribe((value) => {
-            this.value = value;
-        });
+        this.valueChanged.subscribe((newValue) => this.value = newValue);
     }
 
     getValue(): T {

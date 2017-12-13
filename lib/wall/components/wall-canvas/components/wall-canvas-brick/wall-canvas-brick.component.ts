@@ -1,16 +1,10 @@
 import {
-    Component,
-    ComponentFactoryResolver,
-    ComponentRef,
-    Injector,
-    Input,
-    OnDestroy,
-    OnInit,
-    ViewChild,
+    Component, ComponentFactoryResolver, ComponentRef, Injector, Input, OnDestroy, OnInit, ViewChild,
     ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
+import { IWallComponent } from '../../../../wall.interfaces';
 import { WallCanvasComponent } from '../../wall-canvas.component';
 
 @Component({
@@ -57,7 +51,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
                 });
 
                 if (currentSpot.isCross13Line) {
-                    this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse
+                    this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;
                 } else {
                     this.isMouseNear = false;
                 }
@@ -74,9 +68,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
             this.selected = !Boolean(selectedBricks.indexOf(this.brick.id) === -1);
         });
 
-        this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$.subscribe((isMediaInteractionEnabled) => {
-            this.isMediaInteractionEnabled = isMediaInteractionEnabled;
-        });
+        this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$
+            .subscribe((isMediaInteractionEnabled) => this.isMediaInteractionEnabled = isMediaInteractionEnabled);
     }
 
     ngOnDestroy() {
@@ -105,11 +98,13 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
         const componentReference = this.container.createComponent(factory, null, this.injector);
 
-        componentReference.instance['id'] = this.brick.id;
-        componentReference.instance['state'] = this.brick.state;
+        const componentInstance = componentReference.instance as IWallComponent;
 
-        if (componentReference.instance['stateChanges']) {
-            this.stateChangesSubscription = componentReference.instance['stateChanges'].subscribe((newState) => {
+        componentInstance.id = this.brick.id;
+        componentInstance.state = this.brick.state;
+
+        if (componentInstance.stateChanges) {
+            this.stateChangesSubscription = componentInstance.stateChanges.subscribe((newState) => {
                 this.wallCanvasComponent.brickStateChanged(this.brick.id, newState);
             });
         }

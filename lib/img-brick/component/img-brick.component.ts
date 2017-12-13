@@ -1,13 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { onWallFocus, WallApi } from '../../index';
-import { ImgBrickState } from "../img-brick-state.interface";
+import { IOnWallFocus, WallApi } from '../../index';
+import { ImgBrickState } from '../img-brick-state.interface';
 
 @Component({
     selector: 'img-brick',
     templateUrl: './img-brick.component.html'
 })
-export class ImgBrickComponent implements OnInit, onWallFocus {
+export class ImgBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;
     @Input() state: Observable<ImgBrickState | null>;
 
@@ -121,11 +121,11 @@ export class ImgBrickComponent implements OnInit, onWallFocus {
         return new Promise((resolve, reject) => {
             const img = new Image();
 
-            img.onload = function () {
+            img.onload = () => {
                 resolve();
             };
 
-            img.onerror = function () {
+            img.onerror = () => {
                 reject();
             };
 

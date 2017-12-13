@@ -1,17 +1,17 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { Observable } from "rxjs/Observable";
-import { onWallFocus, WallApi } from '../../index';
-import { VideoBrickState } from "../video-brick-state.interface";
+import { Observable } from 'rxjs/Observable';
+import { IOnWallFocus, WallApi } from '../../index';
+import { IVideoBrickState } from '../video-brick-state.interface';
 
 @Component({
     selector: 'video-brick',
     templateUrl: './video-brick.component.html'
 })
-export class VideoBrickComponent implements OnInit, onWallFocus {
+export class VideoBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;
 
-    @Input() state: Observable<VideoBrickState | null>;
-    @Output() stateChanges: EventEmitter<VideoBrickState> = new EventEmitter();
+    @Input() state: Observable<IVideoBrickState | null>;
+    @Output() stateChanges: EventEmitter<IVideoBrickState> = new EventEmitter();
 
     @ViewChild('src') src: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
@@ -24,7 +24,7 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
     };
     uiState: string = this.uiStates.initial;
 
-    scope: VideoBrickState = {
+    scope: IVideoBrickState = {
         src: ''
     };
 

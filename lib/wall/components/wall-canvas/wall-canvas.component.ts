@@ -1,29 +1,21 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Inject,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
+    Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
-import { Layout } from './interfaces/layout.interface';
-import { FocusedBrick } from './wall-canvas.interfaces';
-
+import { ILayout } from './interfaces/layout.interface';
+import { IFocusedBrick } from './wall-canvas.interfaces';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html'
 })
 export class WallCanvasComponent implements OnChanges {
-    @Input() layout: Layout = {rows: []};
+    @Input() layout: ILayout = {rows: []};
 
     @Input() selectedBricks: string[] = null;
-    @Input() focusedBrick: FocusedBrick = null;
+    @Input() focusedBrick: IFocusedBrick = null;
     @Input() isMediaInteractionEnabled: boolean = true;
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
@@ -31,7 +23,7 @@ export class WallCanvasComponent implements OnChanges {
     @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
 
     // public API for sub components
-    focusedBrick$: Subject<FocusedBrick> = new Subject();
+    focusedBrick$: Subject<IFocusedBrick> = new Subject();
     selectedBricks$: Subject<string[]> = new Subject();
     isMediaInteractionEnabled$: Subject<boolean> = new Subject();
 
@@ -73,8 +65,8 @@ export class WallCanvasComponent implements OnChanges {
 
     brickStateChanged(brickId: string, brickState: any) {
         this.onBrickStateChanged.emit({
-            brickId: brickId,
-            brickState: brickState
+            brickId,
+            brickState
         });
     }
 

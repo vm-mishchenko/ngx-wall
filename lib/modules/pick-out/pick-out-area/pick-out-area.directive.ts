@@ -1,19 +1,12 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    ApplicationRef,
-    ComponentFactoryResolver,
-    ComponentRef,
-    Directive,
-    EmbeddedViewRef,
-    HostListener,
-    Inject,
-    Injector,
-    OnDestroy
+    ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, EmbeddedViewRef, HostListener, Inject,
+    Injector, OnDestroy
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { PickOutCoordinator } from "../pick-out-coordinator.service";
-import { StopPickOut } from '../pick-out.events';
-import { WindowReference } from '../pick-out.tokens';
+import { StopPickOut } from '../';
+import { PickOutCoordinator } from '../pick-out-coordinator.service';
+import { windowToken } from '../pick-out.tokens';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutAreaModel } from './pick-out-area.model';
 
@@ -38,13 +31,13 @@ export class PickOutAreaDirective implements OnDestroy {
     pickOutServiceSubscription: Subscription;
 
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(WindowReference) private _window: any,
+                @Inject(windowToken) private windowReference: any,
                 private pickOutHandlerService: PickOutCoordinator,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
                 private injector: Injector) {
         this.doc = doc;
-        this.window = _window;
+        this.window = this.windowReference;
 
         this.doc.addEventListener('mousemove', (e) => {
             this.mouseMove(e);
@@ -145,7 +138,8 @@ export class PickOutAreaDirective implements OnDestroy {
     }
 
     isMouseMoveEnough(): boolean {
-        return this.pickOutAreaModel.width > this.minimumMoveDistance || this.pickOutAreaModel.height > this.minimumMoveDistance;
+        return this.pickOutAreaModel.width > this.minimumMoveDistance ||
+            this.pickOutAreaModel.height > this.minimumMoveDistance;
     }
 
     isUserAllowPickOut() {

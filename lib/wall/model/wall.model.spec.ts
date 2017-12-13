@@ -1,19 +1,19 @@
 import { BrickRegistry } from '../registry/brick-registry.service';
-import { WallDefinition } from '../wall.interfaces';
+import { IWallDefinition } from '../wall.interfaces';
 import { WallModelFactory } from './wall-model.factory';
 
-describe('Wall Model', function () {
-    let brickRegistry = new BrickRegistry();
-    let wallModelFactory = new WallModelFactory(brickRegistry);
+describe('Wall Model', () => {
+    const brickRegistry = new BrickRegistry();
+    const wallModelFactory = new WallModelFactory(brickRegistry);
 
-    const defaultPlan: WallDefinition = {
+    const defaultPlan: IWallDefinition = {
         bricks: [],
         layout: {
             bricks: []
         }
     };
 
-    const simplePlan: WallDefinition = {
+    const simplePlan: IWallDefinition = {
         bricks: [
             {
                 id: '1',
@@ -74,8 +74,6 @@ describe('Wall Model', function () {
     describe('[Add Brick]', () => {
         it('should add after brick id', () => {
             const wm = wallModelFactory.create(defaultPlan);
-
-
         });
     });
 });

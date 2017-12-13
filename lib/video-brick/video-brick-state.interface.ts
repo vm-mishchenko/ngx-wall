@@ -1,3 +1,3 @@
-export interface VideoBrickState {
+export interface IVideoBrickState {
     src: string;
 }

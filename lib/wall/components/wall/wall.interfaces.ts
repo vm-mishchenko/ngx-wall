@@ -2,17 +2,17 @@
 export const awesomeTypescriptLoaderBug = true;
 
 // Wall component
-export interface WallConfiguration {
+export interface IWallConfiguration {
     mode?: string;
-    onRegisterApi?: Function;
+    onRegisterApi?: (api: object) => void;
 }
 
 // Custom wall component interface
-export interface onWallFocus {
-    onWallFocus(focusContext?: FocusContext): void;
+export interface IOnWallFocus {
+    onWallFocus(focusContext?: IFocusContext): void;
 }
 
-export interface FocusContext {
+export interface IFocusContext {
     initiator: string;
     details?: any;
 }

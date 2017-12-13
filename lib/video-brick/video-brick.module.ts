@@ -1,7 +1,7 @@
-import { CommonModule } from "@angular/common";
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrickRegistry } from "../wall/registry/brick-registry.service";
-import { VideoBrickComponent } from "./component/video-brick.component";
+import { BrickRegistry } from '../wall/registry/brick-registry.service';
+import { VideoBrickComponent } from './component/video-brick.component';
 
 @NgModule({
     imports: [

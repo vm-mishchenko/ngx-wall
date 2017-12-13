@@ -10,7 +10,7 @@ import { StopWorkingEvent } from './events/stop-working.event';
 import { WorkInProgressEvent } from './events/work-in-progress.event';
 import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
 import { TOW } from './tow.constant';
-import { WindowReference } from './tow.tokens';
+import { windowToken } from './tow.tokens';
 
 @Injectable()
 export class TowCoordinator {
@@ -29,12 +29,12 @@ export class TowCoordinator {
     private placeholderHeight = 2;
 
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(WindowReference) private _window: any,
+                @Inject(windowToken) private windowReference: any,
                 private placeholderRenderer: PlaceholderRenderer,
                 private beaconDetector: BeaconDetector,
                 private beaconRegistry: BeaconRegistry) {
         this.doc = doc;
-        this.window = _window;
+        this.window = windowReference;
 
         this.doc.addEventListener('dragover', (event: DragEvent) => {
             if (this.trackingPossibleBeacons) {
@@ -92,7 +92,12 @@ export class TowCoordinator {
         if (this.previouslyNearestBeacon) {
             const draggableId = id;
             const dropBeforeId = this.previouslyNearestBeacon.beacon.id;
-            const dropEvent = new DropEvent(draggableId, dropBeforeId, this.previouslyNearestBeacon.type, this.previouslyNearestBeacon.side);
+            const dropEvent = new DropEvent(
+                draggableId,
+                dropBeforeId,
+                this.previouslyNearestBeacon.type,
+                this.previouslyNearestBeacon.side
+            );
 
             this.events.next(dropEvent);
         }
@@ -126,11 +131,15 @@ export class TowCoordinator {
             placeholderSize = this.previouslyNearestBeacon.beacon.width;
 
             if (this.previouslyNearestBeacon.side === TOW.dropSides.top) {
-                placeholderY = this.previouslyNearestBeacon.beacon.y - this.currentYScrollPosition - this.placeholderHeight;
+                placeholderY = this.previouslyNearestBeacon.beacon.y -
+                    this.currentYScrollPosition -
+                    this.placeholderHeight;
             }
 
             if (this.previouslyNearestBeacon.side === TOW.dropSides.bottom) {
-                placeholderY = this.previouslyNearestBeacon.beacon.y + this.previouslyNearestBeacon.beacon.height - this.currentYScrollPosition;
+                placeholderY = this.previouslyNearestBeacon.beacon.y +
+                    this.previouslyNearestBeacon.beacon.height -
+                    this.currentYScrollPosition;
             }
 
             placeholderIsHorizontal = true;

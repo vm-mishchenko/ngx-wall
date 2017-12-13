@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { PickOutCoordinator } from "../pick-out-coordinator.service";
-import { WindowReference } from '../pick-out.tokens';
+import { PickOutCoordinator } from '../pick-out-coordinator.service';
+import { windowToken } from '../pick-out.tokens';
 
 @Directive({
     selector: '[pick-out-item]'
@@ -11,9 +11,9 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
     private window;
 
     constructor(private pickOutCoordinator: PickOutCoordinator,
-                @Inject(WindowReference) private _window: any,
+                @Inject(windowToken) private windowReference: any,
                 private el: ElementRef) {
-        this.window = _window;
+        this.window = windowReference;
     }
 
     ngOnInit() {
@@ -37,6 +37,6 @@ export class PickOutItemDirective implements OnInit, OnDestroy {
             y: offsets.top + this.window.pageYOffset,
             width: this.el.nativeElement.offsetWidth,
             height: this.el.nativeElement.offsetHeight
-        }
+        };
     }
 }

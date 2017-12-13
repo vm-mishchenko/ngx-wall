@@ -1,10 +1,10 @@
-import { Directive, ElementRef, forwardRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
     selector: '[contenteditable]',
     providers: [
-        {provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => ContenteditableDirective), multi: true}
+        {provide: NG_VALUE_ACCESSOR, useExisting: ContenteditableDirective, multi: true}
     ]
 })
 export class ContenteditableDirective implements ControlValueAccessor {
@@ -19,14 +19,14 @@ export class ContenteditableDirective implements ControlValueAccessor {
 
     @HostListener('input')
     callOnChange() {
-        if (typeof this.onChange == 'function') {
+        if (typeof this.onChange === 'function') {
             this.onChange(this.elementRef.nativeElement[this.propValueAccessor]);
         }
     }
 
     @HostListener('blur')
     callOnTouched() {
-        if (typeof this.onTouched == 'function') {
+        if (typeof this.onTouched === 'function') {
             this.onTouched();
         }
     }
@@ -39,7 +39,7 @@ export class ContenteditableDirective implements ControlValueAccessor {
      * See: [ControlValueAccessor](https://angular.io/api/forms/ControlValueAccessor#members)
      */
     writeValue(value: any): void {
-        const normalizedValue = value == null ? '' : value;
+        const normalizedValue = value === null ? '' : value;
 
         this.renderer.setProperty(this.elementRef.nativeElement, this.propValueAccessor, normalizedValue);
     }
@@ -70,9 +70,9 @@ export class ContenteditableDirective implements ControlValueAccessor {
     setDisabledState(isDisabled: boolean): void {
         if (isDisabled) {
             this.renderer.setAttribute(this.elementRef.nativeElement, 'disabled', 'true');
-            this.removeDisabledState = this.renderer.listen(this.elementRef.nativeElement, 'keydown', this.listenerDisabledState);
-        }
-        else {
+            this.removeDisabledState = this.renderer
+                .listen(this.elementRef.nativeElement, 'keydown', this.listenerDisabledState);
+        } else {
             if (this.removeDisabledState) {
                 this.renderer.removeAttribute(this.elementRef.nativeElement, 'disabled');
                 this.removeDisabledState();

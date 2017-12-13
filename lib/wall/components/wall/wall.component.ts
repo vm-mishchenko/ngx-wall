@@ -3,7 +3,7 @@ import { IWallModel } from '../../wall.interfaces';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallApi } from './wall-api.service';
 import { WallViewModel } from './wall-view.model';
-import { WallConfiguration } from './wall.interfaces';
+import { IWallConfiguration } from './wall.interfaces';
 
 @Component({
     selector: 'wall',
@@ -15,7 +15,7 @@ import { WallConfiguration } from './wall.interfaces';
 })
 export class WallComponent implements OnChanges, OnDestroy {
     @Input() model: IWallModel = null;
-    @Input() configuration: WallConfiguration = null;
+    @Input() configuration: IWallConfiguration = null;
     private initializedPlugins: any[] = [];
 
     constructor(private injector: Injector,

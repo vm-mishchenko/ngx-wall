@@ -1,3 +1,3 @@
-export interface TextBrickState {
+export interface ITextBrickState {
     text: string;
 }

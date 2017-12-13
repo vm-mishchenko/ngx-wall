@@ -1,7 +1,7 @@
-import { Beacon } from "../beacon/beacon.interface";
+import { IBeacon } from '../beacon/beacon.interface';
 
 export class DetectedBeacon {
-    beacon: Beacon;
+    beacon: IBeacon;
     type: string;
-    side: string
+    side: string;
 }
