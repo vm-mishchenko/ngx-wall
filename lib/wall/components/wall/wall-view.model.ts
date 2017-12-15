@@ -199,7 +199,9 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      */
     selectBricks(brickIds: string[]) {
-        this.selectedBricks = brickIds;
+        if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks)) {
+            this.selectedBricks = brickIds;
+        }
     }
 
     /**

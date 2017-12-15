@@ -1,28 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+import { Radar, SpotModel } from '../radar';
 import { EndPickOut } from './events/end-pick-out.event';
 import { PickOutItems } from './events/pick-out-items.event';
 import { StartPickOut } from './events/start-pick-out.event';
 import { StopPickOut } from './events/stop-pick-out.event';
-import { PickItemPosition } from './interfaces/pick-item-posiiton';
-import { IPickOutItemConfig } from './interfaces/pick-out-item-config.interface';
 
 @Injectable()
 export class PickOutCoordinator {
     changes: Subject<any> = new Subject();
 
-    private pickOutItems: Map<string, IPickOutItemConfig> = new Map();
-
-    private pickOutItemPositions: Map<string, PickItemPosition> = new Map();
-
     private isPickOutAllowed: boolean = true;
 
-    registerPickOutItem(config: IPickOutItemConfig) {
-        this.pickOutItems.set(config.id, config);
-    }
-
-    unRegisterPickOutItem(id: string) {
-        this.pickOutItems.delete(id);
+    constructor(private radar: Radar) {
     }
 
     disablePickOut() {
@@ -37,18 +27,17 @@ export class PickOutCoordinator {
         this.changes.next(new StopPickOut());
     }
 
-    canPickOut(): boolean {
-        return this.isPickOutAllowed;
-    }
-
     startPickOut() {
-        this.updatePickOutItemPositions();
+        this.radar.updateSpotsInfo();
 
         this.changes.next(new StartPickOut());
     }
 
     pickOutChanged(range) {
-        const selectedItems = this.getSelectedItemIds(range);
+        // todo: filter spots only when some spots was added or removed
+        const pickOutSpotModels = this.radar.filterSpots((spot: SpotModel) => spot.data.isPickOutItem);
+
+        const selectedItems = this.getSelectedItemIds(range, pickOutSpotModels);
 
         this.changes.next(new PickOutItems(selectedItems));
     }
@@ -57,27 +46,12 @@ export class PickOutCoordinator {
         this.changes.next(new EndPickOut());
     }
 
-    private updatePickOutItemPositions() {
-        this.pickOutItemPositions = new Map();
-
-        this.pickOutItems.forEach((pickItem) => {
-            this.pickOutItemPositions.set(pickItem.id, pickItem.api.getPosition());
-        });
-    }
-
-    private getSelectedItemIds(range) {
-        const ids = [];
-
-        this.pickOutItemPositions.forEach((si, id) => {
-            if (range.x < (si.x + si.width) &&
-                (range.x + range.width) > si.x &&
-                (range.y + range.height) > si.y &&
-                range.y < (si.y + si.height)) {
-
-                ids.push(id);
-            }
-        });
-
-        return ids;
+    private getSelectedItemIds(range, pickOutsItem: SpotModel[]): string[] {
+        return pickOutsItem.filter((pickOutItem) => {
+            return (range.x < (pickOutItem.position.x + pickOutItem.size.width) &&
+                (range.x + range.width) > pickOutItem.position.x &&
+                (range.y + range.height) > pickOutItem.position.y &&
+                range.y < (pickOutItem.position.y + pickOutItem.size.height));
+        }).map((pickOutItem) => pickOutItem.data.brickId);
     }
 }

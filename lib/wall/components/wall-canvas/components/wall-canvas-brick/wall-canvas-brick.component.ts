@@ -21,6 +21,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     private selected = false;
 
+    private spot: any;
+
     private isMouseNear = false;
 
     private isMediaInteractionEnabled = true;
@@ -41,14 +43,18 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.spot = {
+            brickId: this.brick.id,
+            isPickOutItem: true,
+            isBeacon: true
+        };
+
         this.componentReference = this.renderBrick();
 
         // todo maybe move it to model API?
         this.radarSubscription = this.radar.subscribe((e) => {
             if (e instanceof LocationUpdatedEvent) {
-                const currentSpot = e.spots.find((spot) => {
-                    return spot.data === this.brick.id;
-                });
+                const currentSpot = e.spots.find((spot) => spot.data.brickId === this.brick.id);
 
                 if (currentSpot.isCross13Line) {
                     this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;

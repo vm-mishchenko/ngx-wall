@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { RadarCoordinator } from './radar-coordinator.service';
+import { SpotModel } from './spot.model';
 
 @Injectable()
 export class Radar {
@@ -11,6 +12,14 @@ export class Radar {
         this.radarCoordinator.subscribe((event) => {
             this.events.next(event);
         });
+    }
+
+    updateSpotsInfo(): void {
+        this.radarCoordinator.updateSpotsInfo();
+    }
+
+    filterSpots(fn: (spot: SpotModel) => void): SpotModel[] {
+        return this.radarCoordinator.filterSpots(fn);
     }
 
     subscribe(fn: any): Subscription {

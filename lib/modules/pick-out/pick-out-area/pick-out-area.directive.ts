@@ -1,26 +1,18 @@
 import { DOCUMENT } from '@angular/common';
 import {
     ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, EmbeddedViewRef, HostListener, Inject,
-    Injector, OnDestroy
+    Injector, OnDestroy, OnInit
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { StopPickOut } from '../';
 import { PickOutCoordinator } from '../pick-out-coordinator.service';
-import { windowToken } from '../pick-out.tokens';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutAreaModel } from './pick-out-area.model';
 
 @Directive({
     selector: '[pick-out-area]'
 })
-export class PickOutAreaDirective implements OnDestroy {
+export class PickOutAreaDirective implements OnInit, OnDestroy {
     doc: any = null;
-
-    window: any = null;
-
-    currentYScrollPosition = 0;
-
-    minimumMoveDistance = 5;
 
     pickOutAreaModel: PickOutAreaModel = null;
 
@@ -30,87 +22,74 @@ export class PickOutAreaDirective implements OnDestroy {
 
     pickOutServiceSubscription: Subscription;
 
+    onMouseUpBound: any;
+    onMouseMoveBound: any;
+    onSelectionStartBound: any;
+
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(windowToken) private windowReference: any,
-                private pickOutHandlerService: PickOutCoordinator,
+                private pickOutCoordinator: PickOutCoordinator,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
                 private injector: Injector) {
         this.doc = doc;
-        this.window = this.windowReference;
-
-        this.doc.addEventListener('mousemove', (e) => {
-            this.mouseMove(e);
-        });
-
-        this.doc.addEventListener('mouseup', (e) => {
-            this.mouseUp();
-        });
-
-        this.window.addEventListener('scroll', (e) => {
-            this.currentYScrollPosition = this.window.scrollY;
-        });
-
-        this.pickOutServiceSubscription = this.pickOutHandlerService.changes.subscribe((e) => {
-            if (e instanceof StopPickOut) {
-                this.stopPickOut();
-            }
-        });
     }
 
-    ngOnDestroy() {
-        this.pickOutServiceSubscription.unsubscribe();
+    ngOnInit() {
+        this.onMouseUpBound = this.onMouseUp.bind(this);
+        this.onMouseMoveBound = this.onMouseMove.bind(this);
+        this.onSelectionStartBound = this.onSelectionStart.bind(this);
+
+        this.doc.addEventListener('mouseup', this.onMouseUpBound);
+        this.doc.addEventListener('mousemove', this.onMouseMoveBound);
+        this.doc.addEventListener('selectstart', this.onSelectionStartBound);
     }
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        if (this.isUserAllowPickOut()) {
-            this.selectionProcessStarted = false;
+        const brickIdOverMouse = this.findBrickIdByCoordinate(event.clientX, event.clientY);
 
-            this.pickOutAreaModel = new PickOutAreaModel();
-
-            this.pickOutAreaModel.setInitialPosition(event.clientX, event.clientY);
+        if (!this.isMouseOverDraggableBox(event.clientX, event.clientY)) {
+            this.pickOutAreaModel = new PickOutAreaModel(
+                event.clientX,
+                event.clientY,
+                brickIdOverMouse
+            );
         }
     }
 
-    mouseMove(event: MouseEvent) {
-        if (this.isUserAllowPickOut()) {
-            if (this.pickOutAreaModel) {
-                this.pickOutAreaModel.setCurrentPosition(event.clientX, event.clientY);
+    onSelectionStart(e) {
+        if (this.selectionProcessStarted) {
+            e.preventDefault();
+        }
+    }
 
-                if (this.selectionProcessStarted) {
-                    event.preventDefault();
+    onMouseMove(event: MouseEvent) {
+        if (this.pickOutAreaModel) {
+            this.pickOutAreaModel.updateCurrentPosition(event.clientX, event.clientY);
+            this.pickOutAreaModel.updateCurrentBrickId(this.findBrickIdByCoordinate(event.clientX, event.clientY));
 
-                    this.pickOutHandlerService.pickOutChanged({
-                        x: this.pickOutAreaModel.x,
-                        y: this.pickOutAreaModel.y + this.currentYScrollPosition,
-                        width: this.pickOutAreaModel.width,
-                        height: this.pickOutAreaModel.height
-                    });
+            if (this.selectionProcessStarted) {
+                event.preventDefault();
 
-                    // create UI selection if it's not exist
-                    if (!this.selectionRangeComponentRef) {
-                        this.appendSelectionRangeComponent();
-                    }
-                } else {
-                    // user drags mouse enough to show UI and start selection process
-                    if (this.isMouseMoveEnough()) {
-                        this.pickOutHandlerService.startPickOut();
-
-                        this.selectionProcessStarted = true;
-                    }
+                this.pickOutCoordinator.pickOutChanged({
+                    x: this.pickOutAreaModel.x,
+                    y: this.pickOutAreaModel.y + window.scrollY,
+                    width: this.pickOutAreaModel.width,
+                    height: this.pickOutAreaModel.height
+                });
+            } else {
+                if (this.pickOutAreaModel.canInitiatePickOutProcess()) {
+                    this.startPicKOut();
                 }
             }
-        } else {
-            this.stopPickOut();
         }
     }
 
-    mouseUp() {
+    onMouseUp() {
         this.stopPickOut();
     }
 
-    appendSelectionRangeComponent() {
+    renderRangeComponent() {
         // https://medium.com/@caroso1222/angular-pro-tip-how-to-dynamically-create-components-in-body-ba200cc289e6
 
         // 1. Create a component reference from the component
@@ -131,32 +110,72 @@ export class PickOutAreaDirective implements OnDestroy {
         document.body.appendChild(domElem);
     }
 
-    removeSelectionRangeComponent() {
+    removeRangeComponent() {
         this.appRef.detachView(this.selectionRangeComponentRef.hostView);
         this.selectionRangeComponentRef.destroy();
         this.selectionRangeComponentRef = null;
     }
 
-    isMouseMoveEnough(): boolean {
-        return this.pickOutAreaModel.width > this.minimumMoveDistance ||
-            this.pickOutAreaModel.height > this.minimumMoveDistance;
-    }
+    startPicKOut() {
+        this.selectionProcessStarted = true;
 
-    isUserAllowPickOut() {
-        return this.pickOutHandlerService.canPickOut();
+        this.pickOutCoordinator.startPickOut();
+
+        this.doc.activeElement.blur();
+
+        this.renderRangeComponent();
+
+        this.clearSelection();
     }
 
     stopPickOut() {
-        if (this.selectionRangeComponentRef) {
-            this.removeSelectionRangeComponent();
-        }
+        if (this.selectionProcessStarted) {
+            this.selectionProcessStarted = false;
 
-        if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.onDestroy();
+            this.removeRangeComponent();
 
-            this.pickOutHandlerService.endPickOut();
+            this.pickOutCoordinator.endPickOut();
         }
 
         this.pickOutAreaModel = null;
+    }
+
+    ngOnDestroy() {
+        this.doc.removeEventListener('mouseup', this.onMouseUpBound);
+        this.doc.removeEventListener('mousemove', this.onMouseMoveBound);
+        this.doc.removeEventListener('selectstart', this.onSelectionStartBound);
+
+        this.pickOutServiceSubscription.unsubscribe();
+    }
+
+    private clearSelection() {
+        window.getSelection().empty();
+    }
+
+    private findBrickIdByCoordinate(clientX: number, clientY: number): string {
+        let currentElement = document.elementFromPoint(clientX, clientY);
+
+        while (currentElement && currentElement.tagName !== 'WALL-CANVAS-BRICK') {
+            currentElement = currentElement.parentElement;
+        }
+
+        if (currentElement) {
+            // there is canvas bricks
+            return currentElement
+                .getElementsByClassName('wall-canvas-brick__wrapper')[0]
+                .getAttribute('id');
+        } else {
+            return null;
+        }
+    }
+
+    private isMouseOverDraggableBox(clientX: number, clientY: number): boolean {
+        let currentElement = document.elementFromPoint(clientX, clientY);
+
+        while (currentElement && !currentElement.classList.contains('wall-canvas-brick__draggable-box')) {
+            currentElement = currentElement.parentElement;
+        }
+
+        return Boolean(currentElement);
     }
 }

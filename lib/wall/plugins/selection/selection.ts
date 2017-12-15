@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../modules/pick-out';
-import { DropEvent, StartWorkingEvent, StopWorkingEvent, TOW, TowService } from '../../../modules/tow';
+import { DropEvent, TOW, TowService } from '../../../modules/tow';
 import { WallApi } from '../../components/wall';
 
 @Injectable()
@@ -10,9 +10,8 @@ export class SelectionPlugin {
     doc: any = null;
 
     isMouseSelection: boolean = false;
-    onClickHandlerBound: any;
+    onMouseDownBound: any;
     onKeyDownHandlerBound: any;
-    onSelectionChangeBound: any;
     private towServiceSubscription: Subscription;
     private pickOutServiceSubscription: Subscription;
 
@@ -26,13 +25,11 @@ export class SelectionPlugin {
     }
 
     initialize() {
-        this.onClickHandlerBound = this.onClickHandler.bind(this);
+        this.onMouseDownBound = this.onMouseDown.bind(this);
         this.onKeyDownHandlerBound = this.onKeyDownHandler.bind(this);
-        this.onSelectionChangeBound = this.onSelectionChange.bind(this);
 
-        this.doc.addEventListener('click', this.onClickHandlerBound);
+        this.doc.addEventListener('mousedown', this.onMouseDownBound);
         this.doc.addEventListener('keydown', this.onKeyDownHandlerBound);
-        this.doc.addEventListener('selectionchange', this.onSelectionChangeBound);
 
         this.pickOutServiceSubscription = this.pickOutService.subscribe((e) => {
             if (e instanceof StartPickOut) {
@@ -51,16 +48,6 @@ export class SelectionPlugin {
         });
 
         this.towServiceSubscription = this.towService.subscribe((e) => {
-            if (e instanceof StartWorkingEvent) {
-                this.pickOutService.disablePickOut();
-
-                this.pickOutService.stopPickOut();
-            }
-
-            if (e instanceof StopWorkingEvent) {
-                this.pickOutService.enablePickOut();
-            }
-
             if (e instanceof DropEvent) {
                 let movedBrickIds = [];
 
@@ -95,10 +82,8 @@ export class SelectionPlugin {
         });
     }
 
-    onClickHandler() {
-        if (this.isMouseSelection) {
-            this.isMouseSelection = false;
-        } else {
+    onMouseDown(e: MouseEvent) {
+        if (!this.isMouseOverDraggableBox(e.clientX, e.clientY)) {
             this.wallApi.core.unSelectBricks();
         }
     }
@@ -176,28 +161,26 @@ export class SelectionPlugin {
         }
     }
 
-    onSelectionChange() {
-        // selection event triggers when user select some text and then just click by the document
-        // we should disable pick out service only when user really starts select something
-        const selection = this.doc.getSelection();
-
-        // todo need to find more robust variant
-        if (selection.focusNode && selection.focusNode.nodeType === Node.TEXT_NODE) {
-            this.pickOutService.stopPickOut();
-        }
-    }
-
     destroy() {
-        this.doc.removeEventListener('click', this.onClickHandlerBound);
+        this.doc.removeEventListener('click', this.onMouseDownBound);
         this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
-        this.doc.removeEventListener('selectionchange', this.onSelectionChangeBound);
 
         this.wallApi = null;
         this.pickOutServiceSubscription.unsubscribe();
         this.towServiceSubscription.unsubscribe();
     }
 
-    private isDownSelectionDirection() {
+    private isMouseOverDraggableBox(clientX: number, clientY: number): boolean {
+        let currentElement = document.elementFromPoint(clientX, clientY);
+
+        while (currentElement && !currentElement.classList.contains('wall-canvas-brick__draggable-box')) {
+            currentElement = currentElement.parentElement;
+        }
+
+        return Boolean(currentElement);
+    }
+
+    private isDownSelectionDirection(): boolean {
         const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
 
         const bricksCount = selectedBrickIds.length;

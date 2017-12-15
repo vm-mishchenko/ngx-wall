@@ -1,26 +1,30 @@
-import { Subject } from 'rxjs/Subject';
-import { PickOutModelDestroyEvent } from './pick-out-model-destroy.event';
-
 export class PickOutAreaModel {
-    changes: Subject<any> = new Subject();
-
     initialX: number;
     initialY: number;
+    initialBrickId: string;
 
     x: number;
     y: number;
     width: number;
     height: number;
+    currentBrickId: string;
 
-    setInitialPosition(x: number, y: number) {
+    private minimumMoveDistance = 5;
+
+    constructor(x: number,
+                y: number,
+                overBrickId: string) {
         this.initialX = x;
         this.initialY = y;
 
         this.x = x;
         this.y = y;
+
+        this.initialBrickId = overBrickId;
+        this.currentBrickId = overBrickId;
     }
 
-    setCurrentPosition(x: number, y: number) {
+    updateCurrentPosition(x: number, y: number) {
         // update x position and width
         if (x < this.initialX) {
             this.width = this.initialX - x;
@@ -40,7 +44,17 @@ export class PickOutAreaModel {
         }
     }
 
-    onDestroy() {
-        this.changes.next(new PickOutModelDestroyEvent());
+    updateCurrentBrickId(brickId: string): void {
+        this.currentBrickId = brickId;
+    }
+
+    canInitiatePickOutProcess(): boolean {
+        return this.isMouseMovedEnough() &&
+            (!this.currentBrickId || this.currentBrickId !== this.initialBrickId);
+    }
+
+    private isMouseMovedEnough(): boolean {
+        return this.width > this.minimumMoveDistance ||
+            this.height > this.minimumMoveDistance;
     }
 }

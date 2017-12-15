@@ -10,7 +10,6 @@ import { StopWorkingEvent } from './events/stop-working.event';
 import { WorkInProgressEvent } from './events/work-in-progress.event';
 import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
 import { TOW } from './tow.constant';
-import { windowToken } from './tow.tokens';
 
 @Injectable()
 export class TowCoordinator {
@@ -29,12 +28,10 @@ export class TowCoordinator {
     private placeholderHeight = 2;
 
     constructor(@Inject(DOCUMENT) doc,
-                @Inject(windowToken) private windowReference: any,
                 private placeholderRenderer: PlaceholderRenderer,
                 private beaconDetector: BeaconDetector,
                 private beaconRegistry: BeaconRegistry) {
         this.doc = doc;
-        this.window = windowReference;
 
         this.doc.addEventListener('dragover', (event: DragEvent) => {
             if (this.trackingPossibleBeacons) {
@@ -46,10 +43,10 @@ export class TowCoordinator {
             }
         });
 
-        this.window.addEventListener('scroll', () => {
+        window.addEventListener('scroll', () => {
             this.previouslyNearestBeacon = null;
 
-            this.currentYScrollPosition = this.window.pageYOffset;
+            this.currentYScrollPosition = window.pageYOffset;
 
             this.placeholderRenderer.clear();
         });
@@ -62,8 +59,6 @@ export class TowCoordinator {
     }
 
     slaveWorkProgress(xViewportPosition: number, yViewportPosition: number) {
-        this.beaconRegistry.updateBeaconPositions();
-
         const beacons = this.beaconRegistry.getBeacons();
 
         // respect window scroll position

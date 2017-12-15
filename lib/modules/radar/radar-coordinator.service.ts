@@ -5,44 +5,55 @@ import 'rxjs/add/operator/throttleTime';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { SpotDirective } from './directive/radar.directive';
+import { SpotDirective } from './directive/spot.directive';
 import { LocationUpdatedEvent } from './events/location-updated.event';
 import { IDistanceToSpot } from './interfaces/distance-to-spot.interface';
-import { windowToken } from './radar.tokens';
+import { SpotId } from './interfaces/spot-id.type';
 import { SpotModel } from './spot.model';
 
 @Injectable()
 export class RadarCoordinator {
-    private spots: Map<SpotDirective, SpotModel> = new Map();
+    private spots: Map<SpotId, SpotModel> = new Map();
 
     private events: Subject<any> = new Subject();
 
     private moveObservable: Observable<MouseEvent>;
 
-    private throttleMouseTime = 30;
-
-    constructor(@Inject(DOCUMENT) doc,
-                @Inject(windowToken) windowReference: any) {
+    constructor(@Inject(DOCUMENT) doc) {
         this.moveObservable = Observable.fromEvent(doc, 'mousemove');
 
+        const throttleMouseTime = 30;
+
         this.moveObservable
-            .throttleTime(this.throttleMouseTime)
+            .throttleTime(throttleMouseTime)
             .subscribe((event) => {
-                this.updateSpotPosition();
+                this.updateSpotsInfo();
 
                 const x = event.x;
-                const y = event.y + windowReference.pageYOffset;
+                const y = event.y + window.pageYOffset;
 
                 this.updateLocationPosition(x, y);
             });
     }
 
-    register(spotInstance: SpotDirective) {
-        this.spots.set(spotInstance, new SpotModel(spotInstance));
+    register(spotId: SpotId, spotInstance: SpotDirective) {
+        // todo: notify when new spots added
+        this.spots.set(spotId, new SpotModel(spotInstance));
     }
 
-    unRegister(spotInstance: SpotDirective) {
-        this.spots.delete(spotInstance);
+    unRegister(spotId: SpotId) {
+        // todo: notify when spot was removed
+        this.spots.delete(spotId);
+    }
+
+    updateSpotsInfo() {
+        this.spots.forEach((spot) => spot.updateInfo());
+    }
+
+    filterSpots(predicate: (spot: SpotModel) => void): SpotModel[] {
+        return Array.from(this.spots)
+            .map(([id, spot]) => spot)
+            .filter((spot) => predicate(spot));
     }
 
     subscribe(fn: any): Subscription {
@@ -65,16 +76,10 @@ export class RadarCoordinator {
                 bottomLeftPointDistance,
                 centerLeftPointDistance,
                 isCross13Line,
-                data: spot.instance.data
+                data: spot.data
             });
         });
 
         this.events.next(new LocationUpdatedEvent(sortedSpots));
-    }
-
-    private updateSpotPosition() {
-        this.spots.forEach((spot) => {
-            spot.updatePosition();
-        });
     }
 }
