@@ -1,5 +1,7 @@
 # wall
-
+[![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
+[![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
+[![devDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/dev-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=dev)
 
 ## Goal
 The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (`bricks`) based on Angular components.
