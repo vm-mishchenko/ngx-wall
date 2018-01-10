@@ -1,4 +1,4 @@
-<img [hidden]="uiState !== uiStates.image" [src]="state.src" (click)="onImageClick($event)">
+<img [hidden]="uiState !== uiStates.image" [src]="scope.src" (click)="onImageClick($event)">
 
 <div [hidden]="uiState === uiStates.image" class="w-signboard" (click)="switchImagePanel()">
     Add an Image

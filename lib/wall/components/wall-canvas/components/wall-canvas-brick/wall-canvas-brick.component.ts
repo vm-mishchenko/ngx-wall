@@ -9,8 +9,9 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import { WallCanvasApi } from '../../wall-canvas.api';
-import { LocationUpdatedEvent, Radar } from "../../../../../modules/radar";
-import { Subscription } from "rxjs/Subscription";
+import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
+import { Subscription } from 'rxjs/Subscription';
+import { WallCanvasComponent } from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -20,6 +21,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     @Input() brick: any;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
+
+    private stateChangesSubscription: Subscription;
 
     private selected: boolean = false;
 
@@ -34,6 +37,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
+                private wallCanvasComponent: WallCanvasComponent,
                 private wallCanvasApi: WallCanvasApi) {
     }
 
@@ -60,7 +64,12 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.wallCanvasApi.core.removeCanvasBrickInstance(this.brick.id);
+
         this.radarSubscription.unsubscribe();
+
+        if (this.stateChangesSubscription) {
+            this.stateChangesSubscription.unsubscribe();
+        }
     }
 
     onFocused() {
@@ -89,6 +98,13 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
         const componentReference = this.container.createComponent(factory, null, this.injector);
 
         componentReference.instance['id'] = this.brick.id;
+        componentReference.instance['state'] = this.brick.state;
+
+        if (componentReference.instance['stateChanges']) {
+            this.stateChangesSubscription = componentReference.instance['stateChanges'].subscribe((newState) => {
+                this.wallCanvasComponent.brickStateChanged(this.brick.id, newState);
+            });
+        }
 
         return componentReference;
     }

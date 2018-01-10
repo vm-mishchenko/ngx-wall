@@ -1,22 +1,28 @@
 import { Component } from '@angular/core';
-import { IWallConfiguration, IWallDefinition, WALL, WallApi } from 'wall';
+import { WALL, WallApi, WallConfiguration, WallDefinition } from 'wall';
 
 @Component({
     selector: 'my-app',
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
+    styles: [`
+        .wrapper {
+            width: 800px;
+            margin: 0 auto;
+        }
+    `]
 })
 export class AppComponent {
     plan: any = null;
 
     wallApi: WallApi = null;
 
-    wallConfiguration: IWallConfiguration = {
+    wallConfiguration: WallConfiguration = {
         mode: WALL.MODES.EDIT,
 
         onRegisterApi: this.onRegisterApi.bind(this)
     };
 
-    wallPlan: IWallDefinition = {
+    wallPlan: WallDefinition = {
         'bricks': [
             {
                 'id': '46d291d5-b057-8798-00af-ed9ba015fcda',

@@ -1,6 +1,7 @@
-import { Component, ElementRef, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { Observable } from "rxjs/Observable";
 import { onWallFocus, WallApi } from '../../index';
-import { Subject } from "rxjs/Subject";
+import { VideoBrickState } from "../video-brick-state.interface";
 
 @Component({
     selector: 'video-brick',
@@ -8,6 +9,9 @@ import { Subject } from "rxjs/Subject";
 })
 export class VideoBrickComponent implements OnInit, onWallFocus {
     @Input() id: string;
+
+    @Input() state: Observable<VideoBrickState | null>;
+    @Output() stateChanges: EventEmitter<VideoBrickState> = new EventEmitter();
 
     @ViewChild('src') src: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
@@ -18,34 +22,29 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
         pasteSrc: 'pasteSrc',
         video: 'video'
     };
-
-    // data
-    state: any = {};
-
-    store: any = null;
-
     uiState: string = this.uiStates.initial;
+
+    scope: VideoBrickState = {
+        src: ''
+    };
 
     constructor(private wallApi: WallApi, private r: Renderer2) {
     }
 
     ngOnInit() {
-        this.store = this.wallApi.core.getBrickStore(this.id);
+        this.state.subscribe((newState) => {
+            if (newState && newState.src !== this.scope.src) {
+                this.scope.src = newState.src;
 
-        this.updateState(this.store.get());
+                if (this.scope.src) {
+                    this.uiState = this.uiStates.video;
 
-        if (this.state.src) {
-            this.uiState = this.uiStates.video;
-
-            setTimeout(() => {
-                this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
-            }, 10);
-        }
-
-        const state = {
-            environment: 'mobile',
-            isMediaInteractionEnabled: false
-        };
+                    setTimeout(() => {
+                        this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                    }, 10);
+                }
+            }
+        });
     }
 
     onWallFocus(): void {
@@ -102,9 +101,9 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
             const youtubeId = srcArray[1];
 
             if (youtubeId) {
-                this.state.src = `https://www.youtube.com/embed/${youtubeId}`;
+                this.scope.src = `https://www.youtube.com/embed/${youtubeId}`;
 
-                this.r.setAttribute(this.iframe.nativeElement, 'src', this.state.src);
+                this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
 
                 this.save();
 
@@ -118,7 +117,7 @@ export class VideoBrickComponent implements OnInit, onWallFocus {
     }
 
     private save() {
-        this.store.set(this.state);
+        this.stateChanges.emit(this.scope);
     }
 
     private getCurrentInputValue() {

@@ -4,7 +4,7 @@
 ## Goal
 The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (`bricks`) based on Angular components.
 
-Demo: https://vm-mishchenko.github.io/wall
+Demo: https://vm-mishchenko.github.io/ngx-wall
 
 ## Development
 The project is in early development stage and is not recommended for production.

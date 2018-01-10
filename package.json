@@ -1,6 +1,6 @@
 {
   "name": "ngx-wall",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Wall web based editor",
   "main": "./dist/wall.umd.js",
   "module": "./dist/index.js",
@@ -34,6 +34,7 @@
   "homepage": "https://github.com/vm-mishchenko/wall#readme",
   "peerDependencies": {
     "@angular/core": "^4.0.0",
+    "@angular/common": "^4.0.0",
     "rxjs": "^5.4.3"
   },
   "devDependencies": {

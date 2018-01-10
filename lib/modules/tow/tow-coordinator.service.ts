@@ -9,8 +9,8 @@ import { StartWorkingEvent } from './events/start-working.event';
 import { WorkInProgressEvent } from './events/work-in-progress.event';
 import { StopWorkingEvent } from './events/stop-working.event';
 import { DropEvent } from './events/drop.event';
-import { DetectedBeacon } from "./beacon-detector/detected-beacon";
-import { TOW } from "./tow.constant";
+import { DetectedBeacon } from './beacon-detector/detected-beacon';
+import { TOW } from './tow.constant';
 
 @Injectable()
 export class TowCoordinator {

@@ -14,6 +14,7 @@ export class BeaconRegistry {
 
     unRegister(id: string) {
         this.beaconConfigs.delete(id);
+        this.beacons.delete(id);
     }
 
     getBeacons() {

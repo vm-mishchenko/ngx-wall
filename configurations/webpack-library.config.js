@@ -30,8 +30,7 @@ module.exports = {
         'rxjs/add/operator/skipWhile',
         'rxjs/add/operator/bufferTime',
         '@angular/core',
-        '@angular/common',
-        '@angular/platform-browser'
+        '@angular/common'
     ],
 
     resolve: {

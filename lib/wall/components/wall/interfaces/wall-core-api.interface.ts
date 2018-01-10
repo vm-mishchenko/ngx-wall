@@ -71,6 +71,4 @@ export interface WallCoreApi {
     isRegisteredBrick(tag: string): boolean;
 
     turnBrickInto(brickId: string, newTag: string): void;
-
-    getBrickStore(brickId: string);
 }
