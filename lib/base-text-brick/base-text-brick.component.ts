@@ -49,7 +49,30 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
         this.editor.nativeElement.addEventListener('paste', (e) => {
             e.preventDefault();
 
-            document.execCommand('insertHTML', false, e.clipboardData.getData('text/plain'));
+            const text = e.clipboardData.getData('text/plain');
+
+            const textArr = text.split('\n').reduce((result, currentString) => {
+                currentString = currentString.trim();
+
+                if (currentString.length) {
+                    result.push(currentString);
+                }
+
+                return result;
+            }, []);
+
+            if (textArr.length === 1) {
+                document.execCommand('insertHTML', false, textArr[0]);
+            } else if (textArr.length > 1) {
+                /* tslint:disable */
+                textArr.reverse();
+
+                textArr.forEach((text: string) => {
+                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text', {
+                        text
+                    });
+                });
+            }
         }, false);
 
         this.textChangeSubscription = this.textChange.debounceTime(350).subscribe(() => {
