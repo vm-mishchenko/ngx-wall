@@ -75,35 +75,108 @@ export abstract class BaseTextBrickComponent implements OnInit {
         if (e.keyCode === ENTER_KEY) {
             this.enterKeyPressed(e);
         }
+
+        console.log(this.getCaretLeftCoordinate());
     }
 
     // key handler
     topKeyPressed(e: Event) {
-        e.preventDefault();
+        const caretPosition = this.getCaretPosition();
+        const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                topKey: true,
-                caretPosition: this.getCaretPosition()
+        setTimeout(() => {
+            if (this.isCaretAtStart()) {
+                const focusContext: IFocusContext = {
+                    initiator: FOCUS_INITIATOR,
+                    details: {
+                        topKey: true,
+                        caretPosition,
+                        caretLeftCoordinate
+                    }
+                };
+
+                this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
             }
-        };
-
-        this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
+        });
     }
 
     bottomKeyPressed(e: Event) {
-        e.preventDefault();
+        const caretPosition = this.getCaretPosition();
+        const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                bottomKey: true,
-                caretPosition: this.getCaretPosition()
+        setTimeout(() => {
+            if (this.isCaretAtEnd()) {
+                const focusContext: IFocusContext = {
+                    initiator: FOCUS_INITIATOR,
+                    details: {
+                        bottomKey: true,
+                        caretPosition,
+                        caretLeftCoordinate
+                    }
+                };
+
+                this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
             }
-        };
+        });
+    }
 
-        this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
+    getCaretLeftCoordinate(): number {
+        const carPos = this.getCaretPosition();
+        const div = document.createElement('DIV');
+        const span = document.createElement('SPAN');
+        const copyStyle = getComputedStyle(this.editor.nativeElement);
+
+        [].forEach.call(copyStyle, (prop) => {
+            div.style[prop] = copyStyle[prop];
+        });
+
+        div.style.position = 'absolute';
+        document.body.appendChild(div);
+
+        div.textContent = this.scope.text.substr(0, carPos);
+        span.textContent = this.scope.text.substr(carPos) || '.';
+
+        div.appendChild(span);
+
+        const leftCoordinate = span.offsetLeft;
+
+        div.remove();
+
+        return leftCoordinate;
+    }
+
+    getPositionBasedOnLeftCaretCoordinate(leftCoordinate: number): number {
+        const div = document.createElement('DIV');
+        const span = document.createElement('SPAN');
+        const copyStyle = getComputedStyle(this.editor.nativeElement);
+
+        [].forEach.call(copyStyle, (prop) => {
+            div.style[prop] = copyStyle[prop];
+        });
+
+        div.style.position = 'absolute';
+        document.body.appendChild(div);
+
+        let currentLeftPosition = -1;
+        let currentCaretPosition = 0;
+
+        while (currentLeftPosition <= leftCoordinate && this.scope.text.length > currentCaretPosition) {
+            if (currentLeftPosition !== -1) {
+                div.removeChild(span);
+            }
+
+            div.textContent = this.scope.text.substr(0, currentCaretPosition);
+            span.textContent = this.scope.text.substr(currentCaretPosition) || '.';
+
+            div.appendChild(span);
+
+            currentLeftPosition = span.offsetLeft;
+            currentCaretPosition++;
+        }
+
+        div.remove();
+
+        return currentCaretPosition - 2;
     }
 
     leftKeyPressed(e: Event) {
@@ -241,7 +314,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
             }
 
             if (context.details.bottomKey || context.details.topKey) {
-                this.placeCaretAtPosition(context.details.caretPosition);
+                this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate);
             }
         }
     }
@@ -284,6 +357,12 @@ export abstract class BaseTextBrickComponent implements OnInit {
             sel.removeAllRanges();
             sel.addRange(range);
         }
+    }
+
+    placeCaretAtLeftCoordinate(leftCoordinate: number) {
+        console.log(`calculated left position: ${this.getPositionBasedOnLeftCaretCoordinate(leftCoordinate)}`);
+
+        this.placeCaretAtPosition(this.getPositionBasedOnLeftCaretCoordinate(leftCoordinate));
     }
 
     isCaretAtStart(): boolean {
