@@ -46,34 +46,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
             this.stringInfo = this.getStringInfo();
         });
 
-        this.editor.nativeElement.addEventListener('paste', (e) => {
-            e.preventDefault();
-
-            const text = e.clipboardData.getData('text/plain');
-
-            const textArr = text.split('\n').reduce((result, currentString) => {
-                currentString = currentString.trim();
-
-                if (currentString.length) {
-                    result.push(currentString);
-                }
-
-                return result;
-            }, []);
-
-            if (textArr.length === 1) {
-                document.execCommand('insertHTML', false, textArr[0]);
-            } else if (textArr.length > 1) {
-                /* tslint:disable */
-                textArr.reverse();
-
-                textArr.forEach((text: string) => {
-                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text', {
-                        text
-                    });
-                });
-            }
-        }, false);
+        this.editor.nativeElement.addEventListener('paste', this.onPaste.bind(this), false);
 
         this.textChangeSubscription = this.textChange.debounceTime(350).subscribe(() => {
             this.saveCurrentState();
@@ -84,6 +57,21 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.textChangeSubscription.unsubscribe();
+    }
+
+    onPaste(e: ClipboardEvent) {
+        e.preventDefault();
+
+        const textArr = e.clipboardData.getData('text/plain')
+            .split('\n')
+            .map((str) => str.trim())
+            .filter((str) => str.length);
+
+        if (textArr.length === 1) {
+            document.execCommand('insertHTML', false, textArr[0]);
+        } else if (textArr.length > 1) {
+            textArr.reverse().forEach((text) => this.wallApi.core.addBrickAfterBrickId(this.id, 'text', {text}));
+        }
     }
 
     onTextChange() {
@@ -311,7 +299,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
 
             const caretPosition = this.scope.text.length;
 
-            this.scope.text += nextTextBrickSnapshot.state.text;
+            this.scope.text += nextTextBrickSnapshot.state.text || '';
 
             this.wallApi.core.removeBrick(nextTextBrickId);
 
