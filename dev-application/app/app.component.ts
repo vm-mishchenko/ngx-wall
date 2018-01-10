@@ -23,79 +23,79 @@ export class AppComponent implements OnInit {
     };
 
     wallPlan: WallDefinition = {
-        "bricks": [
+        'bricks': [
             {
-                "id": "7250edce-d42f-4719-56c4-f9872fce3332",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "1 Deletes the selection's content from the document"
+                'id': '7250edce-d42f-4719-56c4-f9872fce3332',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': '1 Deletes the selection\'s content from the document'
                 }
             },
             {
-                "id": "d30cb4b0-afe9-58fc-2bc7-bfd43f5683e1",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "2 Deletes the selection's content from the document Deletes the selection's content from the document Deletes the selection's content from the document Deletes the selection's content from the document"
+                'id': 'd30cb4b0-afe9-58fc-2bc7-bfd43f5683e1',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': '2 Deletes the selection\'s content from the document Deletes the selection\'s content from the document Deletes the selection\'s content from the document Deletes the selection\'s content from the document'
                 }
             },
             {
-                "id": "d10bc6ae-f143-44f0-bf10-b80beacff402",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "3 Deletes the selection's content from the document"
+                'id': 'd10bc6ae-f143-44f0-bf10-b80beacff402',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': '3 Deletes the selection\'s content from the document'
                 }
             },
             {
-                "id": "c3da5e37-85e1-5f58-fbb3-446192aa3dc5",
-                "tag": "text",
-                "meta": {},
-                "data": {}
+                'id': 'c3da5e37-85e1-5f58-fbb3-446192aa3dc5',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
             }
         ],
-        "layout": {
-            "bricks": [
+        'layout': {
+            'bricks': [
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "7250edce-d42f-4719-56c4-f9872fce3332"
+                                    'id': '7250edce-d42f-4719-56c4-f9872fce3332'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "d30cb4b0-afe9-58fc-2bc7-bfd43f5683e1"
+                                    'id': 'd30cb4b0-afe9-58fc-2bc7-bfd43f5683e1'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "d10bc6ae-f143-44f0-bf10-b80beacff402"
+                                    'id': 'd10bc6ae-f143-44f0-bf10-b80beacff402'
                                 }
                             ]
                         }
                     ]
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "c3da5e37-85e1-5f58-fbb3-446192aa3dc5"
+                                    'id': 'c3da5e37-85e1-5f58-fbb3-446192aa3dc5'
                                 }
                             ]
                         }
@@ -108,7 +108,7 @@ export class AppComponent implements OnInit {
     wall2Model: any;
 
     constructor(private wallModelFactory: WallModelFactory) {
-        this.wall2Model = this.wallModelFactory.create(this.wallPlan);
+        this.wall2Model = this.wallModelFactory.create();
     }
 
     ngOnInit() {
