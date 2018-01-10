@@ -1,14 +1,20 @@
-import { ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import 'rxjs/add/operator/debounceTime';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { WallApi } from '../wall';
 import { IFocusContext } from '../wall/components/wall';
 import { FOCUS_INITIATOR } from './base-text-brick.constant';
+import { IBaseTextState } from './base-text-state.interface';
+import { IStringInfo } from './string-info.interface';
 
-export interface IBaseTextState {
-    text: string;
+enum LineType {
+    first = 'FIRST',
+    last = 'LAST'
 }
 
-export abstract class BaseTextBrickComponent implements OnInit {
+export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
     @Input() id: string;
     @Input() state: Observable<IBaseTextState>;
 
@@ -16,9 +22,15 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
     @ViewChild('editor') editor: ElementRef;
 
+    stringInfo: IStringInfo;
+
     scope: IBaseTextState = {
         text: ''
     };
+
+    textChange: Subject<string> = new Subject();
+
+    textChangeSubscription: Subscription;
 
     constructor(public wallApi: WallApi) {
     }
@@ -29,10 +41,41 @@ export abstract class BaseTextBrickComponent implements OnInit {
                 this.scope.text = newState.text || '';
             }
         });
+
+        setTimeout(() => {
+            this.stringInfo = this.getStringInfo();
+        });
+
+        this.editor.nativeElement.addEventListener('paste', this.onPaste.bind(this), false);
+
+        this.textChangeSubscription = this.textChange.debounceTime(350).subscribe(() => {
+            this.saveCurrentState();
+
+            this.stringInfo = this.getStringInfo();
+        });
+    }
+
+    ngOnDestroy() {
+        this.textChangeSubscription.unsubscribe();
+    }
+
+    onPaste(e: ClipboardEvent) {
+        e.preventDefault();
+
+        const textArr = e.clipboardData.getData('text/plain')
+            .split('\n')
+            .map((str) => str.trim())
+            .filter((str) => str.length);
+
+        if (textArr.length === 1) {
+            document.execCommand('insertHTML', false, textArr[0]);
+        } else if (textArr.length > 1) {
+            textArr.reverse().forEach((text) => this.wallApi.core.addBrickAfterBrickId(this.id, 'text', {text}));
+        }
     }
 
     onTextChange() {
-        this.saveCurrentState();
+        this.textChange.next();
     }
 
     onKeyPress(e: any) {
@@ -44,66 +87,152 @@ export abstract class BaseTextBrickComponent implements OnInit {
         const RIGHT_KEY = 39;
         const BOTTOM_KEY = 40;
 
-        if (e.keyCode === TOP_KEY) {
-            this.topKeyPressed(e);
-        }
+        if (this.noMetaKeyIsPressed(e)) {
+            if (e.keyCode === TOP_KEY) {
+                this.topKeyPressed(e);
+            }
 
-        if (e.keyCode === BOTTOM_KEY) {
-            this.bottomKeyPressed(e);
-        }
+            if (e.keyCode === BOTTOM_KEY) {
+                this.bottomKeyPressed(e);
+            }
 
-        if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
-            this.leftKeyPressed(e);
-        }
+            if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
+                this.leftKeyPressed(e);
+            }
 
-        if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
-            this.rightKeyPressed(e);
-        }
+            if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
+                this.rightKeyPressed(e);
+            }
 
-        if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
-            this.concatWithPreviousTextSupportingBrick(e);
-        }
+            if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
+                this.concatWithPreviousTextSupportingBrick(e);
+            }
 
-        if (e.keyCode === DELETE_KEY && this.isCaretAtEnd()) {
-            this.concatWithNextTextSupportingBrick(e);
-        }
+            if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected()) {
+                this.concatWithNextTextSupportingBrick(e);
+            }
 
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
-            this.onDeleteBrick(e);
-        }
+            if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
+                this.onDeleteBrick(e);
+            }
 
-        if (e.keyCode === ENTER_KEY) {
-            this.enterKeyPressed(e);
+            if (e.keyCode === ENTER_KEY) {
+                this.enterKeyPressed(e);
+            }
         }
     }
 
     // key handler
     topKeyPressed(e: Event) {
-        e.preventDefault();
+        const caretPosition = this.getCaretPosition();
+        const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                topKey: true,
-                caretPosition: this.getCaretPosition()
-            }
-        };
+        if (this.isCaretAtFirstLine()) {
+            e.preventDefault();
 
-        this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
+            const focusContext: IFocusContext = {
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    topKey: true,
+                    caretPosition,
+                    caretLeftCoordinate
+                }
+            };
+
+            this.wallApi.core.focusOnPreviousTextBrick(this.id, focusContext);
+        }
     }
 
     bottomKeyPressed(e: Event) {
-        e.preventDefault();
+        const caretPosition = this.getCaretPosition();
+        const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                bottomKey: true,
-                caretPosition: this.getCaretPosition()
-            }
+        if (this.isCaretAtLastLine()) {
+            e.preventDefault();
+
+            const focusContext: IFocusContext = {
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    bottomKey: true,
+                    caretPosition,
+                    caretLeftCoordinate
+                }
+            };
+
+            this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
+        }
+    }
+
+    isCaretAtFirstLine(): boolean {
+        if (this.stringInfo.countOfLines === 1) {
+            return true;
+        } else {
+            return this.getCaretPosition() < this.stringInfo.breakIndexes[0];
+        }
+    }
+
+    isCaretAtLastLine(): boolean {
+        if (this.stringInfo.countOfLines === 1) {
+            return true;
+        } else {
+            return this.getCaretPosition() >= this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
+        }
+    }
+
+    getCaretLeftCoordinate(): number {
+        const carPos = this.getCaretPosition();
+        const div = this.createElementClone();
+        const span = document.createElement('SPAN');
+
+        div.style.position = 'absolute';
+        document.body.appendChild(div);
+
+        div.textContent = this.scope.text.substr(0, carPos);
+        span.textContent = this.scope.text.substr(carPos) || '.';
+
+        div.appendChild(span);
+
+        const leftCoordinate = span.offsetLeft;
+
+        div.remove();
+
+        return leftCoordinate;
+    }
+
+    getStringInfo(): IStringInfo {
+        const info = {
+            countOfLines: 1,
+            breakIndexes: []
         };
 
-        this.wallApi.core.focusOnNextTextBrick(this.id, focusContext);
+        const div = this.createElementClone();
+
+        document.body.appendChild(div);
+
+        let currentHeight = div.offsetHeight;
+
+        div.style.height = 'auto';
+
+        let lastCaretPosition = this.scope.text.length;
+
+        while (lastCaretPosition !== 0) {
+            div.textContent = this.scope.text.substr(0, lastCaretPosition);
+
+            if (div.offsetHeight < currentHeight) {
+                info.countOfLines++;
+                info.breakIndexes.push(lastCaretPosition);
+
+                currentHeight = div.offsetHeight;
+            }
+
+            lastCaretPosition--;
+        }
+
+        div.remove();
+
+        info.breakIndexes.reverse();
+
+        return info;
     }
 
     leftKeyPressed(e: Event) {
@@ -170,7 +299,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
             const caretPosition = this.scope.text.length;
 
-            this.scope.text += nextTextBrickSnapshot.state.text;
+            this.scope.text += nextTextBrickSnapshot.state.text || '';
 
             this.wallApi.core.removeBrick(nextTextBrickId);
 
@@ -219,7 +348,6 @@ export abstract class BaseTextBrickComponent implements OnInit {
     }
 
     // key handler end
-
     onWallFocus(context?: IFocusContext): void {
         this.editor.nativeElement.focus();
 
@@ -241,7 +369,9 @@ export abstract class BaseTextBrickComponent implements OnInit {
             }
 
             if (context.details.bottomKey || context.details.topKey) {
-                this.placeCaretAtPosition(context.details.caretPosition);
+                const line = context.details.bottomKey ? LineType.first : LineType.last;
+
+                this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
             }
         }
     }
@@ -257,6 +387,10 @@ export abstract class BaseTextBrickComponent implements OnInit {
         if (sel.rangeCount) {
             return sel.getRangeAt(0).endOffset;
         }
+    }
+
+    isTextSelected(): boolean {
+        return !window.getSelection().isCollapsed;
     }
 
     placeCaretAtStart(): void {
@@ -283,6 +417,55 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
             sel.removeAllRanges();
             sel.addRange(range);
+        }
+    }
+
+    placeCaretAtLeftCoordinate(leftCoordinate: number, line: string) {
+        this.placeCaretAtPosition(this.getCaretPositionByLeftCaretCoordinate(leftCoordinate, line));
+    }
+
+    getCaretPositionByLeftCaretCoordinate(caretCoordinate: number, line: string): number {
+        const span = document.createElement('SPAN');
+        const div = this.createElementClone();
+
+        div.style.position = 'absolute';
+        document.body.appendChild(div);
+
+        let currentLeftPosition = -1;
+        let currentCaretPosition;
+
+        if (this.stringInfo.countOfLines > 1 && line === LineType.last) {
+            currentCaretPosition = this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
+        } else {
+            currentCaretPosition = 0;
+        }
+
+        while (currentLeftPosition < caretCoordinate && this.scope.text.length > currentCaretPosition) {
+            if (currentLeftPosition !== -1) {
+                div.removeChild(span);
+            }
+
+            div.textContent = this.scope.text.substr(0, currentCaretPosition);
+            span.textContent = this.scope.text.substr(currentCaretPosition) || '.';
+
+            div.appendChild(span);
+
+            currentLeftPosition = span.offsetLeft;
+            currentCaretPosition++;
+        }
+
+        currentCaretPosition--; // compensate the last while digest
+
+        div.remove();
+
+        if (currentLeftPosition === caretCoordinate) {
+            // caret stay on the right position
+            return currentCaretPosition;
+        } else if (this.scope.text.length - 1 === currentCaretPosition) {
+            // we reach the limit of available symbols
+            return this.scope.text.length;
+        } else {
+            return currentCaretPosition;
         }
     }
 
@@ -318,5 +501,21 @@ export abstract class BaseTextBrickComponent implements OnInit {
         }
 
         return atEnd;
+    }
+
+    createElementClone(): HTMLElement {
+        const div = document.createElement('DIV');
+
+        const style = getComputedStyle(this.editor.nativeElement);
+
+        [].forEach.call(style, (prop) => {
+            div.style[prop] = style[prop];
+        });
+
+        return div;
+    }
+
+    noMetaKeyIsPressed(e): boolean {
+        return !((e.shiftKey || e.altKey || e.ctrlKey || e.metaKey));
     }
 }
