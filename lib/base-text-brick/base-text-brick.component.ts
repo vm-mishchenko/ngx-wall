@@ -1,14 +1,20 @@
-import { ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import 'rxjs/add/operator/debounceTime';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { WallApi } from '../wall';
 import { IFocusContext } from '../wall/components/wall';
 import { FOCUS_INITIATOR } from './base-text-brick.constant';
+import { IBaseTextState } from './base-text-state.interface';
+import { IStringInfo } from './string-info.interface';
 
-export interface IBaseTextState {
-    text: string;
+enum LineType {
+    first = 'FIRST',
+    last = 'LAST'
 }
 
-export abstract class BaseTextBrickComponent implements OnInit {
+export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
     @Input() id: string;
     @Input() state: Observable<IBaseTextState>;
 
@@ -16,11 +22,15 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
     @ViewChild('editor') editor: ElementRef;
 
-    stringInfo: any;
+    stringInfo: IStringInfo;
 
     scope: IBaseTextState = {
         text: ''
     };
+
+    textChange: Subject<string> = new Subject();
+
+    textChangeSubscription: Subscription;
 
     constructor(public wallApi: WallApi) {
     }
@@ -33,14 +43,28 @@ export abstract class BaseTextBrickComponent implements OnInit {
         });
 
         setTimeout(() => {
-            this.stringInfo = this.getStringInformation();
+            this.stringInfo = this.getStringInfo();
+        });
+
+        this.editor.nativeElement.addEventListener('paste', (e) => {
+            e.preventDefault();
+
+            document.execCommand('insertHTML', false, e.clipboardData.getData('text/plain'));
+        }, false);
+
+        this.textChangeSubscription = this.textChange.debounceTime(350).subscribe(() => {
+            this.saveCurrentState();
+
+            this.stringInfo = this.getStringInfo();
         });
     }
 
-    onTextChange() {
-        this.saveCurrentState();
+    ngOnDestroy() {
+        this.textChangeSubscription.unsubscribe();
+    }
 
-        this.stringInfo = this.getStringInformation();
+    onTextChange() {
+        this.textChange.next();
     }
 
     onKeyPress(e: any) {
@@ -52,39 +76,39 @@ export abstract class BaseTextBrickComponent implements OnInit {
         const RIGHT_KEY = 39;
         const BOTTOM_KEY = 40;
 
-        if (e.keyCode === TOP_KEY) {
-            this.topKeyPressed(e);
-        }
+        if (this.noMetaKeyIsPressed(e)) {
+            if (e.keyCode === TOP_KEY) {
+                this.topKeyPressed(e);
+            }
 
-        if (e.keyCode === BOTTOM_KEY) {
-            this.bottomKeyPressed(e);
-        }
+            if (e.keyCode === BOTTOM_KEY) {
+                this.bottomKeyPressed(e);
+            }
 
-        if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
-            this.leftKeyPressed(e);
-        }
+            if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
+                this.leftKeyPressed(e);
+            }
 
-        if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
-            this.rightKeyPressed(e);
-        }
+            if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
+                this.rightKeyPressed(e);
+            }
 
-        if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
-            this.concatWithPreviousTextSupportingBrick(e);
-        }
+            if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
+                this.concatWithPreviousTextSupportingBrick(e);
+            }
 
-        if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected()) {
-            this.concatWithNextTextSupportingBrick(e);
-        }
+            if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected()) {
+                this.concatWithNextTextSupportingBrick(e);
+            }
 
-        if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
-            this.onDeleteBrick(e);
-        }
+            if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
+                this.onDeleteBrick(e);
+            }
 
-        if (e.keyCode === ENTER_KEY) {
-            this.enterKeyPressed(e);
+            if (e.keyCode === ENTER_KEY) {
+                this.enterKeyPressed(e);
+            }
         }
-
-        console.log(this.stringInfo);
     }
 
     // key handler
@@ -146,13 +170,8 @@ export abstract class BaseTextBrickComponent implements OnInit {
 
     getCaretLeftCoordinate(): number {
         const carPos = this.getCaretPosition();
-        const div = document.createElement('DIV');
+        const div = this.createElementClone();
         const span = document.createElement('SPAN');
-        const copyStyle = getComputedStyle(this.editor.nativeElement);
-
-        [].forEach.call(copyStyle, (prop) => {
-            div.style[prop] = copyStyle[prop];
-        });
 
         div.style.position = 'absolute';
         document.body.appendChild(div);
@@ -169,57 +188,13 @@ export abstract class BaseTextBrickComponent implements OnInit {
         return leftCoordinate;
     }
 
-    getPositionBasedOnLeftCaretCoordinate(leftCoordinate: number, line: string): number {
-        const div = document.createElement('DIV');
-        const span = document.createElement('SPAN');
-        const copyStyle = getComputedStyle(this.editor.nativeElement);
-
-        [].forEach.call(copyStyle, (prop) => {
-            div.style[prop] = copyStyle[prop];
-        });
-
-        div.style.position = 'absolute';
-        document.body.appendChild(div);
-
-        let currentLeftPosition = -1;
-        let currentCaretPosition;
-
-        if (this.stringInfo.countOfLines > 1 && line === 'LAST') {
-            currentCaretPosition = this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
-        } else {
-            currentCaretPosition = 0;
-        }
-
-        while (currentLeftPosition <= leftCoordinate && this.scope.text.length > currentCaretPosition) {
-            if (currentLeftPosition !== -1) {
-                div.removeChild(span);
-            }
-
-            div.textContent = this.scope.text.substr(0, currentCaretPosition);
-            span.textContent = this.scope.text.substr(currentCaretPosition) || '.';
-
-            div.appendChild(span);
-
-            currentLeftPosition = span.offsetLeft;
-            currentCaretPosition++;
-        }
-
-        div.remove();
-
-        return currentCaretPosition - 2;
-    }
-
-    getStringInformation() {
+    getStringInfo(): IStringInfo {
         const info = {
             countOfLines: 1,
             breakIndexes: []
         };
-        const div = document.createElement('DIV');
-        const copyStyle = getComputedStyle(this.editor.nativeElement);
 
-        [].forEach.call(copyStyle, (prop) => {
-            div.style[prop] = copyStyle[prop];
-        });
+        const div = this.createElementClone();
 
         document.body.appendChild(div);
 
@@ -383,7 +358,7 @@ export abstract class BaseTextBrickComponent implements OnInit {
             }
 
             if (context.details.bottomKey || context.details.topKey) {
-                const line = context.details.bottomKey ? 'FIRST' : 'LAST';
+                const line = context.details.bottomKey ? LineType.first : LineType.last;
 
                 this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
             }
@@ -435,7 +410,52 @@ export abstract class BaseTextBrickComponent implements OnInit {
     }
 
     placeCaretAtLeftCoordinate(leftCoordinate: number, line: string) {
-        this.placeCaretAtPosition(this.getPositionBasedOnLeftCaretCoordinate(leftCoordinate, line));
+        this.placeCaretAtPosition(this.getCaretPositionByLeftCaretCoordinate(leftCoordinate, line));
+    }
+
+    getCaretPositionByLeftCaretCoordinate(caretCoordinate: number, line: string): number {
+        const span = document.createElement('SPAN');
+        const div = this.createElementClone();
+
+        div.style.position = 'absolute';
+        document.body.appendChild(div);
+
+        let currentLeftPosition = -1;
+        let currentCaretPosition;
+
+        if (this.stringInfo.countOfLines > 1 && line === LineType.last) {
+            currentCaretPosition = this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
+        } else {
+            currentCaretPosition = 0;
+        }
+
+        while (currentLeftPosition < caretCoordinate && this.scope.text.length > currentCaretPosition) {
+            if (currentLeftPosition !== -1) {
+                div.removeChild(span);
+            }
+
+            div.textContent = this.scope.text.substr(0, currentCaretPosition);
+            span.textContent = this.scope.text.substr(currentCaretPosition) || '.';
+
+            div.appendChild(span);
+
+            currentLeftPosition = span.offsetLeft;
+            currentCaretPosition++;
+        }
+
+        currentCaretPosition--; // compensate the last while digest
+
+        div.remove();
+
+        if (currentLeftPosition === caretCoordinate) {
+            // caret stay on the right position
+            return currentCaretPosition;
+        } else if (this.scope.text.length - 1 === currentCaretPosition) {
+            // we reach the limit of available symbols
+            return this.scope.text.length;
+        } else {
+            return currentCaretPosition;
+        }
     }
 
     isCaretAtStart(): boolean {
@@ -470,5 +490,21 @@ export abstract class BaseTextBrickComponent implements OnInit {
         }
 
         return atEnd;
+    }
+
+    createElementClone(): HTMLElement {
+        const div = document.createElement('DIV');
+
+        const style = getComputedStyle(this.editor.nativeElement);
+
+        [].forEach.call(style, (prop) => {
+            div.style[prop] = style[prop];
+        });
+
+        return div;
+    }
+
+    noMetaKeyIsPressed(e): boolean {
+        return !((e.shiftKey || e.altKey || e.ctrlKey || e.metaKey));
     }
 }
