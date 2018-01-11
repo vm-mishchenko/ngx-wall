@@ -480,7 +480,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
 
             testRange.selectNodeContents(this.editor.nativeElement);
             testRange.setEnd(selRange.startContainer, selRange.startOffset);
-            atStart = (testRange.toString() === '');
+            atStart = (testRange.toString().trim() === '');
         }
 
         return atStart;
@@ -497,7 +497,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
 
             testRange.selectNodeContents(this.editor.nativeElement);
             testRange.setStart(selRange.endContainer, selRange.endOffset);
-            atEnd = (testRange.toString() === '');
+            atEnd = (testRange.toString().trim() === '');
         }
 
         return atEnd;

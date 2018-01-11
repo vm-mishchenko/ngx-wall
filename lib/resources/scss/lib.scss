@@ -2,10 +2,6 @@ $w-text-color: rgb(200, 200, 200);
 $w-background-color: #f7f6f5;
 $w-background-hover-color: #ecebea;
 
-body {
-  background: rgba(37, 33, 26, 0.4);;
-}
-
 .w-input {
   padding: 0.3rem 0.65rem;
 }
@@ -268,7 +264,6 @@ video-brick {
 }
 
 // row
-
 .tow-placeholder {
   opacity: 0.5;
   position: fixed;

@@ -8,6 +8,7 @@ npm-debug.log
 # Development files
 configurations/
 dev-application/
+dev-application-dist/
 
 # Library files
 lib/
