@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TextRepresentation } from '../base-text-brick/base-text-representation.class';
 import { ContenteditableModule } from '../modules/contenteditable/contenteditable..module';
 import { BrickRegistry } from '../wall';
 import { HeaderBrickComponent } from './component/header-brick.component';
@@ -18,7 +19,8 @@ export class HeaderBrickModule {
         this.brickRegistry.register({
             tag: 'header',
             component: HeaderBrickComponent,
-            supportText: true
+            supportText: true,
+            textRepresentation: TextRepresentation
         });
     }
 }

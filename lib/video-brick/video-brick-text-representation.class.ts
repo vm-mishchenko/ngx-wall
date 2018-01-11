@@ -1,0 +1,11 @@
+import { IBrickSnapshot } from '../wall';
+import { IVideoBrickState } from './video-brick-state.interface';
+
+export class VideoBrickTextRepresentationClass {
+    constructor(private brickSnapshot: IBrickSnapshot) {
+    }
+
+    getText() {
+        return `video!${(this.brickSnapshot.state as IVideoBrickState).src}`;
+    }
+}

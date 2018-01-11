@@ -7,7 +7,7 @@ export class WallApi {
 
     features: any = {};
 
-    registerCoreApi(coreApi: any) {
+    registerCoreApi(coreApi: IWallCoreApi) {
         this.core = coreApi;
     }
 

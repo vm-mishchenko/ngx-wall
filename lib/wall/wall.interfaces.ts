@@ -7,11 +7,20 @@ import { IBrickSnapshot } from './model/wall.events';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
+export interface ITextRepresentation {
+    getText(): string;
+}
+
+export interface ITextRepresentationConstructor {
+    new (brickSnapshot: IBrickSnapshot): ITextRepresentation;
+}
+
 // Register new brick
 export interface IBrickSpecification {
     tag: string;
     component: any;
-    supportText?: true;
+    supportText?: boolean;
+    textRepresentation?: ITextRepresentationConstructor;
 }
 
 export interface IWallDefinition {
@@ -132,4 +141,10 @@ export interface IWallModel {
     getBrickTag(brickId: string): string;
 
     getBrickSnapshot(brickId: string): IBrickSnapshot;
+
+    getBrickTextRepresentation(brickId: string): string;
+}
+
+export interface IPluginDestroy {
+    onPluginDestroy();
 }

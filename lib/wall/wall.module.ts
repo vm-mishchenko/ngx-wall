@@ -6,6 +6,7 @@ import { TowModule } from '../modules/tow';
 import { WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent } from './components/wall-canvas';
 import { WallComponent } from './components/wall/wall.component';
 import { WallModelFactory } from './model/wall-model.factory';
+import { CopyPlugin } from './plugins/copy/copy.plugin';
 import { SelectionPlugin } from './plugins/selection/selection';
 import { BrickRegistry } from './registry/brick-registry.service';
 import { WALL_PLUGIN } from './wall.tokens';
@@ -23,6 +24,9 @@ import { WALL_PLUGIN } from './wall.tokens';
         WallModelFactory,
         {
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
+        },
+        {
+            provide: WALL_PLUGIN, useValue: CopyPlugin, multi: true
         }
     ],
 

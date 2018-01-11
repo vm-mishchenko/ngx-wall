@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TextRepresentation } from '../base-text-brick/base-text-representation.class';
 import { ContenteditableModule } from '../modules/contenteditable/contenteditable..module';
 import { BrickRegistry } from '../wall/registry/brick-registry.service';
 import { QuoteBrickComponent } from './component/quote-brick.component';
@@ -18,7 +19,8 @@ export class QuoteBrickModule {
         this.brickRegistry.register({
             tag: 'quote',
             component: QuoteBrickComponent,
-            supportText: true
+            supportText: true,
+            textRepresentation: TextRepresentation
         });
     }
 }
