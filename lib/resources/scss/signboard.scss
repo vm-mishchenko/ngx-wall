@@ -1,0 +1,21 @@
+@import "./variables";
+
+.w-signboard {
+  color: $w-middle-grey;
+  background: $w-light-grey;
+  padding: 15px;
+  display: flex;
+
+  &:hover {
+    background: $w-light-grey__hover;
+    cursor: pointer;
+  }
+
+  svg {
+    margin-right: 10px;
+
+    path {
+      fill: $w-middle-grey;
+    }
+  }
+}

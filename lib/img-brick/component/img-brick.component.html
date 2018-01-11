@@ -1,6 +1,15 @@
 <img [hidden]="uiState !== uiStates.image" [src]="scope.src" (click)="onImageClick($event)">
 
 <div [hidden]="uiState === uiStates.image" class="w-signboard" (click)="switchImagePanel()">
+    <svg version="1.1"
+         width="30"
+         height="25"
+         viewBox="180 155 550 492">
+        <path
+                d="M 200,200 V 616 H 712 V 200 H 200 z M 680,584 H 232 V 232 H 680 V 584 z M 552,312 c 0,26.51 21.49,48
+                48,48 26.51,0 48,-21.49 48,-48 0,-26.51 -21.49,-48 -48,-48 -26.51,0 -48,21.49 -48,48 z m 96,240 H 264
+                l 96,-256 128,160 64,-48 96,144 z"/>
+    </svg>
     Add an Image
 </div>
 

@@ -32,7 +32,8 @@
     "@angular/forms": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/common": "^5.0.0",
-    "rxjs": "^5.4.3"
+    "rxjs": "^5.4.3",
+    "bootstrap": "^4.0.0-beta"
   },
   "devDependencies": {
     "@angular/forms": "5.1.3",

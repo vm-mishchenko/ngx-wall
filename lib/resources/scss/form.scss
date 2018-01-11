@@ -1,0 +1,27 @@
+@import "./variables";
+
+.w-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: $w-middle-grey;
+}
+
+.w-input::-moz-placeholder { /* Firefox 19+ */
+  color: $w-middle-grey;
+}
+
+.w-input {
+  display: block;
+  width: 100%;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.9rem;
+  line-height: 1.25;
+  color: $w-default-color;
+  background-color: $w-light-grey;
+  background-clip: padding-box;
+  border: 1px solid $w-light-grey;
+  border-radius: 0.25rem;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.w-form-group {
+  margin-bottom: 0.4rem;
+}
