@@ -133,3 +133,7 @@ export interface IWallModel {
 
     getBrickSnapshot(brickId: string): IBrickSnapshot;
 }
+
+export interface IPluginDestroy {
+    onPluginDestroy();
+}

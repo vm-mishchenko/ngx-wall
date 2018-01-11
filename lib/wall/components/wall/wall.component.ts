@@ -81,8 +81,8 @@ export class WallComponent implements OnChanges, OnDestroy {
 
     private destroyPlugins() {
         this.initializedPlugins.forEach((plugin) => {
-            if (plugin.destroy) {
-                plugin.destroy();
+            if (plugin.onPluginDestroy) {
+                plugin.onPluginDestroy();
             }
         });
 

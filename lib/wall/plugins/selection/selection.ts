@@ -4,9 +4,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../modules/pick-out';
 import { DropEvent, TOW, TowService } from '../../../modules/tow';
 import { WallApi } from '../../components/wall';
+import { IPluginDestroy } from '../../wall.interfaces';
 
 @Injectable()
-export class SelectionPlugin {
+export class SelectionPlugin implements IPluginDestroy { // todo should implement plugin interface
     doc: any = null;
 
     isMouseSelection: boolean = false;
@@ -88,7 +89,7 @@ export class SelectionPlugin {
         }
     }
 
-    onKeyDownHandler(e) {
+    onKeyDownHandler(e: KeyboardEvent) {
         const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
         const firstSelectedBrickId = selectedBrickIds[0];
         const lastSelectedBrickId = selectedBrickIds[selectedBrickIds.length - 1];
@@ -161,7 +162,7 @@ export class SelectionPlugin {
         }
     }
 
-    destroy() {
+    onPluginDestroy() {
         this.doc.removeEventListener('click', this.onMouseDownBound);
         this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
 
