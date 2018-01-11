@@ -8,6 +8,7 @@ import {
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
 import { IWallModel, IWallViewModel } from '../../wall.interfaces';
+import { IWallCoreApi } from './interfaces/wall-core-api.interface';
 import { IWallState } from './interfaces/wall-state.interface';
 
 import { WallApi } from './wall-api.service';
@@ -122,6 +123,7 @@ export class WallViewModel implements IWallViewModel {
             'turnBrickInto',
             'updateBrickState',
             'getBrickSnapshot',
+            'getBrickTextRepresentation',
 
             // MOVE BRICK
             'moveBrickAfterBrickId',
@@ -146,7 +148,7 @@ export class WallViewModel implements IWallViewModel {
             return result;
         }, {});
 
-        this.api.registerCoreApi(coreApi);
+        this.api.registerCoreApi(coreApi as IWallCoreApi);
 
         // protect API from extending
         Object.seal(this.api.core);

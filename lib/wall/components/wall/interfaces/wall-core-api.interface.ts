@@ -75,4 +75,6 @@ export interface IWallCoreApi {
     updateBrickState(brickId: string, state: any): void;
 
     getBrickSnapshot(brickId: string): IBrickSnapshot;
+
+    getBrickTextRepresentation(brickId: string): string;
 }

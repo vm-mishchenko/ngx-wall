@@ -19,15 +19,29 @@ export class CopyPlugin implements IPluginDestroy {
     }
 
     onCopy(e: ClipboardEvent) {
-        const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
+        const selectedTextRepresentation = this.getSelectedTextRepresentation();
 
-        const brickData = selectedBrickIds
-            .map((selectedBrickId) => this.wallApi.core.getBrickSnapshot(selectedBrickId));
+        if (selectedTextRepresentation.length) {
+            e.preventDefault();
 
-        console.log(brickData);
+            this.addToClipboard(e, selectedTextRepresentation);
+        }
     }
 
     onPluginDestroy() {
         this.doc.removeEventListener('click', this.onCopy);
+    }
+
+    private addToClipboard(e: ClipboardEvent, str: string) {
+        e.clipboardData.setData('text/plain', str);
+    }
+
+    private getSelectedTextRepresentation(): string {
+        const selectedBrickIds = this.wallApi.core.getSelectedBrickIds();
+
+        return selectedBrickIds
+            .map((selectedBrickId) => this.wallApi.core.getBrickTextRepresentation(selectedBrickId))
+            .map((textRepresentation) => textRepresentation.trim())
+            .join('\n');
     }
 }

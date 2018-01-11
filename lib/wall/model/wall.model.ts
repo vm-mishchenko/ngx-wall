@@ -287,6 +287,20 @@ export class WallModel implements IWallModel {
         return this.createBrickSnapshot(brick);
     }
 
+    getBrickTextRepresentation(brickId: string): string {
+        const brick = this.getBrickById(brickId);
+
+        const brickSpecification = this.brickRegistry.get(brick.tag);
+
+        if (brickSpecification.textRepresentation) {
+            const brickTextRepresentation = new brickSpecification.textRepresentation(this.createBrickSnapshot(brick));
+
+            return brickTextRepresentation.getText() || '';
+        } else {
+            return '';
+        }
+    }
+
     getBricksCount(): number {
         return this.layout.getBrickCount();
     }

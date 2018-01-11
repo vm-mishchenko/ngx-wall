@@ -70,10 +70,4 @@ describe('Wall Model', () => {
             expect(wm.getPlan()).toEqual(simplePlan);
         });
     });
-
-    describe('[Add Brick]', () => {
-        it('should add after brick id', () => {
-            const wm = wallModelFactory.create(defaultPlan);
-        });
-    });
 });
