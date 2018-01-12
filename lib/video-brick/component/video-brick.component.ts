@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { IOnWallFocus, WallApi } from '../../index';
 import { IVideoBrickState } from '../video-brick-state.interface';
 
@@ -10,7 +9,7 @@ import { IVideoBrickState } from '../video-brick-state.interface';
 export class VideoBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;
 
-    @Input() state: Observable<IVideoBrickState | null>;
+    @Input() state: IVideoBrickState;
     @Output() stateChanges: EventEmitter<IVideoBrickState> = new EventEmitter();
 
     @ViewChild('src') src: ElementRef;
@@ -32,29 +31,37 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
     }
 
     ngOnInit() {
-        this.state.subscribe((newState) => {
-            if (newState && newState.src !== this.scope.src) {
-                this.scope.src = newState.src;
+        if (this.state && this.state.src !== this.scope.src) {
+            this.scope.src = this.state.src;
 
-                if (this.scope.src) {
-                    this.uiState = this.uiStates.video;
+            if (this.scope.src) {
+                this.uiState = this.uiStates.video;
 
-                    setTimeout(() => {
-                        this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
-                    }, 10);
-                }
+                setTimeout(() => {
+                    this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                }, 10);
             }
-        });
+        }
+    }
+
+    onWallStateChange(newState: IVideoBrickState) {
+        if (newState && newState.src !== this.scope.src) {
+            this.scope.src = newState.src;
+
+            if (this.scope.src) {
+                this.uiState = this.uiStates.video;
+
+                setTimeout(() => {
+                    this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                }, 10);
+            }
+        }
     }
 
     onWallFocus(): void {
         if (this.uiState === this.uiStates.initial) {
             this.showPanel();
         }
-    }
-
-    updateState(newState) {
-        this.state = newState;
     }
 
     switchPanel() {
@@ -73,7 +80,7 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
         });
     }
 
-    onKeyPress(e: any) {
+    onKeyPress(e: KeyboardEvent) {
         if (e.key === 'Escape') {
             if (this.uiState === this.uiStates.pasteSrc) {
                 this.uiState = this.uiStates.initial;

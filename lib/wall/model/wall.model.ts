@@ -1,17 +1,17 @@
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { BrickRegistry } from '../registry/brick-registry.service';
-import { IWallDefinition, IWallModel } from '../wall.interfaces';
-import { IWallColumn, IWallRow } from './model.interfaces';
+import { IWallDefinition } from '../wall.interfaces';
+import { IWallColumn, IWallModel, IWallRow } from './model.interfaces';
 import { WallBrick } from './wall-brick.model';
 import { WallLayout } from './wall-layout.model';
 import {
-    AddBrickEvent, IBrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent,
-    UpdateBrickStateEvent
+    AddBrickEvent, BeforeChangeEvent, IBrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent,
+    SetPlanEvent, TurnBrickIntoEvent, UpdateBrickStateEvent
 } from './wall.events';
 
 export class WallModel implements IWallModel {
-    layout: WallLayout;
+    private layout: WallLayout;
 
     private DEFAULT_BRICK = 'text';
 
@@ -20,7 +20,10 @@ export class WallModel implements IWallModel {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
-    initialize(plan: IWallDefinition) {
+    // COMMAND METHODS
+    setPlan(plan: IWallDefinition) {
+        this.dispatch(new BeforeChangeEvent(SetPlanEvent));
+
         this.layout = new WallLayout(this.brickRegistry);
 
         plan.layout.bricks.forEach((row, rowIndex) => {
@@ -35,7 +38,7 @@ export class WallModel implements IWallModel {
                     // first column in new row
                     if (columnIndex === 0) {
                         if (brickIndex === 0) {
-                            this.layout.addBrickToNewRow(rowIndex, wallBrick);
+                            this.layout.addBrickToNewRow(rowIndex, wallBrick, row.id);
                         } else {
                             this.layout.addBrickToExistingColumn(rowIndex, columnIndex, brickIndex, wallBrick);
                         }
@@ -49,10 +52,13 @@ export class WallModel implements IWallModel {
                 });
             });
         });
+
+        this.dispatch(new SetPlanEvent());
     }
 
-    // COMMAND METHODS
-    addBrickAfterBrickId(brickId: string, tag: string, state?: any) {
+    addBrickAfterBrickId(brickId: string, tag: string, state?: any): IBrickSnapshot {
+        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
+
         const brickPosition = this.layout.getBrickPosition(brickId);
         const columnCount = this.layout.getColumnCount(brickPosition.rowIndex);
         const newBrick = this.createBrick(tag, state);
@@ -67,29 +73,43 @@ export class WallModel implements IWallModel {
                 newBrick);
         }
 
-        this.events.next(new AddBrickEvent(newBrick.id));
+        this.dispatch(new AddBrickEvent(newBrick.id));
+
+        return this.getBrickSnapshot(newBrick.id);
     }
 
     // Add text brick to the bottom of wall in the new row
     addDefaultBrick() {
+        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
+
         const brickCount = this.layout.getBrickCount();
         const newBrick = this.createBrick(this.DEFAULT_BRICK);
         const rowIndex = brickCount ? this.layout.getRowCount() + 1 : 0;
 
         this.layout.addBrickToNewRow(rowIndex, newBrick);
 
-        this.events.next(new AddBrickEvent(newBrick.id));
+        this.dispatch(new AddBrickEvent(newBrick.id));
     }
 
     updateBrickState(brickId, brickState): void {
+        this.dispatch(new BeforeChangeEvent(UpdateBrickStateEvent));
+
         const brick = this.layout.getBrickById(brickId);
 
-        brick.updateState(brickState);
+        const oldState = JSON.parse(JSON.stringify(brick.getState()));
 
-        this.events.next(new UpdateBrickStateEvent(brickId, brickState));
+        brick.updateState(JSON.parse(JSON.stringify(brickState)));
+
+        this.dispatch(new UpdateBrickStateEvent(
+            brickId,
+            JSON.parse(JSON.stringify(brick.getState())),
+            oldState
+        ));
     }
 
     removeBrick(brickId: string): void {
+        this.dispatch(new BeforeChangeEvent(RemoveBrickEvent));
+
         const nextTextBrick = this.layout.getNextTextBrick(brickId);
         const previousTextBrick = this.layout.getPreviousTextBrick(brickId);
 
@@ -97,11 +117,11 @@ export class WallModel implements IWallModel {
 
         this.layout.removeBrick(brickId);
 
-        this.events.next(new RemoveBrickEvent(
+        this.dispatch(new RemoveBrickEvent(
             {
                 id: removedBrick.id,
                 tag: removedBrick.tag,
-                state: removedBrick.state.getValue()
+                state: removedBrick.state
             },
             previousTextBrick && previousTextBrick.id,
             nextTextBrick && nextTextBrick.id
@@ -109,8 +129,10 @@ export class WallModel implements IWallModel {
     }
 
     removeBricks(brickIds): void {
-        const nextTextBrick = this.layout.getNextTextBrick(brickIds[brickIds.length - 1]);
-        const previousTextBrick = this.layout.getPreviousTextBrick(brickIds[0]);
+        this.dispatch(new BeforeChangeEvent(RemoveBricksEvent));
+
+        const nextTextBrick = this.layout.getNextBrick(brickIds[brickIds.length - 1]);
+        const previousBrick = this.layout.getPreviousBrick(brickIds[0]);
 
         const removedBricks = brickIds.map((brickId) => {
             const removedBrick = this.getBrickById(brickId);
@@ -120,27 +142,31 @@ export class WallModel implements IWallModel {
             return {
                 id: removedBrick.id,
                 tag: removedBrick.tag,
-                state: removedBrick.state.getValue()
+                state: removedBrick.state
             };
         });
 
-        this.events.next(new RemoveBricksEvent(
+        this.dispatch(new RemoveBricksEvent(
             removedBricks,
-            previousTextBrick && previousTextBrick.id,
+            previousBrick && previousBrick.id,
             nextTextBrick && nextTextBrick.id
         ));
     }
 
     turnBrickInto(brickId: string, newTag: string) {
+        this.dispatch(new BeforeChangeEvent(TurnBrickIntoEvent));
+
         const brick = this.layout.getBrickById(brickId);
         const oldTag = brick.tag;
 
         brick.turnInto(newTag);
 
-        this.events.next(new TurnBrickIntoEvent(brickId, newTag, oldTag));
+        this.dispatch(new TurnBrickIntoEvent(brickId, newTag, oldTag));
     }
 
     moveBrickAfterBrickId(movedBrickIds: string[], afterBrickId: string): void {
+        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+
         const afterBrickPosition = this.layout.getBrickPosition(afterBrickId);
         const columnCount = this.layout.getColumnCount(afterBrickPosition.rowIndex);
 
@@ -150,10 +176,12 @@ export class WallModel implements IWallModel {
             this.layout.moveBrickAfterInSameColumn(afterBrickId, movedBrickIds);
         }
 
-        this.events.next(new MoveBrickEvent(movedBrickIds, afterBrickId));
+        this.dispatch(new MoveBrickEvent(movedBrickIds, afterBrickId));
     }
 
     moveBrickBeforeBrickId(movedBrickIds: string[], beforeBrickId: string): void {
+        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+
         const beforeBrickPosition = this.layout.getBrickPosition(beforeBrickId);
         const columnCount = this.layout.getColumnCount(beforeBrickPosition.rowIndex);
 
@@ -163,13 +191,15 @@ export class WallModel implements IWallModel {
             this.layout.moveBrickBeforeInSameColumn(beforeBrickId, movedBrickIds);
         }
 
-        this.events.next(new MoveBrickEvent(movedBrickIds, beforeBrickId));
+        this.dispatch(new MoveBrickEvent(movedBrickIds, beforeBrickId));
     }
 
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string): void {
+        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+
         this.layout.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
 
-        this.events.next(new MoveBrickEvent(targetBrickIds, beforeBrickId));
+        this.dispatch(new MoveBrickEvent(targetBrickIds, beforeBrickId));
     }
 
     // QUERY METHODS
@@ -194,7 +224,7 @@ export class WallModel implements IWallModel {
                         id: brick.id,
                         tag: brick.tag,
                         meta: brick.meta,
-                        data: brick.state.getValue()
+                        data: brick.state
                     });
 
                     planColumn.bricks.push({
@@ -205,10 +235,13 @@ export class WallModel implements IWallModel {
                 columns.push(planColumn);
             });
 
-            plan.layout.bricks.push({columns});
+            plan.layout.bricks.push({
+                columns,
+                id: row.id
+            });
         });
 
-        return plan;
+        return JSON.parse(JSON.stringify(plan));
     }
 
     getRowCount(): number {
@@ -309,8 +342,12 @@ export class WallModel implements IWallModel {
         return this.layout.isBrickAheadOf(firstBrickId, secondBrickId);
     }
 
-    subscribe(callback: any): Subscription {
+    subscribe(callback): Subscription {
         return this.events.subscribe(callback);
+    }
+
+    private dispatch(e: any): void {
+        this.events.next(e);
     }
 
     private getBrickById(brickId: string): WallBrick {
@@ -352,7 +389,7 @@ export class WallModel implements IWallModel {
         return {
             id: brick.id,
             tag: brick.tag,
-            state: brick.state.getValue()
+            state: brick.getState()
         };
     }
 }

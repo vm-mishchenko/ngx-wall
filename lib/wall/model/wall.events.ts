@@ -26,7 +26,9 @@ export class AddBrickEvent {
 }
 
 export class UpdateBrickStateEvent {
-    constructor(public brickId: string, public brickState: any) {
+    constructor(public brickId: string,
+                public brickState: any,
+                public oldBrickState: any) {
     }
 }
 
@@ -39,5 +41,13 @@ export class TurnBrickIntoEvent {
 
 export class MoveBrickEvent {
     constructor(public movedBrickIds: string[], beforeBrickId: string) {
+    }
+}
+
+export class SetPlanEvent {
+}
+
+export class BeforeChangeEvent {
+    constructor(public beforeEventType: any) {
     }
 }

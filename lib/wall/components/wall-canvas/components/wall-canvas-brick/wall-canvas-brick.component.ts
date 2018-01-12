@@ -1,17 +1,17 @@
 import {
-    Component, ComponentFactoryResolver, ComponentRef, Injector, Input, OnDestroy, OnInit, ViewChild,
-    ViewContainerRef
+    Component, ComponentFactoryResolver, ComponentRef, Injector, Input, OnChanges, OnDestroy, OnInit,
+    SimpleChanges, ViewChild, ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
-import { IWallComponent } from '../../../../wall.interfaces';
+import { IWallComponent } from '../../../wall/interfaces/wall-component.interface';
 import { WallCanvasComponent } from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html'
 })
-export class WallCanvasBrickComponent implements OnInit, OnDestroy {
+export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     // todo add type
     @Input() brick: any;
 
@@ -76,6 +76,14 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy {
 
         this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$
             .subscribe((isMediaInteractionEnabled) => this.isMediaInteractionEnabled = isMediaInteractionEnabled);
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes.brick && !changes.brick.firstChange && changes.brick.currentValue) {
+            this.componentReference.instance.state = this.brick.state;
+
+            this.callInstanceApi('onWallStateChange', this.componentReference.instance.state);
+        }
     }
 
     ngOnDestroy() {

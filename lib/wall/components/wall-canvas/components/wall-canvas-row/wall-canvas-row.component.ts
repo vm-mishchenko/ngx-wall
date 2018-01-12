@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
     templateUrl: './wall-canvas-row.component.html'
 })
 export class WallCanvasRowComponent {
-    @Input() row: any;
+    @Input() row: any; // todo add type
 
     trackColumnsBy(index): number {
         return index;

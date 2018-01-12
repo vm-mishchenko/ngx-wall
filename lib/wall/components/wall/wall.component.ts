@@ -1,5 +1,5 @@
 import { Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges } from '@angular/core';
-import { IWallModel } from '../../wall.interfaces';
+import { IWallModel } from '../../model/model.interfaces';
 import { WALL_PLUGIN } from '../../wall.tokens';
 import { WallApi } from './wall-api.service';
 import { WallViewModel } from './wall-view.model';

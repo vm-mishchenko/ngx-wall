@@ -5,7 +5,7 @@ import { IPluginDestroy } from '../../wall.interfaces';
 
 @Injectable()
 export class CopyPlugin implements IPluginDestroy {
-    doc: any = null;
+    doc: Document = null;
 
     onCopyBound: any;
 

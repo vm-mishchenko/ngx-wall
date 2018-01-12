@@ -38,7 +38,7 @@ export class ContenteditableDirective implements ControlValueAccessor {
      *
      * See: [ControlValueAccessor](https://angular.io/api/forms/ControlValueAccessor#members)
      */
-    writeValue(value: any): void {
+    writeValue(value: any): void { // todo add type
         const normalizedValue = value === null ? '' : value;
 
         this.renderer.setProperty(this.elementRef.nativeElement, this.propValueAccessor, normalizedValue);

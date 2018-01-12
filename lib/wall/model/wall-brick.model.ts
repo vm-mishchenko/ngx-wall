@@ -1,10 +1,8 @@
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
 export class WallBrick {
     id: string;
     tag: string;
     meta: any;
-    state: BehaviorSubject<any> = new BehaviorSubject({});
+    state: any = {};
 
     constructor(id: string, tag: string, meta: any) {
         this.id = id;
@@ -12,8 +10,12 @@ export class WallBrick {
         this.meta = meta;
     }
 
+    getState(): any {
+        return JSON.parse(JSON.stringify(this.state));
+    }
+
     updateState(newState) {
-        this.state.next(newState);
+        this.state = newState;
     }
 
     turnInto(tag: string) {

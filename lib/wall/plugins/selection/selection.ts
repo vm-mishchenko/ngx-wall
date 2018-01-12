@@ -8,7 +8,7 @@ import { IPluginDestroy } from '../../wall.interfaces';
 
 @Injectable()
 export class SelectionPlugin implements IPluginDestroy { // todo should implement plugin interface
-    doc: any = null;
+    doc: Document;
 
     isMouseSelection: boolean = false;
     onMouseDownBound: any;

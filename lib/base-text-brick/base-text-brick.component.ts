@@ -1,10 +1,8 @@
 import { ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
-import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { WallApi } from '../wall';
-import { IFocusContext } from '../wall/components/wall';
+import { IFocusContext, IOnWallFocus, IOnWallStateChange, WallApi } from '../wall';
 import { FOCUS_INITIATOR } from './base-text-brick.constant';
 import { IBaseTextState } from './base-text-state.interface';
 import { IStringInfo } from './string-info.interface';
@@ -14,9 +12,9 @@ enum LineType {
     last = 'LAST'
 }
 
-export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
+export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWallStateChange, IOnWallFocus {
     @Input() id: string;
-    @Input() state: Observable<IBaseTextState>;
+    @Input() state: IBaseTextState;
 
     @Output() stateChanges: EventEmitter<IBaseTextState> = new EventEmitter();
 
@@ -36,11 +34,9 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.state.subscribe((newState) => {
-            if (newState && newState.text !== this.scope.text) {
-                this.scope.text = newState.text || '';
-            }
-        });
+        if (this.state && this.state.text !== this.scope.text) {
+            this.scope.text = this.state.text || '';
+        }
 
         setTimeout(() => {
             this.stringInfo = this.getStringInfo();
@@ -48,11 +44,17 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
 
         this.editor.nativeElement.addEventListener('paste', this.onPaste.bind(this), false);
 
-        this.textChangeSubscription = this.textChange.debounceTime(350).subscribe(() => {
+        this.textChangeSubscription = this.textChange.debounceTime(100).subscribe(() => {
             this.saveCurrentState();
 
             this.stringInfo = this.getStringInfo();
         });
+    }
+
+    onWallStateChange(newState: IBaseTextState) {
+        if (newState && newState.text !== this.scope.text) {
+            this.scope.text = newState.text || '';
+        }
     }
 
     ngOnDestroy() {
@@ -78,7 +80,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
         this.textChange.next();
     }
 
-    onKeyPress(e: any) {
+    onKeyPress(e: KeyboardEvent) {
         const ENTER_KEY = 13;
         const DELETE_KEY = 46;
         const BACK_SPACE_KEY = 8;
@@ -123,7 +125,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
     }
 
     // key handler
-    topKeyPressed(e: Event) {
+    topKeyPressed(e: KeyboardEvent) {
         const caretPosition = this.getCaretPosition();
         const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
@@ -143,7 +145,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
         }
     }
 
-    bottomKeyPressed(e: Event) {
+    bottomKeyPressed(e: KeyboardEvent) {
         const caretPosition = this.getCaretPosition();
         const caretLeftCoordinate = this.getCaretLeftCoordinate();
 
@@ -311,7 +313,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
         }
     }
 
-    onDeleteBrick(e: Event) {
+    onDeleteBrick(e: KeyboardEvent) {
         e.preventDefault();
 
         const previousTextBrickId = this.wallApi.core.getPreviousTextBrickId(this.id);
@@ -330,21 +332,23 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy {
         }
     }
 
-    enterKeyPressed(e: Event) {
+    enterKeyPressed(e: KeyboardEvent) {
         e.preventDefault();
 
         const sel = window.getSelection();
 
-        const textState = {
-            text: this.scope.text.slice(sel.focusOffset)
+        const newTextState = {
+            text: this.scope.text.slice(sel.focusOffset) || ''
         };
 
-        this.wallApi.core.addBrickAfterBrickId(this.id, 'text', textState);
+        this.wallApi.core.addBrickAfterBrickId(this.id, 'text', newTextState);
 
         // update current brick
         this.scope.text = this.scope.text.slice(0, sel.focusOffset);
 
-        this.saveCurrentState();
+        if (newTextState.text.length) {
+            this.saveCurrentState();
+        }
     }
 
     // key handler end

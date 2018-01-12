@@ -25,6 +25,7 @@ describe('Wall Model', () => {
         layout: {
             bricks: [
                 {
+                    id: '2',
                     columns: [
                         {
                             bricks: [

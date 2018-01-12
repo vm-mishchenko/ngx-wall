@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BrickRegistry } from '../registry/brick-registry.service';
-import { IWallDefinition, IWallModel } from '../wall.interfaces';
+import { IWallDefinition } from '../wall.interfaces';
+import { IWallModel } from './model.interfaces';
 import { WallModel } from './wall.model';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class WallModelFactory {
     create(plan?: IWallDefinition): IWallModel {
         const wallModel = new WallModel(this.brickRegistry);
 
-        wallModel.initialize(plan || this.getDefaultPlan());
+        wallModel.setPlan(plan || this.getDefaultPlan());
 
         return wallModel;
     }

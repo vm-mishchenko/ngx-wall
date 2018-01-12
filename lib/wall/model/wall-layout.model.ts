@@ -9,7 +9,7 @@ export class WallLayout {
     }
 
     // create new row and one column inside
-    addBrickToNewRow(rowIndex: number, brick: WallBrick) {
+    addBrickToNewRow(rowIndex: number, brick: WallBrick, rowId?: string) {
         const totalRowCount = this.rows.length;
         const lastRowIndex = totalRowCount - 1;
 
@@ -18,7 +18,7 @@ export class WallLayout {
             rowIndex = lastRowIndex + 1;
         }
 
-        this.createNewRow(rowIndex);
+        this.createNewRow(rowIndex, rowId || this.generateId());
 
         this.addBrick(rowIndex, 0, 0, brick);
     }
@@ -181,7 +181,7 @@ export class WallLayout {
 
                 // if there are no rows, create default
                 if (this.rows.length === 0) {
-                    this.rows.push(this.initializeNewRow());
+                    this.rows.push(this.initializeNewRow(this.generateId()));
                 }
             }
         }
@@ -324,17 +324,17 @@ export class WallLayout {
         }
     }
 
-    private createNewRow(rowIndex: number): void {
-        this.rows.splice(rowIndex, 0, this.initializeNewRow());
+    private createNewRow(rowIndex: number, rowId: string): void {
+        this.rows.splice(rowIndex, 0, this.initializeNewRow(rowId));
     }
 
     private createNewColumn(rowIndex: number, columnIndex: number): void {
         this.rows[rowIndex].columns.splice(columnIndex, 0, this.initializeNewColumn());
     }
 
-    private initializeNewRow(): IWallRow {
+    private initializeNewRow(rowId: string): IWallRow {
         return {
-            id: String(Math.random()),
+            id: rowId,
             columns: [
                 this.initializeNewColumn()
             ]
@@ -395,5 +395,16 @@ export class WallLayout {
         }
 
         return bricks;
+    }
+
+    private generateId(): string {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000)
+                .toString(16)
+                .substring(1);
+        }
+
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+            s4() + '-' + s4() + s4() + s4();
     }
 }

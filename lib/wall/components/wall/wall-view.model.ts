@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+import { BeforeChangeEvent, UpdateBrickStateEvent } from '../../';
 import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
+import { IWallModel } from '../../model/model.interfaces';
 import {
     AddBrickEvent, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent,
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
-import { IWallModel, IWallViewModel } from '../../wall.interfaces';
 import { IWallCoreApi } from './interfaces/wall-core-api.interface';
 import { IWallState } from './interfaces/wall-state.interface';
+import { IWallViewModel } from './interfaces/wall-view-model.interface';
 
 import { WallApi } from './wall-api.service';
 import { WALL } from './wall.constant';
@@ -39,14 +41,12 @@ export class WallViewModel implements IWallViewModel {
         )
     };
 
+    canvasLayout: any;
+
     private wallModelSubscription: Subscription;
 
     constructor(public api: WallApi,
                 private brickRegistry: BrickRegistry) {
-    }
-
-    get canvasLayout() {
-        return this.wallModel ? this.getCanvasLayout() : null;
     }
 
     getCanvasLayout() {
@@ -115,6 +115,7 @@ export class WallViewModel implements IWallViewModel {
             'disableMediaInteraction',
 
             // CLIENT
+            'setPlan',
             'getPlan',
             'subscribe',
 
@@ -184,8 +185,14 @@ export class WallViewModel implements IWallViewModel {
                 }
             }
 
+            if (!(event instanceof BeforeChangeEvent) && !(event instanceof UpdateBrickStateEvent)) {
+                this.canvasLayout = this.getCanvasLayout();
+            }
+
             this.events.next(event);
         });
+
+        this.canvasLayout = this.getCanvasLayout();
     }
 
     /**

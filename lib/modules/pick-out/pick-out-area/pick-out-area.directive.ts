@@ -22,7 +22,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
 
     pickOutServiceSubscription: Subscription;
 
-    onMouseUpBound: any;
+    onMouseUpBound: any;    // todo add type
     onMouseMoveBound: any;
     onSelectionStartBound: any;
 

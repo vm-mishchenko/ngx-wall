@@ -12,6 +12,10 @@ export interface IOnWallFocus {
     onWallFocus(focusContext?: IFocusContext): void;
 }
 
+export interface IOnWallStateChange {
+    onWallStateChange(state: any): void;
+}
+
 export interface IFocusContext {
     initiator: string;
     details?: any;

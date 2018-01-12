@@ -23,7 +23,7 @@ class LoggerPlugin {
     constructor(wallApi: WallApi) {
         wallApi.registerFeatureApi('logger', {
             log: function (message: string) {
-                console.log(message);
+                // console.log(message);
             }
         });
     }

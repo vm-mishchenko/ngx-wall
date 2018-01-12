@@ -6,6 +6,6 @@ export class ImgBrickTextRepresentation {
     }
 
     getText() {
-        return `video!${(this.brickSnapshot.state as ImgBrickState).src}`;
+        return `img!${(this.brickSnapshot.state as ImgBrickState).src}`;
     }
 }

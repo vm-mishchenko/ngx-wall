@@ -63,7 +63,9 @@ export interface IWallCoreApi {
     // CLIENT
     getPlan(): IWallDefinition;
 
-    subscribe(callback: () => {}): Subscription;
+    setPlan(plan: IWallDefinition): void;
+
+    subscribe(callback: (e: any) => any): Subscription;
 
     // BRICK
     isRegisteredBrick(tag: string): boolean;

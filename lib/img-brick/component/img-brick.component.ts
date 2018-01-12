@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
 import { IOnWallFocus, WallApi } from '../../index';
 import { ImgBrickState } from '../img-brick-state.interface';
 
@@ -9,7 +8,7 @@ import { ImgBrickState } from '../img-brick-state.interface';
 })
 export class ImgBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;
-    @Input() state: Observable<ImgBrickState | null>;
+    @Input() state: ImgBrickState;
 
     @Output() stateChanges: EventEmitter<ImgBrickState> = new EventEmitter();
 
@@ -33,17 +32,27 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     }
 
     ngOnInit() {
-        this.state.subscribe((newState) => {
-            if (newState && newState.src !== this.scope.src) {
-                this.scope.src = newState.src;
+        if (this.state && this.state.src !== this.scope.src) {
+            this.scope.src = this.state.src;
 
-                if (this.scope.src) {
-                    this.src.nativeElement.value = this.scope.src;
+            if (this.scope.src) {
+                this.src.nativeElement.value = this.scope.src;
 
-                    this.uiState = this.uiStates.image;
-                }
+                this.uiState = this.uiStates.image;
             }
-        });
+        }
+    }
+
+    onWallStateChange(newState: ImgBrickState) {
+        if (newState && newState.src !== this.scope.src) {
+            this.scope.src = newState.src;
+
+            if (this.scope.src) {
+                this.src.nativeElement.value = this.scope.src;
+
+                this.uiState = this.uiStates.image;
+            }
+        }
     }
 
     onWallFocus(): void {
@@ -52,7 +61,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         }
     }
 
-    onKeyPress(e: any) {
+    onKeyPress(e: KeyboardEvent) {
         if (e.key === 'Escape') {
             if (this.uiState === this.uiStates.pasteSrc) {
                 this.uiState = this.uiStates.initial;
