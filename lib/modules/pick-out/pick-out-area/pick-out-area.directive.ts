@@ -3,7 +3,6 @@ import {
     ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, EmbeddedViewRef, HostListener, Inject,
     Injector, OnDestroy, OnInit
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { PickOutCoordinator } from '../pick-out-coordinator.service';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutAreaModel } from './pick-out-area.model';
@@ -19,8 +18,6 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     selectionProcessStarted = false;
 
     selectionRangeComponentRef: ComponentRef<PickOutAreaComponent> = null;
-
-    pickOutServiceSubscription: Subscription;
 
     onMouseUpBound: any;    // todo add type
     onMouseMoveBound: any;
@@ -144,8 +141,6 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.doc.removeEventListener('mouseup', this.onMouseUpBound);
         this.doc.removeEventListener('mousemove', this.onMouseMoveBound);
         this.doc.removeEventListener('selectstart', this.onSelectionStartBound);
-
-        this.pickOutServiceSubscription.unsubscribe();
     }
 
     private clearSelection() {
