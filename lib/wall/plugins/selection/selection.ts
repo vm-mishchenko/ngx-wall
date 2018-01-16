@@ -163,7 +163,7 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
     }
 
     onPluginDestroy() {
-        this.doc.removeEventListener('click', this.onMouseDownBound);
+        this.doc.removeEventListener('mousedown', this.onMouseDownBound);
         this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
 
         this.wallApi = null;
