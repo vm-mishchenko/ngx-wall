@@ -31001,7 +31001,7 @@ webpackEmptyAsyncContext.id = 101;
 		var a = typeof exports === 'object' ? factory(require("@angular/core"), require("@angular/common"), require("rxjs/Subject"), require("@angular/forms"), require("rxjs/add/observable/fromEvent"), require("rxjs/add/operator/throttleTime"), require("rxjs/Observable"), require("rxjs/add/operator/debounceTime")) : factory(root["@angular/core"], root["@angular/common"], root["rxjs/Subject"], root["@angular/forms"], root["rxjs/add/observable/fromEvent"], root["rxjs/add/operator/throttleTime"], root["rxjs/Observable"], root["rxjs/add/operator/debounceTime"]);
 		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
 	}
-})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_51__, __WEBPACK_EXTERNAL_MODULE_52__, __WEBPACK_EXTERNAL_MODULE_53__, __WEBPACK_EXTERNAL_MODULE_82__) {
+})(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_0__, __WEBPACK_EXTERNAL_MODULE_1__, __WEBPACK_EXTERNAL_MODULE_2__, __WEBPACK_EXTERNAL_MODULE_7__, __WEBPACK_EXTERNAL_MODULE_53__, __WEBPACK_EXTERNAL_MODULE_54__, __WEBPACK_EXTERNAL_MODULE_55__, __WEBPACK_EXTERNAL_MODULE_82__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -31096,40 +31096,21 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(__webpack_require__(48));
-__export(__webpack_require__(44));
-__export(__webpack_require__(43));
-__export(__webpack_require__(6));
-__export(__webpack_require__(78));
-__export(__webpack_require__(19));
+__export(__webpack_require__(10));
 __export(__webpack_require__(8));
-__export(__webpack_require__(5));
+__export(__webpack_require__(4));
+// WALL
+var wall_module_1 = __webpack_require__(50);
+exports.WallModule = wall_module_1.WallModule;
+var wall_brick_model_1 = __webpack_require__(44); // todo: do we need export it?
+exports.WallBrick = wall_brick_model_1.WallBrick;
+var wall_model_factory_1 = __webpack_require__(43);
+exports.WallModelFactory = wall_model_factory_1.WallModelFactory;
+__export(__webpack_require__(6));
 
 
 /***/ }),
 /* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var spot_model_1 = __webpack_require__(24);
-exports.SpotModel = spot_model_1.SpotModel;
-var radar_module_1 = __webpack_require__(50);
-exports.RadarModule = radar_module_1.RadarModule;
-var radar_service_1 = __webpack_require__(27);
-exports.Radar = radar_service_1.Radar;
-var spot_directive_1 = __webpack_require__(25);
-exports.SpotDirective = spot_directive_1.SpotDirective;
-var location_updated_event_1 = __webpack_require__(26);
-exports.LocationUpdatedEvent = location_updated_event_1.LocationUpdatedEvent;
-var location_to_top_left_point_event_1 = __webpack_require__(54);
-exports.LocationToTopLeftPointEvent = location_to_top_left_point_event_1.LocationToTopLeftPointEvent;
-var location_to_left_center_point_event_1 = __webpack_require__(55);
-exports.LocationToLeftCenterPointEvent = location_to_left_center_point_event_1.LocationToLeftCenterPointEvent;
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31161,6 +31142,29 @@ var BrickRegistry = /** @class */ (function () {
     return BrickRegistry;
 }());
 exports.BrickRegistry = BrickRegistry;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var spot_model_1 = __webpack_require__(25);
+exports.SpotModel = spot_model_1.SpotModel;
+var radar_module_1 = __webpack_require__(52);
+exports.RadarModule = radar_module_1.RadarModule;
+var radar_service_1 = __webpack_require__(28);
+exports.Radar = radar_service_1.Radar;
+var spot_directive_1 = __webpack_require__(26);
+exports.SpotDirective = spot_directive_1.SpotDirective;
+var location_updated_event_1 = __webpack_require__(27);
+exports.LocationUpdatedEvent = location_updated_event_1.LocationUpdatedEvent;
+var location_to_top_left_point_event_1 = __webpack_require__(56);
+exports.LocationToTopLeftPointEvent = location_to_top_left_point_event_1.LocationToTopLeftPointEvent;
+var location_to_left_center_point_event_1 = __webpack_require__(57);
+exports.LocationToLeftCenterPointEvent = location_to_left_center_point_event_1.LocationToLeftCenterPointEvent;
 
 
 /***/ }),
@@ -31252,10 +31256,10 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(20));
+__export(__webpack_require__(11));
 __export(__webpack_require__(6));
-__export(__webpack_require__(42));
-__export(__webpack_require__(75));
+__export(__webpack_require__(24));
+__export(__webpack_require__(49));
 
 
 /***/ }),
@@ -31277,8 +31281,8 @@ __export(__webpack_require__(92));
 __export(__webpack_require__(96));
 __export(__webpack_require__(100));
 // modules
-__export(__webpack_require__(10));
-__export(__webpack_require__(13));
+__export(__webpack_require__(12));
+__export(__webpack_require__(15));
 
 
 /***/ }),
@@ -31287,22 +31291,68 @@ __export(__webpack_require__(13));
 
 "use strict";
 
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(49));
-__export(__webpack_require__(34));
-__export(__webpack_require__(29));
-// events
-__export(__webpack_require__(31));
-__export(__webpack_require__(30));
-__export(__webpack_require__(32));
-__export(__webpack_require__(33));
+var core_1 = __webpack_require__(0);
+exports.WALL_PLUGIN = new core_1.InjectionToken('Wall plugin');
 
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__(0);
+var WallApi = /** @class */ (function () {
+    function WallApi() {
+        this.core = null;
+        this.features = {};
+    }
+    WallApi.prototype.registerCoreApi = function (coreApi) {
+        this.core = coreApi;
+    };
+    WallApi.prototype.registerFeatureApi = function (featureName, api) {
+        if (!this.features[featureName]) {
+            this.features[featureName] = api;
+        }
+    };
+    WallApi = __decorate([
+        core_1.Injectable()
+    ], WallApi);
+    return WallApi;
+}());
+exports.WallApi = WallApi;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+}
+Object.defineProperty(exports, "__esModule", { value: true });
+__export(__webpack_require__(51));
+__export(__webpack_require__(35));
+__export(__webpack_require__(30));
+// events
+__export(__webpack_require__(32));
+__export(__webpack_require__(31));
+__export(__webpack_require__(33));
+__export(__webpack_require__(34));
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31322,12 +31372,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-__webpack_require__(51);
-__webpack_require__(52);
-var Observable_1 = __webpack_require__(53);
+__webpack_require__(53);
+__webpack_require__(54);
+var Observable_1 = __webpack_require__(55);
 var Subject_1 = __webpack_require__(2);
-var location_updated_event_1 = __webpack_require__(26);
-var spot_model_1 = __webpack_require__(24);
+var location_updated_event_1 = __webpack_require__(27);
+var spot_model_1 = __webpack_require__(25);
 var RadarCoordinator = /** @class */ (function () {
     function RadarCoordinator(doc) {
         var _this = this;
@@ -31396,7 +31446,7 @@ exports.RadarCoordinator = RadarCoordinator;
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31413,11 +31463,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var radar_1 = __webpack_require__(4);
-var end_pick_out_event_1 = __webpack_require__(30);
-var pick_out_items_event_1 = __webpack_require__(31);
-var start_pick_out_event_1 = __webpack_require__(32);
-var stop_pick_out_event_1 = __webpack_require__(33);
+var radar_1 = __webpack_require__(5);
+var end_pick_out_event_1 = __webpack_require__(31);
+var pick_out_items_event_1 = __webpack_require__(32);
+var start_pick_out_event_1 = __webpack_require__(33);
+var stop_pick_out_event_1 = __webpack_require__(34);
 var PickOutCoordinator = /** @class */ (function () {
     function PickOutCoordinator(radar) {
         this.radar = radar;
@@ -31464,7 +31514,7 @@ exports.PickOutCoordinator = PickOutCoordinator;
 
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31473,20 +31523,20 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(58));
-__export(__webpack_require__(40));
-__export(__webpack_require__(15));
-__export(__webpack_require__(37));
+__export(__webpack_require__(60));
+__export(__webpack_require__(41));
+__export(__webpack_require__(17));
 __export(__webpack_require__(38));
 __export(__webpack_require__(39));
-__export(__webpack_require__(36));
-__export(__webpack_require__(14));
+__export(__webpack_require__(40));
+__export(__webpack_require__(37));
 __export(__webpack_require__(16));
-__export(__webpack_require__(17));
+__export(__webpack_require__(18));
+__export(__webpack_require__(19));
 
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31499,8 +31549,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var tow_constant_1 = __webpack_require__(15);
-var detected_beacon_1 = __webpack_require__(59);
+var tow_constant_1 = __webpack_require__(17);
+var detected_beacon_1 = __webpack_require__(61);
 var BeaconDetector = /** @class */ (function () {
     function BeaconDetector() {
     }
@@ -31586,7 +31636,7 @@ exports.BeaconDetector = BeaconDetector;
 
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31607,7 +31657,7 @@ exports.TOW = {
 
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31623,7 +31673,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_1 = __webpack_require__(4);
+var radar_1 = __webpack_require__(5);
 var BeaconRegistry = /** @class */ (function () {
     function BeaconRegistry(radar) {
         this.radar = radar;
@@ -31651,7 +31701,7 @@ exports.BeaconRegistry = BeaconRegistry;
 
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31667,7 +31717,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var placeholder_component_1 = __webpack_require__(35);
+var placeholder_component_1 = __webpack_require__(36);
 var PlaceholderRenderer = /** @class */ (function () {
     function PlaceholderRenderer(componentFactoryResolver, appRef, injector) {
         this.componentFactoryResolver = componentFactoryResolver;
@@ -31719,7 +31769,7 @@ exports.PlaceholderRenderer = PlaceholderRenderer;
 
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -31740,14 +31790,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var beacon_detector_service_1 = __webpack_require__(14);
-var beacon_registry_service_1 = __webpack_require__(16);
-var drop_event_1 = __webpack_require__(36);
-var start_working_event_1 = __webpack_require__(37);
-var stop_working_event_1 = __webpack_require__(38);
-var work_in_progress_event_1 = __webpack_require__(39);
-var placeholder_renderer_service_1 = __webpack_require__(17);
-var tow_constant_1 = __webpack_require__(15);
+var beacon_detector_service_1 = __webpack_require__(16);
+var beacon_registry_service_1 = __webpack_require__(18);
+var drop_event_1 = __webpack_require__(37);
+var start_working_event_1 = __webpack_require__(38);
+var stop_working_event_1 = __webpack_require__(39);
+var work_in_progress_event_1 = __webpack_require__(40);
+var placeholder_renderer_service_1 = __webpack_require__(19);
+var tow_constant_1 = __webpack_require__(17);
 var TowCoordinator = /** @class */ (function () {
     function TowCoordinator(doc, placeholderRenderer, beaconDetector, beaconRegistry) {
         var _this = this;
@@ -31860,52 +31910,6 @@ var TowCoordinator = /** @class */ (function () {
     return TowCoordinator;
 }());
 exports.TowCoordinator = TowCoordinator;
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-exports.WALL_PLUGIN = new core_1.InjectionToken('Wall plugin');
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var core_1 = __webpack_require__(0);
-var WallApi = /** @class */ (function () {
-    function WallApi() {
-        this.core = null;
-        this.features = {};
-    }
-    WallApi.prototype.registerCoreApi = function (coreApi) {
-        this.core = coreApi;
-    };
-    WallApi.prototype.registerFeatureApi = function (featureName, api) {
-        if (!this.features[featureName]) {
-            this.features[featureName] = api;
-        }
-    };
-    WallApi = __decorate([
-        core_1.Injectable()
-    ], WallApi);
-    return WallApi;
-}());
-exports.WallApi = WallApi;
 
 
 /***/ }),
@@ -32391,6 +32395,21 @@ exports.BaseTextBrickComponent = BaseTextBrickComponent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WALL = {
+    MODES: {
+        EDIT: 'edit',
+        READ: 'READ'
+    }
+};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 var SpotModel = /** @class */ (function () {
     function SpotModel(instance) {
         this.id = instance.id;
@@ -32454,7 +32473,7 @@ exports.SpotModel = SpotModel;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32470,7 +32489,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_coordinator_service_1 = __webpack_require__(11);
+var radar_coordinator_service_1 = __webpack_require__(13);
 var SpotDirective = /** @class */ (function () {
     function SpotDirective(radarCoordinator, el) {
         this.radarCoordinator = radarCoordinator;
@@ -32524,7 +32543,7 @@ exports.SpotDirective = SpotDirective;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32540,7 +32559,7 @@ exports.LocationUpdatedEvent = LocationUpdatedEvent;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32557,7 +32576,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var radar_coordinator_service_1 = __webpack_require__(11);
+var radar_coordinator_service_1 = __webpack_require__(13);
 var Radar = /** @class */ (function () {
     function Radar(radarCoordinator) {
         var _this = this;
@@ -32586,7 +32605,7 @@ exports.Radar = Radar;
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32608,7 +32627,7 @@ var PickOutAreaComponent = /** @class */ (function () {
     };
     PickOutAreaComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__(56)
+            template: __webpack_require__(58)
         })
     ], PickOutAreaComponent);
     return PickOutAreaComponent;
@@ -32617,7 +32636,7 @@ exports.PickOutAreaComponent = PickOutAreaComponent;
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32637,9 +32656,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var pick_out_coordinator_service_1 = __webpack_require__(12);
-var pick_out_area_component_1 = __webpack_require__(28);
-var pick_out_area_model_1 = __webpack_require__(57);
+var pick_out_coordinator_service_1 = __webpack_require__(14);
+var pick_out_area_component_1 = __webpack_require__(29);
+var pick_out_area_model_1 = __webpack_require__(59);
 var PickOutAreaDirective = /** @class */ (function () {
     function PickOutAreaDirective(doc, pickOutCoordinator, componentFactoryResolver, appRef, injector) {
         this.pickOutCoordinator = pickOutCoordinator;
@@ -32733,7 +32752,6 @@ var PickOutAreaDirective = /** @class */ (function () {
         this.doc.removeEventListener('mouseup', this.onMouseUpBound);
         this.doc.removeEventListener('mousemove', this.onMouseMoveBound);
         this.doc.removeEventListener('selectstart', this.onSelectionStartBound);
-        this.pickOutServiceSubscription.unsubscribe();
     };
     PickOutAreaDirective.prototype.clearSelection = function () {
         window.getSelection().empty();
@@ -32782,7 +32800,7 @@ exports.PickOutAreaDirective = PickOutAreaDirective;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32797,7 +32815,7 @@ exports.EndPickOut = EndPickOut;
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32813,7 +32831,7 @@ exports.PickOutItems = PickOutItems;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32828,7 +32846,7 @@ exports.StartPickOut = StartPickOut;
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32843,7 +32861,7 @@ exports.StopPickOut = StopPickOut;
 
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32860,7 +32878,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var pick_out_coordinator_service_1 = __webpack_require__(12);
+var pick_out_coordinator_service_1 = __webpack_require__(14);
 var PickOutService = /** @class */ (function () {
     function PickOutService(pickOutHandlerService) {
         var _this = this;
@@ -32892,7 +32910,7 @@ exports.PickOutService = PickOutService;
 
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32916,7 +32934,7 @@ var PlaceholderComponent = /** @class */ (function () {
     };
     PlaceholderComponent = __decorate([
         core_1.Component({
-            template: __webpack_require__(60)
+            template: __webpack_require__(62)
         })
     ], PlaceholderComponent);
     return PlaceholderComponent;
@@ -32925,7 +32943,7 @@ exports.PlaceholderComponent = PlaceholderComponent;
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32944,7 +32962,7 @@ exports.DropEvent = DropEvent;
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32959,7 +32977,7 @@ exports.StartWorkingEvent = StartWorkingEvent;
 
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32974,7 +32992,7 @@ exports.StopWorkingEvent = StopWorkingEvent;
 
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -32989,7 +33007,7 @@ exports.WorkInProgressEvent = WorkInProgressEvent;
 
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33006,7 +33024,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
-var tow_coordinator_service_1 = __webpack_require__(18);
+var tow_coordinator_service_1 = __webpack_require__(20);
 var TowService = /** @class */ (function () {
     function TowService(towCoordinator) {
         var _this = this;
@@ -33029,7 +33047,7 @@ exports.TowService = TowService;
 
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33134,7 +33152,7 @@ var WallCanvasComponent = /** @class */ (function () {
     WallCanvasComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas',
-            template: __webpack_require__(63)
+            template: __webpack_require__(65)
         }),
         __param(0, core_1.Inject(common_1.DOCUMENT)),
         __metadata("design:paramtypes", [Object])
@@ -33142,21 +33160,6 @@ var WallCanvasComponent = /** @class */ (function () {
     return WallCanvasComponent;
 }());
 exports.WallCanvasComponent = WallCanvasComponent;
-
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.WALL = {
-    MODES: {
-        EDIT: 'edit',
-        READ: 'READ'
-    }
-};
 
 
 /***/ }),
@@ -33176,8 +33179,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var brick_registry_service_1 = __webpack_require__(5);
-var wall_model_1 = __webpack_require__(72);
+var brick_registry_service_1 = __webpack_require__(4);
+var wall_model_1 = __webpack_require__(74);
 var WallModelFactory = /** @class */ (function () {
     function WallModelFactory(brickRegistry) {
         this.brickRegistry = brickRegistry;
@@ -33504,6 +33507,27 @@ exports.ImgBrickComponent = ImgBrickComponent;
 
 "use strict";
 
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.awesomeTypescriptLoaderBug2 = true;
+
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// https://github.com/s-panferov/awesome-typescript-loader/issues/411
+exports.awesomeTypescriptLoaderBug = true;
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -33513,17 +33537,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var pick_out_1 = __webpack_require__(10);
-var radar_1 = __webpack_require__(4);
-var tow_1 = __webpack_require__(13);
-var wall_canvas_1 = __webpack_require__(62);
-var wall_component_1 = __webpack_require__(68);
+var pick_out_1 = __webpack_require__(12);
+var radar_1 = __webpack_require__(5);
+var tow_1 = __webpack_require__(15);
+var wall_canvas_1 = __webpack_require__(64);
+var wall_component_1 = __webpack_require__(70);
 var wall_model_factory_1 = __webpack_require__(43);
-var copy_plugin_1 = __webpack_require__(74);
-var selection_1 = __webpack_require__(76);
-var undo_redo_plugin_1 = __webpack_require__(77);
-var brick_registry_service_1 = __webpack_require__(5);
-var wall_tokens_1 = __webpack_require__(19);
+var copy_plugin_1 = __webpack_require__(76);
+var selection_1 = __webpack_require__(77);
+var undo_redo_plugin_1 = __webpack_require__(78);
+var brick_registry_service_1 = __webpack_require__(4);
+var wall_tokens_1 = __webpack_require__(10);
 var WallModule = /** @class */ (function () {
     function WallModule() {
     }
@@ -33565,7 +33589,7 @@ exports.WallModule = WallModule;
 
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33579,11 +33603,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var radar_1 = __webpack_require__(4);
-var pick_out_area_component_1 = __webpack_require__(28);
-var pick_out_area_directive_1 = __webpack_require__(29);
-var pick_out_coordinator_service_1 = __webpack_require__(12);
-var pick_out_service_1 = __webpack_require__(34);
+var radar_1 = __webpack_require__(5);
+var pick_out_area_component_1 = __webpack_require__(29);
+var pick_out_area_directive_1 = __webpack_require__(30);
+var pick_out_coordinator_service_1 = __webpack_require__(14);
+var pick_out_service_1 = __webpack_require__(35);
 var PickOutModule = /** @class */ (function () {
     function PickOutModule() {
     }
@@ -33615,7 +33639,7 @@ exports.PickOutModule = PickOutModule;
 
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33628,9 +33652,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var spot_directive_1 = __webpack_require__(25);
-var radar_coordinator_service_1 = __webpack_require__(11);
-var radar_service_1 = __webpack_require__(27);
+var spot_directive_1 = __webpack_require__(26);
+var radar_coordinator_service_1 = __webpack_require__(13);
+var radar_service_1 = __webpack_require__(28);
 var RadarModule = /** @class */ (function () {
     function RadarModule() {
     }
@@ -33650,18 +33674,6 @@ exports.RadarModule = RadarModule;
 
 
 /***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_51__;
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE_52__;
-
-/***/ }),
 /* 53 */
 /***/ (function(module, exports) {
 
@@ -33669,6 +33681,18 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_53__;
 
 /***/ }),
 /* 54 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_54__;
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports) {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE_55__;
+
+/***/ }),
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33684,7 +33708,7 @@ exports.LocationToTopLeftPointEvent = LocationToTopLeftPointEvent;
 
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33700,13 +33724,13 @@ exports.LocationToLeftCenterPointEvent = LocationToLeftCenterPointEvent;
 
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = "<div *ngIf=\"pickOutAreaModel\"\r\n     [style.left.px]=\"pickOutAreaModel.x\"\r\n     [style.top.px]=\"pickOutAreaModel.y\"\r\n     [style.width.px]=\"pickOutAreaModel.width\"\r\n     [style.height.px]=\"pickOutAreaModel.height\"\r\n     class=\"pick-out-area\">\r\n</div>\r\n"
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33757,7 +33781,7 @@ exports.PickOutAreaModel = PickOutAreaModel;
 
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33771,14 +33795,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var radar_1 = __webpack_require__(4);
-var beacon_detector_service_1 = __webpack_require__(14);
-var beacon_registry_service_1 = __webpack_require__(16);
-var placeholder_component_1 = __webpack_require__(35);
-var placeholder_renderer_service_1 = __webpack_require__(17);
-var tow_coordinator_service_1 = __webpack_require__(18);
-var tow_slave_directive_1 = __webpack_require__(61);
-var tow_service_1 = __webpack_require__(40);
+var radar_1 = __webpack_require__(5);
+var beacon_detector_service_1 = __webpack_require__(16);
+var beacon_registry_service_1 = __webpack_require__(18);
+var placeholder_component_1 = __webpack_require__(36);
+var placeholder_renderer_service_1 = __webpack_require__(19);
+var tow_coordinator_service_1 = __webpack_require__(20);
+var tow_slave_directive_1 = __webpack_require__(63);
+var tow_service_1 = __webpack_require__(41);
 var TowModule = /** @class */ (function () {
     function TowModule() {
     }
@@ -33813,7 +33837,7 @@ exports.TowModule = TowModule;
 
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33828,13 +33852,13 @@ exports.DetectedBeacon = DetectedBeacon;
 
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports) {
 
 module.exports = "<div *ngIf=\"x\">\r\n    <div *ngIf=\"isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"size\"\r\n         [style.height.px]=\"3\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n\r\n    <div *ngIf=\"!isHorizontal\"\r\n         [style.left.px]=\"x\"\r\n         [style.top.px]=\"y\"\r\n         [style.width.px]=\"3\"\r\n         [style.height.px]=\"size\"\r\n         class=\"tow-placeholder\">\r\n    </div>\r\n</div>"
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33850,7 +33874,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var tow_coordinator_service_1 = __webpack_require__(18);
+var tow_coordinator_service_1 = __webpack_require__(20);
 var TowSlaveDirective = /** @class */ (function () {
     function TowSlaveDirective(renderer2, el, towCoordinator) {
         this.renderer2 = renderer2;
@@ -33907,7 +33931,7 @@ exports.TowSlaveDirective = TowSlaveDirective;
 
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33916,19 +33940,19 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(__webpack_require__(41));
-__export(__webpack_require__(64));
+__export(__webpack_require__(42));
 __export(__webpack_require__(66));
+__export(__webpack_require__(68));
 
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports) {
 
 module.exports = "<div #editor class=\"wall-canvas__editor\" (click)=\"onEditorClick($event)\">\r\n    <wall-canvas-row *ngFor=\"let row of layout.rows; trackBy: trackRowsBy\" [row]=\"row\"></wall-canvas-row>\r\n\r\n    <div #expander class=\"wall-canvas__expander\"></div>\r\n</div>\r\n"
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33960,7 +33984,7 @@ var WallCanvasRowComponent = /** @class */ (function () {
     WallCanvasRowComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-row',
-            template: __webpack_require__(65)
+            template: __webpack_require__(67)
         })
     ], WallCanvasRowComponent);
     return WallCanvasRowComponent;
@@ -33969,13 +33993,13 @@ exports.WallCanvasRowComponent = WallCanvasRowComponent;
 
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"wall-canvas-row__column\" *ngFor=\"let column of row.columns; trackBy: trackColumnsBy\">\r\n    <wall-canvas-brick [brick]=\"brick\" *ngFor=\"let brick of column.bricks; trackBy: trackBricksBy\"></wall-canvas-brick>\r\n</div>"
 
 /***/ }),
-/* 66 */
+/* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -33991,8 +34015,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var radar_1 = __webpack_require__(4);
-var wall_canvas_component_1 = __webpack_require__(41);
+var radar_1 = __webpack_require__(5);
+var wall_canvas_component_1 = __webpack_require__(42);
 var WallCanvasBrickComponent = /** @class */ (function () {
     function WallCanvasBrickComponent(injector, resolver, radar, wallCanvasComponent) {
         this.injector = injector;
@@ -34083,7 +34107,7 @@ var WallCanvasBrickComponent = /** @class */ (function () {
     WallCanvasBrickComponent = __decorate([
         core_1.Component({
             selector: 'wall-canvas-brick',
-            template: __webpack_require__(67)
+            template: __webpack_require__(69)
         }),
         __metadata("design:paramtypes", [core_1.Injector,
             core_1.ComponentFactoryResolver,
@@ -34096,13 +34120,13 @@ exports.WallCanvasBrickComponent = WallCanvasBrickComponent;
 
 
 /***/ }),
-/* 67 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = "<div [spot]=\"spot\"\r\n     data-id=\"{{brick.id}}\"\r\n     (click)=\"onFocused()\"\r\n     class=\"wall-canvas-brick__wrapper\"\r\n     [ngClass]=\"{'wall-canvas-brick__selected': selected,\r\n     \t\t'wall-canvas-brick__draggable': isMouseNear}\">\r\n\r\n    <div class=\"wall-canvas-brick__draggable-handler\" [tow-slave]=\"brick.id\">\r\n        <div class=\"wall-canvas-brick__draggable-box\">\r\n            <svg xmlns=\"http://www.w3.org/2000/svg\" x version=\"1.1\" width=\"15px\" height=\"15px\" viewBox=\"0 0 612 612\" xml:space=\"preserve\">\r\n<g>\r\n\t<g>\r\n\t\t<circle cx=\"69.545\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"69.545\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"306\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"528.545\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"83.455\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t\t<circle cx=\"542.454\" cy=\"306\" r=\"69.545\" fill=\"#cfcfcf\"/>\r\n\t</g>\r\n</g>\r\n</svg>\r\n        </div>\r\n    </div>\r\n\r\n    <div [ngClass]=\"{'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}\">\r\n        <div #brickContainer></div>\r\n    </div>\r\n</div>"
 
 /***/ }),
-/* 68 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34118,9 +34142,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var wall_tokens_1 = __webpack_require__(19);
-var wall_api_service_1 = __webpack_require__(20);
-var wall_view_model_1 = __webpack_require__(69);
+var wall_tokens_1 = __webpack_require__(10);
+var wall_api_service_1 = __webpack_require__(11);
+var wall_view_model_1 = __webpack_require__(71);
 var WallComponent = /** @class */ (function () {
     function WallComponent(injector, api, wallViewModel) {
         this.injector = injector;
@@ -34193,7 +34217,7 @@ var WallComponent = /** @class */ (function () {
     WallComponent = __decorate([
         core_1.Component({
             selector: 'wall',
-            template: __webpack_require__(71),
+            template: __webpack_require__(73),
             providers: [
                 wall_api_service_1.WallApi,
                 wall_view_model_1.WallViewModel
@@ -34209,7 +34233,7 @@ exports.WallComponent = WallComponent;
 
 
 /***/ }),
-/* 69 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34227,11 +34251,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
 var Subject_1 = __webpack_require__(2);
 var _1 = __webpack_require__(3);
-var reactive_property_1 = __webpack_require__(70);
+var reactive_property_1 = __webpack_require__(72);
 var wall_events_1 = __webpack_require__(6);
-var brick_registry_service_1 = __webpack_require__(5);
-var wall_api_service_1 = __webpack_require__(20);
-var wall_constant_1 = __webpack_require__(42);
+var brick_registry_service_1 = __webpack_require__(4);
+var wall_api_service_1 = __webpack_require__(11);
+var wall_constant_1 = __webpack_require__(24);
 var WallViewModel = /** @class */ (function () {
     function WallViewModel(api, brickRegistry) {
         this.api = api;
@@ -34578,7 +34602,7 @@ exports.WallViewModel = WallViewModel;
 
 
 /***/ }),
-/* 70 */
+/* 72 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34617,13 +34641,13 @@ exports.ReactiveProperty = ReactiveProperty;
 
 
 /***/ }),
-/* 71 */
+/* 73 */
 /***/ (function(module, exports) {
 
 module.exports = "<wall-canvas *ngIf=\"wallViewModel.canvasLayout\"\r\n             (canvasClick)=\"onCanvasClick()\"\r\n             (onFocusedBrick)=\"onFocusedBrick($event)\"\r\n             (onBrickStateChanged)=\"onBrickStateChanged($event)\"\r\n             [isMediaInteractionEnabled]=\"wallViewModel.state.isMediaInteractionEnabled.getValue()\"\r\n             [focusedBrick]=\"wallViewModel.focusedBrick\"\r\n             [selectedBricks]=\"wallViewModel.selectedBricks\"\r\n             [layout]=\"wallViewModel.canvasLayout\">\r\n</wall-canvas>"
 
 /***/ }),
-/* 72 */
+/* 74 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -34631,7 +34655,7 @@ module.exports = "<wall-canvas *ngIf=\"wallViewModel.canvasLayout\"\r\n         
 Object.defineProperty(exports, "__esModule", { value: true });
 var Subject_1 = __webpack_require__(2);
 var wall_brick_model_1 = __webpack_require__(44);
-var wall_layout_model_1 = __webpack_require__(73);
+var wall_layout_model_1 = __webpack_require__(75);
 var wall_events_1 = __webpack_require__(6);
 var WallModel = /** @class */ (function () {
     function WallModel(brickRegistry) {
@@ -34922,7 +34946,7 @@ exports.WallModel = WallModel;
 
 
 /***/ }),
-/* 73 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35233,7 +35257,7 @@ exports.WallLayout = WallLayout;
 
 
 /***/ }),
-/* 74 */
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35294,18 +35318,7 @@ exports.CopyPlugin = CopyPlugin;
 
 
 /***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-// https://github.com/s-panferov/awesome-typescript-loader/issues/411
-exports.awesomeTypescriptLoaderBug = true;
-
-
-/***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35325,8 +35338,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var common_1 = __webpack_require__(1);
 var core_1 = __webpack_require__(0);
-var pick_out_1 = __webpack_require__(10);
-var tow_1 = __webpack_require__(13);
+var pick_out_1 = __webpack_require__(12);
+var tow_1 = __webpack_require__(15);
 var wall_1 = __webpack_require__(8);
 var SelectionPlugin = /** @class */ (function () {
     function SelectionPlugin(wallApi, pickOutService, towService, doc) {
@@ -35450,7 +35463,7 @@ var SelectionPlugin = /** @class */ (function () {
         }
     };
     SelectionPlugin.prototype.onPluginDestroy = function () {
-        this.doc.removeEventListener('click', this.onMouseDownBound);
+        this.doc.removeEventListener('mousedown', this.onMouseDownBound);
         this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
         this.wallApi = null;
         this.pickOutServiceSubscription.unsubscribe();
@@ -35483,7 +35496,7 @@ exports.SelectionPlugin = SelectionPlugin;
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -35582,16 +35595,6 @@ var UndoRedoPlugin = /** @class */ (function () {
     return UndoRedoPlugin;
 }());
 exports.UndoRedoPlugin = UndoRedoPlugin;
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.awesomeTypescriptLoaderBug2 = true;
 
 
 /***/ }),
@@ -35975,7 +35978,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__(0);
-var brick_registry_service_1 = __webpack_require__(5);
+var brick_registry_service_1 = __webpack_require__(4);
 var divider_brick_component_1 = __webpack_require__(94);
 var DividerBrickModule = /** @class */ (function () {
     function DividerBrickModule(brickRegistry) {
@@ -36065,7 +36068,7 @@ var core_1 = __webpack_require__(0);
 var forms_1 = __webpack_require__(7);
 var base_text_representation_class_1 = __webpack_require__(21);
 var contenteditable__module_1 = __webpack_require__(22);
-var brick_registry_service_1 = __webpack_require__(5);
+var brick_registry_service_1 = __webpack_require__(4);
 var quote_brick_component_1 = __webpack_require__(98);
 var QuoteBrickModule = /** @class */ (function () {
     function QuoteBrickModule(brickRegistry) {
