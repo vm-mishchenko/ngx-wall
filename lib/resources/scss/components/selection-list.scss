@@ -1,0 +1,100 @@
+.w-selection-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.9rem;
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+
+  &__item {
+    padding: 0.2rem 1.5rem;
+    transition: background ease-in-out 0.15s;
+
+    &:hover {
+      background: $w-thin-color;
+      cursor: pointer;
+    }
+
+    &:active {
+      background: $w-slight-color;
+    }
+  }
+
+  /* ugly but easy and fast */
+  &__level-2 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 2rem;
+    }
+  }
+
+  &__level-3 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 3rem;
+    }
+  }
+
+  &__level-4 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 4rem;
+    }
+  }
+
+  &__level-5 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 5rem;
+    }
+  }
+
+  &__level-6 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 6rem;
+    }
+  }
+
+  &__level-7 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 7rem;
+    }
+  }
+
+  &__level-8 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 8rem;
+    }
+  }
+
+  &__level-9 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 9rem;
+    }
+  }
+
+  &__level-10 {
+    .w-selection-list__item {
+      padding: 0.2rem 1.5rem 0.2rem 10rem;
+    }
+  }
+
+  &__selected_item {
+    background: $w-thin-color;
+
+    .w-btn.btn-link {
+      &:hover {
+        background: $w-slight-color;
+        text-decoration: none;
+        color: $w-default-color;
+      }
+
+      &:active {
+        background: $w-light-color;
+      }
+    }
+  }
+}

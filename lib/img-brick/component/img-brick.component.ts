@@ -1,6 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IOnWallFocus, WallApi } from '../../index';
+import { ContextModalService } from '../../modules/modal';
 import { ImgBrickState } from '../img-brick-state.interface';
+import { InputContextComponent } from './input-context.component';
 
 @Component({
     selector: 'img-brick',
@@ -22,13 +25,14 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     // ui
     uiStates: any = {
         initial: 'initial',
-        pasteSrc: 'pasteSrc',
         image: 'image'
     };
 
     uiState: string = this.uiStates.initial;
 
-    constructor(private wallApi: WallApi) {
+    imageSrcPlaceholderRef: NgbModalRef;
+
+    constructor(private wallApi: WallApi, private contextModalService: ContextModalService, private el: ElementRef) {
     }
 
     ngOnInit() {
@@ -36,8 +40,6 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
             this.scope.src = this.state.src;
 
             if (this.scope.src) {
-                this.src.nativeElement.value = this.scope.src;
-
                 this.uiState = this.uiStates.image;
             }
         }
@@ -56,46 +58,23 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     }
 
     onWallFocus(): void {
-        if (this.uiState === this.uiStates.initial) {
-            this.showImagePanel();
-        }
-    }
-
-    onKeyPress(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
-            if (this.uiState === this.uiStates.pasteSrc) {
-                this.uiState = this.uiStates.initial;
-            }
-        }
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-
-            this.applyImageSrc()
-                .then(() => {
-                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                })
-                .catch(() => {
-                    this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-                });
+        if (this.uiState === this.uiStates.initial && !this.imageSrcPlaceholderRef) {
+            setTimeout(() => {
+                this.showImagePanel();
+            }, 0);
         }
     }
 
     onImageClick(e) {
-        // disable onFocus handler
         e.stopPropagation();
 
         this.wallApi.core.selectBrick(this.id);
     }
 
-    applyImageSrc() {
-        const currentValue = this.getCurrentInputValue();
-
-        this.uiState = this.uiStates.initial;
-
-        return this.isImage(currentValue)
+    applyImageSrc(imageSrc: string) {
+        this.isImage(imageSrc)
             .then(() => {
-                this.scope.src = currentValue;
+                this.scope.src = imageSrc;
 
                 this.save();
 
@@ -106,19 +85,22 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
             });
     }
 
-    switchImagePanel() {
-        if (this.uiState === this.uiStates.initial) {
-            this.showImagePanel();
-        } else if (this.uiState === this.uiStates.pasteSrc) {
-            this.uiState = this.uiStates.initial;
-        }
-    }
-
     showImagePanel() {
-        this.uiState = this.uiStates.pasteSrc;
+        this.imageSrcPlaceholderRef = this.contextModalService.open({
+            component: InputContextComponent,
+            context: {
+                relative: {
+                    nativeElement: this.el.nativeElement
+                }
+            }
+        });
 
-        setTimeout(() => {
-            this.src.nativeElement.focus();
+        this.imageSrcPlaceholderRef.result.then((result) => {
+            this.imageSrcPlaceholderRef = null;
+
+            this.applyImageSrc(result.src);
+        }, () => {
+            this.imageSrcPlaceholderRef = null;
         });
     }
 
@@ -140,9 +122,5 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
             img.src = src;
         });
-    }
-
-    private getCurrentInputValue() {
-        return this.src.nativeElement.value;
     }
 }

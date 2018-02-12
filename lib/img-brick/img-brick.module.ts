@@ -1,14 +1,20 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { BrickRegistry } from '../wall';
+import { ModalModule } from '../modules/modal';
+import { BrickRegistry, HelperComponentsModule } from '../wall';
 import { ImgBrickComponent } from './component/img-brick.component';
+import { InputContextComponent } from './component/input-context.component';
 import { ImgBrickTextRepresentation } from './img-brick-text-representation.class';
 
 @NgModule({
-    imports: [CommonModule],
+    imports: [
+        CommonModule,
+        ModalModule,
+        HelperComponentsModule
+    ],
     exports: [ImgBrickComponent],
-    declarations: [ImgBrickComponent],
-    entryComponents: [ImgBrickComponent]
+    declarations: [ImgBrickComponent, InputContextComponent],
+    entryComponents: [ImgBrickComponent, InputContextComponent]
 })
 export class ImgBrickModule {
     constructor(private brickRegistry: BrickRegistry) {

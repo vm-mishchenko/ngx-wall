@@ -1,0 +1,23 @@
+.w-brick-input-placeholder {
+  @extend %w-sub-text-color;
+  background: $w-thin-color;
+  padding: 15px;
+  display: flex;
+  cursor: pointer;
+  border: 1px dashed $w-slight-color;
+  border-radius: 4px;
+  align-items: center;
+
+  .w-icon {
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  &:hover {
+    background: $w-slight-color;
+  }
+
+  &:active {
+    background: $w-light-color;
+  }
+}

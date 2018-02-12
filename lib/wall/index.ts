@@ -14,3 +14,6 @@ export * from './model/wall.events';
 
 // Undo-Redo
 export * from './plugins/undo-redo/undo-redo-api.interface';
+
+// Helper modules
+export * from '../modules/helper-components';

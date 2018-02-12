@@ -1,5 +1,5 @@
 import { ApplicationRef, Injectable } from '@angular/core';
-import { enableDebugTools } from "@angular/platform-browser";
+import { enableDebugTools } from '@angular/platform-browser';
 
 @Injectable()
 export class DebugService {

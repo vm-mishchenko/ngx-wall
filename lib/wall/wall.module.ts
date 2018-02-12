@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ModalModule } from '../modules/modal';
 import { PickOutModule } from '../modules/pick-out';
 import { RadarModule } from '../modules/radar';
 import { TowModule } from '../modules/tow';
@@ -17,7 +18,8 @@ import { WALL_PLUGIN } from './wall.tokens';
         CommonModule,
         PickOutModule,
         TowModule,
-        RadarModule
+        RadarModule,
+        ModalModule
     ],
 
     providers: [

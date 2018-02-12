@@ -1,11 +1,15 @@
 @import "./variables";
+@import "./base";
 @import "./form";
 @import "./panel";
 @import "./signboard";
-
-body {
-  color: $w-default-color;
-}
+@import "./button";
+@import "./components/selection-list";
+@import "./components/brick-input-placeholder";
+@import "./components/brick-input";
+@import "./components/context-panel";
+@import "./components/context-modal";
+@import "./components/wall";
 
 wall-canvas {
   display: block;
@@ -86,6 +90,14 @@ wall-canvas-row {
   .wall-canvas-row__column {
     flex: 1;
     margin: 0 10px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
 }
 
@@ -94,7 +106,7 @@ text-brick {
 
   .text-brick__editor {
     word-break: break-all;
-    padding: 6px 2px;
+    padding: 3px 2px;
 
     &:focus {
       outline: none;

@@ -1,0 +1,35 @@
+%w-sub-text-color {
+  color: $w-sub-text-color;
+  font-size: 0.8rem;
+}
+
+.w-secondary-zone {
+  background: $w-thin-color;
+
+  .w-selection-list {
+    &__item {
+      &:hover {
+        background: $w-slight-color;
+      }
+
+      &:active {
+        background: $w-light-color;
+      }
+    }
+
+    &__selected_item {
+      background: $w-slight-color;
+
+      .w-btn.btn-link {
+        &:hover {
+          background: $w-light-color;
+          color: $w-default-color;
+        }
+
+        &:active {
+          background: $w-medium-color;
+        }
+      }
+    }
+  }
+}

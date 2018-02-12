@@ -2,13 +2,13 @@
 
 .w-signboard {
   color: $w-middle-grey;
-  background: $w-light-grey;
+  background: $w-thin-color;
   padding: 15px;
   display: flex;
+  cursor: pointer;
 
   &:hover {
-    background: $w-light-grey__hover;
-    cursor: pointer;
+    background: $w-slight-color;
   }
 
   svg {

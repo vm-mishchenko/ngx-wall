@@ -150,14 +150,7 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
             e.preventDefault();
 
             if (selectedBrickIds.length) {
-                this.wallApi.core.focusOnBrickId(firstSelectedBrickId);
                 this.wallApi.core.unSelectBricks();
-            }
-
-            const focusedBrickId = this.wallApi.core.getFocusedBrickId();
-
-            if (focusedBrickId) {
-                this.wallApi.core.selectBrick(focusedBrickId);
             }
         }
     }
