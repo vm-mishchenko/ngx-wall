@@ -271,10 +271,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             const previousBrickSnapshot = this.wallApi.core.getBrickSnapshot(previousTextBrickId);
 
-            const caretPosition = previousBrickSnapshot.state.text.length;
+            const caretPosition = (previousBrickSnapshot.state.text && previousBrickSnapshot.state.text.length) || 0;
 
             this.wallApi.core.updateBrickState(previousTextBrickId, {
-                text: previousBrickSnapshot.state.text + (this.scope.text || '')
+                text: (previousBrickSnapshot.state.text || '') + (this.scope.text || '')
             });
 
             this.wallApi.core.removeBrick(this.id);
@@ -337,18 +337,22 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         const sel = window.getSelection();
 
+        const offset = sel.focusOffset;
+
         const newTextState = {
-            text: this.scope.text.slice(sel.focusOffset) || ''
+            text: this.scope.text.slice(offset) || ''
         };
 
         this.wallApi.core.addBrickAfterBrickId(this.id, 'text', newTextState);
 
-        // update current brick
-        this.scope.text = this.scope.text.slice(0, sel.focusOffset);
+        setTimeout(() => {
+            // update current brick
+            this.scope.text = this.scope.text.slice(0, offset);
 
-        if (newTextState.text.length) {
-            this.saveCurrentState();
-        }
+            if (newTextState.text.length) {
+                this.saveCurrentState();
+            }
+        }, 0);
     }
 
     // key handler end
