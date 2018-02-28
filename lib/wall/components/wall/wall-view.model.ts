@@ -314,33 +314,6 @@ export class WallViewModel implements IWallViewModel {
     /**
      * @public-api
      */
-    moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string) {
-        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
-            this.wallModel.moveBrickAfterBrickId(targetBrickIds, beforeBrickId);
-        }
-    }
-
-    /**
-     * @public-api
-     */
-    moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string) {
-        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
-            this.wallModel.moveBrickBeforeBrickId(targetBrickIds, beforeBrickId);
-        }
-    }
-
-    /**
-     * @public-api
-     */
-    moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string) {
-        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
-            this.wallModel.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
-        }
-    }
-
-    /**
-     * @public-api
-     */
     removeBrick(brickId: string) {
         this.removeBricks([brickId]);
     }

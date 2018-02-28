@@ -165,41 +165,47 @@ export class WallModel implements IWallModel {
     }
 
     moveBrickAfterBrickId(movedBrickIds: string[], afterBrickId: string): void {
-        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+        if (movedBrickIds.indexOf(afterBrickId) === -1) {
+            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
 
-        const afterBrickPosition = this.layout.getBrickPosition(afterBrickId);
-        const columnCount = this.layout.getColumnCount(afterBrickPosition.rowIndex);
+            const afterBrickPosition = this.layout.getBrickPosition(afterBrickId);
+            const columnCount = this.layout.getColumnCount(afterBrickPosition.rowIndex);
 
-        if (columnCount === 1) {
-            this.layout.moveBrickAfterInNewRow(afterBrickId, movedBrickIds);
-        } else {
-            this.layout.moveBrickAfterInSameColumn(afterBrickId, movedBrickIds);
+            if (columnCount === 1) {
+                this.layout.moveBrickAfterInNewRow(afterBrickId, movedBrickIds);
+            } else {
+                this.layout.moveBrickAfterInSameColumn(afterBrickId, movedBrickIds);
+            }
+
+            this.dispatch(new MoveBrickEvent(movedBrickIds, afterBrickId));
         }
-
-        this.dispatch(new MoveBrickEvent(movedBrickIds, afterBrickId));
     }
 
     moveBrickBeforeBrickId(movedBrickIds: string[], beforeBrickId: string): void {
-        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+        if (movedBrickIds.indexOf(beforeBrickId) === -1) {
+            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
 
-        const beforeBrickPosition = this.layout.getBrickPosition(beforeBrickId);
-        const columnCount = this.layout.getColumnCount(beforeBrickPosition.rowIndex);
+            const beforeBrickPosition = this.layout.getBrickPosition(beforeBrickId);
+            const columnCount = this.layout.getColumnCount(beforeBrickPosition.rowIndex);
 
-        if (columnCount === 1) {
-            this.layout.moveBrickBeforeInNewRow(beforeBrickId, movedBrickIds);
-        } else {
-            this.layout.moveBrickBeforeInSameColumn(beforeBrickId, movedBrickIds);
+            if (columnCount === 1) {
+                this.layout.moveBrickBeforeInNewRow(beforeBrickId, movedBrickIds);
+            } else {
+                this.layout.moveBrickBeforeInSameColumn(beforeBrickId, movedBrickIds);
+            }
+
+            this.dispatch(new MoveBrickEvent(movedBrickIds, beforeBrickId));
         }
-
-        this.dispatch(new MoveBrickEvent(movedBrickIds, beforeBrickId));
     }
 
     moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string): void {
-        this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
+            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
 
-        this.layout.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
+            this.layout.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
 
-        this.dispatch(new MoveBrickEvent(targetBrickIds, beforeBrickId));
+            this.dispatch(new MoveBrickEvent(targetBrickIds, beforeBrickId));
+        }
     }
 
     // QUERY METHODS
