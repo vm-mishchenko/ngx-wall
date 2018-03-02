@@ -8,8 +8,8 @@
     "angular"
   ],
   "scripts": {
-    "build": "webpack --config=./configurations/webpack-library.config.js",
-    "build:watch": "webpack --watch --config=./configurations/webpack-library.config.js",
+    "build": "webpack --config=./configurations/webpack-library.config.js && cpx lib/resources/**/* dist",
+    "build:watch": " concurrently \"webpack --watch --config=./configurations/webpack-library.config.js\" \"cpx lib/resources/**/* dist -w\"",
     "application": "webpack-dev-server --config=./configurations/webpack-dev-application.config.js",
     "gh": "webpack --config=./configurations/webpack-dev-application.config.js",
     "lint": "tslint -c tslint.json './lib/**/*.ts'",
@@ -78,6 +78,8 @@
     "typescript": "2.5.3",
     "webpack": "3.10.0",
     "webpack-dev-server": "2.10.1",
-    "zone.js": "0.8.20"
+    "zone.js": "0.8.20",
+    "concurrently": "3.5.1",
+    "cpx": "1.5.0"
   }
 }

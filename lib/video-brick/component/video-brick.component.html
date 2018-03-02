@@ -1,22 +1,7 @@
 <iframe height="400" [hidden]="uiState !== uiStates.video" #iframe frameborder="0" allowfullscreen></iframe>
 
-<div [hidden]="uiState == uiStates.video" class="w-signboard" (click)="switchPanel()">
-    Add an Video
-</div>
-
-<div [ngClass]="{show: uiState === uiStates.pasteSrc}" class="w-panel">
-    <div class="w-panel__body">
-        <form>
-            <div class="form-group w-form-group">
-                <input #src (keydown)="onKeyPress($event)" class="form-control w-input"
-                       placeholder="Paste the video link">
-            </div>
-        </form>
-
-        <div>
-            <button (click)="applySrc()" type="button" class="btn btn-primary btn-sm btn-block">Embed video
-            </button>
-        </div>
-    </div>
-</div>
-
+<w-brick-input-placeholder
+        [text]="'Add a Video'"
+        [icon]="'oi-video'"
+        [hidden]="uiState === uiStates.video" (selected)="showVideoPanel()">
+</w-brick-input-placeholder>

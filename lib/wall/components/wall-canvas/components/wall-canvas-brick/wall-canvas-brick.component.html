@@ -1,27 +1,13 @@
 <div [spot]="spot"
      data-id="{{brick.id}}"
      (click)="onFocused()"
-     class="wall-canvas-brick__wrapper"
+     class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
      [ngClass]="{'wall-canvas-brick__selected': selected,
      		'wall-canvas-brick__draggable': isMouseNear}">
 
     <div class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">
         <div class="wall-canvas-brick__draggable-box">
-            <svg xmlns="http://www.w3.org/2000/svg" x version="1.1" width="15px" height="15px" viewBox="0 0 612 612" xml:space="preserve">
-<g>
-	<g>
-		<circle cx="69.545" cy="528.545" r="69.545" fill="#cfcfcf"/>
-		<circle cx="306" cy="306" r="69.545" fill="#cfcfcf"/>
-		<circle cx="306" cy="83.455" r="69.545" fill="#cfcfcf"/>
-		<circle cx="69.545" cy="83.455" r="69.545" fill="#cfcfcf"/>
-		<circle cx="69.545" cy="306" r="69.545" fill="#cfcfcf"/>
-		<circle cx="306" cy="528.545" r="69.545" fill="#cfcfcf"/>
-		<circle cx="542.454" cy="528.545" r="69.545" fill="#cfcfcf"/>
-		<circle cx="542.454" cy="83.455" r="69.545" fill="#cfcfcf"/>
-		<circle cx="542.454" cy="306" r="69.545" fill="#cfcfcf"/>
-	</g>
-</g>
-</svg>
+            <span class="oi oi-grid-four-up"></span>
         </div>
     </div>
 

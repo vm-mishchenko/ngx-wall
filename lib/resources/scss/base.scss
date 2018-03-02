@@ -15,10 +15,6 @@
       &:active {
         background: $w-light-color;
       }
-    }
-
-    &__selected_item {
-      background: $w-slight-color;
 
       .w-btn.btn-link {
         &:hover {
@@ -28,6 +24,30 @@
 
         &:active {
           background: $w-medium-color;
+        }
+      }
+    }
+
+    &__selected_item {
+      & > .w-selection-list__item {
+        background: $w-slight-color;
+
+        &:hover {
+          background: $w-light-color;
+        }
+
+        &:active {
+          background: $w-medium-color;
+        }
+
+        .w-btn.btn-link {
+          &:hover {
+            background: $w-medium-color;
+          }
+
+          &:active {
+            background: $w-dark-color;
+          }
         }
       }
     }

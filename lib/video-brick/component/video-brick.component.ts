@@ -1,6 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IOnWallFocus, WallApi } from '../../index';
+import { ContextModalService } from '../../modules/modal';
 import { IVideoBrickState } from '../video-brick-state.interface';
+import { InputContextComponent } from './input-context.component';
 
 @Component({
     selector: 'video-brick',
@@ -8,26 +11,30 @@ import { IVideoBrickState } from '../video-brick-state.interface';
 })
 export class VideoBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;
-
     @Input() state: IVideoBrickState;
+
     @Output() stateChanges: EventEmitter<IVideoBrickState> = new EventEmitter();
 
-    @ViewChild('src') src: ElementRef;
     @ViewChild('iframe') iframe: ElementRef;
 
     // ui
     uiStates: any = {
         initial: 'initial',
-        pasteSrc: 'pasteSrc',
         video: 'video'
     };
+
     uiState: string = this.uiStates.initial;
 
     scope: IVideoBrickState = {
         src: ''
     };
 
-    constructor(private wallApi: WallApi, private r: Renderer2) {
+    videoSrcPlaceholderRef: NgbModalRef;
+
+    constructor(private wallApi: WallApi,
+                private r: Renderer2,
+                private el: ElementRef,
+                private contextModalService: ContextModalService) {
     }
 
     ngOnInit() {
@@ -59,52 +66,18 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
     }
 
     onWallFocus(): void {
-        if (this.uiState === this.uiStates.initial) {
-            this.showPanel();
+        if (this.uiState === this.uiStates.initial && !this.videoSrcPlaceholderRef) {
+            setTimeout(() => {
+                this.showVideoPanel();
+            }, 0);
         }
     }
 
-    switchPanel() {
-        if (this.uiState === this.uiStates.initial) {
-            this.showPanel();
-        } else if (this.uiState === this.uiStates.pasteSrc) {
-            this.uiState = this.uiStates.initial;
-        }
-    }
-
-    showPanel() {
-        this.uiState = this.uiStates.pasteSrc;
-
-        setTimeout(() => {
-            this.src.nativeElement.focus();
-        });
-    }
-
-    onKeyPress(e: KeyboardEvent) {
-        if (e.key === 'Escape') {
-            if (this.uiState === this.uiStates.pasteSrc) {
-                this.uiState = this.uiStates.initial;
-            }
-        }
-
-        if (e.key === 'Enter') {
-            e.preventDefault();
-
-            if (this.applySrc()) {
-                this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
-            }
-        }
-    }
-
-    applySrc() {
-        let isSuccess = false;
-
-        const currentValue = this.getCurrentInputValue();
-
+    applySrc(src: string) {
         this.uiState = this.uiStates.initial;
 
-        if (currentValue.length) {
-            const srcArray = currentValue.split('=');
+        if (src.length) {
+            const srcArray = src.split('=');
             const youtubeId = srcArray[1];
 
             if (youtubeId) {
@@ -115,19 +88,30 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
                 this.save();
 
                 this.uiState = this.uiStates.video;
-
-                isSuccess = true;
             }
         }
+    }
 
-        return isSuccess;
+    showVideoPanel() {
+        this.videoSrcPlaceholderRef = this.contextModalService.open({
+            component: InputContextComponent,
+            context: {
+                relative: {
+                    nativeElement: this.el.nativeElement
+                }
+            }
+        });
+
+        this.videoSrcPlaceholderRef.result.then((result) => {
+            this.videoSrcPlaceholderRef = null;
+
+            this.applySrc(result.src);
+        }, () => {
+            this.videoSrcPlaceholderRef = null;
+        });
     }
 
     private save() {
         this.stateChanges.emit(this.scope);
-    }
-
-    private getCurrentInputValue() {
-        return this.src.nativeElement.value;
     }
 }

@@ -32,7 +32,9 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
     imageSrcPlaceholderRef: NgbModalRef;
 
-    constructor(private wallApi: WallApi, private contextModalService: ContextModalService, private el: ElementRef) {
+    constructor(private wallApi: WallApi,
+                private contextModalService: ContextModalService,
+                private el: ElementRef) {
     }
 
     ngOnInit() {

@@ -1,5 +1,6 @@
 @import "./variables";
 @import "./base";
+@import "./icon";
 @import "./form";
 @import "./panel";
 @import "./signboard";
@@ -40,17 +41,16 @@ wall-canvas-brick {
   }
 
   .wall-canvas-brick__draggable-box {
-    width: 23px;
-    height: 26px;
-    padding: 4px;
+    padding: 2px 5px 2px 7px;
     border-radius: 3px;
+    color: $w-dark-color;
   }
 
   .wall-canvas-brick__draggable-handler {
     display: none;
     position: absolute;
     left: -35px;
-    top: 0;
+    top: -4px;
     padding: 5px;
     margin: 0;
     cursor: pointer;
@@ -58,7 +58,7 @@ wall-canvas-brick {
 
     &:hover {
       .wall-canvas-brick__draggable-box {
-        background: #f5f5f5;
+        background: $w-thin-color;
       }
     }
   }

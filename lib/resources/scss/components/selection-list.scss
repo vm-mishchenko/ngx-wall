@@ -14,12 +14,20 @@
   }
 
   &__item {
-    padding: 0.2rem 1.5rem;
+    position: relative;
+    padding: 0.2rem 0.5rem;
     transition: background ease-in-out 0.15s;
 
     &:hover {
       background: $w-thin-color;
       cursor: pointer;
+
+      .w-selection-list__context-menu {
+        display: block;
+        position: absolute;
+        top: 0.2rem;
+        right: 0;
+      }
     }
 
     &:active {
@@ -27,74 +35,88 @@
     }
   }
 
-  /* ugly but easy and fast */
-  &__level-2 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 2rem;
-    }
-  }
-
-  &__level-3 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 3rem;
-    }
-  }
-
-  &__level-4 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 4rem;
-    }
-  }
-
-  &__level-5 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 5rem;
-    }
-  }
-
-  &__level-6 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 6rem;
-    }
-  }
-
-  &__level-7 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 7rem;
-    }
-  }
-
-  &__level-8 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 8rem;
-    }
-  }
-
-  &__level-9 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 9rem;
-    }
-  }
-
-  &__level-10 {
-    .w-selection-list__item {
-      padding: 0.2rem 1.5rem 0.2rem 10rem;
-    }
+  &__context-menu {
+    display: none;
   }
 
   &__selected_item {
-    background: $w-thin-color;
+    & > .w-selection-list__item {
+      background: $w-thin-color;
 
-    .w-btn.btn-link {
       &:hover {
         background: $w-slight-color;
-        text-decoration: none;
-        color: $w-default-color;
       }
 
       &:active {
         background: $w-light-color;
       }
+    }
+
+    .w-btn.btn-link {
+      &:hover {
+        background: $w-light-color;
+        text-decoration: none;
+        color: $w-default-color;
+      }
+
+      &:active {
+        background: $w-medium-color;
+      }
+    }
+  }
+
+  /* ugly but easy and fast */
+  &__level-2 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 1.5rem;
+    }
+  }
+
+  &__level-3 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 2.5rem;
+    }
+  }
+
+  &__level-4 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 3.5rem;
+    }
+  }
+
+  &__level-5 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 4.5rem;
+    }
+  }
+
+  &__level-6 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 5.5rem;
+    }
+  }
+
+  &__level-7 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 6.5rem;
+    }
+  }
+
+  &__level-8 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 7.5rem;
+    }
+  }
+
+  &__level-9 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 8.5rem;
+    }
+  }
+
+  &__level-10 {
+    .w-selection-list__item {
+      padding: 0.2rem 0.5rem 0.2rem 9.5rem;
     }
   }
 }
