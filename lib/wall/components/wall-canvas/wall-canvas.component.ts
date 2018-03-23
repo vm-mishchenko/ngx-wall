@@ -1,6 +1,13 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges,
+    Component,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnChanges,
+    Output,
+    SimpleChanges,
     ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs/Subject';

@@ -11,8 +11,6 @@ export class SpotDirective implements OnInit, OnDestroy {
 
     id: SpotId = String(Math.random());
 
-    private window: Window;
-
     constructor(private radarCoordinator: RadarCoordinator,
                 private el: ElementRef) {
     }

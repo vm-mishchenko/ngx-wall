@@ -3,8 +3,8 @@ import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { WALL_PLUGIN, WallApi } from 'ngx-wall';
 import { Subscription } from 'rxjs/Subscription';
-import { WALL_PLUGIN, WallApi } from 'wall';
 import { AppComponent } from './app.component';
 import { DebugService } from './debug/debug.service';
 import { UiComponent } from './ui/ui.component';
@@ -16,7 +16,7 @@ import { WallEditorModule } from './wall-editor/wall-editor.module';
 class LoggerPlugin {
     constructor(wallApi: WallApi) {
         wallApi.registerFeatureApi('logger', {
-            log: function (message: string) {
+            log: (message: string) => {
                 // console.log(message);
             }
         });
@@ -34,8 +34,6 @@ class EventLoggerPlugin {
     }
 
     destroy() {
-        console.log(`EventLoggerPlugin destroy`);
-
         this.apiSubscription.unsubscribe();
 
         this.apiSubscription = null;

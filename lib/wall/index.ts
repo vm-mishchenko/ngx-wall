@@ -7,7 +7,7 @@ export * from './registry/brick-registry.service';
 export { WallModule } from './wall.module';
 export { WallBrick } from './model/wall-brick.model'; // todo: do we need export it?
 export { WallModelFactory } from './model/wall-model.factory';
-export { IWallModel } from './model/model.interfaces';
+export * from './model/model.interfaces';
 export * from './model/wall.events';
 
 // PLUGINS

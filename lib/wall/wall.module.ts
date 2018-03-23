@@ -4,6 +4,8 @@ import { ModalModule } from '../modules/modal';
 import { PickOutModule } from '../modules/pick-out';
 import { RadarModule } from '../modules/radar';
 import { TowModule } from '../modules/tow';
+import { PlaceholderComponent } from './components/placeholder-renderer/component/placeholder.component';
+import { PlaceholderRenderer } from './components/placeholder-renderer/placeholder-renderer.service';
 import { WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent } from './components/wall-canvas';
 import { WallComponent } from './components/wall/wall.component';
 import { WallModelFactory } from './model/wall-model.factory';
@@ -25,6 +27,7 @@ import { WALL_PLUGIN } from './wall.tokens';
     providers: [
         BrickRegistry,
         WallModelFactory,
+        PlaceholderRenderer,
         {
             provide: WALL_PLUGIN, useValue: SelectionPlugin, multi: true
         },
@@ -40,11 +43,16 @@ import { WALL_PLUGIN } from './wall.tokens';
         WallComponent,
         WallCanvasComponent,
         WallCanvasRowComponent,
-        WallCanvasBrickComponent
+        WallCanvasBrickComponent,
+        PlaceholderComponent
     ],
 
     exports: [
         WallComponent
+    ],
+
+    entryComponents: [
+        PlaceholderComponent
     ]
 })
 export class WallModule {

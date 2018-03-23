@@ -17,14 +17,14 @@ export class RadarCoordinator {
 
     private events: Subject<any> = new Subject();
 
-    private moveObservable: Observable<MouseEvent>;
+    private mouseMove$: Observable<MouseEvent>;
 
     constructor(@Inject(DOCUMENT) doc) {
-        this.moveObservable = Observable.fromEvent(doc, 'mousemove');
+        this.mouseMove$ = Observable.fromEvent(doc, 'mousemove');
 
         const throttleMouseTime = 30;
 
-        this.moveObservable
+        this.mouseMove$
             .throttleTime(throttleMouseTime)
             .subscribe((event) => {
                 this.updateSpotsInfo();
@@ -54,6 +54,10 @@ export class RadarCoordinator {
         return Array.from(this.spots)
             .map(([id, spot]) => spot)
             .filter((spot) => predicate(spot));
+    }
+
+    getMinimumDistance(spot: SpotModel, x: number, y: number) {
+
     }
 
     subscribe(fn: any): Subscription {

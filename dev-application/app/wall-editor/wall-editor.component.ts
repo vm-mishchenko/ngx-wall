@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IWallConfiguration, IWallDefinition, WALL, WallApi, WallModelFactory } from 'wall';
+import { IWallConfiguration, IWallDefinition, WALL, WallApi, WallModelFactory } from 'ngx-wall';
 
 @Component({
     selector: 'wall-editor',

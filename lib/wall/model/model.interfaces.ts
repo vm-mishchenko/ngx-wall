@@ -3,6 +3,9 @@ import { IWallDefinition } from '../wall.interfaces';
 import { WallBrick } from './wall-brick.model';
 import { IBrickSnapshot } from './wall.events';
 
+// https://github.com/s-panferov/awesome-typescript-loader/issues/411
+export const awesomeTypescriptLoaderBug3 = true;
+
 export interface IWallRow {
     id: string;
     columns: IWallColumn[];
@@ -33,6 +36,8 @@ export interface IWallModel {
 
     turnBrickInto(brickId: string, newTag: string);
 
+    addBrickAtStart(tag: string, state?: any): IBrickSnapshot;
+
     addDefaultBrick(): void;
 
     addBrickAfterBrickId(brickId: string, tag: string): IBrickSnapshot;
@@ -55,7 +60,7 @@ export interface IWallModel {
 
     traverse(fn: (row: any) => any): void; // todo - traverse quite strange method?
 
-    filterBricks(predictor: () => any): IBrickSnapshot[];
+    filterBricks(predictor: (wallBrick: WallBrick) => boolean): IBrickSnapshot[];
 
     getBrickIds(): string[];
 

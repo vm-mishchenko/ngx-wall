@@ -10,7 +10,7 @@ import {
     TowModule,
     VideoBrickModule,
     WallModule
-} from 'wall';
+} from 'ngx-wall';
 
 import { WallEditorComponent } from './wall-editor.component';
 

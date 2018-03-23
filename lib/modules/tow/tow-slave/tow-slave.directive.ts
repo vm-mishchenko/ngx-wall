@@ -1,6 +1,7 @@
 import { Directive, ElementRef, HostListener, Input, OnInit, Renderer2 } from '@angular/core';
 import { TowCoordinator } from '../tow-coordinator.service';
 
+// Notify Tow Coordinator about drag operation
 @Directive({selector: '[tow-slave]'})
 export class TowSlaveDirective implements OnInit {
     @Input('tow-slave') id;

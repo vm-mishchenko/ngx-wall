@@ -16,6 +16,7 @@ import { IWallConfiguration } from './wall.interfaces';
 export class WallComponent implements OnChanges, OnDestroy {
     @Input() model: IWallModel = null;
     @Input() configuration: IWallConfiguration = null;
+
     private initializedPlugins: any[] = [];
 
     constructor(private injector: Injector,

@@ -6,8 +6,15 @@ import { IWallColumn, IWallModel, IWallRow } from './model.interfaces';
 import { WallBrick } from './wall-brick.model';
 import { WallLayout } from './wall-layout.model';
 import {
-    AddBrickEvent, BeforeChangeEvent, IBrickSnapshot, MoveBrickEvent, RemoveBrickEvent, RemoveBricksEvent,
-    SetPlanEvent, TurnBrickIntoEvent, UpdateBrickStateEvent
+    AddBrickEvent,
+    BeforeChangeEvent,
+    IBrickSnapshot,
+    MoveBrickEvent,
+    RemoveBrickEvent,
+    RemoveBricksEvent,
+    SetPlanEvent,
+    TurnBrickIntoEvent,
+    UpdateBrickStateEvent
 } from './wall.events';
 
 export class WallModel implements IWallModel {
@@ -89,6 +96,18 @@ export class WallModel implements IWallModel {
         this.layout.addBrickToNewRow(rowIndex, newBrick);
 
         this.dispatch(new AddBrickEvent(newBrick.id));
+    }
+
+    addBrickAtStart(tag: string, state?: any): IBrickSnapshot {
+        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
+
+        const newBrick = this.createBrick(tag, state);
+
+        this.layout.addBrickToNewRow(0, newBrick);
+
+        this.dispatch(new AddBrickEvent(newBrick.id));
+
+        return this.getBrickSnapshot(newBrick.id);
     }
 
     updateBrickState(brickId, brickState): void {
@@ -323,7 +342,7 @@ export class WallModel implements IWallModel {
     getBrickSnapshot(brickId: string): IBrickSnapshot {
         const brick = this.getBrickById(brickId);
 
-        return this.createBrickSnapshot(brick);
+        return brick ? this.createBrickSnapshot(brick) : null;
     }
 
     getBrickTextRepresentation(brickId: string): string {

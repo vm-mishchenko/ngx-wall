@@ -1,10 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RadarModule } from '../radar';
-import { BeaconDetector } from './beacon-detector/beacon-detector.service';
-import { BeaconRegistry } from './beacon/beacon.registry.service';
-import { PlaceholderComponent } from './placeholder-renderer/component/placeholder.component';
-import { PlaceholderRenderer } from './placeholder-renderer/placeholder-renderer.service';
 import { TowCoordinator } from './tow-coordinator.service';
 import { TowSlaveDirective } from './tow-slave/tow-slave.directive';
 import { TowService } from './tow.service';
@@ -16,12 +12,7 @@ import { TowService } from './tow.service';
     ],
 
     declarations: [
-        TowSlaveDirective,
-        PlaceholderComponent
-    ],
-
-    entryComponents: [
-        PlaceholderComponent
+        TowSlaveDirective
     ],
 
     exports: [
@@ -30,10 +21,7 @@ import { TowService } from './tow.service';
 
     providers: [
         TowService,
-        BeaconDetector,
-        BeaconRegistry,
-        TowCoordinator,
-        PlaceholderRenderer
+        TowCoordinator
     ]
 })
 export class TowModule {

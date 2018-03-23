@@ -77,7 +77,7 @@ module.exports = {
     resolve: {
         alias: (() => {
             return {
-                [libraryConfig.libraryName]: root(`dist`)
+                [libraryConfig.moduleName]: root(`dist`)
             }
         })(),
 

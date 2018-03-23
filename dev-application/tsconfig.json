@@ -17,7 +17,7 @@
     ],
     "baseUrl": ".",
     "paths": {
-      "wall": [
+      "ngx-wall": [
         "../dist"
       ]
     }

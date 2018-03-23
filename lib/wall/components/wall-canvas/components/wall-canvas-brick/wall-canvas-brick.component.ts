@@ -1,6 +1,15 @@
 import {
-    Component, ComponentFactoryResolver, ComponentRef, Injector, Input, OnChanges, OnDestroy, OnInit,
-    SimpleChanges, ViewChild, ViewContainerRef
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Injector,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChanges,
+    ViewChild,
+    ViewContainerRef
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';

@@ -82,4 +82,13 @@ export class SpotModel {
 
         return Math.sqrt(a * a + b * b);
     }
+
+    isPointInsideSpot(x: number, y: number): boolean {
+        if ((x > this.position.x) && (x < this.position.x + this.size.width) &&
+            (y > this.position.y) && (y < this.position.y + this.size.height)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
