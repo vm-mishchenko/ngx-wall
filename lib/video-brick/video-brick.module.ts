@@ -18,9 +18,11 @@ import { VideoBrickTextRepresentationClass } from './video-brick-text-representa
 export class VideoBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
-            tag: 'v',
+            tag: 'video',
             component: VideoBrickComponent,
-            textRepresentation: VideoBrickTextRepresentationClass
+            textRepresentation: VideoBrickTextRepresentationClass,
+            name: 'Video',
+            description: 'Embed from Youtube and more'
         });
     }
 }

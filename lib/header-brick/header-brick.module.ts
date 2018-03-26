@@ -20,7 +20,9 @@ export class HeaderBrickModule {
             tag: 'header',
             component: HeaderBrickComponent,
             supportText: true,
-            textRepresentation: TextRepresentation
+            textRepresentation: TextRepresentation,
+            name: 'Header',
+            description: 'A large header with margins'
         });
     }
 }

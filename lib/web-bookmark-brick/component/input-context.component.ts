@@ -9,18 +9,18 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
             <div class="w-brick-input__body">
                 <form (submit)="onSubmit($event)">
                     <div class="form-group w-form-group">
-                        <input #src class="form-control w-input" placeholder="Paste the youtube video link">
+                        <input #src class="form-control w-input" placeholder="Paste in https://...">
                     </div>
 
                     <div class="form-group w-form-group">
                         <button (click)="applySrc()" type="button" class="btn btn-block btn-primary w-btn">
-                            Add video
+                            Create Bookmark
                         </button>
                     </div>
                 </form>
 
                 <p class="w-brick-input__description">
-                    Youtube video
+                    Create a visual bookmark from a link...
                 </p>
             </div>
 

@@ -40,15 +40,16 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         setTimeout(() => {
             this.stringInfo = this.getStringInfo();
-        });
+        }, 10);
 
         this.editor.nativeElement.addEventListener('paste', this.onPaste.bind(this), false);
 
-        this.textChangeSubscription = this.textChange.debounceTime(100).subscribe(() => {
-            this.saveCurrentState();
+        this.textChangeSubscription = this.textChange.debounceTime(100)
+            .subscribe(() => {
+                this.saveCurrentState();
 
-            this.stringInfo = this.getStringInfo();
-        });
+                this.stringInfo = this.getStringInfo();
+            });
     }
 
     onWallStateChange(newState: IBaseTextState) {
@@ -77,7 +78,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     onTextChange() {
-        this.textChange.next();
+        this.textChange.next(this.scope.text);
     }
 
     onKeyPress(e: KeyboardEvent) {
@@ -88,6 +89,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         const TOP_KEY = 38;
         const RIGHT_KEY = 39;
         const BOTTOM_KEY = 40;
+        const ESCAPE_KEY = 27;
 
         if (this.noMetaKeyIsPressed(e)) {
             if (e.keyCode === TOP_KEY) {
@@ -120,6 +122,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             if (e.keyCode === ENTER_KEY) {
                 this.enterKeyPressed(e);
+            }
+
+            if (e.keyCode === ESCAPE_KEY) {
+                this.escapeKeyPressed(e);
             }
         }
     }
@@ -353,6 +359,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.saveCurrentState();
             }
         }, 0);
+    }
+
+    escapeKeyPressed(e: KeyboardEvent) {
+        // do nothing
     }
 
     // key handler end

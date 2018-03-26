@@ -12,6 +12,7 @@ import {
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
+import { IBrickSpecification } from '../../wall.interfaces';
 import { IWallCoreApi } from './interfaces/wall-core-api.interface';
 import { IWallState } from './interfaces/wall-state.interface';
 import { IWallViewModel } from './interfaces/wall-view-model.interface';

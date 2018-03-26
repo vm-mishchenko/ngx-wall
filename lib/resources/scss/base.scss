@@ -1,6 +1,6 @@
-%w-sub-text-color {
+%w-sub-text {
   color: $w-sub-text-color;
-  font-size: 0.8rem;
+  font-size: $w-sub-font-size;
 }
 
 .w-secondary-zone {

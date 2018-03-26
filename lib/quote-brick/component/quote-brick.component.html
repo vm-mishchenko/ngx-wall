@@ -1,7 +1,8 @@
 <div #editor
+     attr.placeholder="{{placeholder}}"
      (input)="onTextChange()"
      [(ngModel)]="scope.text"
      (keydown)="onKeyPress($event)"
-     class="editor quote-brick__editor"
+     class="editor"
      contenteditable>
 </div>

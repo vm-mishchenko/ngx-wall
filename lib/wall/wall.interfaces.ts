@@ -7,12 +7,17 @@ export const awesomeTypescriptLoaderBug2 = true;
 export interface IBrickSpecification {
     tag: string;
     component: any;
+
+    // presentation
+    name: string;
+    description: string;
+
     supportText?: boolean;
     textRepresentation?: ITextRepresentationConstructor;
 }
 
 export interface ITextRepresentationConstructor {
-    new (brickSnapshot: IBrickSnapshot): ITextRepresentation;
+    new(brickSnapshot: IBrickSnapshot): ITextRepresentation;
 }
 
 export interface ITextRepresentation {

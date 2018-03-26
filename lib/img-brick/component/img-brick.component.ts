@@ -1,7 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { IOnWallFocus, WallApi } from '../../index';
 import { ContextModalService } from '../../modules/modal';
+import { IResizeData } from '../../modules/resizable/resizable.directive';
 import { ImgBrickState } from '../img-brick-state.interface';
 import { InputContextComponent } from './input-context.component';
 
@@ -15,56 +16,62 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
     @Output() stateChanges: EventEmitter<ImgBrickState> = new EventEmitter();
 
-    @ViewChild('src') src: ElementRef;
+    @ViewChild('image') image: ElementRef;
 
-    // data
     scope: ImgBrickState = {
-        src: ''
+        src: '',
+        width: null
     };
 
-    // ui
-    uiStates: any = {
-        initial: 'initial',
-        image: 'image'
-    };
-
-    uiState: string = this.uiStates.initial;
+    lastWidth: number;
 
     imageSrcPlaceholderRef: NgbModalRef;
 
+    resizable = {
+        resize: this.onResize.bind(this),
+        resizeStart: this.onResizeStart.bind(this),
+        resizeEnd: this.onResizeEnd.bind(this)
+    };
+
     constructor(private wallApi: WallApi,
                 private contextModalService: ContextModalService,
+                private renderer: Renderer2,
                 private el: ElementRef) {
     }
 
     ngOnInit() {
-        if (this.state && this.state.src !== this.scope.src) {
-            this.scope.src = this.state.src;
+        Object.assign(this.scope, this.state);
 
-            if (this.scope.src) {
-                this.uiState = this.uiStates.image;
-            }
+        if (this.scope.src && !this.scope.width) {
+            this.setUpImageWidth();
         }
     }
 
     onWallStateChange(newState: ImgBrickState) {
         if (newState && newState.src !== this.scope.src) {
-            this.scope.src = newState.src;
-
-            if (this.scope.src) {
-                this.src.nativeElement.value = this.scope.src;
-
-                this.uiState = this.uiStates.image;
-            }
+            Object.assign(this.scope, this.state);
         }
     }
 
     onWallFocus(): void {
-        if (this.uiState === this.uiStates.initial && !this.imageSrcPlaceholderRef) {
+        if (!this.scope.src) {
             setTimeout(() => {
-                this.showImagePanel();
+                this.showPanel();
             }, 0);
         }
+    }
+
+    // resize callbacks
+    onResize(resizeData: IResizeData) {
+        this.scope.width = this.lastWidth + resizeData.offset;
+    }
+
+    onResizeStart() {
+        this.lastWidth = this.scope.width;
+    }
+
+    onResizeEnd() {
+        this.save();
     }
 
     onImageClick(e) {
@@ -77,17 +84,16 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         this.isImage(imageSrc)
             .then(() => {
                 this.scope.src = imageSrc;
-
                 this.save();
 
-                this.uiState = this.uiStates.image;
+                this.setUpImageWidth();
             })
             .catch(() => {
                 alert('Please enter valid url');
             });
     }
 
-    showImagePanel() {
+    showPanel() {
         this.imageSrcPlaceholderRef = this.contextModalService.open({
             component: InputContextComponent,
             context: {
@@ -106,8 +112,20 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         });
     }
 
+    private setUpImageWidth() {
+        this.loadImage(this.scope.src).then(() => {
+            this.scope.width = this.image.nativeElement.width;
+
+            this.save();
+        });
+    }
+
     private save() {
         this.stateChanges.emit(this.scope);
+    }
+
+    private loadImage(src: string) {
+        return this.isImage(src);
     }
 
     private isImage(src): Promise<boolean> {

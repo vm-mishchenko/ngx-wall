@@ -7,6 +7,8 @@ import { WallApi } from '../../wall';
     templateUrl: './header-brick-component.component.html'
 })
 export class HeaderBrickComponent extends BaseTextBrickComponent {
+    placeholder = 'Header';
+
     constructor(wallApi: WallApi) {
         super(wallApi);
     }

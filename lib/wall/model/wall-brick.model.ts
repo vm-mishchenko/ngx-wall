@@ -15,7 +15,11 @@ export class WallBrick {
     }
 
     updateState(newState) {
-        this.state = newState;
+        if (Object.keys(newState).length) {
+            Object.assign(this.state, newState);
+        } else {
+            this.state = {};
+        }
     }
 
     turnInto(tag: string) {

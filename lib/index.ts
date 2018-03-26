@@ -7,6 +7,7 @@ export * from './img-brick';
 export * from './divider-brick';
 export * from './quote-brick';
 export * from './video-brick';
+export * from './web-bookmark-brick';
 
 // modules
 export * from './modules/pick-out';

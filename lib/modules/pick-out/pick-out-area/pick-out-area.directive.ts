@@ -45,7 +45,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     mouseDown(event: MouseEvent) {
         const brickIdOverMouse = this.findBrickIdByCoordinate(event.clientX, event.clientY);
 
-        if (!this.isMouseOverDraggableBox(event.clientX, event.clientY)) {
+        if (!this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
             this.pickOutAreaModel = new PickOutAreaModel(
                 event.clientX,
                 event.clientY,
@@ -164,10 +164,12 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         }
     }
 
-    private isMouseOverDraggableBox(clientX: number, clientY: number): boolean {
+    private isMouseOverDraggableElement(clientX: number, clientY: number): boolean {
         let currentElement = document.elementFromPoint(clientX, clientY);
 
-        while (currentElement && !currentElement.classList.contains('wall-canvas-brick__draggable-box')) {
+        while (currentElement &&
+        !(currentElement as HTMLElement).draggable &&
+        !currentElement.classList.contains('wall-canvas-brick__draggable-box')) {
             currentElement = currentElement.parentElement;
         }
 

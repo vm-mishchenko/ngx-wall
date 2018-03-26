@@ -20,7 +20,9 @@ export class QuoteBrickModule {
             tag: 'quote',
             component: QuoteBrickComponent,
             supportText: true,
-            textRepresentation: TextRepresentation
+            textRepresentation: TextRepresentation,
+            name: 'Quote',
+            description: 'Capture a quote'
         });
     }
 }

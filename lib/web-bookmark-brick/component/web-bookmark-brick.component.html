@@ -1,0 +1,22 @@
+<w-brick-input-placeholder
+        [text]="'Add a Web Bookmark'"
+        [icon]="'oi-link-intact'"
+        [loading]="loading"
+        *ngIf="!scope.src"
+        (selected)="showPanel()">
+</w-brick-input-placeholder>
+
+<div *ngIf="scope.src" class="web-bookmark">
+    <a [href]="scope.src" class="web-bookmark__content" target="_blank" [title]="scope.src">
+        <p class="web-bookmark__title">{{scope.title}}</p>
+        <p class="web-bookmark__description">{{scope.description}}</p>
+
+        <div class="web-bookmark__link">
+            <img *ngIf="scope.logo" [src]="scope.logo.url" alt="scope.title">
+            <p>{{scope.src}}</p>
+        </div>
+    </a>
+
+    <div class="web-bookmark__img" [tow-slave]="id" [style.backgroundImage]="'url('+ scope.image?.url +')'">
+    </div>
+</div>

@@ -4,6 +4,19 @@
 
         <div class="col-5">
             <div class="mb-4">
+                <h2>Dropdown</h2>
+
+                <div ngbDropdown class="w-dropdown">
+                    <button class="btn btn-link w-btn" ngbDropdownToggle>Toggle dropdown</button>
+                    <div ngbDropdownMenu>
+                        <button class="dropdown-item">Action - 1</button>
+                        <button class="dropdown-item">Another Action</button>
+                        <button class="dropdown-item">Something else is here</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
                 <h2>Buttons</h2>
                 <button type="button" class="btn btn-primary w-btn">Primary</button>
 
@@ -107,11 +120,13 @@
 
                 <button (click)="openModal()" class="btn btn-link w-btn">Open General modal</button>
             </div>
+        </div>
 
+        <div class="col-5 w-secondary-zone">
             <div class="mb-4">
                 <h2>Dropdown</h2>
 
-                <div ngbDropdown>
+                <div ngbDropdown class="w-dropdown">
                     <button class="btn btn-link w-btn" ngbDropdownToggle>Toggle dropdown</button>
                     <div ngbDropdownMenu>
                         <button class="dropdown-item">Action - 1</button>
@@ -119,11 +134,8 @@
                         <button class="dropdown-item">Something else is here</button>
                     </div>
                 </div>
-
             </div>
-        </div>
 
-        <div class="col-5 w-secondary-zone">
             <div class="mb-4">
                 <h2>Buttons</h2>
                 <button type="button" class="btn btn-primary w-btn">Primary</button>
@@ -143,6 +155,10 @@
                 <button type="button" class="btn btn-link w-btn">
                     <span class="w-icon oi oi-image" title="icon name" aria-hidden="true"></span>
                 </button>
+
+                <button type="button" class="btn btn-link w-btn btn-sm">
+                    <span class="w-icon oi oi-image" title="icon name" aria-hidden="true"></span>
+                </button>
             </div>
 
             <div class="mb-4">
@@ -153,8 +169,6 @@
                             <p>test</p>
 
                             <button type="button" class="btn btn-link w-btn">Link</button>
-
-                            <div class="w-selection-list__context-menu"></div>
                         </div>
 
                         <ul class="w-selection-list__level-2">
@@ -171,6 +185,15 @@
                     <li>
                         <ul class="w-selection-list__level-2">
                             <li class="w-selection-list__selected_item">
+                                <div class="w-selection-list__item">foo</div>
+                            </li>
+                            <li>
+                                <div class="w-selection-list__item">foo</div>
+                            </li>
+                            <li>
+                                <div class="w-selection-list__item">foo</div>
+                            </li>
+                            <li>
                                 <div class="w-selection-list__item">foo</div>
                             </li>
                             <li>
@@ -216,20 +239,6 @@
                 <h2>Modal</h2>
 
                 <button (click)="openModal()" class="btn btn-link w-btn">Open General modal</button>
-            </div>
-
-            <div class="mb-4">
-                <h2>Dropdown</h2>
-
-                <div ngbDropdown>
-                    <button class="btn btn-link w-btn" ngbDropdownToggle>Toggle dropdown</button>
-                    <div ngbDropdownMenu>
-                        <button class="dropdown-item">Action - 1</button>
-                        <button class="dropdown-item">Another Action</button>
-                        <button class="dropdown-item">Something else is here</button>
-                    </div>
-                </div>
-
             </div>
         </div>
 

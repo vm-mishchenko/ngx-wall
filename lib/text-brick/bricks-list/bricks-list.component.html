@@ -1,0 +1,14 @@
+<div class="w-context-panel w-bricks-list">
+    <ul>
+        <li (click)="onBrickSelected(brickDescription)"
+            [ngClass]="{'w-bricks-list__selected': (selectedTag$ | async) === brickDescription.tag}"
+            *ngFor="let brickDescription of bricksList$ | async; trackBy: trackByFn">
+            <p>
+                {{brickDescription.name}}
+            </p>
+            <p class="w-bricks-list__description">
+                {{brickDescription.description}}
+            </p>
+        </li>
+    </ul>
+</div>

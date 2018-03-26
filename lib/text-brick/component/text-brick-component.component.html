@@ -1,7 +1,10 @@
 <p #editor
+   attr.placeholder="{{placeholder}}"
    (input)="onTextChange()"
    [(ngModel)]="scope.text"
    (keydown)="onKeyPress($event)"
    class="text-brick__editor"
+   (blur)="onBlur()"
+   (focus)="onFocus()"
    contenteditable>
 </p>

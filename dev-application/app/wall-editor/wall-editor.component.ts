@@ -25,150 +25,34 @@ export class WallEditorComponent implements OnInit {
     wallPlan: IWallDefinition = {
         'bricks': [
             {
-                'id': '46d291d5-b057-8798-00af-ed9ba015fcda',
-                'tag': 'header',
-                'data': {
-                    'text': 'WALL'
-                },
-                'meta': {}
-            },
-            {
-                'id': '5cb0d4dd-24fa-de29-8785-619747830add',
-                'tag': 'quote',
-                'data': {
-                    'text': 'The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (bricks) based on Angular components.'
-                },
-                'meta': {}
-            },
-            {
-                'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f',
-                'tag': 'header',
-                'data': {
-                    'text': 'Navigation\n'
-                },
-                'meta': {}
-            },
-            {
-                'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743',
+                'id': 'f6cdbdab-029a-50ee-d6de-5f8b2b2667df',
                 'tag': 'text',
-                'data': {
-                    'text': 'Press `Escape` to enter to Selection mode'
-                },
-                'meta': {}
+                'meta': {},
+                'data': {}
             },
             {
-                'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e',
+                'id': 'aa3f57ed-b176-257f-9668-42880fb299b0',
                 'tag': 'text',
+                'meta': {},
                 'data': {
-                    'text': 'Press Shift to select few bricks'
-                },
-                'meta': {}
+                    'text': ''
+                }
             },
             {
-                'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d',
-                'tag': 'header',
-                'data': {
-                    'text': 'Roadmap\n'
-                },
-                'meta': {}
-            },
-            {
-                'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17',
+                'id': '70a48cf9-0d51-567b-5c4a-9f72e429176a',
                 'tag': 'text',
+                'meta': {},
                 'data': {
-                    'text': '- improve selection experience for media bricks'
-                },
-                'meta': {}
+                    'text': ''
+                }
             },
             {
-                'id': '74928e82-54d8-c166-1e17-0de2b174bb02',
-                'tag': 'text',
+                'id': '6156d55d-1b63-0e7e-feea-6d41728274e5',
+                'tag': 'image',
+                'meta': {},
                 'data': {
-                    'text': '- improve re-rendering algorithm'
-                },
-                'meta': {}
-            },
-            {
-                'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2',
-                'tag': 'text',
-                'data': {
-                    'text': '- support readonly mode'
-                },
-                'meta': {}
-            },
-            {
-                'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d',
-                'tag': 'header',
-                'data': {
-                    'text': 'Supported tags\n'
-                },
-                'meta': {}
-            },
-            {
-                'id': 'a587554d-5698-8988-0039-ae1db771695e',
-                'tag': 'text',
-                'data': {
-                    'text': '/h header'
-                },
-                'meta': {}
-            },
-            {
-                'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb',
-                'tag': 'text',
-                'data': {
-                    'text': '/img image'
-                },
-                'meta': {}
-            },
-            {
-                'id': '2e1c3c38-e75c-2c45-df3e-af887b258571',
-                'tag': 'd',
-                'data': {},
-                'meta': {}
-            },
-            {
-                'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e',
-                'tag': 'text',
-                'data': {
-                    'text': '/quote quote'
-                },
-                'meta': {}
-            },
-            {
-                'id': 'cd73851a-16fe-5363-5274-bd9adb27af06',
-                'tag': 'text',
-                'data': {
-                    'text': '/d divider'
-                },
-                'meta': {}
-            },
-            {
-                'id': 'e3a9d696-55bc-46d7-7009-a33774934aef',
-                'tag': 'v',
-                'data': {
-                    'src': 'https://www.youtube.com/embed/YR5ApYxkU-U'
-                },
-                'meta': {}
-            },
-            {
-                'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc',
-                'tag': 'd',
-                'data': {},
-                'meta': {}
-            },
-            {
-                'id': '299f6ef7-6c2e-dcd0-c591-de6733195437',
-                'tag': 'text',
-                'data': {},
-                'meta': {}
-            },
-            {
-                'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85',
-                'tag': 'text',
-                'data': {
-                    'text': '/v video'
-                },
-                'meta': {}
+                    'src': 'https://cdn.pixabay.com/photo/2017/08/15/08/23/galaxy-2643089_960_720.jpg'
+                }
             }
         ],
         'layout': {
@@ -178,121 +62,48 @@ export class WallEditorComponent implements OnInit {
                         {
                             'bricks': [
                                 {
-                                    'id': '46d291d5-b057-8798-00af-ed9ba015fcda'
+                                    'id': 'f6cdbdab-029a-50ee-d6de-5f8b2b2667df'
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    'id': '2db30bf7-378a-2b48-113e-c3467484598f'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '78fcc4fb-372e-a7c5-245a-26d6263790bc'
+                                    'id': 'aa3f57ed-b176-257f-9668-42880fb299b0'
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    'id': 'b76e08a0-469d-8393-6057-e95726ffab37'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '5cb0d4dd-24fa-de29-8785-619747830add'
+                                    'id': '70a48cf9-0d51-567b-5c4a-9f72e429176a'
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    'id': 'a6835ed8-70e9-f16e-9b02-b8550da7da11'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '299f6ef7-6c2e-dcd0-c591-de6733195437'
+                                    'id': '6156d55d-1b63-0e7e-feea-6d41728274e5'
                                 }
                             ]
                         }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': 'e3a9d696-55bc-46d7-7009-a33774934aef'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '2e1c3c38-e75c-2c45-df3e-af887b258571'
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'columns': [
-                        {
-                            'bricks': [
-                                {
-                                    'id': '9f8e4cb8-d632-71b1-a1cc-89bf3ff8c96f'
-                                },
-                                {
-                                    'id': 'a3acc3a3-53d5-70ec-b374-90d6d39e2743'
-                                },
-                                {
-                                    'id': '20307eb4-6c6a-0481-cf3d-af2c17b0487e'
-                                }
-                            ]
-                        },
-                        {
-                            'bricks': [
-                                {
-                                    'id': '2d7f65b4-ea8a-a86c-e99c-dd57c858d58d'
-                                },
-                                {
-                                    'id': '4edc3d51-cf7c-6648-a4fe-fe9418ea6c17'
-                                },
-                                {
-                                    'id': '74928e82-54d8-c166-1e17-0de2b174bb02'
-                                },
-                                {
-                                    'id': '0a182d45-04c0-3852-7899-9ad9fc90d6a2'
-                                }
-                            ]
-                        },
-                        {
-                            'bricks': [
-                                {
-                                    'id': 'a855168e-2e86-8c59-24bc-a7a6f0c3245d'
-                                },
-                                {
-                                    'id': 'a587554d-5698-8988-0039-ae1db771695e'
-                                },
-                                {
-                                    'id': 'bf6077f7-0dda-9d7c-5fc8-dcd5bccb621e'
-                                },
-                                {
-                                    'id': 'cd73851a-16fe-5363-5274-bd9adb27af06'
-                                },
-                                {
-                                    'id': '1147c417-c1ad-2550-7d96-bc5bd02470cb'
-                                },
-                                {
-                                    'id': '669f8a76-a4a7-8cbe-a15a-c77149194a85'
-                                }
-                            ]
-                        }
-                    ]
+                    ],
+                    'id': '58236ec0-b7d5-ac10-36cb-bd8fef00a899'
                 }
             ]
         }

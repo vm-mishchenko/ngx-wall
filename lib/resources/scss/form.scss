@@ -7,7 +7,7 @@
   color: $w-default-color;
   background-color: $w-thin-color;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  font-size: $w-default-form-form-size;
+  font-size: $w-main-font-size;
 
   &:focus {
     box-shadow: none;

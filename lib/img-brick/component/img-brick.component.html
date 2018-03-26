@@ -1,7 +1,10 @@
-<img [hidden]="uiState !== uiStates.image" [src]="scope.src" (click)="onImageClick($event)">
+<div class="img_brick__image_container" [style.width]="scope.width ? scope.width+'px' : 'auto'">
+    <img #image *ngIf="scope.src" [wResizable]="resizable" [src]="scope.src"
+         (click)="onImageClick($event)">
+</div>
 
 <w-brick-input-placeholder
+        *ngIf="!scope.src"
         [text]="'Add an Image'"
-        [icon]="'oi-image'"
-        [hidden]="uiState === uiStates.image" (selected)="showImagePanel()">
+        [icon]="'oi-image'" (selected)="showPanel()">
 </w-brick-input-placeholder>

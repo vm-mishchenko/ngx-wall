@@ -56,7 +56,6 @@
     ],
     "angular-whitespace": [
       true,
-      "check-interpolation",
       "check-pipe"
     ],
     "banana-in-box": true,

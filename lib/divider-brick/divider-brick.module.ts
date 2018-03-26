@@ -10,8 +10,10 @@ import { DividerBrickComponent } from './component/divider-brick.component';
 export class DividerBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
-            tag: 'd',
-            component: DividerBrickComponent
+            tag: 'divider',
+            component: DividerBrickComponent,
+            name: 'Divider',
+            description: 'Visually divide blocks'
         });
     }
 }

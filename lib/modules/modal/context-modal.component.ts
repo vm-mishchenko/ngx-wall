@@ -13,10 +13,11 @@ export class ContextModalComponent implements OnDestroy {
     @Input() x: number;
     @Input() y: number;
     @Input() component: any;
+    @Input() componentData: any;
 
     @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    private componentRef: ComponentRef<any>;
+    componentRef: ComponentRef<any>;
 
     constructor(private renderer: Renderer2, public el: ElementRef, private resolver: ComponentFactoryResolver) {
     }
@@ -25,6 +26,8 @@ export class ContextModalComponent implements OnDestroy {
         const factory = this.resolver.resolveComponentFactory(this.component);
 
         this.componentRef = this.container.createComponent(factory);
+
+        this.componentRef.instance.config = this.componentData;
 
         this.renderer.setStyle(this.el.nativeElement,
             'transform',

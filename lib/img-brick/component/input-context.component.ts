@@ -7,7 +7,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
             <div class="w-brick-input__header"></div>
 
             <div class="w-brick-input__body">
-                <form>
+                <form (submit)="onSubmit($event)">
                     <div class="form-group w-form-group">
                         <input #src class="form-control w-input" placeholder="Paste the image link">
                     </div>
@@ -44,5 +44,11 @@ export class InputContextComponent implements OnInit {
         this.activeModal.close({
             src: this.srcInput.nativeElement.value
         });
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        this.applyImageSrc();
     }
 }

@@ -1,4 +1,4 @@
-import { ElementRef, Injectable, Input, Renderer2, RendererFactory2 } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
 import { ContextModalComponent } from './context-modal.component';
@@ -11,7 +11,7 @@ export interface IContextModalOptions {
         coordinate?: {
             x: number,
             y: number,
-            direction: number
+            direction?: number
         },
 
         relative?: {
@@ -46,13 +46,20 @@ export class ContextModalService {
         });
 
         componentInstance.component = options.component;
+        componentInstance.componentData = options.componentData;
+
         componentInstance.onWallInitialize();
 
-        if (options.context.relative) {
-            setTimeout(() => {
-                let x;
-                let y;
+        setTimeout(() => {
+            let x;
+            let y;
 
+            if (options.context.coordinate) {
+                x = options.context.coordinate.x;
+                y = options.context.coordinate.y;
+            }
+
+            if (options.context.relative) {
                 const relativeContext = options.context.relative;
 
                 options.context.relative.direction = relativeContext.direction ||
@@ -61,15 +68,14 @@ export class ContextModalService {
                 if (relativeContext.direction === CONTEXT_MODAL.relative.direction.bottom) {
                     const relativeElementPosition = relativeContext.nativeElement.getBoundingClientRect();
                     const contextComponentWidth = componentInstance.el.nativeElement.offsetWidth;
-                    const contextComponentHeight = componentInstance.el.nativeElement.offsetHeight;
 
                     x = relativeElementPosition.x + (relativeElementPosition.width / 2) - (contextComponentWidth / 2);
                     y = relativeElementPosition.y + relativeElementPosition.height + 5;
                 }
+            }
 
-                componentInstance.updatePosition(x, y);
-            }, 0);
-        }
+            componentInstance.updatePosition(x, y);
+        }, 0);
 
         return contextModalInstance;
     }

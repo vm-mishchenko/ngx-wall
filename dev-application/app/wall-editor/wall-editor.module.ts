@@ -9,7 +9,8 @@ import {
     TextBrickModule,
     TowModule,
     VideoBrickModule,
-    WallModule
+    WallModule,
+    WebBookmarkBrickModule
 } from 'ngx-wall';
 
 import { WallEditorComponent } from './wall-editor.component';
@@ -24,6 +25,7 @@ import { WallEditorComponent } from './wall-editor.component';
         VideoBrickModule,
         HeaderBrickModule,
         ImgBrickModule,
+        WebBookmarkBrickModule,
 
         WallModule,
 

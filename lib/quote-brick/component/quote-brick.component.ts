@@ -7,6 +7,8 @@ import { WallApi } from '../../wall';
     templateUrl: './quote-brick.component.html'
 })
 export class QuoteBrickComponent extends BaseTextBrickComponent {
+    placeholder = 'Quote';
+
     constructor(wallApi: WallApi) {
         super(wallApi);
     }
