@@ -1,19 +1,40 @@
 export class PickOutAreaModel {
+    // brick ids allow to define should we render area component
+    initialBrickId: string;
+    currentBrickId: string;
+
+    // calculate pick out area width and height
     initialX: number;
     initialY: number;
-    initialBrickId: string;
 
+    // store last client X and Y position before scroll event
+    previousClientX: number;
+    previousClientY: number;
+
+    // coordinates inside scrollable container
     x: number;
     y: number;
+
+    // coordinates related to viewport
+    clientX: number;
+    clientY: number;
+
+    // size of pick out area
     width: number;
     height: number;
-    currentBrickId: string;
+
+    isPickOutProcessInitialized = false;
+
+    scrollableContainer: HTMLElement;
 
     private minimumMoveDistance = 5;
 
-    constructor(x: number,
+    constructor(scrollableContainer: HTMLElement,
+                x: number,
                 y: number,
                 overBrickId: string) {
+        this.scrollableContainer = scrollableContainer;
+
         this.initialX = x;
         this.initialY = y;
 
@@ -24,7 +45,36 @@ export class PickOutAreaModel {
         this.currentBrickId = overBrickId;
     }
 
-    updateCurrentPosition(x: number, y: number) {
+    recalculatePositionAndSize() {
+        const scrollContextRect = this.scrollableContainer.getBoundingClientRect();
+
+        const pageX = this.previousClientX - scrollContextRect.left;
+        const pageY = this.previousClientY - scrollContextRect.top + this.scrollableContainer.scrollTop;
+
+        this.updatePickOutAreaPositionAndSize(pageX, pageY);
+    }
+
+    updateCurrentClientPosition(clientX: number, clientY: number) {
+        this.previousClientX = clientX;
+        this.previousClientY = clientY;
+
+        this.recalculatePositionAndSize();
+    }
+
+    updateCurrentBrickId(brickId: string): void {
+        this.currentBrickId = brickId;
+    }
+
+    canInitiatePickOutProcess(): boolean {
+        return this.isMouseMovedEnough() &&
+            (!this.currentBrickId || this.currentBrickId !== this.initialBrickId);
+    }
+
+    initiatePickOutProcess() {
+        this.isPickOutProcessInitialized = true;
+    }
+
+    private updatePickOutAreaPositionAndSize(x: number, y: number) {
         // update x position and width
         if (x < this.initialX) {
             this.width = this.initialX - x;
@@ -42,15 +92,11 @@ export class PickOutAreaModel {
         } else {
             this.height = Math.abs(y - this.y);
         }
-    }
 
-    updateCurrentBrickId(brickId: string): void {
-        this.currentBrickId = brickId;
-    }
+        const scrollContextRect = this.scrollableContainer.getBoundingClientRect();
 
-    canInitiatePickOutProcess(): boolean {
-        return this.isMouseMovedEnough() &&
-            (!this.currentBrickId || this.currentBrickId !== this.initialBrickId);
+        this.clientX = scrollContextRect.left + this.x;
+        this.clientY = scrollContextRect.top + this.y - this.scrollableContainer.scrollTop;
     }
 
     private isMouseMovedEnough(): boolean {

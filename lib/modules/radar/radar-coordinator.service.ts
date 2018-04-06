@@ -28,21 +28,15 @@ export class RadarCoordinator {
             .throttleTime(throttleMouseTime)
             .subscribe((event) => {
                 this.updateSpotsInfo();
-
-                const x = event.x;
-                const y = event.y + window.pageYOffset;
-
-                this.updateLocationPosition(x, y);
+                this.updateLocationPosition(event.clientX, event.clientY);
             });
     }
 
     register(spotId: SpotId, spotInstance: SpotDirective) {
-        // todo: notify when new spots added
         this.spots.set(spotId, new SpotModel(spotInstance));
     }
 
     unRegister(spotId: SpotId) {
-        // todo: notify when spot was removed
         this.spots.delete(spotId);
     }
 

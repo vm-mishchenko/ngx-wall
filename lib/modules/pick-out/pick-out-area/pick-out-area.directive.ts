@@ -1,9 +1,20 @@
 import { DOCUMENT } from '@angular/common';
 import {
-    ApplicationRef, ComponentFactoryResolver, ComponentRef, Directive, EmbeddedViewRef, HostListener, Inject,
-    Injector, OnDestroy, OnInit
+    ApplicationRef,
+    ComponentFactoryResolver,
+    ComponentRef,
+    Directive,
+    ElementRef,
+    EmbeddedViewRef,
+    HostListener,
+    Inject,
+    Injector,
+    Input,
+    OnDestroy,
+    OnInit
 } from '@angular/core';
 import { PickOutCoordinator } from '../pick-out-coordinator.service';
+import { IPickOutAreaConfig } from './pick-out-area-config.interface';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutAreaModel } from './pick-out-area.model';
 
@@ -11,22 +22,27 @@ import { PickOutAreaModel } from './pick-out-area.model';
     selector: '[pick-out-area]'
 })
 export class PickOutAreaDirective implements OnInit, OnDestroy {
+    @Input('pick-out-area') config: IPickOutAreaConfig;
+
     doc: any = null;
 
     pickOutAreaModel: PickOutAreaModel = null;
 
-    selectionProcessStarted = false;
-
     selectionRangeComponentRef: ComponentRef<PickOutAreaComponent> = null;
 
-    onMouseUpBound: any;    // todo add type
-    onMouseMoveBound: any;
-    onSelectionStartBound: any;
+    onMouseUpBound: () => any;
+    onMouseMoveBound: (event: MouseEvent) => void;
+    onSelectionStartBound: () => any;
+    onContainerScrollBound: () => any;
+
+    previousClientX: number;
+    previousClientY: number;
 
     constructor(@Inject(DOCUMENT) doc,
                 private pickOutCoordinator: PickOutCoordinator,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
+                private el: ElementRef,
                 private injector: Injector) {
         this.doc = doc;
     }
@@ -35,55 +51,76 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.onMouseUpBound = this.onMouseUp.bind(this);
         this.onMouseMoveBound = this.onMouseMove.bind(this);
         this.onSelectionStartBound = this.onSelectionStart.bind(this);
+        this.onContainerScrollBound = this.onContainerScroll.bind(this);
 
         this.doc.addEventListener('mouseup', this.onMouseUpBound);
         this.doc.addEventListener('mousemove', this.onMouseMoveBound);
         this.doc.addEventListener('selectstart', this.onSelectionStartBound);
+        this.config.scrollableContainer.addEventListener('scroll', this.onContainerScrollBound);
+    }
+
+    triggerPickOutChanged() {
+        this.pickOutCoordinator.pickOutChanged({
+            x: this.pickOutAreaModel.clientX,
+            y: this.pickOutAreaModel.clientY,
+            width: this.pickOutAreaModel.width,
+            height: this.pickOutAreaModel.height
+        });
     }
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        const brickIdOverMouse = this.findBrickIdByCoordinate(event.clientX, event.clientY);
+        const scrollContextRect = this.config.scrollableContainer.getBoundingClientRect();
+
+        const pageX = event.clientX - scrollContextRect.left;
+        const pageY = event.clientY - scrollContextRect.top + this.config.scrollableContainer.scrollTop;
+
+        const brickIdOverMouse = this.findBrickIdByCoordinate(pageX, pageY);
 
         if (!this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
             this.pickOutAreaModel = new PickOutAreaModel(
-                event.clientX,
-                event.clientY,
+                this.config.scrollableContainer,
+                pageX,
+                pageY,
                 brickIdOverMouse
             );
         }
     }
 
-    onSelectionStart(e) {
-        if (this.selectionProcessStarted) {
-            e.preventDefault();
-        }
-    }
-
-    onMouseMove(event: MouseEvent) {
+    onMouseMove(event: any) {
         if (this.pickOutAreaModel) {
-            this.pickOutAreaModel.updateCurrentPosition(event.clientX, event.clientY);
+            this.pickOutAreaModel.updateCurrentClientPosition(event.clientX, event.clientY);
             this.pickOutAreaModel.updateCurrentBrickId(this.findBrickIdByCoordinate(event.clientX, event.clientY));
 
-            if (this.selectionProcessStarted) {
+            if (this.pickOutAreaModel.isPickOutProcessInitialized) {
                 event.preventDefault();
 
-                this.pickOutCoordinator.pickOutChanged({
-                    x: this.pickOutAreaModel.x,
-                    y: this.pickOutAreaModel.y + window.scrollY,
-                    width: this.pickOutAreaModel.width,
-                    height: this.pickOutAreaModel.height
-                });
-            } else {
-                if (this.pickOutAreaModel.canInitiatePickOutProcess()) {
-                    this.startPicKOut();
-                }
+                this.triggerPickOutChanged();
+            } else if (this.pickOutAreaModel.canInitiatePickOutProcess()) {
+                this.pickOutAreaModel.initiatePickOutProcess();
+
+                this.onStartPicKOut();
             }
         }
     }
 
     onMouseUp() {
-        this.stopPickOut();
+        this.onStopPickOut();
+    }
+
+    onContainerScroll() {
+        if (this.pickOutAreaModel && this.pickOutAreaModel.isPickOutProcessInitialized) {
+            this.pickOutAreaModel.recalculatePositionAndSize();
+
+            this.triggerPickOutChanged();
+        }
+    }
+
+    onSelectionStart(e) {
+        // does not allow select text during pick out process
+        if (this.pickOutAreaModel && this.pickOutAreaModel.isPickOutProcessInitialized) {
+            e.preventDefault();
+        }
     }
 
     renderRangeComponent() {
@@ -104,7 +141,8 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
             .rootNodes[0] as HTMLElement;
 
         // 4. Append DOM element to the body
-        document.body.appendChild(domElem);
+
+        this.config.scrollableContainer.appendChild(domElem);
     }
 
     removeRangeComponent() {
@@ -113,9 +151,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.selectionRangeComponentRef = null;
     }
 
-    startPicKOut() {
-        this.selectionProcessStarted = true;
-
+    onStartPicKOut() {
         this.pickOutCoordinator.startPickOut();
 
         this.doc.activeElement.blur();
@@ -125,10 +161,8 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.clearSelection();
     }
 
-    stopPickOut() {
-        if (this.selectionProcessStarted) {
-            this.selectionProcessStarted = false;
-
+    onStopPickOut() {
+        if (this.pickOutAreaModel && this.pickOutAreaModel.isPickOutProcessInitialized) {
             this.removeRangeComponent();
 
             this.pickOutCoordinator.endPickOut();
@@ -141,14 +175,15 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.doc.removeEventListener('mouseup', this.onMouseUpBound);
         this.doc.removeEventListener('mousemove', this.onMouseMoveBound);
         this.doc.removeEventListener('selectstart', this.onSelectionStartBound);
+        this.config.scrollableContainer.removeEventListener('scroll', this.onContainerScrollBound);
     }
 
     private clearSelection() {
         window.getSelection().empty();
     }
 
-    private findBrickIdByCoordinate(clientX: number, clientY: number): string {
-        let currentElement = document.elementFromPoint(clientX, clientY);
+    private findBrickIdByCoordinate(pageX: number, clientY: number): string {
+        let currentElement = document.elementFromPoint(pageX, clientY);
 
         while (currentElement && currentElement.tagName !== 'WALL-CANVAS-BRICK') {
             currentElement = currentElement.parentElement;

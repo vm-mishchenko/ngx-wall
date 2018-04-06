@@ -43,8 +43,8 @@ export class SpotDirective implements OnInit, OnDestroy {
         const offsets = this.el.nativeElement.getBoundingClientRect();
 
         return {
-            x: offsets.left + window.pageXOffset,
-            y: offsets.top + window.pageYOffset
+            x: offsets.left,
+            y: offsets.top
         };
     }
 

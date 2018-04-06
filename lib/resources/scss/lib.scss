@@ -325,7 +325,7 @@ web-bookmark-brick {
 // selection range
 .pick-out-area {
   opacity: 0.5;
-  position: fixed;
+  position: absolute;
   background-color: $w-middle-grey;
 }
 

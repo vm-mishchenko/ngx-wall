@@ -34,12 +34,13 @@ export class PickOutCoordinator {
     }
 
     pickOutChanged(range) {
-        // todo: filter spots only when some spots was added or removed
         const pickOutSpotModels = this.radar.filterSpots((spot: SpotModel) => spot.data.isPickOutItem);
 
-        const selectedItems = this.getSelectedItemIds(range, pickOutSpotModels);
+        pickOutSpotModels.forEach((spotModel) => {
+            spotModel.updateInfo();
+        });
 
-        this.changes.next(new PickOutItems(selectedItems));
+        this.changes.next(new PickOutItems(this.getSelectedItemIds(range, pickOutSpotModels)));
     }
 
     endPickOut() {
@@ -47,11 +48,13 @@ export class PickOutCoordinator {
     }
 
     private getSelectedItemIds(range, pickOutsItem: SpotModel[]): string[] {
-        return pickOutsItem.filter((pickOutItem) => {
-            return (range.x < (pickOutItem.position.x + pickOutItem.size.width) &&
-                (range.x + range.width) > pickOutItem.position.x &&
-                (range.y + range.height) > pickOutItem.position.y &&
-                range.y < (pickOutItem.position.y + pickOutItem.size.height));
-        }).map((pickOutItem) => pickOutItem.data.brickId);
+        return pickOutsItem
+            .filter((pickOutItem) => {
+                return (range.x < (pickOutItem.position.x + pickOutItem.size.width) &&
+                    (range.x + range.width) > pickOutItem.position.x &&
+                    (range.y + range.height) > pickOutItem.position.y &&
+                    range.y < (pickOutItem.position.y + pickOutItem.size.height));
+            })
+            .map((pickOutItem) => pickOutItem.data.brickId);
     }
 }

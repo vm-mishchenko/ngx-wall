@@ -1,14 +1,16 @@
-<div pick-out-area>
-    <div class="wrapper">
-        <wall [model]="wall2Model"
-              [configuration]="wallConfiguration"></wall>
+<div #container style="height: 100vh; overflow: auto; position: relative;">
+    <div [pick-out-area]="{scrollEl: container}">
+        <div class="wrapper">
+            <wall [model]="wall2Model"
+                  [configuration]="wallConfiguration"></wall>
+        </div>
     </div>
+
+    <br>
+    <hr>
+    <br>
+
+    <pre>
+        {{plan | json}}
+    </pre>
 </div>
-
-<br>
-<hr>
-<br>
-
-<pre>
-    {{plan | json}}
-</pre>

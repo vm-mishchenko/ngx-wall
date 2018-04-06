@@ -23,7 +23,6 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
         side: string;
     };
     private placeholderHeight = 2;
-    private currentYScrollPosition: number;
     private isEnableDropZoneHighlight: boolean = false;
 
     private towServiceSubscription: Subscription;
@@ -36,14 +35,6 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
                 private towService: TowService,
                 @Inject(DOCUMENT) doc) {
         this.doc = doc;
-
-        this.currentYScrollPosition = window.pageYOffset;
-
-        window.addEventListener('scroll', () => {
-            this.placeholderRenderer.clear();
-
-            this.currentYScrollPosition = window.pageYOffset;
-        });
 
         this.onMouseDownBound = this.onMouseDown.bind(this);
         this.onKeyDownHandlerBound = this.onKeyDownHandler.bind(this);
@@ -141,13 +132,13 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
                             nearestSpot = spot;
                         } else {
                             const currentSpotMinimalDistance = spot.getMinimalDistanceToPoint(
-                                e.mousePosition.xViewportPosition,
-                                e.mousePosition.yPosition
+                                e.mousePosition.clientX,
+                                e.mousePosition.clientY
                             );
 
                             const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
-                                e.mousePosition.xViewportPosition,
-                                e.mousePosition.yPosition
+                                e.mousePosition.clientX,
+                                e.mousePosition.clientY
                             );
 
                             if (currentSpotMinimalDistance < nearestSpotMinimalDistance) {
@@ -158,8 +149,8 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
 
                     if (nearestSpot) {
                         const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
-                            e.mousePosition.xViewportPosition,
-                            e.mousePosition.yPosition
+                            e.mousePosition.clientX,
+                            e.mousePosition.clientY
                         );
 
                         if (nearestSpotMinimalDistance < 50) {
@@ -169,23 +160,23 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
                                 type: null
                             };
 
-                            if (e.mousePosition.xViewportPosition < nearestSpot.position.x) {
+                            if (e.mousePosition.clientX < nearestSpot.position.x) {
                                 this.nearestBrickToDrop.type = TOW.dropTypes.vertical;
                                 this.nearestBrickToDrop.side = TOW.dropSides.left;
                             }
 
-                            if (e.mousePosition.xViewportPosition > nearestSpot.position.x + nearestSpot.size.width) {
+                            if (e.mousePosition.clientX > nearestSpot.position.x + nearestSpot.size.width) {
                                 this.nearestBrickToDrop.type = TOW.dropTypes.vertical;
                                 this.nearestBrickToDrop.side = TOW.dropSides.right;
                             }
 
-                            if (e.mousePosition.xViewportPosition > nearestSpot.position.x &&
-                                e.mousePosition.xViewportPosition < nearestSpot.position.x + nearestSpot.size.width) {
+                            if (e.mousePosition.clientX > nearestSpot.position.x &&
+                                e.mousePosition.clientX < nearestSpot.position.x + nearestSpot.size.width) {
                                 this.nearestBrickToDrop.type = TOW.dropTypes.horizontal;
 
                                 const centerYPosition = nearestSpot.position.y + (nearestSpot.size.height / 2);
 
-                                this.nearestBrickToDrop.side = e.mousePosition.yViewportPosition < centerYPosition ?
+                                this.nearestBrickToDrop.side = e.mousePosition.clientY < centerYPosition ?
                                     TOW.dropSides.top : TOW.dropSides.bottom;
                             }
 
@@ -322,18 +313,18 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
             placeholderSize = spot.size.width;
 
             if (side === TOW.dropSides.top) {
-                placeholderY = spot.position.y - this.currentYScrollPosition - this.placeholderHeight;
+                placeholderY = spot.position.y - this.placeholderHeight;
             }
 
             if (side === TOW.dropSides.bottom) {
-                placeholderY = spot.position.y + spot.size.height - this.currentYScrollPosition;
+                placeholderY = spot.position.y + spot.size.height;
             }
 
             placeholderIsHorizontal = true;
         }
 
         if (type === TOW.dropTypes.vertical) {
-            placeholderY = spot.position.y - this.currentYScrollPosition;
+            placeholderY = spot.position.y;
             placeholderSize = spot.size.height;
             placeholderIsHorizontal = false;
 

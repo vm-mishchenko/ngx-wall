@@ -25,7 +25,7 @@ export class TowCoordinator {
 
                 event.dataTransfer.dropEffect = 'move';
 
-                this.slaveWorkProgress(event.x, event.y);
+                this.slaveWorkProgress(event.clientX, event.clientY);
             }
         });
 
@@ -40,15 +40,10 @@ export class TowCoordinator {
         this.events.next(new StartWorkingEvent(id));
     }
 
-    slaveWorkProgress(xViewportPosition: number, yViewportPosition: number) {
-        // respect window scroll position
-        const yPosition = yViewportPosition + this.currentYScrollPosition;
-
+    slaveWorkProgress(clientX: number, clientY: number) {
         this.events.next(new WorkInProgressEvent({
-            xViewportPosition,
-            yViewportPosition,
-            xPosition: xViewportPosition,
-            yPosition
+            clientX,
+            clientY
         }));
     }
 
