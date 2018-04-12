@@ -70,14 +70,13 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        const scrollContextRect = this.config.scrollableContainer.getBoundingClientRect();
-
-        const pageX = event.clientX - scrollContextRect.left;
-        const pageY = event.clientY - scrollContextRect.top + this.config.scrollableContainer.scrollTop;
-
-        const brickIdOverMouse = this.findBrickIdByCoordinate(pageX, pageY);
-
         if (!this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
+            const scrollContextRect = this.config.scrollableContainer.getBoundingClientRect();
+            const pageX = event.clientX - scrollContextRect.left;
+            const pageY = event.clientY - scrollContextRect.top + this.config.scrollableContainer.scrollTop;
+
+            const brickIdOverMouse = this.findBrickIdByCoordinate(event.clientX, event.clientY);
+
             this.pickOutAreaModel = new PickOutAreaModel(
                 this.config.scrollableContainer,
                 pageX,
