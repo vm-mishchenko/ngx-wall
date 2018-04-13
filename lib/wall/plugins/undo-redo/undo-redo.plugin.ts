@@ -31,7 +31,8 @@ export class UndoRedoPlugin implements IPluginDestroy {
             undo: this.undo.bind(this),
             undoSize: this.undoSize.bind(this),
             redo: this.redo.bind(this),
-            redoSize: this.redoSize.bind(this)
+            redoSize: this.redoSize.bind(this),
+            clear: this.clear.bind(this)
         } as IUndoRedoApi);
 
         this.apiSubscription = this.wallApi.core.subscribe((e) => {
@@ -104,5 +105,10 @@ export class UndoRedoPlugin implements IPluginDestroy {
 
             this.processingUndo = false;
         }
+    }
+
+    private clear() {
+        this.undoPlanStack = [];
+        this.redoPlanStack = [];
     }
 }
