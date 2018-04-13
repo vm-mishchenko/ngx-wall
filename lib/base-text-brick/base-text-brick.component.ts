@@ -12,6 +12,16 @@ enum LineType {
     last = 'LAST'
 }
 
+export interface IBreakLineInfo {
+    countOfLines: number;
+    breakIndexes: number[];
+}
+
+export interface ICursorPositionInLine {
+    isOnLastLine: boolean;
+    isOnFirstLine: boolean;
+}
+
 export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWallStateChange, IOnWallFocus {
     @Input() id: string;
     @Input() state: IBaseTextState;
@@ -29,6 +39,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     textChange: Subject<string> = new Subject();
 
     textChangeSubscription: Subscription;
+    onPasteBound: any;
 
     constructor(public wallApi: WallApi) {
     }
@@ -38,17 +49,13 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             this.scope.text = this.state.text || '';
         }
 
-        setTimeout(() => {
-            this.stringInfo = this.getStringInfo();
-        }, 10);
+        this.onPasteBound = this.onPaste.bind(this);
 
-        this.editor.nativeElement.addEventListener('paste', this.onPaste.bind(this), false);
+        this.editor.nativeElement.addEventListener('paste', this.onPasteBound);
 
         this.textChangeSubscription = this.textChange.debounceTime(100)
             .subscribe(() => {
                 this.saveCurrentState();
-
-                this.stringInfo = this.getStringInfo();
             });
     }
 
@@ -59,6 +66,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     ngOnDestroy() {
+        this.editor.nativeElement.removeEventListener('paste', this.onPasteBound);
         this.textChangeSubscription.unsubscribe();
     }
 
@@ -108,7 +116,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.rightKeyPressed(e);
             }
 
-            if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() && this.scope.text.length) {
+            if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() &&
+                this.scope.text.length && !this.isTextSelected()) {
                 this.concatWithPreviousTextSupportingBrick(e);
             }
 
@@ -172,19 +181,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     isCaretAtFirstLine(): boolean {
-        if (this.stringInfo.countOfLines === 1) {
-            return true;
-        } else {
-            return this.getCaretPosition() < this.stringInfo.breakIndexes[0];
-        }
+        return this.getCursorPositionInLine().isOnFirstLine;
     }
 
     isCaretAtLastLine(): boolean {
-        if (this.stringInfo.countOfLines === 1) {
-            return true;
-        } else {
-            return this.getCaretPosition() >= this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
-        }
+        return this.getCursorPositionInLine().isOnLastLine;
     }
 
     getCaretLeftCoordinate(): number {
@@ -207,30 +208,74 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         return leftCoordinate;
     }
 
-    getStringInfo(): IStringInfo {
-        const info = {
+    getCursorPositionInLine(): ICursorPositionInLine {
+        // http://jsbin.com/qifezupu/31/edit?js,output
+        if (!this.scope.text) {
+            return {
+                isOnLastLine: true,
+                isOnFirstLine: true
+            };
+        } else {
+            const se = this.getCaretPosition();
+
+            const div = this.createElementClone();
+
+            document.body.appendChild(div);
+
+            const span1 = document.createElement('SPAN');
+            const span2 = document.createElement('SPAN');
+
+            div.appendChild(span1);
+            div.appendChild(span2);
+
+            span1.innerText = 'a';
+
+            const lh = span1.offsetHeight;
+
+            span1.innerText = this.scope.text.slice(0, se);
+            span2.innerText = this.scope.text.slice(se);
+
+            const isOnFirstLine = se === 0 ||
+                (span1.offsetHeight === lh && span1.getBoundingClientRect().top === span2.getBoundingClientRect().top);
+
+            const isOnLastLine = span2.offsetHeight === lh;
+
+            div.remove();
+
+            return {
+                isOnLastLine,
+                isOnFirstLine
+            };
+        }
+    }
+
+    getBreakLineInfo(): IBreakLineInfo {
+        const info: IBreakLineInfo = {
             countOfLines: 1,
             breakIndexes: []
         };
 
         const div = this.createElementClone();
 
+        div.style.visibility = 'hidden';
+
         document.body.appendChild(div);
 
-        let currentHeight = div.offsetHeight;
+        let currentHeight = div.clientHeight;
 
         div.style.height = 'auto';
 
         let lastCaretPosition = this.scope.text.length;
 
+        // todo: extra inefficient loop, leads to Layout Thrashing!
         while (lastCaretPosition !== 0) {
             div.textContent = this.scope.text.substr(0, lastCaretPosition);
 
-            if (div.offsetHeight < currentHeight) {
+            if (div.clientHeight < currentHeight) {
                 info.countOfLines++;
                 info.breakIndexes.push(lastCaretPosition);
 
-                currentHeight = div.offsetHeight;
+                currentHeight = div.clientHeight;
             }
 
             lastCaretPosition--;
@@ -446,14 +491,16 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         const span = document.createElement('SPAN');
         const div = this.createElementClone();
 
+        const breakLineInfo = this.getBreakLineInfo();
+
         div.style.position = 'absolute';
         document.body.appendChild(div);
 
         let currentLeftPosition = -1;
         let currentCaretPosition;
 
-        if (this.stringInfo.countOfLines > 1 && line === LineType.last) {
-            currentCaretPosition = this.stringInfo.breakIndexes[this.stringInfo.breakIndexes.length - 1];
+        if (breakLineInfo.countOfLines > 1 && line === LineType.last) {
+            currentCaretPosition = breakLineInfo.breakIndexes[breakLineInfo.breakIndexes.length - 1];
         } else {
             currentCaretPosition = 0;
         }

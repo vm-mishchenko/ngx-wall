@@ -1,6 +1,11 @@
 <div class="img_brick__image_container" [style.width]="scope.width ? scope.width+'px' : 'auto'">
-    <img #image *ngIf="scope.src" [wResizable]="resizable" [src]="scope.src"
-         (click)="onImageClick($event)">
+    <img [tow-slave]="id" #image *ngIf="scope.src" [wResizable]="resizable" [src]="scope.src">
+
+    <button class="btn w-btn btn-link img_brick__original-btn">
+        <a [href]="scope.src" target="_blank">
+            <span class="badge badge-secondary">Show original</span>
+        </a>
+    </button>
 </div>
 
 <w-brick-input-placeholder

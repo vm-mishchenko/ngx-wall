@@ -20,11 +20,15 @@ export class WallBrick {
         } else {
             this.state = {};
         }
+
+        return this;
     }
 
     turnInto(tag: string) {
         this.tag = tag;
 
         this.updateState({});
+
+        return this;
     }
 }

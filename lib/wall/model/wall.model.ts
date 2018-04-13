@@ -126,11 +126,15 @@ export class WallModel implements IWallModel {
         ));
     }
 
+    // todo: should be async operation
     removeBrick(brickId: string): void {
         this.dispatch(new BeforeChangeEvent(RemoveBrickEvent));
 
         const nextTextBrick = this.layout.getNextTextBrick(brickId);
         const previousTextBrick = this.layout.getPreviousTextBrick(brickId);
+
+        this.clearBrickResources(brickId).then(() => {
+        });
 
         const removedBrick = this.getBrickById(brickId);
 
@@ -147,11 +151,17 @@ export class WallModel implements IWallModel {
         ));
     }
 
+    // todo: should be async operation
     removeBricks(brickIds): void {
         this.dispatch(new BeforeChangeEvent(RemoveBricksEvent));
 
         const nextTextBrick = this.layout.getNextBrick(brickIds[brickIds.length - 1]);
         const previousBrick = this.layout.getPreviousBrick(brickIds[0]);
+
+        const clearPromises = brickIds.map((brickId) => this.clearBrickResources(brickId));
+
+        Promise.all(clearPromises).then(() => {
+        });
 
         const removedBricks = brickIds.map((brickId) => {
             const removedBrick = this.getBrickById(brickId);
@@ -172,13 +182,32 @@ export class WallModel implements IWallModel {
         ));
     }
 
-    turnBrickInto(brickId: string, newTag: string) {
+    /**
+     * Remove all bricks from layout
+     * Clear all bricks external dependencies
+     */
+    clear(): Promise<any> {
+        const brickIds = this.getBrickIds();
+
+        // todo: replace it after removeBricks will be async
+        const clearPromises = brickIds.map((brickId) => this.clearBrickResources(brickId));
+
+        return Promise.all(clearPromises).then(() => {
+            brickIds.forEach((brickId) => {
+                this.layout.removeBrick(brickId);
+            });
+        });
+    }
+
+    turnBrickInto(brickId: string, newTag: string, state: any = {}) {
         this.dispatch(new BeforeChangeEvent(TurnBrickIntoEvent));
 
         const brick = this.layout.getBrickById(brickId);
         const oldTag = brick.tag;
 
-        brick.turnInto(newTag);
+        brick
+            .turnInto(newTag)
+            .updateState(state);
 
         this.dispatch(new TurnBrickIntoEvent(brickId, newTag, oldTag));
     }
@@ -397,6 +426,18 @@ export class WallModel implements IWallModel {
         brick.updateState(data);
 
         return brick;
+    }
+
+    private clearBrickResources(brickId): Promise<any>{
+        const brick = this.getBrickById(brickId);
+
+        const brickSpecification = this.brickRegistry.get(brick.tag);
+
+        if (brickSpecification.destructor) {
+            return brickSpecification.destructor(this.createBrickSnapshot(brick));
+        } else {
+            return Promise.resolve();
+        }
     }
 
     private generateGuid(): string {

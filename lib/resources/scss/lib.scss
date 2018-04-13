@@ -155,9 +155,23 @@ img-brick {
   position: relative;
   display: block;
 
+  .img_brick__original-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: none;
+  }
+
+  &:hover {
+    .img_brick__original-btn {
+      display: block;
+    }
+  }
+
   .img_brick__image_container {
     margin: 0 auto;
     position: relative;
+    max-width: 100%;
 
     .left-handler,
     .right-handler {
@@ -181,29 +195,10 @@ img-brick {
       object-fit: cover;
       width: 100%;
       height: 100%;
-      max-width: 900px;
       margin: 0 auto;
       display: block;
       cursor: pointer;
     }
-  }
-
-  .w-panel {
-    width: 80%;
-    position: absolute;
-    max-width: 450px;
-    visibility: hidden;
-    opacity: 0;
-    transform: translate(12%, -12px);
-    transition: visibility 0s linear 0.2s, opacity 0.2s linear, transform 0.2s linear;
-  }
-
-  .show {
-    z-index: 10;
-    opacity: 1;
-    visibility: visible;
-    transition-delay: 0s;
-    transform: translate(12%, -10px);
   }
 }
 

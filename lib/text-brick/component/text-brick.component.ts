@@ -3,6 +3,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs/Subject';
 import { BaseTextBrickComponent } from '../../base-text-brick/base-text-brick.component';
 import { ContextModalService } from '../../modules/modal';
+import { ImgEncoder } from '../../modules/utils/img-encoder.service';
 import { WallApi } from '../../wall';
 import { BricksListComponent } from '../bricks-list/bricks-list.component';
 
@@ -134,6 +135,36 @@ export class TextBrickComponent extends BaseTextBrickComponent {
             setTimeout(() => {
                 this.editor.nativeElement.focus();
             });
+        }
+    }
+
+    onPaste(e: ClipboardEvent) {
+        const imageDataTransferItem = this.extractImageDataTransferItem(e.clipboardData.items);
+
+        if (imageDataTransferItem) {
+            e.preventDefault();
+
+            (new ImgEncoder(imageDataTransferItem.getAsFile())).getBase64Representation().then((imgBase64) => {
+                this.wallApi.core.turnBrickInto(this.id, 'image', {
+                    src: imgBase64
+                });
+            });
+        } else {
+            super.onPaste(e);
+        }
+    }
+
+    private extractImageDataTransferItem(items: DataTransferItemList): DataTransferItem {
+        let index;
+
+        for (index in items) {
+            if (items.hasOwnProperty(index)) {
+                const item = items[index];
+
+                if (item.kind === 'file') {
+                    return item;
+                }
+            }
         }
     }
 

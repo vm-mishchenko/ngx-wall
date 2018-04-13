@@ -19,9 +19,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
                     </div>
                 </form>
 
-                <p class="w-brick-input__description">
-                    Any Image from the Internet
+                <p class="w-brick-input__description mb-2">
+                    Add link or upload image
                 </p>
+
+                <div class="form-group">
+                    <input accept="image/*" (change)="onFileChange($event)" type="file"
+                           class="form-control-file btn w-btn">
+                </div>
             </div>
 
             <div class="w-brick-input__footer"></div>
@@ -41,9 +46,19 @@ export class InputContextComponent implements OnInit {
     }
 
     applyImageSrc() {
-        this.activeModal.close({
+        this.notify({
             src: this.srcInput.nativeElement.value
         });
+    }
+
+    onFileChange(event: any) {
+        this.notify({
+            file: event.target.files[0]
+        });
+    }
+
+    notify(data) {
+        this.activeModal.close(data);
     }
 
     onSubmit(e) {

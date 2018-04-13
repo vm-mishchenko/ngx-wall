@@ -70,7 +70,7 @@ export interface IWallCoreApi {
     // BRICK
     isRegisteredBrick(tag: string): boolean;
 
-    turnBrickInto(brickId: string, newTag: string): void;
+    turnBrickInto(brickId: string, newTag: string, state?: any): void;
 
     filterBricks(predictor: () => {}): IBrickSnapshot[];
 

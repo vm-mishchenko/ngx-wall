@@ -34,7 +34,7 @@ export interface IWallModel {
 
     updateBrickState(brickId, brickState): void;
 
-    turnBrickInto(brickId: string, newTag: string);
+    turnBrickInto(brickId: string, newTag: string, state?: any);
 
     addBrickAtStart(tag: string, state?: any): IBrickSnapshot;
 
@@ -51,6 +51,8 @@ export interface IWallModel {
     removeBrick(brickId: string): void;
 
     removeBricks(brickIds): void;
+
+    clear(): Promise<void>;
 
     getBricksCount(): number;
 

@@ -14,6 +14,13 @@ export interface IBrickSpecification {
 
     supportText?: boolean;
     textRepresentation?: ITextRepresentationConstructor;
+
+    // todo: architecture drawback! should add model to description
+    destructor?: IBrickDestructor;
+}
+
+export interface IBrickDestructor {
+    (brickSnapshot: IBrickSnapshot): Promise<any>;
 }
 
 export interface ITextRepresentationConstructor {
