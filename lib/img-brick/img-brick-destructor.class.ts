@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {IBrickSnapshot} from '../wall';
-import {ImgBrickState} from './img-brick-state.interface';
-import {FileUploaderService} from '../modules/file-uploader/file-uploader.service';
+import { Injectable } from '@angular/core';
+import { FileUploaderService } from '../modules/file-uploader/file-uploader.service';
+import { IBrickSnapshot } from '../wall';
+import { ImgBrickState } from './img-brick-state.interface';
 
 @Injectable()
 export class ImgModel {

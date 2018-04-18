@@ -1,14 +1,14 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {IOnWallFocus, WallApi} from '../../index';
-import {ContextModalService} from '../../modules/modal';
-import {IResizeData} from '../../modules/resizable/resizable.directive';
-import {ImgEncoder} from '../../modules/utils/img-encoder.service';
-import {ImgBrickState} from '../img-brick-state.interface';
-import {InputContextComponent} from './input-context.component';
-import {FileUploaderService} from '../../modules/file-uploader/file-uploader.service';
-import {Base64ToFile} from '../../modules/utils/base64-to-file';
-import {Guid} from '../../modules/utils/guid';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { IOnWallFocus, WallApi } from '../../index';
+import { FileUploaderService } from '../../modules/file-uploader/file-uploader.service';
+import { ContextModalService } from '../../modules/modal';
+import { IResizeData } from '../../modules/resizable/resizable.directive';
+import { Base64ToFile } from '../../modules/utils/base64-to-file';
+import { Guid } from '../../modules/utils/guid';
+import { ImgEncoder } from '../../modules/utils/img-encoder.service';
+import { ImgBrickState } from '../img-brick-state.interface';
+import { InputContextComponent } from './input-context.component';
 
 @Component({
     selector: 'img-brick',
@@ -65,7 +65,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
                 this.setUpImageWidth();
             }
 
-            if(this.isBase64(this.scope.src)) {
+            if (this.isBase64(this.scope.src)) {
                 this.processBase64ImgSrc();
             }
         }
@@ -121,6 +121,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     processBase64ImgSrc(): Promise<void> {
         return this.uploadImage().then((uploadInfo) => {
             return this.applyImageSrc(uploadInfo.fileUrl, uploadInfo.metadata);
+        }, () => {
         });
     }
 
@@ -147,7 +148,17 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         });
     }
 
-    private uploadImage(): Promise<{fileUrl: string, metadata: any}> {
+    isBase64(str: string) {
+        str = str.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
+
+        try {
+            return btoa(atob(str)) === str;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    private uploadImage(): Promise<{ fileUrl: string, metadata: any }> {
         return new Promise((resolve, reject) => {
             if (this.fileUploader.canUploadFile()) {
                 const imgReference = this.fileUploader.getFileReference(`img-brick/${(new Guid()).get()}`);
@@ -198,15 +209,5 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
             img.src = src;
         });
-    }
-
-    private isBase64(str: string) {
-        str = str.replace(/^data:image\/(png|jpg);base64,/, '');
-
-        try {
-            return btoa(atob(str)) === str;
-        } catch (err) {
-            return false;
-        }
     }
 }

@@ -1,12 +1,14 @@
-import {Injectable} from '@angular/core';
-import {IFileUploader} from './interfaces/file-uploader.interface';
-import {IFileUploadTask} from './interfaces/file-upload-task.interface';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
 import 'rxjs/add/observable/of';
+import { Observable } from 'rxjs/Observable';
+import { IFileUploadTask } from './interfaces/file-upload-task.interface';
+import { IFileUploader } from './interfaces/file-uploader.interface';
 
 @Injectable()
 export class FileUploaderService implements IFileUploader {
     private uploaderServices: Map<string, IFileUploader> = new Map();
+
+    private isEnabled = true;
 
     upload(fileReference: string, file: File): IFileUploadTask {
         // randomly choose uploader services for uploading
@@ -23,6 +25,7 @@ export class FileUploaderService implements IFileUploader {
         const uploader = this.getUploaderService(fileReference);
 
         if (!uploader) {
+            /* tslint:disable:no-console */
             console.error(`Cannot resolve uploader for ${fileReference}`);
 
             return Observable.of(null);
@@ -41,7 +44,15 @@ export class FileUploaderService implements IFileUploader {
     }
 
     canUploadFile(): boolean {
-        return Boolean(this.uploaderServices.size);
+        return this.isEnabled && Boolean(this.uploaderServices.size);
+    }
+
+    enable() {
+        this.isEnabled = true;
+    }
+
+    disable() {
+        this.isEnabled = false;
     }
 
     private extractFilePathFromReference(fileReference: string): string {

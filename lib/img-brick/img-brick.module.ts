@@ -4,11 +4,11 @@ import { FileUploaderModule } from '../modules/file-uploader/file-uploader.modul
 import { ModalModule } from '../modules/modal';
 import { ResizableModule } from '../modules/resizable';
 import { TowModule } from '../modules/tow';
-import {BrickRegistry, HelperComponentsModule, IBrickSnapshot} from '../wall';
+import { BrickRegistry, HelperComponentsModule, IBrickSnapshot } from '../wall';
 import { ImgBrickComponent } from './component/img-brick.component';
 import { InputContextComponent } from './component/input-context.component';
+import { ImgModel } from './img-brick-destructor.class';
 import { ImgBrickTextRepresentation } from './img-brick-text-representation.class';
-import {ImgModel} from './img-brick-destructor.class';
 
 @NgModule({
     imports: [

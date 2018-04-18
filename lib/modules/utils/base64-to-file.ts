@@ -1,5 +1,5 @@
 export class Base64ToFile {
-    constructor(private base64: string, private fileName: string){
+    constructor(private base64: string, private fileName: string) {
     }
 
     getFile(): File {

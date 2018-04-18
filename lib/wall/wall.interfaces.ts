@@ -19,9 +19,7 @@ export interface IBrickSpecification {
     destructor?: IBrickDestructor;
 }
 
-export interface IBrickDestructor {
-    (brickSnapshot: IBrickSnapshot): Promise<any>;
-}
+export type IBrickDestructor = (brickSnapshot: IBrickSnapshot) => Promise<any>;
 
 export interface ITextRepresentationConstructor {
     new(brickSnapshot: IBrickSnapshot): ITextRepresentation;

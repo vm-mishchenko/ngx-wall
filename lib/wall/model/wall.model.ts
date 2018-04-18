@@ -428,7 +428,7 @@ export class WallModel implements IWallModel {
         return brick;
     }
 
-    private clearBrickResources(brickId): Promise<any>{
+    private clearBrickResources(brickId): Promise<any> {
         const brick = this.getBrickById(brickId);
 
         const brickSpecification = this.brickRegistry.get(brick.tag);
