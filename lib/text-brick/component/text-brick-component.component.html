@@ -6,5 +6,6 @@
    class="text-brick__editor"
    (blur)="onBlur()"
    (focus)="onFocus()"
-   contenteditable>
+   contenteditable
+   [propValueAccessor]="'innerHTML'">
 </p>

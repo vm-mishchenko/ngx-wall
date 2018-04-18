@@ -22,23 +22,43 @@ export class WallEditorComponent implements OnInit {
         onRegisterApi: this.onRegisterApi.bind(this)
     };
 
-    wallPlan: IWallDefinition = {
+    wallPlan: IWallDefinition =   {
         "bricks": [
             {
-                "id": "120251b2-0c70-89c6-5888-8f3d292b0404",
+                "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51",
+                "tag": "text",
+                "meta": {},
+                "data": {}
+            },
+            {
+                "id": "8551daa0-68ec-663c-48d5-fddcb01897e2",
                 "tag": "text",
                 "meta": {},
                 "data": {
-                    'text': 'Miusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior\'s with Ivan. Miusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior\'s with Ivan.'
+                    "text": ""
                 }
             },
             {
-                "id": "0d0564e7-abc3-20fb-702d-26181fb15eaf",
+                "id": "8fcd790b-2b3d-b839-c01d-4a0ba1213735",
                 "tag": "text",
                 "meta": {},
                 "data": {
-                    "text": "Miusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior. iusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior. iusov, as a man man of breeding and deilcacy, could not but feel some inwrd qualms, when he reached the Father Superior"
+                    "text": "first <b>bold</b>"
                 }
+            },
+            {
+                "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "<b>second</b>"
+                }
+            },
+            {
+                "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670",
+                "tag": "text",
+                "meta": {},
+                "data": {}
             }
         ],
         "layout": {
@@ -48,36 +68,65 @@ export class WallEditorComponent implements OnInit {
                         {
                             "bricks": [
                                 {
-                                    "id": "120251b2-0c70-89c6-5888-8f3d292b0404"
+                                    "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51"
                                 }
                             ]
                         }
                     ],
-                    "id": "692a5708-a899-7b78-7bb4-52e01ea878ad"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": []
-                        }
-                    ],
-                    "id": "ab1a3a23-24f1-f7a4-3e11-ebcfd9f5d418"
+                    "id": "f30e6ee1-4dfd-8edc-927d-34b70945a377"
                 },
                 {
                     "columns": [
                         {
                             "bricks": [
                                 {
-                                    "id": "0d0564e7-abc3-20fb-702d-26181fb15eaf"
+                                    "id": "8551daa0-68ec-663c-48d5-fddcb01897e2"
                                 }
                             ]
                         }
                     ],
-                    "id": "e5d238b8-d1d8-f209-c160-5bc49209fe96"
+                    "id": "4a190e37-c08e-2be8-a75f-f29a2bcabac2"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "8fcd790b-2b3d-b839-c01d-4a0ba1213735"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "ed78ad88-2346-dbdb-b0c3-e4511ddfe4bb"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "d535fe72-879d-a675-41b8-91e18f62531a"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "7f1b0988-7302-90d3-98f3-10f8860adb3f"
                 }
             ]
         }
-    };
+    }
+    ;
 
     wall2Model: any;
 

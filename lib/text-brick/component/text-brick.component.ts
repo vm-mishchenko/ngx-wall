@@ -4,6 +4,7 @@ import { Subject } from 'rxjs/Subject';
 import { BaseTextBrickComponent } from '../../base-text-brick/base-text-brick.component';
 import { ContextModalService } from '../../modules/modal';
 import { ImgEncoder } from '../../modules/utils/img-encoder.service';
+import { NodeTreeSplit } from '../../modules/utils/node-tree-split';
 import { WallApi } from '../../wall';
 import { BricksListComponent } from '../bricks-list/bricks-list.component';
 
@@ -92,6 +93,15 @@ export class TextBrickComponent extends BaseTextBrickComponent {
                 super.enterKeyPressed(e);
             }
         }
+    }
+
+    getLeftRightText(offset: number, target: Node): { left: string, right: string } {
+        const nodeTreeSplit = new NodeTreeSplit(this.editor.nativeElement, target, offset);
+
+        return {
+            left: nodeTreeSplit.leftTree.innerHTML,
+            right: nodeTreeSplit.rightTree.innerHTML
+        };
     }
 
     escapeKeyPressed(e: KeyboardEvent) {
