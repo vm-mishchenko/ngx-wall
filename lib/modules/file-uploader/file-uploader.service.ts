@@ -36,7 +36,15 @@ export class FileUploaderService implements IFileUploader {
 
     // allow define which uploader was chosen, to be able delete file after
     getFileReference(filePath: string): string {
-        return `${this.getRandomUploaderType()}/${filePath}`;
+        const uploaderType = this.getRandomUploaderType();
+        const uploader = this.uploaderServices.get(uploaderType);
+
+        // allow uploader add specific information in filePath
+        if (uploader.getFileReference) {
+            filePath = uploader.getFileReference(filePath);
+        }
+
+        return `${uploaderType}/${filePath}`;
     }
 
     registerUploadService(type: string, service: IFileUploader) {
