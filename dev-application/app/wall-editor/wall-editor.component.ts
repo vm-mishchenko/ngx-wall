@@ -22,111 +22,190 @@ export class WallEditorComponent implements OnInit {
         onRegisterApi: this.onRegisterApi.bind(this)
     };
 
-    wallPlan: IWallDefinition =   {
-        "bricks": [
+    wallPlan: IWallDefinition = {
+        'bricks': [
             {
-                "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51",
-                "tag": "text",
-                "meta": {},
-                "data": {}
+                'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
             },
             {
-                "id": "8551daa0-68ec-663c-48d5-fddcb01897e2",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": ""
+                'id': '8551daa0-68ec-663c-48d5-fddcb01897e2',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'first <b>bold</b>'
                 }
             },
             {
-                "id": "8fcd790b-2b3d-b839-c01d-4a0ba1213735",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "first <b>bold</b>"
+                'id': 'd6404e69-b2ca-f7ee-0da6-8872d958b7b1',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': '<b>second</b>'
                 }
             },
             {
-                "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "<b>second</b>"
+                'id': 'f16450b4-408e-d4a7-fdfe-759bbf7a9670',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
+            },
+            {
+                'id': 'd3fd5c9d-462b-4b93-724c-45cd649012ee',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'o<b>n</b>e'
                 }
             },
             {
-                "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670",
-                "tag": "text",
-                "meta": {},
-                "data": {}
+                'id': 'dd63bffb-64d2-2f67-a476-95cfd2f538fd',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'two'
+                }
+            },
+            {
+                'id': '4159404b-3956-5d17-248c-8928262ae450',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': ''
+                }
+            },
+            {
+                'id': '5358e582-eee3-a5db-8189-fe8f3892ba69',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'one'
+                }
+            },
+            {
+                'id': '24790195-d5fb-6c6a-ee58-579347ed73f8',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'two'
+                }
             }
         ],
-        "layout": {
-            "bricks": [
+        'layout': {
+            'bricks': [
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51"
+                                    'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51'
                                 }
                             ]
                         }
                     ],
-                    "id": "f30e6ee1-4dfd-8edc-927d-34b70945a377"
+                    'id': 'f30e6ee1-4dfd-8edc-927d-34b70945a377'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "8551daa0-68ec-663c-48d5-fddcb01897e2"
+                                    'id': '8551daa0-68ec-663c-48d5-fddcb01897e2'
                                 }
                             ]
                         }
                     ],
-                    "id": "4a190e37-c08e-2be8-a75f-f29a2bcabac2"
+                    'id': '4a190e37-c08e-2be8-a75f-f29a2bcabac2'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "8fcd790b-2b3d-b839-c01d-4a0ba1213735"
+                                    'id': 'd6404e69-b2ca-f7ee-0da6-8872d958b7b1'
                                 }
                             ]
                         }
                     ],
-                    "id": "ed78ad88-2346-dbdb-b0c3-e4511ddfe4bb"
+                    'id': 'd535fe72-879d-a675-41b8-91e18f62531a'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1"
+                                    'id': 'f16450b4-408e-d4a7-fdfe-759bbf7a9670'
                                 }
                             ]
                         }
                     ],
-                    "id": "d535fe72-879d-a675-41b8-91e18f62531a"
+                    'id': '7f1b0988-7302-90d3-98f3-10f8860adb3f'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670"
+                                    'id': 'd3fd5c9d-462b-4b93-724c-45cd649012ee'
                                 }
                             ]
                         }
                     ],
-                    "id": "7f1b0988-7302-90d3-98f3-10f8860adb3f"
+                    'id': '32b8a826-c77d-f298-402d-fbea9a973a09'
+                },
+                {
+                    'columns': [
+                        {
+                            'bricks': [
+                                {
+                                    'id': 'dd63bffb-64d2-2f67-a476-95cfd2f538fd'
+                                }
+                            ]
+                        }
+                    ],
+                    'id': '0685944d-a7cb-0d03-dfc9-9d400a3c9a94'
+                },
+                {
+                    'columns': [
+                        {
+                            'bricks': [
+                                {
+                                    'id': '4159404b-3956-5d17-248c-8928262ae450'
+                                }
+                            ]
+                        }
+                    ],
+                    'id': '2e6e1221-bdcb-714c-1a37-14395971c6bd'
+                },
+                {
+                    'columns': [
+                        {
+                            'bricks': [
+                                {
+                                    'id': '5358e582-eee3-a5db-8189-fe8f3892ba69'
+                                }
+                            ]
+                        }
+                    ],
+                    'id': '48a35035-321f-b610-9f64-3c732688b92b'
+                },
+                {
+                    'columns': [
+                        {
+                            'bricks': [
+                                {
+                                    'id': '24790195-d5fb-6c6a-ee58-579347ed73f8'
+                                }
+                            ]
+                        }
+                    ],
+                    'id': '098137e1-a621-46e2-897c-c0002a3f67d8'
                 }
             ]
         }
-    }
-    ;
+    };
 
     wall2Model: any;
 

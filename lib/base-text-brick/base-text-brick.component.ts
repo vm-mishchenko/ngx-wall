@@ -122,12 +122,18 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.concatWithPreviousTextSupportingBrick(e);
             }
 
-            if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected()) {
+            if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected() && this.scope.text.length) {
                 this.concatWithNextTextSupportingBrick(e);
             }
 
-            if ((e.keyCode === BACK_SPACE_KEY || e.keyCode === DELETE_KEY) && this.scope.text === '') {
-                this.onDeleteBrick(e);
+            if (this.scope.text === '') {
+                if (e.keyCode === BACK_SPACE_KEY) {
+                    this.onDeleteAndFocusToPrevious(e);
+                }
+
+                if (e.keyCode === DELETE_KEY) {
+                    this.onDeleteAndFocusToNext(e);
+                }
             }
 
             if (e.keyCode === ENTER_KEY) {
@@ -319,28 +325,36 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             this.wallApi.core.removeBrick(nextTextBrickId);
 
             setTimeout(() => {
-                const subStringNodes = new FirstSubStringNode(
-                    this.editor.nativeElement,
-                    concatenationText
-                );
-
-                if (subStringNodes.firstLevelSubStringNodes[0]) {
-                    const deepLeftNode = new DeepLeftNodeChild(subStringNodes.firstLevelSubStringNodes[0]);
-
-                    this.placeCaretAtNodeStart(deepLeftNode.child);
-                } else {
-                    this.placeCaretAtEnd();
-                }
+                this.placeCaretBaseOnConcatenaitedText(concatenationText);
             }, 0);
 
             this.saveCurrentState();
         }
     }
 
-    onDeleteBrick(e: KeyboardEvent) {
+    onDeleteAndFocusToPrevious(e: KeyboardEvent) {
         e.preventDefault();
 
         const previousTextBrickId = this.wallApi.core.getPreviousTextBrickId(this.id);
+
+        this.wallApi.core.removeBrick(this.id);
+
+        if (previousTextBrickId) {
+            const focusContext: IFocusContext = {
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    deletePreviousText: true
+                }
+            };
+
+            this.wallApi.core.focusOnBrickId(previousTextBrickId, focusContext);
+        }
+    }
+
+    onDeleteAndFocusToNext(e: KeyboardEvent) {
+        e.preventDefault();
+
+        const previousTextBrickId = this.wallApi.core.getNextTextBrickId(this.id);
 
         this.wallApi.core.removeBrick(this.id);
 
@@ -400,18 +414,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             }
 
             if (context.details.concatText) {
-                const subStringNodes = new FirstSubStringNode(
-                    this.editor.nativeElement,
-                    context.details.concatenationText
-                );
-
-                if (subStringNodes.firstLevelSubStringNodes[0]) {
-                    const deepLeftNode = new DeepLeftNodeChild(subStringNodes.firstLevelSubStringNodes[0]);
-
-                    this.placeCaretAtNodeStart(deepLeftNode.child);
-                } else {
-                    this.placeCaretAtStart();
-                }
+                this.placeCaretBaseOnConcatenaitedText(context.details.concatenationText);
             }
 
             if (context.details.leftKey) {
@@ -452,23 +455,50 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     placeCaretAtNodeStart(el: Node) {
+        this.placeCaretAtNodeToPosition(el, 0);
+    }
+
+    placeCaretAtNodeEnd(el: Node) {
+        this.placeCaretAtNodeToPosition(el, el.textContent.length);
+    }
+
+    placeCaretAtNodeToPosition(el: Node, position: number) {
         const range = document.createRange();
         const sel = window.getSelection();
 
-        range.setStart(el, 0);
+        range.setStart(el, position);
 
         sel.removeAllRanges();
         sel.addRange(range);
     }
 
-    placeCaretAtNodeEnd(el: Node) {
-        const range = document.createRange();
-        const sel = window.getSelection();
+    placeCaretBaseOnConcatenaitedText(concatenationText: string) {
+        const subStringNodes = new FirstSubStringNode(
+            this.editor.nativeElement,
+            concatenationText
+        );
 
-        range.setStart(el, el.textContent.length);
+        const firstLevelSubStringNode = subStringNodes.firstLevelSubStringNodes[0];
 
-        sel.removeAllRanges();
-        sel.addRange(range);
+        if (firstLevelSubStringNode) {
+            let focusNode;
+            let position;
+
+            if (subStringNodes.firstLevelSubStringNodes.length === 1 &&
+                firstLevelSubStringNode.nodeType === Node.TEXT_NODE) {
+                focusNode = firstLevelSubStringNode;
+
+                position = focusNode.textContent.indexOf(concatenationText);
+            } else {
+                focusNode = new DeepLeftNodeChild(firstLevelSubStringNode).child;
+
+                position = 0;
+            }
+
+            this.placeCaretAtNodeToPosition(focusNode, position);
+        } else {
+            this.placeCaretAtStart();
+        }
     }
 
     placeCaretAtLeftCoordinate(leftCoordinate: number, line: string) {

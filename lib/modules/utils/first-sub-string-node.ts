@@ -22,7 +22,7 @@ export class FirstSubStringNode {
         let text = '';
         const firstLevelSubStringNodes = [];
 
-        while (currentNode && text !== this.subString) {
+        while (currentNode && !text.includes(this.subString)) {
             text = currentNode.textContent + text;
 
             firstLevelSubStringNodes.push(currentNode);
