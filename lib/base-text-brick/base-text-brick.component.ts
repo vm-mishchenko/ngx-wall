@@ -1,13 +1,13 @@
-import { ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import 'rxjs/add/operator/debounceTime';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { DeepLeftNodeChild } from '../modules/utils/deep-left-node-child';
-import { DeepRightNodeChild } from '../modules/utils/deep-right-node-child';
-import { FirstSubStringNode } from '../modules/utils/first-sub-string-node';
-import { IFocusContext, IOnWallFocus, IOnWallStateChange, WallApi } from '../wall';
-import { FOCUS_INITIATOR } from './base-text-brick.constant';
-import { IBaseTextState } from './base-text-state.interface';
+import {Subject} from 'rxjs/Subject';
+import {Subscription} from 'rxjs/Subscription';
+import {DeepLeftNodeChild} from '../modules/utils/deep-left-node-child';
+import {DeepRightNodeChild} from '../modules/utils/deep-right-node-child';
+import {FirstSubStringNode} from '../modules/utils/first-sub-string-node';
+import {IFocusContext, IOnWallFocus, IOnWallStateChange, WallApi} from '../wall';
+import {FOCUS_INITIATOR} from './base-text-brick.constant';
+import {IBaseTextState} from './base-text-state.interface';
 
 enum LineType {
     first = 'FIRST',
@@ -473,6 +473,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     placeCaretBaseOnConcatenaitedText(concatenationText: string) {
+        // find first level nodes for the text that was concatenated
         const subStringNodes = new FirstSubStringNode(
             this.editor.nativeElement,
             concatenationText
@@ -484,11 +485,18 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             let focusNode;
             let position;
 
-            if (subStringNodes.firstLevelSubStringNodes.length === 1 &&
-                firstLevelSubStringNode.nodeType === Node.TEXT_NODE) {
+            if (firstLevelSubStringNode.nodeType === Node.TEXT_NODE) {
+                // if first concatenated node is TEXT_NODE it might
+                // be automatically concatenated with previous existing TEXT_NODE
                 focusNode = firstLevelSubStringNode;
 
-                position = focusNode.textContent.indexOf(concatenationText);
+                // find text content for first concatenated TEXT_NODE
+                const p = document.createElement('P');
+                p.innerHTML = concatenationText;
+                const firstLevelSubStringTextContent = p.childNodes[0].textContent;
+
+                // finally find cursor position
+                position = focusNode.textContent.indexOf(firstLevelSubStringTextContent);
             } else {
                 focusNode = new DeepLeftNodeChild(firstLevelSubStringNode).child;
 

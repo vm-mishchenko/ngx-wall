@@ -22,190 +22,291 @@ export class WallEditorComponent implements OnInit {
         onRegisterApi: this.onRegisterApi.bind(this)
     };
 
-    wallPlan: IWallDefinition = {
-        'bricks': [
+    wallPlan: IWallDefinition =  {
+        "bricks": [
             {
-                'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51',
-                'tag': 'text',
-                'meta': {},
-                'data': {}
+                "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51",
+                "tag": "text",
+                "meta": {},
+                "data": {}
             },
             {
-                'id': '8551daa0-68ec-663c-48d5-fddcb01897e2',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': 'first <b>bold</b>'
+                "id": "8551daa0-68ec-663c-48d5-fddcb01897e2",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "first <b>bold</b>"
                 }
             },
             {
-                'id': 'd6404e69-b2ca-f7ee-0da6-8872d958b7b1',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': '<b>second</b>'
+                "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "<b>second</b>"
                 }
             },
             {
-                'id': 'f16450b4-408e-d4a7-fdfe-759bbf7a9670',
-                'tag': 'text',
-                'meta': {},
-                'data': {}
+                "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670",
+                "tag": "text",
+                "meta": {},
+                "data": {}
             },
             {
-                'id': 'd3fd5c9d-462b-4b93-724c-45cd649012ee',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': 'o<b>n</b>e'
+                "id": "03e0c87c-7822-4dea-d87d-f31e552cbaa0",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "<b>bold</b> and <i>italic</i> text"
                 }
             },
             {
-                'id': 'dd63bffb-64d2-2f67-a476-95cfd2f538fd',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': 'two'
+                "id": "f9c25db8-095a-fdb0-6b59-a28d3e901221",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": ""
                 }
             },
             {
-                'id': '4159404b-3956-5d17-248c-8928262ae450',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': ''
+                "id": "9ad55f1b-7326-9244-d4e8-43be772dfa8b",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "<b>bold</b> connect"
                 }
             },
             {
-                'id': '5358e582-eee3-a5db-8189-fe8f3892ba69',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': 'one'
+                "id": "af7ac02d-0007-4c2c-4fee-4cbb33c84571",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "this <i>italic</i> merge"
                 }
             },
             {
-                'id': '24790195-d5fb-6c6a-ee58-579347ed73f8',
-                'tag': 'text',
-                'meta': {},
-                'data': {
-                    'text': 'two'
+                "id": "e9872fe2-a408-b9d9-dbdc-254f3a6cfe1f",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": ""
+                }
+            },
+            {
+                "id": "d3fd5c9d-462b-4b93-724c-45cd649012ee",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "o<b>n</b>e"
+                }
+            },
+            {
+                "id": "68b9f8eb-69e6-6d39-bc21-0457ab4f7baa",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "two"
+                }
+            },
+            {
+                "id": "4159404b-3956-5d17-248c-8928262ae450",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": ""
+                }
+            },
+            {
+                "id": "5358e582-eee3-a5db-8189-fe8f3892ba69",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "one"
+                }
+            },
+            {
+                "id": "e6ca18ee-d0b6-151a-0948-cd607ed70609",
+                "tag": "text",
+                "meta": {},
+                "data": {
+                    "text": "two"
                 }
             }
         ],
-        'layout': {
-            'bricks': [
+        "layout": {
+            "bricks": [
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51'
+                                    "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51"
                                 }
                             ]
                         }
                     ],
-                    'id': 'f30e6ee1-4dfd-8edc-927d-34b70945a377'
+                    "id": "f30e6ee1-4dfd-8edc-927d-34b70945a377"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': '8551daa0-68ec-663c-48d5-fddcb01897e2'
+                                    "id": "8551daa0-68ec-663c-48d5-fddcb01897e2"
                                 }
                             ]
                         }
                     ],
-                    'id': '4a190e37-c08e-2be8-a75f-f29a2bcabac2'
+                    "id": "4a190e37-c08e-2be8-a75f-f29a2bcabac2"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': 'd6404e69-b2ca-f7ee-0da6-8872d958b7b1'
+                                    "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1"
                                 }
                             ]
                         }
                     ],
-                    'id': 'd535fe72-879d-a675-41b8-91e18f62531a'
+                    "id": "d535fe72-879d-a675-41b8-91e18f62531a"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': 'f16450b4-408e-d4a7-fdfe-759bbf7a9670'
+                                    "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670"
                                 }
                             ]
                         }
                     ],
-                    'id': '7f1b0988-7302-90d3-98f3-10f8860adb3f'
+                    "id": "7f1b0988-7302-90d3-98f3-10f8860adb3f"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': 'd3fd5c9d-462b-4b93-724c-45cd649012ee'
+                                    "id": "03e0c87c-7822-4dea-d87d-f31e552cbaa0"
                                 }
                             ]
                         }
                     ],
-                    'id': '32b8a826-c77d-f298-402d-fbea9a973a09'
+                    "id": "167d7b68-2f25-d58f-4520-3c5b73e78bd8"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': 'dd63bffb-64d2-2f67-a476-95cfd2f538fd'
+                                    "id": "f9c25db8-095a-fdb0-6b59-a28d3e901221"
                                 }
                             ]
                         }
                     ],
-                    'id': '0685944d-a7cb-0d03-dfc9-9d400a3c9a94'
+                    "id": "a506c46c-2875-112f-0433-ed73556ed994"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': '4159404b-3956-5d17-248c-8928262ae450'
+                                    "id": "9ad55f1b-7326-9244-d4e8-43be772dfa8b"
                                 }
                             ]
                         }
                     ],
-                    'id': '2e6e1221-bdcb-714c-1a37-14395971c6bd'
+                    "id": "83c0eb6c-f9f6-2dbd-d6c1-2da962401023"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': '5358e582-eee3-a5db-8189-fe8f3892ba69'
+                                    "id": "af7ac02d-0007-4c2c-4fee-4cbb33c84571"
                                 }
                             ]
                         }
                     ],
-                    'id': '48a35035-321f-b610-9f64-3c732688b92b'
+                    "id": "0ac9042b-29f2-b5a8-aee3-2fb38b898c66"
                 },
                 {
-                    'columns': [
+                    "columns": [
                         {
-                            'bricks': [
+                            "bricks": [
                                 {
-                                    'id': '24790195-d5fb-6c6a-ee58-579347ed73f8'
+                                    "id": "e9872fe2-a408-b9d9-dbdc-254f3a6cfe1f"
                                 }
                             ]
                         }
                     ],
-                    'id': '098137e1-a621-46e2-897c-c0002a3f67d8'
+                    "id": "e5d6b849-2e39-b607-91ed-70db36021b4d"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "d3fd5c9d-462b-4b93-724c-45cd649012ee"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "32b8a826-c77d-f298-402d-fbea9a973a09"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "68b9f8eb-69e6-6d39-bc21-0457ab4f7baa"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "8eb433c4-9a49-640e-79d4-48b60ac19b39"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "4159404b-3956-5d17-248c-8928262ae450"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "2e6e1221-bdcb-714c-1a37-14395971c6bd"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "5358e582-eee3-a5db-8189-fe8f3892ba69"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "48a35035-321f-b610-9f64-3c732688b92b"
+                },
+                {
+                    "columns": [
+                        {
+                            "bricks": [
+                                {
+                                    "id": "e6ca18ee-d0b6-151a-0948-cd607ed70609"
+                                }
+                            ]
+                        }
+                    ],
+                    "id": "036eb1af-81f6-5e56-2342-61f0c2671e53"
                 }
             ]
         }
-    };
+    }
+    ;
 
     wall2Model: any;
 
