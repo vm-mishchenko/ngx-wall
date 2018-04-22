@@ -8,7 +8,7 @@
     "angular"
   ],
   "scripts": {
-    "build": "webpack --config=./configurations/webpack-library.config.js && cpx lib/resources/**/* dist",
+    "build": "webpack --config=./configurations/webpack-library.config.js && cpx \"lib/resources/**/*\" \"dist\"",
     "build:watch": " concurrently \"webpack --watch --config=./configurations/webpack-library.config.js\" \"cpx lib/resources/**/* dist -w\"",
     "application": "webpack-dev-server --config=./configurations/webpack-dev-application.config.js",
     "gh": "webpack --config=./configurations/webpack-dev-application.config.js",
