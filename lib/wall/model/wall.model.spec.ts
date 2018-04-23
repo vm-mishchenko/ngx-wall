@@ -43,11 +43,15 @@ describe('Wall Model', () => {
     beforeAll(() => {
         brickRegistry.register({
             tag: 'text',
+            name: 'FAKE',
+            description: 'FAKE',
             component: 'FAKE'
         });
 
         brickRegistry.register({
             tag: 'header',
+            name: 'FAKE',
+            description: 'FAKE',
             component: 'FAKE'
         });
     });
@@ -69,6 +73,61 @@ describe('Wall Model', () => {
             const wm = wallModelFactory.create(simplePlan);
 
             expect(wm.getPlan()).toEqual(simplePlan);
+        });
+    });
+
+    describe('[Filter]', () => {
+        it('should sort brick id by layout order', () => {
+            const plan: IWallDefinition = {
+                bricks: [
+                    {
+                        id: '1',
+                        tag: 'text',
+                        data: {},
+                        meta: {}
+                    },
+                    {
+                        id: '2',
+                        tag: 'text',
+                        data: {},
+                        meta: {}
+                    },
+                    {
+                        id: '3',
+                        tag: 'text',
+                        data: {},
+                        meta: {}
+                    }
+                ],
+                layout: {
+                    bricks: [
+                        {
+                            id: '2',
+                            columns: [
+                                {
+                                    bricks: [
+                                        {
+                                            id: '1'
+                                        },
+                                        {
+                                            id: '2'
+                                        },
+                                        {
+                                            id: '3'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            };
+
+            const wm = wallModelFactory.create(plan);
+
+            const filteredBrickIds = wm.sortBrickIdsByLayoutOrder(['2', '3', '1']);
+
+            expect(filteredBrickIds).toEqual(['1', '2', '3']);
         });
     });
 });

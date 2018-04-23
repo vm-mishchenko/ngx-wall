@@ -12,7 +12,6 @@ import {
     TurnBrickIntoEvent
 } from '../../model/wall.events';
 import { BrickRegistry } from '../../registry/brick-registry.service';
-import { IBrickSpecification } from '../../wall.interfaces';
 import { IWallCoreApi } from './interfaces/wall-core-api.interface';
 import { IWallState } from './interfaces/wall-state.interface';
 import { IWallViewModel } from './interfaces/wall-view-model.interface';
@@ -208,7 +207,9 @@ export class WallViewModel implements IWallViewModel {
 
         this.focusedBrick = null;
 
-        this.dispatch(new SelectedBrickEvent(this.selectedBricks));
+        const selectedBricksClone = this.selectedBricks.slice(0);
+
+        this.dispatch(new SelectedBrickEvent(selectedBricksClone));
     }
 
     /**
@@ -216,9 +217,13 @@ export class WallViewModel implements IWallViewModel {
      */
     selectBricks(brickIds: string[]) {
         if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks)) {
-            this.selectedBricks = brickIds;
+            const sortedBrickIds = this.wallModel.sortBrickIdsByLayoutOrder(brickIds);
 
-            this.dispatch(new SelectedBrickEvent(this.selectedBricks));
+            this.selectedBricks = sortedBrickIds;
+
+            const selectedBricksClone = this.selectedBricks.slice(0);
+
+            this.dispatch(new SelectedBrickEvent(selectedBricksClone));
         }
     }
 
@@ -226,10 +231,15 @@ export class WallViewModel implements IWallViewModel {
      * @public-api
      */
     addBrickToSelection(brickId: string): void {
-        this.selectedBricks = this.selectedBricks.slice(0);
-        this.selectedBricks.push(brickId);
+        const selectedBrickIds = this.selectedBricks.slice(0);
 
-        this.dispatch(new SelectedBrickEvent(this.selectedBricks));
+        selectedBrickIds.push(brickId);
+
+        this.selectedBricks = this.wallModel.sortBrickIdsByLayoutOrder(selectedBrickIds);
+
+        const selectedBricksClone = this.selectedBricks.slice(0);
+
+        this.dispatch(new SelectedBrickEvent(selectedBricksClone));
     }
 
     /**
@@ -242,7 +252,9 @@ export class WallViewModel implements IWallViewModel {
 
         this.selectedBricks = this.selectedBricks.slice(0);
 
-        this.dispatch(new SelectedBrickEvent(this.selectedBricks));
+        const selectedBricksClone = this.selectedBricks.slice(0);
+
+        this.dispatch(new SelectedBrickEvent(selectedBricksClone));
     }
 
     /**
@@ -251,14 +263,16 @@ export class WallViewModel implements IWallViewModel {
     unSelectBricks(): void {
         this.selectedBricks = [];
 
-        this.dispatch(new SelectedBrickEvent(this.selectedBricks));
+        this.dispatch(new SelectedBrickEvent([]));
     }
 
     /**
      * @public-api
      */
     getSelectedBrickIds(): string[] {
-        return this.selectedBricks;
+        const selectedBricksClone = this.selectedBricks.slice(0);
+
+        return selectedBricksClone;
     }
 
     /**

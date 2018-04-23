@@ -64,6 +64,8 @@ export interface IWallModel {
 
     filterBricks(predictor: (wallBrick: WallBrick) => boolean): IBrickSnapshot[];
 
+    sortBrickIdsByLayoutOrder(brickIds: string[]): string[];
+
     getBrickIds(): string[];
 
     getBrickTag(brickId: string): string;

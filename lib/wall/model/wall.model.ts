@@ -332,6 +332,14 @@ export class WallModel implements IWallModel {
         return previousTextBrick && previousTextBrick.id;
     }
 
+    sortBrickIdsByLayoutOrder(brickIds: string[]) {
+        const bricksSequence = this.layout.getBrickSequence(() => true);
+
+        return bricksSequence
+            .filter((brick) => brickIds.indexOf(brick.id) !== -1)
+            .map((brick) => brick.id);
+    }
+
     filterBricks(predictor): IBrickSnapshot[] {
         return this.layout.filterBricks((wallBrick) => {
             return predictor(this.createBrickSnapshot(wallBrick));
