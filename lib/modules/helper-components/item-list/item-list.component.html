@@ -1,0 +1,12 @@
+<ul class="w-item-list">
+    <li *ngFor="let item of items; trackBy: trackByFn"
+        (click)="onItemSelected(item)"
+        [ngClass]="{'w-item-list__selected': item.selected}">
+        <p>
+            {{item.name}}
+        </p>
+        <p *ngIf="item.description" class="w-bricks-list__description">
+            {{item.description}}
+        </p>
+    </li>
+</ul>

@@ -22,291 +22,190 @@ export class WallEditorComponent implements OnInit {
         onRegisterApi: this.onRegisterApi.bind(this)
     };
 
-    wallPlan: IWallDefinition =  {
-        "bricks": [
+    wallPlan: IWallDefinition = {
+        'bricks': [
             {
-                "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51",
-                "tag": "text",
-                "meta": {},
-                "data": {}
+                'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
             },
             {
-                "id": "8551daa0-68ec-663c-48d5-fddcb01897e2",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "first <b>bold</b>"
+                'id': 'd5075777-eb67-2dce-f634-a82b3221234b',
+                'tag': 'header',
+                'meta': {},
+                'data': {
+                    'text': 'Code brick'
                 }
             },
             {
-                "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "<b>second</b>"
+                'id': 'a430f77e-6543-2145-2f00-6d66dbe7e241',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': ''
                 }
             },
             {
-                "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670",
-                "tag": "text",
-                "meta": {},
-                "data": {}
-            },
-            {
-                "id": "03e0c87c-7822-4dea-d87d-f31e552cbaa0",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "<b>bold</b> and <i>italic</i> text"
+                'id': '5a47f1be-06de-f67a-0684-2a339a275c2d',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': ''
                 }
             },
             {
-                "id": "f9c25db8-095a-fdb0-6b59-a28d3e901221",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": ""
+                'id': '15a54c99-ff37-3a71-9bb8-7bb5e7200b9c',
+                'tag': 'code',
+                'meta': {},
+                'data': {
+                    'code': 'sudo apt-get install foo;',
+                    'mode': 'shell'
                 }
             },
             {
-                "id": "9ad55f1b-7326-9244-d4e8-43be772dfa8b",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "<b>bold</b> connect"
+                'id': '9c2c4de3-4e5f-718b-61ec-c5c3035efb54',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
+            },
+            {
+                'id': '65b02545-8b50-1e09-be1f-6fdb412d4b9e',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': ''
                 }
             },
             {
-                "id": "af7ac02d-0007-4c2c-4fee-4cbb33c84571",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "this <i>italic</i> merge"
+                'id': 'fe95d802-05d6-f804-3f0d-076b7c8d4997',
+                'tag': 'code',
+                'meta': {},
+                'data': {
+                    'code': 'asd\nfdgdfg\nsdfsdf',
+                    'mode': 'javascript'
                 }
             },
             {
-                "id": "e9872fe2-a408-b9d9-dbdc-254f3a6cfe1f",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": ""
-                }
-            },
-            {
-                "id": "d3fd5c9d-462b-4b93-724c-45cd649012ee",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "o<b>n</b>e"
-                }
-            },
-            {
-                "id": "68b9f8eb-69e6-6d39-bc21-0457ab4f7baa",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "two"
-                }
-            },
-            {
-                "id": "4159404b-3956-5d17-248c-8928262ae450",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": ""
-                }
-            },
-            {
-                "id": "5358e582-eee3-a5db-8189-fe8f3892ba69",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "one"
-                }
-            },
-            {
-                "id": "e6ca18ee-d0b6-151a-0948-cd607ed70609",
-                "tag": "text",
-                "meta": {},
-                "data": {
-                    "text": "two"
-                }
+                'id': '76c967f1-ad93-8e57-9d2c-3248c747f646',
+                'tag': 'text',
+                'meta': {},
+                'data': {}
             }
         ],
-        "layout": {
-            "bricks": [
+        'layout': {
+            'bricks': [
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "a9c91b70-01b0-8be0-4bd5-6a8a8379fd51"
+                                    'id': 'a9c91b70-01b0-8be0-4bd5-6a8a8379fd51'
                                 }
                             ]
                         }
                     ],
-                    "id": "f30e6ee1-4dfd-8edc-927d-34b70945a377"
+                    'id': 'f30e6ee1-4dfd-8edc-927d-34b70945a377'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "8551daa0-68ec-663c-48d5-fddcb01897e2"
+                                    'id': 'd5075777-eb67-2dce-f634-a82b3221234b'
                                 }
                             ]
                         }
                     ],
-                    "id": "4a190e37-c08e-2be8-a75f-f29a2bcabac2"
+                    'id': 'ae73dbcf-4792-4818-dbb0-ccef60ad3002'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "d6404e69-b2ca-f7ee-0da6-8872d958b7b1"
+                                    'id': 'a430f77e-6543-2145-2f00-6d66dbe7e241'
                                 }
                             ]
                         }
                     ],
-                    "id": "d535fe72-879d-a675-41b8-91e18f62531a"
+                    'id': '66f6504a-ec01-8339-fc3a-edbad457a162'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "f16450b4-408e-d4a7-fdfe-759bbf7a9670"
+                                    'id': '5a47f1be-06de-f67a-0684-2a339a275c2d'
                                 }
                             ]
                         }
                     ],
-                    "id": "7f1b0988-7302-90d3-98f3-10f8860adb3f"
+                    'id': 'bdd39d67-d507-5ebc-fc05-8716c3ee9e38'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "03e0c87c-7822-4dea-d87d-f31e552cbaa0"
+                                    'id': '15a54c99-ff37-3a71-9bb8-7bb5e7200b9c'
                                 }
                             ]
                         }
                     ],
-                    "id": "167d7b68-2f25-d58f-4520-3c5b73e78bd8"
+                    'id': 'cb38d385-ffb2-a799-3eea-2374c444af30'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "f9c25db8-095a-fdb0-6b59-a28d3e901221"
+                                    'id': '9c2c4de3-4e5f-718b-61ec-c5c3035efb54'
                                 }
                             ]
                         }
                     ],
-                    "id": "a506c46c-2875-112f-0433-ed73556ed994"
+                    'id': '1fef4c54-3764-feba-3282-df74e853b01a'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "9ad55f1b-7326-9244-d4e8-43be772dfa8b"
+                                    'id': '65b02545-8b50-1e09-be1f-6fdb412d4b9e'
                                 }
                             ]
                         }
                     ],
-                    "id": "83c0eb6c-f9f6-2dbd-d6c1-2da962401023"
+                    'id': '16b0f6db-2cc5-6abf-44d1-ab9217e2b09f'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "af7ac02d-0007-4c2c-4fee-4cbb33c84571"
+                                    'id': 'fe95d802-05d6-f804-3f0d-076b7c8d4997'
                                 }
                             ]
                         }
                     ],
-                    "id": "0ac9042b-29f2-b5a8-aee3-2fb38b898c66"
+                    'id': '90bacdba-abaa-f881-99a6-4669b10f811b'
                 },
                 {
-                    "columns": [
+                    'columns': [
                         {
-                            "bricks": [
+                            'bricks': [
                                 {
-                                    "id": "e9872fe2-a408-b9d9-dbdc-254f3a6cfe1f"
+                                    'id': '76c967f1-ad93-8e57-9d2c-3248c747f646'
                                 }
                             ]
                         }
                     ],
-                    "id": "e5d6b849-2e39-b607-91ed-70db36021b4d"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "d3fd5c9d-462b-4b93-724c-45cd649012ee"
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "32b8a826-c77d-f298-402d-fbea9a973a09"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "68b9f8eb-69e6-6d39-bc21-0457ab4f7baa"
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "8eb433c4-9a49-640e-79d4-48b60ac19b39"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "4159404b-3956-5d17-248c-8928262ae450"
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "2e6e1221-bdcb-714c-1a37-14395971c6bd"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "5358e582-eee3-a5db-8189-fe8f3892ba69"
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "48a35035-321f-b610-9f64-3c732688b92b"
-                },
-                {
-                    "columns": [
-                        {
-                            "bricks": [
-                                {
-                                    "id": "e6ca18ee-d0b6-151a-0948-cd607ed70609"
-                                }
-                            ]
-                        }
-                    ],
-                    "id": "036eb1af-81f6-5e56-2342-61f0c2671e53"
+                    'id': '8b47aa2a-100f-aa33-673c-648c6c90887b'
                 }
             ]
         }
-    }
-    ;
+    };
 
     wall2Model: any;
 

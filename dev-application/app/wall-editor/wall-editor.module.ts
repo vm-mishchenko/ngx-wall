@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
+    CodeBrickModule,
     DividerBrickModule,
     HeaderBrickModule,
     ImgBrickModule,
@@ -26,6 +27,7 @@ import { WallEditorComponent } from './wall-editor.component';
         HeaderBrickModule,
         ImgBrickModule,
         WebBookmarkBrickModule,
+        CodeBrickModule,
 
         WallModule,
 

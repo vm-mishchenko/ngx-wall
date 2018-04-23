@@ -13,6 +13,7 @@
 @import "./components/dropdown";
 @import "./components/bricks-list";
 @import "./components/loading-wrapper";
+@import "./components/item-list";
 @import "./components/wall";
 
 wall-canvas {
@@ -314,6 +315,38 @@ web-bookmark-brick {
       background-position: center center;
       background-size: cover;
     }
+  }
+}
+
+code-brick {
+  position: relative;
+  display: block;
+
+  .CodeMirror {
+    padding: 1rem 1.4rem;
+    height: auto;
+    background: $w-thin-color !important;
+    font-size: $w-main-font-size;
+
+    .CodeMirror-cursor {
+      background: $w-default-color;
+      width: 1px;
+    }
+
+    pre {
+      font-size: $w-main-font-size;
+    }
+
+    .CodeMirror-scroll {
+      overflow: hidden !important;
+    }
+  }
+
+  .w-btn {
+    position: absolute;
+    right: 0.7rem;
+    bottom: 0.7rem;
+    z-index: 2;
   }
 }
 

@@ -6,4 +6,7 @@ require('bootstrap/dist/css/bootstrap.css');
 require('open-iconic/font/css/open-iconic-bootstrap.css');
 require('ngx-wall/wall.css');
 
+require('codemirror/lib/codemirror.css');
+require('codemirror/theme/neo.css');
+
 platformBrowserDynamic().bootstrapModule(AppModule);
