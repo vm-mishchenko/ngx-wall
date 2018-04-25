@@ -1,13 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { TextRepresentation } from '../base-text-brick/base-text-representation.class';
-import { ContenteditableModule } from '../modules/contenteditable/contenteditable..module';
-import { HelperComponentsModule } from '../modules/helper-components';
-import { ModalModule } from '../modules/modal';
-import { BrickRegistry } from '../wall';
-import { BricksListComponent } from './bricks-list/bricks-list.component';
-import { TextBrickComponent } from './component/text-brick.component';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {FormsModule} from '@angular/forms';
+import {TextRepresentation} from '../base-text-brick/base-text-representation.class';
+import {ContenteditableModule} from '../modules/contenteditable/contenteditable..module';
+import {HelperComponentsModule} from '../modules/helper-components';
+import {ModalModule} from '../modules/modal';
+import {BrickRegistry} from '../wall';
+import {BricksListComponent} from './bricks-list/bricks-list.component';
+import {TextBrickComponent} from './component/text-brick.component';
+import {TextContextMenuComponent} from './text-context-menu/text-context-menu.component';
 
 @NgModule({
     imports: [
@@ -19,15 +20,22 @@ import { TextBrickComponent } from './component/text-brick.component';
     ],
     exports: [
         TextBrickComponent,
-        BricksListComponent
+        BricksListComponent,
+        TextContextMenuComponent
     ],
     declarations: [
         TextBrickComponent,
-        BricksListComponent
+        BricksListComponent,
+
+        // context menu
+        TextContextMenuComponent
     ],
     entryComponents: [
         TextBrickComponent,
-        BricksListComponent
+        BricksListComponent,
+
+        // context menu
+        TextContextMenuComponent
     ]
 })
 export class TextBrickModule {

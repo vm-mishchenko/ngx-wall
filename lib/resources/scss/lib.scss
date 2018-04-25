@@ -16,6 +16,14 @@
 @import "./components/item-list";
 @import "./components/wall";
 
+*::selection {
+  background: $w-active-light-color;
+}
+
+*::-moz-selection {
+  background: $w-active-light-color;
+}
+
 wall-canvas {
   display: block;
 

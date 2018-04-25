@@ -1,25 +1,54 @@
-import { ChangeDetectorRef, Component, ElementRef, NgZone } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs/Subject';
-import { BaseTextBrickComponent } from '../../base-text-brick/base-text-brick.component';
-import { ContextModalService } from '../../modules/modal';
-import { ImgEncoder } from '../../modules/utils/img-encoder.service';
-import { NodeTreeSplit } from '../../modules/utils/node-tree-split';
-import { WallApi } from '../../wall';
-import { BricksListComponent } from '../bricks-list/bricks-list.component';
+import {ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import 'rxjs/add/operator/filter';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {Subscription} from 'rxjs/Subscription';
+import {BaseTextBrickComponent} from '../../base-text-brick/base-text-brick.component';
+import {ContextModalService} from '../../modules/modal';
+import {ImgEncoder} from '../../modules/utils/img-encoder.service';
+import {NodeTreeSplit} from '../../modules/utils/node-tree-split';
+import {TreeNodeTraverse} from '../../modules/utils/node/tree-node-traverse.';
+import {WallApi} from '../../wall';
+import {BricksListComponent} from '../bricks-list/bricks-list.component';
+import {ITextBrickApi} from '../text-brick-api.interface';
+import {TextContextMenuComponent} from '../text-context-menu/text-context-menu.component';
 
 @Component({
     selector: 'text-brick',
     templateUrl: './text-brick-component.component.html'
 })
-export class TextBrickComponent extends BaseTextBrickComponent {
+export class TextBrickComponent extends BaseTextBrickComponent implements OnInit, OnDestroy, ITextBrickApi {
     placeholder = null;
 
-    modalRef: NgbModalRef;
+    brickSelectionModalRef: NgbModalRef;
+    contextMenuModalRef: NgbModalRef;
+
     up$ = new Subject();
     down$ = new Subject();
     enter$ = new Subject();
     selectedTag$: Subject<string> = new Subject();
+
+    subscriptions: Subscription[] = [];
+
+    ranges: any;
+
+    selectionInfo: {
+        ranges: Range[],
+        selectedLink: HTMLElement
+    };
+
+    api: ITextBrickApi = {
+        bold: this.bold.bind(this),
+        italic: this.italic.bind(this),
+        createLink: this.createLink.bind(this),
+        changeLinkUrl: this.changeLinkUrl.bind(this),
+        isLinkSelected: this.isLinkSelected.bind(this),
+        getSelectedLinkHref: this.getSelectedLinkHref.bind(this),
+        saveSelection: this.saveSelection.bind(this),
+        restoreSelection: this.restoreSelection.bind(this),
+        unlink: this.unlink.bind(this)
+    };
 
     constructor(wallApi: WallApi,
                 private contextModalService: ContextModalService,
@@ -40,6 +69,28 @@ export class TextBrickComponent extends BaseTextBrickComponent {
                 }
             }
         });
+
+        this.subscriptions.push(
+            Observable.fromEvent(document, 'selectionchange')
+                .filter(() => Boolean(this.scope.text.length))
+                .debounceTime(500)
+                .filter(() => this.el.nativeElement.contains(window.getSelection().anchorNode))
+                .subscribe((e: any) => {
+                    this.onTextSelection();
+                })
+        );
+    }
+
+    ngOnInit() {
+        super.ngOnInit();
+    }
+
+    ngOnDestroy() {
+        super.ngOnDestroy();
+
+        this.subscriptions.forEach((subscription) => {
+            subscription.unsubscribe();
+        });
     }
 
     onBlur() {
@@ -50,8 +101,19 @@ export class TextBrickComponent extends BaseTextBrickComponent {
         this.placeholder = 'Type \'/\' for commands';
     }
 
+    // open the link in new window
+    onClick(event: MouseEvent) {
+        const target = event.target as Node;
+
+        if (this.isHTMLElement(target)) {
+            if (target.tagName === 'A') {
+                window.open(target.getAttribute('href'), '_blank');
+            }
+        }
+    }
+
     topKeyPressed(e: KeyboardEvent) {
-        if (this.modalRef) {
+        if (this.brickSelectionModalRef) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -62,7 +124,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     }
 
     bottomKeyPressed(e: KeyboardEvent) {
-        if (this.modalRef) {
+        if (this.brickSelectionModalRef) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -73,7 +135,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     }
 
     enterKeyPressed(e: KeyboardEvent) {
-        if (this.modalRef) {
+        if (this.brickSelectionModalRef) {
             this.enter$.next();
 
             setTimeout(() => {
@@ -105,7 +167,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     }
 
     escapeKeyPressed(e: KeyboardEvent) {
-        if (this.modalRef) {
+        if (this.brickSelectionModalRef) {
             e.preventDefault();
             e.stopPropagation();
 
@@ -116,7 +178,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     onTextChange() {
         super.onTextChange();
 
-        if (this.modalRef) {
+        if (this.brickSelectionModalRef) {
             if (!this.scope.text.length) {
                 this.hideBricksList();
             }
@@ -125,7 +187,7 @@ export class TextBrickComponent extends BaseTextBrickComponent {
 
             const elementBoundingRect = this.el.nativeElement.getBoundingClientRect();
 
-            this.modalRef = this.contextModalService.open({
+            this.brickSelectionModalRef = this.contextModalService.open({
                 component: BricksListComponent,
                 componentData: {
                     text$: this.textChange,
@@ -164,6 +226,140 @@ export class TextBrickComponent extends BaseTextBrickComponent {
         }
     }
 
+    onTextSelection() {
+        if (!this.contextMenuModalRef) {
+            const selection = window.getSelection();
+
+            if (!selection.isCollapsed) {
+                this.showContextModal();
+            }
+        }
+    }
+
+    // API
+    bold(): void {
+        document.execCommand('bold', false);
+    }
+
+    italic(): void {
+        document.execCommand('italic', false);
+    }
+
+    createLink(url: string): void {
+        document.execCommand('createLink', false, url);
+    }
+
+    getSelectedLinkHref(): string {
+        if (this.selectionInfo.selectedLink) {
+            return this.selectionInfo.selectedLink.getAttribute('href');
+        }
+    }
+
+    unlink(): void {
+        document.execCommand('unlink', false);
+    }
+
+    changeLinkUrl(url: string): void {
+        if (this.selectionInfo.selectedLink) {
+            this.selectionInfo.selectedLink.setAttribute('href', url);
+
+            this.triggerEditorChange();
+        }
+    }
+
+    isLinkSelected(): boolean {
+        return Boolean(this.selectionInfo && this.selectionInfo.selectedLink);
+    }
+
+    saveSelection() {
+        this.selectionInfo = {
+            selectedLink: this.getSelectedLink(),
+            ranges: this.getSelectedRanges()
+        };
+    }
+
+    restoreSelection() {
+        const sel = window.getSelection();
+
+        sel.removeAllRanges();
+
+        for (let i = 0, len = this.selectionInfo.ranges.length; i < len; ++i) {
+            sel.addRange(this.selectionInfo.ranges[i]);
+        }
+    }
+
+    // end API
+
+    private getSelectedLink(): HTMLElement {
+        const selection = window.getSelection();
+
+        let anchorNodeLink;
+        let focusNodeLink;
+
+        const isAnchorNodeBelongToBrick = this.el.nativeElement.contains(selection.anchorNode);
+        const isFocusNodeBelongToBrick = this.el.nativeElement.contains(selection.focusNode);
+
+        if (isAnchorNodeBelongToBrick) {
+            anchorNodeLink = this.findParentLink(selection.anchorNode);
+        }
+
+        if (isFocusNodeBelongToBrick) {
+            focusNodeLink = this.findParentLink(selection.focusNode);
+        }
+
+        if (anchorNodeLink) {
+            return anchorNodeLink;
+        } else if (focusNodeLink) {
+            return focusNodeLink;
+        } else if (selection.anchorNode !== selection.focusNode &&
+            isFocusNodeBelongToBrick && isAnchorNodeBelongToBrick) {
+            return this.findLinkBetweenNodes(selection.anchorNode, selection.focusNode);
+        }
+    }
+
+    private triggerEditorChange() {
+        this.editor.nativeElement.dispatchEvent(new Event('input'));
+    }
+
+    private showContextModal() {
+        this.editor.nativeElement.blur();
+
+        const sel = window.getSelection();
+
+        const elementBoundingRect = sel.getRangeAt(0).getBoundingClientRect();
+
+        this.contextMenuModalRef = this.contextModalService.open({
+            component: TextContextMenuComponent,
+            componentData: {
+                api: this.api
+            },
+            context: {
+                coordinate: {
+                    x: elementBoundingRect.left + ((elementBoundingRect.right - elementBoundingRect.left) / 2.5),
+                    y: elementBoundingRect.top - 35
+                }
+            }
+        });
+
+        this.contextMenuModalRef.result.then(() => {
+            this.hideContextMenuModal();
+        }, () => {
+            this.hideContextMenuModal();
+        });
+    }
+
+    // todo: might be as util method
+    private getSelectedRanges(): Range[] {
+        const sel = window.getSelection();
+        const ranges = [];
+
+        for (let i = 0, len = sel.rangeCount; i < len; ++i) {
+            ranges.push(sel.getRangeAt(i));
+        }
+
+        return ranges;
+    }
+
     private extractImageDataTransferItem(items: DataTransferItemList): DataTransferItem {
         let index;
 
@@ -184,10 +380,63 @@ export class TextBrickComponent extends BaseTextBrickComponent {
     }
 
     private hideBricksList() {
-        if (this.modalRef) {
-            this.modalRef.close();
+        if (this.brickSelectionModalRef) {
+            this.brickSelectionModalRef.close();
 
-            this.modalRef = null;
+            this.brickSelectionModalRef = null;
         }
+    }
+
+    private hideContextMenuModal() {
+        if (this.contextMenuModalRef) {
+            this.contextMenuModalRef.close();
+
+            this.contextMenuModalRef = null;
+        }
+    }
+
+    private findParentLink(node: Node): HTMLElement {
+        let currentNode: Node = node;
+        let linkNode = null;
+
+        while (!linkNode && currentNode !== this.el.nativeElement) {
+            if ((currentNode as HTMLElement).tagName === 'A') {
+                linkNode = currentNode;
+            }
+
+            currentNode = currentNode.parentElement;
+        }
+
+        return linkNode;
+    }
+
+    private findLinkBetweenNodes(nodeA: Node, nodeB: Node): HTMLElement {
+        const treeNodeTraverse = new TreeNodeTraverse(this.editor.nativeElement);
+
+        const orderedNodes = treeNodeTraverse.getPostPreOrderNodes();
+
+        let nodeAIndex = orderedNodes.indexOf(nodeA);
+        let nodeBIndex = orderedNodes.indexOf(nodeB);
+
+        if (nodeBIndex < nodeAIndex) {
+            const temp = nodeBIndex;
+
+            nodeBIndex = nodeAIndex;
+            nodeAIndex = temp;
+        }
+
+        const orderedNodesBetweenNodes = orderedNodes.slice(nodeAIndex, nodeBIndex);
+
+        const linkNodes = orderedNodesBetweenNodes.filter((node) => {
+            if (this.isHTMLElement(node)) {
+                return node.tagName === 'A';
+            }
+        });
+
+        return linkNodes[0] as HTMLElement;
+    }
+
+    private isHTMLElement(node: Node | HTMLElement): node is HTMLElement {
+        return (node as HTMLElement).querySelector !== undefined;
     }
 }

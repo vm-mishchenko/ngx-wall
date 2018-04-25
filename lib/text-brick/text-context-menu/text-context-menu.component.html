@@ -1,0 +1,35 @@
+<div class="w-context-panel w-text-context-menu-panel">
+    <div>
+        <button [ngClass]="{'w-text-context-menu__selected-link': config.api.isLinkSelected()}"
+                class="btn w-btn btn-sm btn-link"
+                (click)="link()">
+            Link
+        </button>
+
+        <button class="btn w-btn btn-sm btn-link" (click)="bold()">Bold</button>
+        <button class="btn w-btn btn-sm btn-link" (click)="italic()">Italic</button>
+    </div>
+
+    <div>
+        <form *ngIf="ui.showLinkForm" (submit)="applyLink($event)">
+            <div class="form-group w-form-group">
+                <input #linkEl #src class="form-control w-input" placeholder="Paste the url">
+            </div>
+
+            <div class="form-group w-form-group">
+                <button (click)="applyLink()"
+                        type="button"
+                        class="btn w-btn btn-link">
+                    Link
+                </button>
+
+                <button *ngIf="config.api.isLinkSelected()"
+                        (click)="unlink()"
+                        type="button"
+                        class="btn w-btn btn-link">
+                    Unlink
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

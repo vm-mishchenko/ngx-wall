@@ -3,6 +3,7 @@
    (input)="onTextChange()"
    [(ngModel)]="scope.text"
    (keydown)="onKeyPress($event)"
+   (click)="onClick($event)"
    class="text-brick__editor"
    (blur)="onBlur()"
    (focus)="onFocus()"
