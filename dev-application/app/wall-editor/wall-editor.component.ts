@@ -35,11 +35,11 @@ export class WallEditorComponent implements OnInit {
                 'tag': 'header',
                 'meta': {},
                 'data': {
-                    'text': 'Code brick'
+                    'text': 'Link brick'
                 }
             },
             {
-                'id': 'a430f77e-6543-2145-2f00-6d66dbe7e241',
+                'id': '392c098a-2812-7a7a-05e1-d9f99215bde3',
                 'tag': 'text',
                 'meta': {},
                 'data': {
@@ -47,7 +47,15 @@ export class WallEditorComponent implements OnInit {
                 }
             },
             {
-                'id': '5a47f1be-06de-f67a-0684-2a339a275c2d',
+                'id': '26849e5b-bb47-b7cd-d8cc-a5636291b977',
+                'tag': 'text',
+                'meta': {},
+                'data': {
+                    'text': 'He determined to drop his litigation with the monastry, and relinguish his claims to the wood-cuting and fishery rihgts at once. He was the more ready to do this becuase the rights had becom much less valuable, and he had indeed the vaguest idea where the wood and river in quedtion were.'
+                }
+            },
+            {
+                'id': '8f1df00e-6c4a-0d5d-666e-11c8d0ed8c29',
                 'tag': 'text',
                 'meta': {},
                 'data': {
@@ -55,22 +63,21 @@ export class WallEditorComponent implements OnInit {
                 }
             },
             {
-                'id': '15a54c99-ff37-3a71-9bb8-7bb5e7200b9c',
-                'tag': 'code',
+                'id': '1c11088a-836a-adc8-1b13-37fe88573b64',
+                'tag': 'text',
                 'meta': {},
                 'data': {
-                    'code': 'sudo apt-get install foo;',
-                    'mode': 'shell'
+                    'text': ''
                 }
             },
             {
-                'id': '9c2c4de3-4e5f-718b-61ec-c5c3035efb54',
+                'id': '5693ab20-fe73-e8f4-3d38-c0fe5fee5231',
                 'tag': 'text',
                 'meta': {},
                 'data': {}
             },
             {
-                'id': '65b02545-8b50-1e09-be1f-6fdb412d4b9e',
+                'id': '762d85d3-ee32-2431-57c8-a41f01960e73',
                 'tag': 'text',
                 'meta': {},
                 'data': {
@@ -78,19 +85,12 @@ export class WallEditorComponent implements OnInit {
                 }
             },
             {
-                'id': 'fe95d802-05d6-f804-3f0d-076b7c8d4997',
-                'tag': 'code',
-                'meta': {},
-                'data': {
-                    'code': 'asd\nfdgdfg\nsdfsdf',
-                    'mode': 'javascript'
-                }
-            },
-            {
-                'id': '76c967f1-ad93-8e57-9d2c-3248c747f646',
+                'id': '28c421e4-fc9d-9ecc-0d8d-e781d060b4a7',
                 'tag': 'text',
                 'meta': {},
-                'data': {}
+                'data': {
+                    'text': ''
+                }
             }
         ],
         'layout': {
@@ -124,84 +124,84 @@ export class WallEditorComponent implements OnInit {
                         {
                             'bricks': [
                                 {
-                                    'id': 'a430f77e-6543-2145-2f00-6d66dbe7e241'
+                                    'id': '392c098a-2812-7a7a-05e1-d9f99215bde3'
                                 }
                             ]
                         }
                     ],
-                    'id': '66f6504a-ec01-8339-fc3a-edbad457a162'
+                    'id': '6d318917-72b8-1140-3a1a-9fac42b70745'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '5a47f1be-06de-f67a-0684-2a339a275c2d'
+                                    'id': '26849e5b-bb47-b7cd-d8cc-a5636291b977'
                                 }
                             ]
                         }
                     ],
-                    'id': 'bdd39d67-d507-5ebc-fc05-8716c3ee9e38'
+                    'id': '20837e41-8ed8-6130-5ba5-8a9688d9243d'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '15a54c99-ff37-3a71-9bb8-7bb5e7200b9c'
+                                    'id': '8f1df00e-6c4a-0d5d-666e-11c8d0ed8c29'
                                 }
                             ]
                         }
                     ],
-                    'id': 'cb38d385-ffb2-a799-3eea-2374c444af30'
+                    'id': '1dff4793-4a45-2713-75a5-b213d391cc2b'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '9c2c4de3-4e5f-718b-61ec-c5c3035efb54'
+                                    'id': '1c11088a-836a-adc8-1b13-37fe88573b64'
                                 }
                             ]
                         }
                     ],
-                    'id': '1fef4c54-3764-feba-3282-df74e853b01a'
+                    'id': 'cdf571bf-7283-0c4e-caaf-3d9801a1d76a'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '65b02545-8b50-1e09-be1f-6fdb412d4b9e'
+                                    'id': '5693ab20-fe73-e8f4-3d38-c0fe5fee5231'
                                 }
                             ]
                         }
                     ],
-                    'id': '16b0f6db-2cc5-6abf-44d1-ab9217e2b09f'
+                    'id': '8be50755-8b90-6506-713a-9ee61f34dc43'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': 'fe95d802-05d6-f804-3f0d-076b7c8d4997'
+                                    'id': '762d85d3-ee32-2431-57c8-a41f01960e73'
                                 }
                             ]
                         }
                     ],
-                    'id': '90bacdba-abaa-f881-99a6-4669b10f811b'
+                    'id': '9945dd65-704a-5ec1-081e-0f5668c55fa1'
                 },
                 {
                     'columns': [
                         {
                             'bricks': [
                                 {
-                                    'id': '76c967f1-ad93-8e57-9d2c-3248c747f646'
+                                    'id': '28c421e4-fc9d-9ecc-0d8d-e781d060b4a7'
                                 }
                             ]
                         }
                     ],
-                    'id': '8b47aa2a-100f-aa33-673c-648c6c90887b'
+                    'id': '6a4ba685-b5fb-4af2-6f68-e5eb2c7b9a8d'
                 }
             ]
         }

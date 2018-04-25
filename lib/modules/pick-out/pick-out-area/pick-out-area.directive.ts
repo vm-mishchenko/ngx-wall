@@ -14,6 +14,7 @@ import {
     OnInit
 } from '@angular/core';
 import { PickOutCoordinator } from '../pick-out-coordinator.service';
+import { MOUSE_LEFT_KEY_CODE } from '../pick-out.constant';
 import { IPickOutAreaConfig } from './pick-out-area-config.interface';
 import { PickOutAreaComponent } from './pick-out-area.component';
 import { PickOutAreaModel } from './pick-out-area.model';
@@ -70,7 +71,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        if (!this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
+        if (event.button === MOUSE_LEFT_KEY_CODE && !this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
             const scrollContextRect = this.config.scrollableContainer.getBoundingClientRect();
             const pageX = event.clientX - scrollContextRect.left;
             const pageY = event.clientY - scrollContextRect.top + this.config.scrollableContainer.scrollTop;
