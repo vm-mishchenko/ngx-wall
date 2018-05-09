@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrickRegistry } from '../wall/registry/brick-registry.service';
 import { DividerBrickComponent } from './component/divider-brick.component';
+import {DIVIDER_BRICK_TAG} from './divider-brick.constant';
 
 @NgModule({
     exports: [DividerBrickComponent],
@@ -10,7 +11,7 @@ import { DividerBrickComponent } from './component/divider-brick.component';
 export class DividerBrickModule {
     constructor(private brickRegistry: BrickRegistry) {
         this.brickRegistry.register({
-            tag: 'divider',
+            tag: DIVIDER_BRICK_TAG,
             component: DividerBrickComponent,
             name: 'Divider',
             description: 'Visually divide blocks'

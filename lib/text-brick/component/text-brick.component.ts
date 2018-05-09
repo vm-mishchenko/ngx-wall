@@ -5,6 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {Subscription} from 'rxjs/Subscription';
 import {BaseTextBrickComponent} from '../../base-text-brick/base-text-brick.component';
+import {DIVIDER_BRICK_TAG} from '../../divider-brick';
 import {ContextModalService} from '../../modules/modal';
 import {ImgEncoder} from '../../modules/utils/img-encoder.service';
 import {NodeTreeSplit} from '../../modules/utils/node-tree-split';
@@ -63,8 +64,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
                 this.wallApi.core.turnBrickInto(this.id, newTag);
 
-                // d - divider tag
-                if (newTag === 'd') {
+                if (newTag === DIVIDER_BRICK_TAG) {
                     this.wallApi.core.addBrickAfterBrickId(this.id, 'text');
                 }
             }
@@ -99,6 +99,12 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
     onFocus() {
         this.placeholder = 'Type \'/\' for commands';
+    }
+
+    onKeyPress(e: KeyboardEvent) {
+        super.onKeyPress(e);
+
+        this.hideContextMenuModal();
     }
 
     // open the link in new window
@@ -345,6 +351,10 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
             this.hideContextMenuModal();
         }, () => {
             this.hideContextMenuModal();
+        });
+
+        setTimeout(() => {
+            this.editor.nativeElement.focus();
         });
     }
 
