@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {FileUploaderService} from './file-uploader.service';
 
 @NgModule({

@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import 'rxjs/add/observable/of';
-import { Observable } from 'rxjs/Observable';
-import { IFileUploadTask } from './interfaces/file-upload-task.interface';
-import { IFileUploader } from './interfaces/file-uploader.interface';
+import {Injectable} from '@angular/core';
+import {Observable, of} from 'rxjs';
+import {IFileUploadTask} from './interfaces/file-upload-task.interface';
+import {IFileUploader} from './interfaces/file-uploader.interface';
 
 @Injectable()
 export class FileUploaderService implements IFileUploader {
@@ -28,7 +27,7 @@ export class FileUploaderService implements IFileUploader {
             /* tslint:disable:no-console */
             console.error(`Cannot resolve uploader for ${fileReference}`);
 
-            return Observable.of(null);
+            return of(null);
         } else {
             return uploader.remove(this.extractFilePathFromReference(fileReference));
         }

@@ -1,7 +1,8 @@
-import { Observable } from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {IFileUploadTaskSnapshot} from './file-upload-task-snapshot.interface';
 
 export interface IFileUploadTask {
-    downloadURL(): Observable<string | null>;
-
     percentageChanges(): Observable<number | undefined>;
+
+    snapshotChanges(): Observable<IFileUploadTaskSnapshot>;
 }

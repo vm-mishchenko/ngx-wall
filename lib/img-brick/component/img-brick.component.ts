@@ -1,14 +1,14 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { IOnWallFocus, WallApi } from '../../index';
-import { FileUploaderService } from '../../modules/file-uploader/file-uploader.service';
-import { ContextModalService } from '../../modules/modal';
-import { IResizeData } from '../../modules/resizable/resizable.directive';
-import { Base64ToFile } from '../../modules/utils/base64-to-file';
-import { Guid } from '../../modules/utils/guid';
-import { ImgEncoder } from '../../modules/utils/img-encoder.service';
-import { ImgBrickState } from '../img-brick-state.interface';
-import { InputContextComponent } from './input-context.component';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {FileUploaderService} from '../../modules/file-uploader/file-uploader.service';
+import {ContextModalService} from '../../modules/modal';
+import {IResizeData} from '../../modules/resizable/resizable.directive';
+import {Base64ToFile} from '../../modules/utils/base64-to-file';
+import {Guid} from '../../modules/utils/guid';
+import {ImgEncoder} from '../../modules/utils/img-encoder.service';
+import {IOnWallFocus, WallApi} from '../../wall';
+import {ImgBrickState} from '../img-brick-state.interface';
+import {InputContextComponent} from './input-context.component';
 
 @Component({
     selector: 'img-brick',
@@ -165,14 +165,16 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
                 const imgFile = (new Base64ToFile(this.scope.src, `${imgReference}`)).getFile();
 
-                this.fileUploader.upload(imgReference, imgFile).downloadURL().subscribe((fileUrl: string) => {
-                    resolve({
-                        fileUrl,
-                        metadata: {
-                            reference: imgReference
-                        }
-                    });
-                }, reject);
+                this.fileUploader.upload(imgReference, imgFile)
+                    .snapshotChanges()
+                    .subscribe((snapshot) => {
+                        resolve({
+                            fileUrl: snapshot.downloadURL,
+                            metadata: {
+                                reference: imgReference
+                            }
+                        });
+                    }, reject);
             } else {
                 reject(new Error('File uploader service does not allow upload file'));
             }

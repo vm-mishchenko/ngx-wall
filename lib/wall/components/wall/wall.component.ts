@@ -1,9 +1,9 @@
-import { Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges } from '@angular/core';
-import { IWallModel } from '../../model/model.interfaces';
-import { WALL_PLUGIN } from '../../wall.tokens';
-import { WallApi } from './wall-api.service';
-import { WallViewModel } from './wall-view.model';
-import { IWallConfiguration } from './wall.interfaces';
+import {Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges} from '@angular/core';
+import {IWallModel} from '../../model/model.interfaces';
+import {WALL_PLUGIN} from '../../wall.tokens';
+import {WallApi} from './wall-api.service';
+import {WallViewModel} from './wall-view.model';
+import {IWallConfiguration} from './wall.interfaces';
 
 @Component({
     selector: 'wall',
@@ -21,7 +21,7 @@ export class WallComponent implements OnChanges, OnDestroy {
 
     constructor(private injector: Injector,
                 public api: WallApi,
-                private wallViewModel: WallViewModel) {
+                public wallViewModel: WallViewModel) {
     }
 
     // click on empty space

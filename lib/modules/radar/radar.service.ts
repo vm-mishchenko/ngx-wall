@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { RadarCoordinator } from './radar-coordinator.service';
-import { SpotModel } from './spot.model';
+import {Injectable} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {RadarCoordinator} from './radar-coordinator.service';
+import {SpotModel} from './spot.model';
 
 @Injectable()
 export class Radar {

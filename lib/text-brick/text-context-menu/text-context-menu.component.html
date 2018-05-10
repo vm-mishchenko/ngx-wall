@@ -11,7 +11,7 @@
     </div>
 
     <div>
-        <form *ngIf="ui.showLinkForm" (submit)="applyLink($event)">
+        <form *ngIf="ui.showLinkForm" (submit)="applyLink()">
             <div class="form-group w-form-group">
                 <input #linkEl #src class="form-control w-input" placeholder="Paste the url">
             </div>

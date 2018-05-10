@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Radar, SpotModel } from '../radar';
-import { EndPickOut } from './events/end-pick-out.event';
-import { PickOutItems } from './events/pick-out-items.event';
-import { StartPickOut } from './events/start-pick-out.event';
-import { StopPickOut } from './events/stop-pick-out.event';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {Radar, SpotModel} from '../radar';
+import {EndPickOut} from './events/end-pick-out.event';
+import {PickOutItems} from './events/pick-out-items.event';
+import {StartPickOut} from './events/start-pick-out.event';
+import {StopPickOut} from './events/stop-pick-out.event';
 
 @Injectable()
 export class PickOutCoordinator {

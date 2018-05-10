@@ -1,9 +1,9 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { IOnWallFocus, WallApi } from '../../index';
-import { ContextModalService } from '../../modules/modal';
-import { IVideoBrickState } from '../video-brick-state.interface';
-import { InputContextComponent } from './input-context.component';
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {ContextModalService} from '../../modules/modal';
+import {IOnWallFocus, WallApi} from '../../wall';
+import {IVideoBrickState} from '../video-brick-state.interface';
+import {InputContextComponent} from './input-context.component';
 
 @Component({
     selector: 'video-brick',

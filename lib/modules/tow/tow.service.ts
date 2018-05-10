@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { TowCoordinator } from './tow-coordinator.service';
+import {Injectable} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {TowCoordinator} from './tow-coordinator.service';
 
 @Injectable()
 export class TowService {

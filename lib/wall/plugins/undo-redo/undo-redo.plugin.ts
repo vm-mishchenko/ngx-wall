@@ -1,10 +1,10 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { WallApi } from '../../components/wall';
-import { BeforeChangeEvent, SetPlanEvent } from '../../model/wall.events';
-import { IPluginDestroy, IWallDefinition } from '../../wall.interfaces';
-import { IUndoRedoApi } from './undo-redo-api.interface';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {WallApi} from '../../components/wall';
+import {BeforeChangeEvent, SetPlanEvent} from '../../model/wall.events';
+import {IPluginDestroy, IWallDefinition} from '../../wall.interfaces';
+import {IUndoRedoApi} from './undo-redo-api.interface';
 
 @Injectable()
 export class UndoRedoPlugin implements IPluginDestroy {

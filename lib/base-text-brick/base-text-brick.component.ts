@@ -1,7 +1,6 @@
 import {ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
-import 'rxjs/add/operator/debounceTime';
-import {Subject} from 'rxjs/Subject';
-import {Subscription} from 'rxjs/Subscription';
+import {Subject, Subscription} from 'rxjs';
+import {debounceTime} from 'rxjs/operators';
 import {DeepLeftNodeChild} from '../modules/utils/deep-left-node-child';
 import {DeepRightNodeChild} from '../modules/utils/deep-right-node-child';
 import {FirstSubStringNode} from '../modules/utils/first-sub-string-node';
@@ -54,7 +53,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         this.editor.nativeElement.addEventListener('paste', this.onPasteBound);
 
-        this.textChangeSubscription = this.textChange.debounceTime(100)
+        this.textChangeSubscription = this.textChange
+            .pipe(
+                debounceTime(100)
+            )
             .subscribe(() => {
                 this.saveCurrentState();
             });

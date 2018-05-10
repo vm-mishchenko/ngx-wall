@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 import {
     Component,
     ElementRef,
@@ -10,9 +10,9 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { ILayout } from './interfaces/layout.interface';
-import { IFocusedBrick } from './wall-canvas.interfaces';
+import {Subject} from 'rxjs';
+import {ILayout} from './interfaces/layout.interface';
+import {IFocusedBrick} from './wall-canvas.interfaces';
 
 @Component({
     selector: 'wall-canvas',
@@ -44,12 +44,12 @@ export class WallCanvasComponent implements OnChanges {
 
     onEditorClick(e: any) {
         if (e.target === this.expander.nativeElement) {
-            this.canvasClick.next();
+            this.canvasClick.emit();
         }
     }
 
     onFocused(brickId: string) {
-        this.onFocusedBrick.next(brickId);
+        this.onFocusedBrick.emit(brickId);
     }
 
     ngOnChanges(changes: SimpleChanges) {

@@ -1,7 +1,7 @@
-import { Subscription } from 'rxjs/Subscription';
-import { IWallDefinition } from '../wall.interfaces';
-import { WallBrick } from './wall-brick.model';
-import { IBrickSnapshot } from './wall.events';
+import {Subscription} from 'rxjs';
+import {IWallDefinition} from '../wall.interfaces';
+import {WallBrick} from './wall-brick.model';
+import {IBrickSnapshot} from './wall.events';
 
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
 export const awesomeTypescriptLoaderBug3 = true;

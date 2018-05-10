@@ -1,5 +1,5 @@
 /* tslint:disable */
-import { Subject } from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
 export class ReactiveReadOnlyProperty<T> {
     valueChanged: Subject<T>;

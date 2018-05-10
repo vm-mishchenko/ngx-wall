@@ -1,9 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import 'rxjs/add/operator/filter';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
-import {Subscription} from 'rxjs/Subscription';
+import {fromEvent, Subject, Subscription} from 'rxjs';
+import {debounceTime, filter} from 'rxjs/operators';
 import {BaseTextBrickComponent} from '../../base-text-brick/base-text-brick.component';
 import {DIVIDER_BRICK_TAG} from '../../divider-brick';
 import {ContextModalService} from '../../modules/modal';
@@ -71,10 +69,12 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
         });
 
         this.subscriptions.push(
-            Observable.fromEvent(document, 'selectionchange')
-                .filter(() => Boolean(this.scope.text.length))
-                .debounceTime(500)
-                .filter(() => this.el.nativeElement.contains(window.getSelection().anchorNode))
+            fromEvent(document, 'selectionchange')
+                .pipe(
+                    filter(() => Boolean(this.scope.text.length)),
+                    debounceTime(500),
+                    filter(() => this.el.nativeElement.contains(window.getSelection().anchorNode))
+                )
                 .subscribe((e: any) => {
                     this.onTextSelection();
                 })

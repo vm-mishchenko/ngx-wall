@@ -1,9 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { StartWorkingEvent } from './events/start-working.event';
-import { StopWorkingEvent } from './events/stop-working.event';
-import { WorkInProgressEvent } from './events/work-in-progress.event';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
+import {StartWorkingEvent} from './events/start-working.event';
+import {StopWorkingEvent} from './events/stop-working.event';
+import {WorkInProgressEvent} from './events/work-in-progress.event';
 
 @Injectable()
 export class TowCoordinator {

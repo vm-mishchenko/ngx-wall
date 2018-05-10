@@ -11,10 +11,10 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { LocationUpdatedEvent, Radar } from '../../../../../modules/radar';
-import { IWallComponent } from '../../../wall/interfaces/wall-component.interface';
-import { WallCanvasComponent } from '../../wall-canvas.component';
+import {Subscription} from 'rxjs';
+import {LocationUpdatedEvent, Radar} from '../../../../../modules/radar';
+import {IWallComponent} from '../../../wall/interfaces/wall-component.interface';
+import {WallCanvasComponent} from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -26,15 +26,15 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
+    selected = false;
+
+    isMouseNear = false;
+
+    spot: any;
+
+    isMediaInteractionEnabled = true;
+
     private componentReference: ComponentRef<any>;
-
-    private selected = false;
-
-    private spot: any;
-
-    private isMouseNear = false;
-
-    private isMediaInteractionEnabled = true;
 
     private minimalDistanceToMouse = 100;
 

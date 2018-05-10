@@ -1,3 +1,5 @@
+export {PickOutAreaComponent} from './pick-out-area/pick-out-area.component';
+
 export * from './pick-out.module';
 export * from './pick-out.service';
 export * from './pick-out-area/pick-out-area.directive';
@@ -9,4 +11,4 @@ export * from './events/start-pick-out.event';
 export * from './events/stop-pick-out.event';
 
 // interfaces
-export { IPickOutAreaConfig } from './pick-out-area/pick-out-area-config.interface';
+export {IPickOutAreaConfig} from './pick-out-area/pick-out-area-config.interface';

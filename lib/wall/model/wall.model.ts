@@ -1,10 +1,9 @@
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { BrickRegistry } from '../registry/brick-registry.service';
-import { IWallDefinition } from '../wall.interfaces';
-import { IWallColumn, IWallModel, IWallRow } from './model.interfaces';
-import { WallBrick } from './wall-brick.model';
-import { WallLayout } from './wall-layout.model';
+import {Subject, Subscription} from 'rxjs';
+import {BrickRegistry} from '../registry/brick-registry.service';
+import {IWallDefinition} from '../wall.interfaces';
+import {IWallColumn, IWallModel, IWallRow} from './model.interfaces';
+import {WallBrick} from './wall-brick.model';
+import {WallLayout} from './wall-layout.model';
 import {
     AddBrickEvent,
     BeforeChangeEvent,

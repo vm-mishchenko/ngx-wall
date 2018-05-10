@@ -1,25 +1,25 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { BeforeChangeEvent, UpdateBrickStateEvent } from '../../';
-import { ReactiveProperty, ReactiveReadOnlyProperty } from '../../../reactive-property';
-import { IWallModel } from '../../model/model.interfaces';
+import {Injectable} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {ReactiveProperty, ReactiveReadOnlyProperty} from '../../../reactive-property';
+import {IWallModel} from '../../model/model.interfaces';
 import {
     AddBrickEvent,
+    BeforeChangeEvent,
     MoveBrickEvent,
     RemoveBrickEvent,
     RemoveBricksEvent,
-    TurnBrickIntoEvent
+    TurnBrickIntoEvent,
+    UpdateBrickStateEvent
 } from '../../model/wall.events';
-import { BrickRegistry } from '../../registry/brick-registry.service';
-import { IWallCoreApi } from './interfaces/wall-core-api.interface';
-import { IWallState } from './interfaces/wall-state.interface';
-import { IWallViewModel } from './interfaces/wall-view-model.interface';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {IWallCoreApi} from './interfaces/wall-core-api.interface';
+import {IWallState} from './interfaces/wall-state.interface';
+import {IWallViewModel} from './interfaces/wall-view-model.interface';
 
-import { WallApi } from './wall-api.service';
-import { SelectedBrickEvent } from './wall-component.events';
-import { WALL } from './wall.constant';
-import { IFocusContext } from './wall.interfaces';
+import {WallApi} from './wall-api.service';
+import {SelectedBrickEvent} from './wall-component.events';
+import {WALL} from './wall.constant';
+import {IFocusContext} from './wall.interfaces';
 
 @Injectable()
 export class WallViewModel implements IWallViewModel {

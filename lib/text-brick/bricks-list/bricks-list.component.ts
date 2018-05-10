@@ -1,10 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { BrickRegistry, IBrickDefinition, IBrickSpecification } from '../../wall';
-import { TEXT_BRICK_TAG } from '../text-brick.constant';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {BrickRegistry, IBrickDefinition, IBrickSpecification} from '../../wall';
+import {TEXT_BRICK_TAG} from '../text-brick.constant';
 
 @Component({
     selector: 'w-bricks-list',

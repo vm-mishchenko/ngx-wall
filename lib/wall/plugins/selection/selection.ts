@@ -1,13 +1,13 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { EndPickOut, PickOutItems, PickOutService, StartPickOut } from '../../../modules/pick-out';
-import { Radar, SpotModel } from '../../../modules/radar';
-import { StartWorkingEvent, StopWorkingEvent, TOW, TowService } from '../../../modules/tow';
-import { WorkInProgressEvent } from '../../../modules/tow/events/work-in-progress.event';
-import { PlaceholderRenderer } from '../../components/placeholder-renderer/placeholder-renderer.service';
-import { WallApi } from '../../components/wall';
-import { IPluginDestroy } from '../../wall.interfaces';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../modules/pick-out';
+import {Radar, SpotModel} from '../../../modules/radar';
+import {StartWorkingEvent, StopWorkingEvent, TOW, TowService} from '../../../modules/tow';
+import {WorkInProgressEvent} from '../../../modules/tow/events/work-in-progress.event';
+import {PlaceholderRenderer} from '../../components/placeholder-renderer/placeholder-renderer.service';
+import {WallApi} from '../../components/wall';
+import {IPluginDestroy} from '../../wall.interfaces';
 
 @Injectable()
 export class SelectionPlugin implements IPluginDestroy { // todo should implement plugin interface

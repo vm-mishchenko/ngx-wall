@@ -1,8 +1,8 @@
-import { Injectable, Renderer2, RendererFactory2 } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
-import { ContextModalComponent } from './context-modal.component';
-import { CONTEXT_MODAL } from './index';
+import {Injectable, Renderer2, RendererFactory2} from '@angular/core';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
+import {ContextModalComponent} from './context-modal.component';
+import {CONTEXT_MODAL} from './context-modal.constant';
 
 export interface IContextModalOptions {
     component: any;

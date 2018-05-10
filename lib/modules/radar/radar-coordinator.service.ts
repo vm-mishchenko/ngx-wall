@@ -1,15 +1,12 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import 'rxjs/add/observable/fromEvent';
-import 'rxjs/add/operator/throttleTime';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { SpotDirective } from './directive/spot.directive';
-import { LocationUpdatedEvent } from './events/location-updated.event';
-import { IDistanceToSpot } from './interfaces/distance-to-spot.interface';
-import { SpotId } from './interfaces/spot-id.type';
-import { SpotModel } from './spot.model';
+import {DOCUMENT} from '@angular/common';
+import {Inject, Injectable} from '@angular/core';
+import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
+import {throttleTime} from 'rxjs/operators';
+import {SpotDirective} from './directive/spot.directive';
+import {LocationUpdatedEvent} from './events/location-updated.event';
+import {IDistanceToSpot} from './interfaces/distance-to-spot.interface';
+import {SpotId} from './interfaces/spot-id.type';
+import {SpotModel} from './spot.model';
 
 @Injectable()
 export class RadarCoordinator {
@@ -20,12 +17,14 @@ export class RadarCoordinator {
     private mouseMove$: Observable<MouseEvent>;
 
     constructor(@Inject(DOCUMENT) doc) {
-        this.mouseMove$ = Observable.fromEvent(doc, 'mousemove');
+        this.mouseMove$ = fromEvent(doc, 'mousemove');
 
         const throttleMouseTime = 30;
 
         this.mouseMove$
-            .throttleTime(throttleMouseTime)
+            .pipe(
+                throttleTime(throttleMouseTime)
+            )
             .subscribe((event) => {
                 this.updateSpotsInfo();
                 this.updateLocationPosition(event.clientX, event.clientY);

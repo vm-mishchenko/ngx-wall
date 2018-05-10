@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, Output} from '@angular/core';
 
 @Component({
     template: `<span [ngClass]="customClassName"></span>`
@@ -8,7 +8,7 @@ export class ResizableHandlerComponent {
     @Output() mouseDownEvent: EventEmitter<MouseEvent> = new EventEmitter();
 
     @HostListener('mousedown', ['$event'])
-    private mouseDown(event: MouseEvent) {
+    mouseDown(event: MouseEvent) {
         this.mouseDownEvent.emit(event);
     }
 }

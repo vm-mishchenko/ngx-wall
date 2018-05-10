@@ -1,8 +1,8 @@
-import { Subscription } from 'rxjs/Subscription';
-import { IBrickSnapshot } from '../../../model/wall.events';
-import { IWallDefinition } from '../../../wall.interfaces';
-import { IFocusContext } from '../wall.interfaces';
-import { IWallState } from './wall-state.interface';
+import {Subscription} from 'rxjs';
+import {IBrickSnapshot} from '../../../model/wall.events';
+import {IWallDefinition} from '../../../wall.interfaces';
+import {IFocusContext} from '../wall.interfaces';
+import {IWallState} from './wall-state.interface';
 
 export interface IWallCoreApi {
     state: IWallState;
