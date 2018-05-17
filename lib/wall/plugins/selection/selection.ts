@@ -1,5 +1,5 @@
 import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../../modules/pick-out';
 import {Radar, SpotModel} from '../../../modules/radar';
@@ -7,15 +7,19 @@ import {StartWorkingEvent, StopWorkingEvent, TOW, TowService} from '../../../mod
 import {WorkInProgressEvent} from '../../../modules/tow/events/work-in-progress.event';
 import {PlaceholderRenderer} from '../../components/placeholder-renderer/placeholder-renderer.service';
 import {WallApi} from '../../components/wall';
-import {IPluginDestroy} from '../../wall.interfaces';
+import {IWallPlugin} from '../../wall.interfaces';
 
-@Injectable()
-export class SelectionPlugin implements IPluginDestroy { // todo should implement plugin interface
+export class SelectionPlugin implements IWallPlugin {
     doc: Document;
 
     isMouseSelection: boolean = false;
     onMouseDownBound: any;
     onKeyDownHandlerBound: any;
+
+    private pickOutService: PickOutService;
+    private radar: Radar;
+    private towService: TowService;
+    private placeholderRenderer: PlaceholderRenderer;
 
     private nearestBrickToDrop: {
         spot: SpotModel;
@@ -28,13 +32,12 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
     private towServiceSubscription: Subscription;
     private pickOutServiceSubscription: Subscription;
 
-    constructor(private wallApi: WallApi,
-                private pickOutService: PickOutService,
-                private radar: Radar,
-                private placeholderRenderer: PlaceholderRenderer,
-                private towService: TowService,
-                @Inject(DOCUMENT) doc) {
-        this.doc = doc;
+    constructor(private wallApi: WallApi, private injector: Injector) {
+        this.doc = this.injector.get(DOCUMENT);
+        this.pickOutService = this.injector.get(PickOutService);
+        this.radar = this.injector.get(Radar);
+        this.placeholderRenderer = this.injector.get(PlaceholderRenderer);
+        this.towService = this.injector.get(TowService);
 
         this.onMouseDownBound = this.onMouseDown.bind(this);
         this.onKeyDownHandlerBound = this.onKeyDownHandler.bind(this);
@@ -268,7 +271,7 @@ export class SelectionPlugin implements IPluginDestroy { // todo should implemen
         }
     }
 
-    onPluginDestroy() {
+    onWallPluginDestroy() {
         this.doc.removeEventListener('mousedown', this.onMouseDownBound);
         this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
 

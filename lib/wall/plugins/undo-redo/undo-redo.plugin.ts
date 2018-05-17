@@ -1,13 +1,12 @@
 import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {WallApi} from '../../components/wall';
 import {BeforeChangeEvent, SetPlanEvent} from '../../model/wall.events';
-import {IPluginDestroy, IWallDefinition} from '../../wall.interfaces';
+import {IWallDefinition, IWallPlugin} from '../../wall.interfaces';
 import {IUndoRedoApi} from './undo-redo-api.interface';
 
-@Injectable()
-export class UndoRedoPlugin implements IPluginDestroy {
+export class UndoRedoPlugin implements IWallPlugin {
     private doc: Document;
 
     private onUndoKeyHandlerBound: any;
@@ -20,8 +19,8 @@ export class UndoRedoPlugin implements IPluginDestroy {
     private redoPlanStack: IWallDefinition[] = [];
 
     constructor(private wallApi: WallApi,
-                @Inject(DOCUMENT) doc) {
-        this.doc = doc;
+                private injector: Injector) {
+        this.doc = this.injector.get(DOCUMENT);
 
         this.onUndoKeyHandlerBound = this.onUndoKeyHandler.bind(this);
 
@@ -40,7 +39,7 @@ export class UndoRedoPlugin implements IPluginDestroy {
         });
     }
 
-    onPluginDestroy() {
+    onWallPluginDestroy() {
         this.apiSubscription.unsubscribe();
 
         this.doc.removeEventListener('keydown', this.onUndoKeyHandlerBound);

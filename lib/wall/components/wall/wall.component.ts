@@ -1,5 +1,6 @@
-import {Component, Injector, Input, OnChanges, OnDestroy, ReflectiveInjector, SimpleChanges} from '@angular/core';
+import {Component, Injector, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import {IWallModel} from '../../model/model.interfaces';
+import {IWallPlugin, IWallPluginFactory} from '../../wall.interfaces';
 import {WALL_PLUGIN} from '../../wall.tokens';
 import {WallApi} from './wall-api.service';
 import {WallViewModel} from './wall-view.model';
@@ -17,7 +18,7 @@ export class WallComponent implements OnChanges, OnDestroy {
     @Input() model: IWallModel = null;
     @Input() configuration: IWallConfiguration = null;
 
-    private initializedPlugins: any[] = [];
+    private initializedPlugins: IWallPlugin[] = [];
 
     constructor(private injector: Injector,
                 public api: WallApi,
@@ -72,18 +73,17 @@ export class WallComponent implements OnChanges, OnDestroy {
 
     private initializePlugins() {
         // initialize plugins
-        const plugins = this.injector.get(WALL_PLUGIN);
-        const pluginInjector = ReflectiveInjector.resolveAndCreate(plugins, this.injector);
+        const pluginFactories: IWallPluginFactory[] = this.injector.get(WALL_PLUGIN);
 
-        plugins.forEach((plugin) => {
-            this.initializedPlugins.push(pluginInjector.resolveAndInstantiate(plugin));
+        pluginFactories.forEach((pluginFactory) => {
+            this.initializedPlugins.push(pluginFactory.instantiate(this.api));
         });
     }
 
     private destroyPlugins() {
         this.initializedPlugins.forEach((plugin) => {
-            if (plugin.onPluginDestroy) {
-                plugin.onPluginDestroy();
+            if (plugin.onWallPluginDestroy) {
+                plugin.onWallPluginDestroy();
             }
         });
 

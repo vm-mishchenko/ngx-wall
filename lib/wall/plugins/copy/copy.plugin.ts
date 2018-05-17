@@ -1,17 +1,16 @@
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { WallApi } from '../../components/wall';
-import { IPluginDestroy } from '../../wall.interfaces';
+import {DOCUMENT} from '@angular/common';
+import {Injector} from '@angular/core';
+import {WallApi} from '../../components/wall';
+import {IWallPlugin} from '../../wall.interfaces';
 
-@Injectable()
-export class CopyPlugin implements IPluginDestroy {
+export class CopyPlugin implements IWallPlugin {
     doc: Document = null;
 
     onCopyBound: any;
 
     constructor(private wallApi: WallApi,
-                @Inject(DOCUMENT) doc) {
-        this.doc = doc;
+                private injector: Injector) {
+        this.doc = this.injector.get(DOCUMENT);
 
         this.onCopyBound = this.onCopy.bind(this);
 
@@ -28,7 +27,7 @@ export class CopyPlugin implements IPluginDestroy {
         }
     }
 
-    onPluginDestroy() {
+    onWallPluginDestroy() {
         this.doc.removeEventListener('click', this.onCopy);
     }
 

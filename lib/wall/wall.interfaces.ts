@@ -1,5 +1,6 @@
+import {WallApi} from './components/wall/wall-api.service';
 // https://github.com/s-panferov/awesome-typescript-loader/issues/411
-import { IBrickSnapshot } from './model/wall.events';
+import {IBrickSnapshot} from './model/wall.events';
 
 export const awesomeTypescriptLoaderBug2 = true;
 
@@ -60,6 +61,12 @@ export interface IColumnLayoutDefinition {
     bricks: Array<{ id: string }>;
 }
 
-export interface IPluginDestroy {
-    onPluginDestroy();
+// plugin
+export interface IWallPluginFactory {
+    instantiate(api: WallApi);
 }
+
+export interface IWallPlugin {
+    onWallPluginDestroy();
+}
+
