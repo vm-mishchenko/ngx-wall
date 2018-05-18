@@ -5,6 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
 
 module.exports = {
     entry: {
@@ -71,7 +72,13 @@ module.exports = {
             // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular[\\\/]core[\\\/]@angular/,
             path.join(process.cwd(), 'src')
-        )
+        ),
+
+        new AngularCompilerPlugin({
+            tsConfigPath: root('/dev-application/tsconfig.json'),
+            entryModule: root('/dev-application/app/app.module#AppModule'),
+            sourceMap: true
+        })
     ],
 
     resolve: {

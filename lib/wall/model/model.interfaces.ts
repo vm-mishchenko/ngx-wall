@@ -16,6 +16,13 @@ export interface IWallColumn {
 }
 
 export interface IWallModel {
+    // COMMAND METHODS
+    setPlan(plan: IWallDefinition);
+
+    addBrickAfterBrickId(brickId: string, tag: string): IBrickSnapshot;
+
+    // QUERY METHODS
+
     getNextBrickId(brickId: string): string;
 
     getNextTextBrickId(brickId: string): string;
@@ -24,7 +31,7 @@ export interface IWallModel {
 
     getPreviousBrickId(brickId: string): string;
 
-    setPlan(plan: IWallDefinition);
+
 
     getPlan(): IWallDefinition;
 
@@ -40,7 +47,7 @@ export interface IWallModel {
 
     addDefaultBrick(): void;
 
-    addBrickAfterBrickId(brickId: string, tag: string): IBrickSnapshot;
+
 
     moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string): void;
 

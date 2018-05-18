@@ -51,6 +51,7 @@
     "@angular/platform-browser-dynamic": "^6.0.0",
     "@types/jasmine": "2.5.53",
     "@types/node": "^8.0.53",
+    "@ngtools/webpack": "6.0.3",
     "angular2-template-loader": "0.6.2",
     "awesome-typescript-loader": "3.4.0",
     "bootstrap": "4.0.0",
