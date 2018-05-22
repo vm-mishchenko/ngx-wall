@@ -1,44 +1,27 @@
-# wall
-[![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
-[![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
-[![devDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/dev-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=dev)
+# Wall
 
-## Goal
-The goal of the project is to create extensible web editor which provides clear and simple API for adding new type of editors (`bricks`) based on Angular components.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
 
-Demo: https://vm-mishchenko.github.io/ngx-wall
+## Development server
 
-## Development
-The project is in early development stage and is not recommended for production.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
+## Code scaffolding
 
-### Folder structure
- - `configurations` - config files for development and production releases
- - `dev-application` - development server
- - `libs`
-    - `wall` - editor itself, render bricks and provide api for manipulation 
-    - `text-brick` - base brick in the system. Allow to type simple text and could be transformed to any other bricks 
-    - `header-brick` - allow to add simple header to the wall
-    - `img-brick` - image brick
-    - `resources` - styles for editor and base bricks
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-### Development process
+## Build
 
-Install library dependencies
-``` bash
-npm i
-```
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
-Build umd version of library in watch mode
-``` bash
-npm run build:watch
-```
+## Running unit tests
 
-Start development server on `http://localhost:9000`. Once you update library or dev server browser page will be reloaded automatically 
-``` bash
-npm run application
-```
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-### Create own brick
-Brick - is simple Angular component which after registration could be used in wall editor.
-To write own editor please refer to base `text` or `img` bricks.
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
