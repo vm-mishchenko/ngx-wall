@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     template: `
@@ -18,9 +18,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
         </div>
     `
 })
-
 export class ModalExampleComponent {
-    @Input() name;
+    @Input() name: any;
 
     constructor(public activeModal: NgbActiveModal) {
     }

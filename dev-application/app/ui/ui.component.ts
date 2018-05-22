@@ -24,10 +24,10 @@ export class UiComponent implements OnInit {
     openDropdownLikeModal() {
         this.modalService.open(ModalExampleComponent, {
             windowClass: 'w-transparent-backdrop',
-            backdrop: 'foo'
-        }).result.then((result) => {
+            backdrop: true
+        }).result.then((result: any) => {
             console.log(`Closed with: ${result}`);
-        }, (reason) => {
+        }, (reason: any) => {
             console.log(`Closed with: ${reason}`);
         });
     }

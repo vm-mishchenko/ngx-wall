@@ -20,7 +20,7 @@ module.exports = {
 
     module: {
         rules: [
-            {
+            /*{
                 test: /\.ts$/,
                 use: [
                     {
@@ -28,6 +28,20 @@ module.exports = {
                         options: {
                             tsConfigPath: root('/dev-application/tsconfig.json')
                         }
+                    }
+                ]
+            },*/
+            {
+                test: /\.ts$/,
+                use: [
+                    {
+                        loader: 'awesome-typescript-loader',
+                        options: {
+                            configFileName : root('/dev-application/tsconfig.json')
+                        }
+                    },
+                    {
+                        loader: "angular2-template-loader"
                     }
                 ]
             },
@@ -72,13 +86,7 @@ module.exports = {
             // The (\\|\/) piece accounts for path separators in *nix and Windows
             /angular[\\\/]core[\\\/]@angular/,
             path.join(process.cwd(), 'src')
-        ),
-
-        new AngularCompilerPlugin({
-            tsConfigPath: root('/dev-application/tsconfig.json'),
-            entryModule: root('/dev-application/app/app.module#AppModule'),
-            sourceMap: true
-        })
+        )
     ],
 
     resolve: {

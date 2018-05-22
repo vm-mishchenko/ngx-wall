@@ -45,7 +45,8 @@ describe('Wall Model', () => {
             tag: 'text',
             name: 'FAKE',
             description: 'FAKE',
-            component: 'FAKE'
+            component: 'FAKE',
+            supportText: true
         });
 
         brickRegistry.register({
@@ -66,13 +67,13 @@ describe('Wall Model', () => {
         it('should return default plan', () => {
             const wm = wallModelFactory.create(defaultPlan);
 
-            expect(wm.getPlan()).toEqual(defaultPlan);
+            expect(wm.api.core.getPlan()).toEqual(defaultPlan);
         });
 
         it('should be initialized correct', () => {
             const wm = wallModelFactory.create(simplePlan);
 
-            expect(wm.getPlan()).toEqual(simplePlan);
+            expect(wm.api.core.getPlan()).toEqual(simplePlan);
         });
     });
 
@@ -125,9 +126,111 @@ describe('Wall Model', () => {
 
             const wm = wallModelFactory.create(plan);
 
-            const filteredBrickIds = wm.sortBrickIdsByLayoutOrder(['2', '3', '1']);
+            const filteredBrickIds = wm.api.core.sortBrickIdsByLayoutOrder(['2', '3', '1']);
 
             expect(filteredBrickIds).toEqual(['1', '2', '3']);
+        });
+    });
+
+    describe('[Query API]', () => {
+        it('should return row count', () => {
+            const wm = wallModelFactory.create();
+
+            expect(wm.api.core.getRowCount()).toBe(0);
+
+            wm.api.core.addDefaultBrick();
+
+            expect(wm.api.core.getRowCount()).toBe(1);
+        });
+
+        it('should return column count', () => {
+            const wm = wallModelFactory.create();
+            const rowIndex = 0;
+
+            wm.api.core.addDefaultBrick();
+
+            expect(wm.api.core.getColumnCount(rowIndex)).toBe(1);
+        });
+
+        it('should define is Brick Ahead Of other brick', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            const brickIds = wm.api.core.getBrickIds();
+
+            expect(wm.api.core.isBrickAheadOf(brickIds[0], brickIds[1])).toBe(true);
+        });
+
+        it('should return brick count', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            expect(wm.api.core.getBricksCount()).toBe(2);
+        });
+
+        it('should return brick tag by brick Id', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+
+            expect(wm.api.core.getBrickTag(wm.api.core.getBrickIds()[0])).toBe('text');
+        });
+
+        it('should return brick Ids', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            expect(wm.api.core.getBrickIds().length).toBe(2);
+        });
+
+        it('should return next brick id', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            const brickIds = wm.api.core.getBrickIds();
+
+            expect(wm.api.core.getNextBrickId(brickIds[0])).toBe(brickIds[1]);
+        });
+
+        it('should return previous brick id', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            const brickIds = wm.api.core.getBrickIds();
+
+            expect(wm.api.core.getPreviousBrickId(brickIds[1])).toBe(brickIds[0]);
+        });
+
+        it('should return next text brick id', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            const brickIds = wm.api.core.getBrickIds();
+
+            expect(wm.api.core.getNextTextBrickId(brickIds[0])).toBe(brickIds[1]);
+        });
+
+        it('should return previous text brick id', () => {
+            const wm = wallModelFactory.create();
+
+            wm.api.core.addDefaultBrick();
+            wm.api.core.addDefaultBrick();
+
+            const brickIds = wm.api.core.getBrickIds();
+
+            expect(wm.api.core.getPreviousTextBrickId(brickIds[1])).toBe(brickIds[0]);
         });
     });
 });

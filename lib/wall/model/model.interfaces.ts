@@ -15,8 +15,8 @@ export interface IWallColumn {
     bricks: WallBrick[];
 }
 
-export interface IWallModel {
-    // COMMAND METHODS
+export interface IWallCorePluginApi {
+// COMMAND METHODS
     setPlan(plan: IWallDefinition);
 
     addBrickAfterBrickId(brickId: string, tag: string): IBrickSnapshot;
@@ -31,8 +31,6 @@ export interface IWallModel {
 
     getPreviousBrickId(brickId: string): string;
 
-
-
     getPlan(): IWallDefinition;
 
     getRowCount(): number;
@@ -46,8 +44,6 @@ export interface IWallModel {
     addBrickAtStart(tag: string, state?: any): IBrickSnapshot;
 
     addDefaultBrick(): void;
-
-
 
     moveBrickAfterBrickId(targetBrickIds: string[], beforeBrickId: string): void;
 
@@ -65,7 +61,7 @@ export interface IWallModel {
 
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean;
 
-    subscribe(fn: (event) => any): Subscription;
+    subscribe(fn: (event: any) => any): Subscription;
 
     traverse(fn: (row: any) => any): void; // todo - traverse quite strange method?
 
@@ -80,4 +76,11 @@ export interface IWallModel {
     getBrickSnapshot(brickId: string): IBrickSnapshot;
 
     getBrickTextRepresentation(brickId: string): string;
+}
+
+export interface IWallModel extends IWallCorePluginApi {
+    api: {
+        [apiName: string]: any;
+        core: IWallCorePluginApi
+    };
 }

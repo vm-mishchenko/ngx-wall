@@ -1,3 +1,5 @@
+import {IBrickSnapshot} from './wall.events';
+
 export class WallBrick {
     id: string;
     tag: string;
@@ -30,5 +32,14 @@ export class WallBrick {
         this.updateState({});
 
         return this;
+    }
+
+    getSnapshot(): IBrickSnapshot {
+        return {
+            id: this.id,
+            tag: this.tag,
+            meta: this.meta,
+            state: this.getState()
+        };
     }
 }

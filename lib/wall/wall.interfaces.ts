@@ -69,4 +69,3 @@ export interface IWallPluginFactory {
 export interface IWallPlugin {
     onWallPluginDestroy();
 }
-

@@ -13,7 +13,7 @@
       "dom"
     ],
     "typeRoots": [
-      "../node_modules"
+      "../node_modules/@types"
     ],
     "baseUrl": ".",
     "paths": {

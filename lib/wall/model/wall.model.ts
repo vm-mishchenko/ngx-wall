@@ -3,7 +3,8 @@ import {Observable} from 'rxjs/index';
 import {BrickRegistry} from '../registry/brick-registry.service';
 import {IWallModelConfig} from './interfaces/wall-model-config.interface';
 import {IWallModelPlugin} from './interfaces/wall-model-plugin.interface';
-import {WallCorePlugin} from './plugins/wall-core.plugin';
+import {IWallCorePluginApi} from './model.interfaces';
+import {WallCorePlugin} from './plugins/core/wall-core.plugin';
 
 export class WallModel {
     version: '0.0.0';
@@ -11,7 +12,10 @@ export class WallModel {
     // plugin api
     api: {
         [apiName: string]: any;
-    } = {};
+        core: IWallCorePluginApi
+    } = {
+        core: null
+    };
 
     events$: Observable<any> = new Subject();
 
@@ -58,7 +62,14 @@ export class WallModel {
             'getBrickSnapshot',
             'getBrickTextRepresentation'
         ].forEach((methodName) => {
-            this[methodName] = this.api.core[methodName].bind(this.api.core);
+            const me = this;
+
+            this[methodName] = (...args) => {
+                /* tslint:disable:no-console */
+                console.log(`Deprecated api call, instead use model.api.core.${methodName}`);
+
+                return this.api.core[methodName].apply(me.api.core, args);
+            };
         });
     }
 
