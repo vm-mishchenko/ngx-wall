@@ -1,27 +1,49 @@
-# Wall
+# ngx-wall
+[![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
+[![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
+[![devDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/dev-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=dev)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.1.
+## What
+ngx-wall is library which helps build <i>content editor</i> for note-taking application.
 
-## Development server
+## Demo
+https://vm-mishchenko.github.io/ngx-wall
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Features
+- customizable - extend editor writing own components
+- support drag-and-drop
+- support columns
+- created with extension in mind - write own plugin to extend behaviour (core functionality is written as the plugin)
+<img width="500px" alt="ORY Editor demo" src="docs/images/move-brick.gif">
 
-## Code scaffolding
+## Why
+Note-taking is my natural way to learn something new. Whether I read some book or learn new technology I have to write my thoughts down.&nbsp;For a long time I was trying to find an app for my notes. Evernote has too simple editor and not extensible. It cannot properly format block of code or add google maps inside doc. Google Docs is highly customizable but his heavy UI suits more for the science paper rather than quick notes. After awhile I found the balance between all my needs and it's <i>notion.so</i> application. Don't hesitate to try it, maybe it's also what are you looking for)&nbsp;I was so excited that I decided to write my own library which provides similar editor experience and behaviour. Based on the <i>ngx-wall</i> I'm building&nbsp;<i>origin</i> application - self-hosted note-taking app for saving my notes.&nbsp;
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Development
+ngx-wall is angular library based on angular-cli project.
 
-## Build
+### Folder structure
+- `src` - development application
+- `projects/ngx-wall` - ngx-wall library source code
+- `projects/ngx-wall/src/lib/wall` - editor itself
+- `projects/ngx-wall/src/lib/resources` - styles
+- `projects/ngx-wall/src/lib/*-brick` - standard components
+- `projects/ngx-wall/src/lib/moduels` - helper modules
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### Development process
+Install library dependencies
+``` javascript
+npm i
+```
 
-## Running unit tests
+Start development application
+``` javascript
+npm start
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Build library release version
+``` javascript
+npm release
+```
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+<img width="500px" alt="ORY Editor demo" src="docs/images/general.gif">
