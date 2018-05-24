@@ -1,7 +1,7 @@
 # ngx-wall
 [![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
+[![npm version](https://travis-ci.org/vm-mishchenko/ngx-wall.svg?branch=master)](https://travis-ci.org/vm-mishchenko/ngx-wall.svg?branch=master)
 [![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
-[![devDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/dev-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=dev)
 
 ## What
 ngx-wall is library which helps build <i>content editor</i> for note-taking application.
