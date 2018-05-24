@@ -8,6 +8,7 @@
     "release": "ng build ngx-wall --prod",
     "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
     "test": "ng test ngx-wall",
+    "test:cli": "ng test ngx-wall --watch=false  --no-progress --browsers=ChromeNoSandbox",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
