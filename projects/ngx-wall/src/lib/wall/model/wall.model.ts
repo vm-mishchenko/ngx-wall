@@ -1,12 +1,11 @@
-import {Subject} from 'rxjs';
-import {Observable} from 'rxjs/index';
-import {BrickRegistry} from '../registry/brick-registry.service';
+import {IWallPlugin} from '../domain/plugin/wall-plugin.interface';
+import {BrickRegistry} from '../registry/public_api';
 import {IWallModelConfig} from './interfaces/wall-model-config.interface';
-import {IWallModelPlugin} from './interfaces/wall-model-plugin.interface';
-import {IWallCorePluginApi} from './model.interfaces';
+import {IWallModel} from './interfaces/wall-model.interface';
+import {IWallCorePluginApi} from './plugins/core/interfaces/wall-core-plugin-api.interface';
 import {WallCorePlugin} from './plugins/core/wall-core.plugin';
 
-export class WallModel {
+export class WallModel implements IWallModel {
     version: '0.0.0';
 
     // plugin api
@@ -17,9 +16,7 @@ export class WallModel {
         core: null
     };
 
-    events$: Observable<any> = new Subject();
-
-    private plugins: Map<string, IWallModelPlugin> = new Map();
+    private plugins: Map<string, IWallPlugin> = new Map();
 
     constructor(private brickRegistry: BrickRegistry, config: IWallModelConfig) {
         // initialize core plugins
@@ -29,48 +26,6 @@ export class WallModel {
 
         // initialize 3rd party plugins
         config.plugins.forEach((plugin) => this.initializePlugin(plugin));
-
-        // todo temporary proxy to core plugin
-        [
-            'setPlan',
-            'getPlan',
-            'addBrickAfterBrickId',
-            'getNextBrickId',
-            'getNextTextBrickId',
-            'getPreviousTextBrickId',
-            'getPreviousBrickId',
-            'getRowCount',
-            'getColumnCount',
-            'turnBrickInto',
-            'updateBrickState',
-            'addBrickAtStart',
-            'addDefaultBrick',
-            'moveBrickAfterBrickId',
-            'moveBrickBeforeBrickId',
-            'moveBrickToNewColumn',
-            'removeBrick',
-            'removeBricks',
-            'clear',
-            'getBricksCount',
-            'isBrickAheadOf',
-            'subscribe',
-            'traverse',
-            'filterBricks',
-            'sortBrickIdsByLayoutOrder',
-            'getBrickIds',
-            'getBrickTag',
-            'getBrickSnapshot',
-            'getBrickTextRepresentation'
-        ].forEach((methodName) => {
-            const me = this;
-
-            this[methodName] = (...args) => {
-                /* tslint:disable:no-console */
-                console.log(`Deprecated api call, instead use model.api.core.${methodName}`);
-
-                return this.api.core[methodName].apply(me.api.core, args);
-            };
-        });
     }
 
     // register external API
@@ -82,15 +37,15 @@ export class WallModel {
         this.plugins.forEach((plugin) => this.destroyPlugin(plugin));
     }
 
-    private initializePlugin(plugin: IWallModelPlugin) {
-        plugin.onInitialize(this);
+    private initializePlugin(plugin: IWallPlugin) {
+        plugin.onWallInitialize(this);
 
         this.plugins.set(plugin.name, plugin);
     }
 
-    private destroyPlugin(plugin: IWallModelPlugin) {
-        if (plugin.onDestroy) {
-            plugin.onDestroy();
+    private destroyPlugin(plugin: IWallPlugin) {
+        if (plugin.onWallPluginDestroy) {
+            plugin.onWallPluginDestroy();
         }
     }
 }

@@ -1,5 +1,4 @@
-import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {StartWorkingEvent} from './events/start-working.event';
 import {StopWorkingEvent} from './events/stop-working.event';
@@ -9,17 +8,11 @@ import {WorkInProgressEvent} from './events/work-in-progress.event';
 export class TowCoordinator {
     events: Subject<any> = new Subject();
 
-    private currentYScrollPosition = 0;
-
     // start track when slave start working
     private isSlaveWorking = false;
 
-    private doc;
-
-    constructor(@Inject(DOCUMENT) doc) {
-        this.doc = doc;
-
-        this.doc.addEventListener('dragover', (event: DragEvent) => {
+    constructor() {
+        document.addEventListener('dragover', (event: DragEvent) => {
             if (this.isSlaveWorking) {
                 event.preventDefault();
 
@@ -27,10 +20,6 @@ export class TowCoordinator {
 
                 this.slaveWorkProgress(event.clientX, event.clientY);
             }
-        });
-
-        window.addEventListener('scroll', () => {
-            this.currentYScrollPosition = window.pageYOffset;
         });
     }
 
@@ -49,6 +38,7 @@ export class TowCoordinator {
 
     slaveStopWorking(id) {
         this.isSlaveWorking = false;
+
         this.events.next(new StopWorkingEvent(id));
     }
 }

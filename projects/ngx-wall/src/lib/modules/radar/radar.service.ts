@@ -13,10 +13,6 @@ export class Radar {
         });
     }
 
-    updateSpotsInfo(): void {
-        this.radarCoordinator.updateSpotsInfo();
-    }
-
     filterSpots(fn: (spot: SpotModel) => void): SpotModel[] {
         return this.radarCoordinator.filterSpots(fn);
     }

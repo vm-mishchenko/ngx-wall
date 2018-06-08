@@ -2,8 +2,10 @@
              (canvasClick)="onCanvasClick()"
              (onFocusedBrick)="onFocusedBrick($event)"
              (onBrickStateChanged)="onBrickStateChanged($event)"
-             [isMediaInteractionEnabled]="wallViewModel.state.isMediaInteractionEnabled.getValue()"
+
+             [wallModel]="wallViewModel.wallModel"
+             [isMediaInteractionEnabled$]="wallViewModel.isMediaInteractionEnabled$"
              [focusedBrick]="wallViewModel.focusedBrick"
              [selectedBricks]="wallViewModel.selectedBricks"
-             [layout]="wallViewModel.canvasLayout">
+             [rows]="wallViewModel.canvasLayout">
 </wall-canvas>

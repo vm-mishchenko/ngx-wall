@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT} from '@angular/common';
 import {
     ApplicationRef,
     ComponentFactoryResolver,
@@ -10,14 +10,15 @@ import {
     Inject,
     Injector,
     Input,
+    NgZone,
     OnDestroy,
     OnInit
 } from '@angular/core';
-import { PickOutCoordinator } from '../pick-out-coordinator.service';
-import { MOUSE_LEFT_KEY_CODE } from '../pick-out.constant';
-import { IPickOutAreaConfig } from './pick-out-area-config.interface';
-import { PickOutAreaComponent } from './pick-out-area.component';
-import { PickOutAreaModel } from './pick-out-area.model';
+import {PickOutCoordinator} from '../pick-out-coordinator.service';
+import {MOUSE_LEFT_KEY_CODE} from '../pick-out.constant';
+import {IPickOutAreaConfig} from './pick-out-area-config.interface';
+import {PickOutAreaComponent} from './pick-out-area.component';
+import {PickOutAreaModel} from './pick-out-area.model';
 
 @Directive({
     selector: '[pick-out-area]'
@@ -43,6 +44,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
                 private pickOutCoordinator: PickOutCoordinator,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
+                private zone: NgZone,
                 private el: ElementRef,
                 private injector: Injector) {
         this.doc = doc;
@@ -54,8 +56,8 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         this.onSelectionStartBound = this.onSelectionStart.bind(this);
         this.onContainerScrollBound = this.onContainerScroll.bind(this);
 
-        this.doc.addEventListener('mouseup', this.onMouseUpBound);
         this.doc.addEventListener('mousemove', this.onMouseMoveBound);
+        this.doc.addEventListener('mouseup', this.onMouseUpBound);
         this.doc.addEventListener('selectstart', this.onSelectionStartBound);
         this.config.scrollableContainer.addEventListener('scroll', this.onContainerScrollBound);
     }

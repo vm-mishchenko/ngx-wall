@@ -1,6 +1,12 @@
 import {
-    Component, ComponentFactoryResolver, ComponentRef, ElementRef, Input, OnDestroy, OnInit, Renderer2,
-    RendererFactory2, ViewChild,
+    Component,
+    ComponentFactoryResolver,
+    ComponentRef,
+    ElementRef,
+    Input,
+    OnDestroy,
+    Renderer2,
+    ViewChild,
     ViewContainerRef
 } from '@angular/core';
 

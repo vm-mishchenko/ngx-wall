@@ -1,5 +1,6 @@
-import {IWallModelPlugin} from './wall-model-plugin.interface';
+import {IWallDefinition, IWallPlugin} from '../..';
 
 export interface IWallModelConfig {
-    plugins: IWallModelPlugin[];
+    plan?: IWallDefinition;
+    plugins?: IWallPlugin[];
 }

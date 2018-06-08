@@ -1,6 +1,6 @@
-import { SpotDirective } from './directive/spot.directive';
-import { ISpotPosition, ISpotSize } from './interfaces/distance-to-spot.interface';
-import { SpotId } from './interfaces/spot-id.type';
+import {SpotDirective} from './directive/spot.directive';
+import {ISpotPosition, ISpotSize} from './interfaces/distance-to-spot.interface';
+import {SpotId} from './interfaces/spot-id.type';
 
 export class SpotModel {
     id: SpotId;

@@ -1,27 +1,24 @@
-import {Subject} from 'rxjs';
-import {Subscription} from 'rxjs/index';
+import {Subject, Subscription} from 'rxjs';
+import {IBrickSnapshot, IWallModel, IWallPlugin} from '../../..';
 import {Guid} from '../../../../modules/utils';
+import {IBrickDefinition} from '../../../domain/definitions/brick-definition.interface';
+import {IWallDefinition} from '../../../domain/definitions/wall-definition.interface';
 import {BrickRegistry} from '../../../registry/brick-registry.service';
-import {IBrickDefinition, IWallDefinition} from '../../../wall.interfaces';
-import {IWallModelPlugin} from '../../interfaces/wall-model-plugin.interface';
-import {IWallColumn, IWallRow} from '../../model.interfaces';
 import {WallBrick} from '../../wall-brick.model';
-import {
-    AddBrickEvent,
-    BeforeChangeEvent,
-    IBrickSnapshot,
-    MoveBrickEvent,
-    RemoveBrickEvent,
-    RemoveBricksEvent,
-    SetPlanEvent,
-    TurnBrickIntoEvent,
-    UpdateBrickStateEvent
-} from '../../wall.events';
-import {WallModel} from '../../wall.model';
+import {AddBrickEvent} from './events/add-brick.event';
+import {BeforeChangeEvent} from './events/before-change.event';
+import {MoveBrickEvent} from './events/move-brick.event';
+import {RemoveBrickEvent} from './events/remove-brick.event';
+import {RemoveBricksEvent} from './events/remove-bricks.event';
+import {SetPlanEvent} from './events/set-plan.event';
+import {TurnBrickIntoEvent} from './events/turn-brick-into.event';
+import {UpdateBrickStateEvent} from './events/update-brick-state.event';
+import {IWallColumn} from './interfaces/wall-column.interface';
+import {IWallRow} from './interfaces/wall-row.interface';
 import {LayoutWalker} from './layout-walker.class';
 import {WallLayout} from './wall-layout.model';
 
-export class WallCorePlugin implements IWallModelPlugin {
+export class WallCorePlugin implements IWallPlugin {
     name = 'core';
     version = '0.0.0';
 
@@ -29,7 +26,7 @@ export class WallCorePlugin implements IWallModelPlugin {
     private layout: WallLayout;
     private layoutWalker: LayoutWalker = new LayoutWalker(this.brickRegistry);
 
-    private wallModel: WallModel;
+    private wallModel: IWallModel;
 
     private DEFAULT_BRICK = 'text';
 
@@ -40,7 +37,7 @@ export class WallCorePlugin implements IWallModelPlugin {
 
     // START API
 
-    onInitialize(wallModel: WallModel) {
+    onWallInitialize(wallModel: IWallModel) {
         this.wallModel = wallModel;
 
         [
@@ -60,13 +57,6 @@ export class WallCorePlugin implements IWallModelPlugin {
         });
 
         this.wallModel.registerApi(this.name, this);
-    }
-
-    onDestroy() {
-    }
-
-    triggerEvent(event: any) {
-        (this.wallModel.events$ as Subject<any>).next(event);
     }
 
     // old
@@ -387,6 +377,10 @@ export class WallCorePlugin implements IWallModelPlugin {
 
     subscribe(callback): Subscription {
         return this.events.subscribe(callback);
+    }
+
+    isRegisteredBrick(tag: string): boolean {
+        return Boolean(this.brickRegistry.get(tag));
     }
 
     private dispatch(e: any): void {

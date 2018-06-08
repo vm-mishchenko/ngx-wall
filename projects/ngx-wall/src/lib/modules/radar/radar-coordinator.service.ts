@@ -1,5 +1,5 @@
 import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
+import {Inject, Injectable, NgZone} from '@angular/core';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {throttleTime} from 'rxjs/operators';
 import {SpotDirective} from './directive/spot.directive';
@@ -16,19 +16,23 @@ export class RadarCoordinator {
 
     private mouseMove$: Observable<MouseEvent>;
 
-    constructor(@Inject(DOCUMENT) doc) {
+    constructor(@Inject(DOCUMENT) doc,
+                private zone: NgZone) {
         this.mouseMove$ = fromEvent(doc, 'mousemove');
 
         const throttleMouseTime = 30;
 
-        this.mouseMove$
-            .pipe(
-                throttleTime(throttleMouseTime)
-            )
-            .subscribe((event) => {
-                this.updateSpotsInfo();
-                this.updateLocationPosition(event.clientX, event.clientY);
-            });
+        // run outside Angular Zone in order to decrease performance hit
+        this.zone.runOutsideAngular(() => {
+            this.mouseMove$
+                .pipe(
+                    throttleTime(throttleMouseTime)
+                )
+                .subscribe((event) => {
+                    this.updateSpotsInfo();
+                    this.updateLocationPosition(event.clientX, event.clientY);
+                });
+        });
     }
 
     register(spotId: SpotId, spotInstance: SpotDirective) {
@@ -47,10 +51,6 @@ export class RadarCoordinator {
         return Array.from(this.spots)
             .map(([id, spot]) => spot)
             .filter((spot) => predicate(spot));
-    }
-
-    getMinimumDistance(spot: SpotModel, x: number, y: number) {
-
     }
 
     subscribe(fn: any): Subscription {

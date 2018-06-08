@@ -1,0 +1,1 @@
+export {SelectionPlugin} from './selection';

@@ -1,5 +1,5 @@
+import {IWallDefinition} from '../domain/definitions/wall-definition.interface';
 import {BrickRegistry} from '../registry/brick-registry.service';
-import {IWallDefinition} from '../wall.interfaces';
 import {WallModelFactory} from './wall-model.factory';
 
 describe('Wall Model', () => {
@@ -58,20 +58,20 @@ describe('Wall Model', () => {
     });
 
     it('should be defined', () => {
-        const wm = wallModelFactory.create(defaultPlan);
+        const wm = wallModelFactory.create({plan: defaultPlan});
 
         expect(wm).toBeDefined();
     });
 
     describe('[Initialization]', () => {
         it('should return default plan', () => {
-            const wm = wallModelFactory.create(defaultPlan);
+            const wm = wallModelFactory.create({plan: defaultPlan});
 
             expect(wm.api.core.getPlan()).toEqual(defaultPlan);
         });
 
         it('should be initialized correct', () => {
-            const wm = wallModelFactory.create(simplePlan);
+            const wm = wallModelFactory.create({plan: simplePlan});
 
             expect(wm.api.core.getPlan()).toEqual(simplePlan);
         });
@@ -124,7 +124,7 @@ describe('Wall Model', () => {
                 }
             };
 
-            const wm = wallModelFactory.create(plan);
+            const wm = wallModelFactory.create({plan});
 
             const filteredBrickIds = wm.api.core.sortBrickIdsByLayoutOrder(['2', '3', '1']);
 

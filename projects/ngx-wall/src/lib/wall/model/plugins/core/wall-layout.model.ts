@@ -1,7 +1,8 @@
-import {Guid} from '../../../../modules/utils/index';
-import {BrickRegistry} from '../../../registry/brick-registry.service';
-import {IWallColumn, IWallRow} from '../../model.interfaces';
+import {Guid} from '../../../../modules/utils';
+import {BrickRegistry} from '../../../registry/public_api';
 import {WallBrick} from '../../wall-brick.model';
+import {IWallColumn} from './interfaces/wall-column.interface';
+import {IWallRow} from './interfaces/wall-row.interface';
 import {LayoutWalker} from './layout-walker.class';
 
 export class WallLayout {

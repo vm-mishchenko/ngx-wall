@@ -1,7 +1,7 @@
-import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
-import { ISpotInfo, ISpotPosition, ISpotSize } from '../interfaces/distance-to-spot.interface';
-import { SpotId } from '../interfaces/spot-id.type';
-import { RadarCoordinator } from '../radar-coordinator.service';
+import {Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
+import {ISpotInfo, ISpotPosition, ISpotSize} from '../interfaces/distance-to-spot.interface';
+import {SpotId} from '../interfaces/spot-id.type';
+import {RadarCoordinator} from '../radar-coordinator.service';
 
 @Directive({
     selector: '[spot]'

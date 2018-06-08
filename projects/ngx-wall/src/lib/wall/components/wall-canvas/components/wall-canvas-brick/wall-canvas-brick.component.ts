@@ -1,4 +1,5 @@
 import {
+    ChangeDetectorRef,
     Component,
     ComponentFactoryResolver,
     ComponentRef,
@@ -13,7 +14,7 @@ import {
 } from '@angular/core';
 import {Subscription} from 'rxjs';
 import {LocationUpdatedEvent, Radar} from '../../../../../modules/radar';
-import {IWallComponent} from '../../../wall/interfaces/wall-component.interface';
+import {IWallComponent} from '../../../wall/public_api';
 import {WallCanvasComponent} from '../../wall-canvas.component';
 
 @Component({
@@ -48,6 +49,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
+                private cdRef: ChangeDetectorRef,
                 private wallCanvasComponent: WallCanvasComponent) {
     }
 
@@ -60,7 +62,6 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
         this.componentReference = this.renderBrick();
 
-        // todo maybe move it to model API?
         this.radarSubscription = this.radar.subscribe((e) => {
             if (e instanceof LocationUpdatedEvent) {
                 const currentSpot = e.spots.find((spot) => spot.data.brickId === this.brick.id);
@@ -70,6 +71,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
                 } else {
                     this.isMouseNear = false;
                 }
+
+                this.cdRef.detectChanges();
             }
         });
 
@@ -125,6 +128,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
         componentInstance.id = this.brick.id;
         componentInstance.state = this.brick.state;
+        componentInstance.wallModel = this.wallCanvasComponent.wallModel;
 
         if (componentInstance.stateChanges) {
             this.stateChangesSubscription = componentInstance.stateChanges.subscribe((newState) => {

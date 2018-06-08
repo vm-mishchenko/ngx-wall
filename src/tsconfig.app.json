@@ -3,7 +3,12 @@
   "compilerOptions": {
     "outDir": "../out-tsc/app",
     "module": "es2015",
-    "types": []
+    "types": [],
+      "paths": {
+          "ngx-wall": [
+              "projects/ngx-wall/src/public_api.ts"
+          ]
+      }
   },
   "exclude": [
     "src/test.ts",

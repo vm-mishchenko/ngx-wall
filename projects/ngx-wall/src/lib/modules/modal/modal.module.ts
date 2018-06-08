@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ContextModalComponent } from './context-modal.component';
-import { ContextModalService } from './context-modal.service';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {ContextModalComponent} from './context-modal.component';
+import {ContextModalService} from './context-modal.service';
 
 @NgModule({
     imports: [

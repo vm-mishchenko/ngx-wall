@@ -1,0 +1,13 @@
+<div class="img_brick__image_container" [style.width]="scope.width ? scope.width+'px' : 'auto'">
+    <img [tow-slave]="id" #image *ngIf="scope.src" [wResizable]="resizable" [src]="scope.src">
+
+    <a *ngIf="!isSrcBase64" [href]="scope.src" target="_blank" class="img_brick__original-btn">
+        <span class="badge badge-secondary">Show original</span>
+    </a>
+</div>
+
+<w-brick-input-placeholder
+        *ngIf="!scope.src"
+        [text]="'Add an Image'"
+        [icon]="'oi-image'" (selected)="showPanel()">
+</w-brick-input-placeholder>

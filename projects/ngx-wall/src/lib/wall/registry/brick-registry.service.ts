@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { IBrickSpecification } from '../wall.interfaces';
+import {Injectable} from '@angular/core';
+import {IBrickSpecification} from './interfaces/brick-specification.interface';
 
 @Injectable()
 export class BrickRegistry {

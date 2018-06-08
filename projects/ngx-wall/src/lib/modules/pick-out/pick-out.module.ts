@@ -1,10 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { RadarModule } from '../radar';
-import { PickOutAreaComponent } from './pick-out-area/pick-out-area.component';
-import { PickOutAreaDirective } from './pick-out-area/pick-out-area.directive';
-import { PickOutCoordinator } from './pick-out-coordinator.service';
-import { PickOutService } from './pick-out.service';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {RadarModule} from '../radar';
+import {PickOutAreaComponent} from './pick-out-area/pick-out-area.component';
+import {PickOutAreaDirective} from './pick-out-area/pick-out-area.directive';
+import {PickOutCoordinator} from './pick-out-coordinator.service';
+import {PickOutService} from './pick-out.service';
 
 @NgModule({
     imports: [

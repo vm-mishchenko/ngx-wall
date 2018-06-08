@@ -1,19 +1,24 @@
-export * from './wall.interfaces';
-export * from './wall.tokens';
-export * from './components/wall';
-export * from './registry/brick-registry.service';
-
-// WALL
-export { WallModule } from './wall.module';
-export { WallBrick } from './model/wall-brick.model'; // todo: do we need export it?
-export { WallModelFactory } from './model/wall-model.factory';
-export * from './model/model.interfaces';
-export * from './model/wall.events';
-
-// PLUGINS
-
-// Undo-Redo
-export * from './plugins/undo-redo/undo-redo-api.interface';
+export {WallModule} from './wall.module';
 
 // Helper modules
 export * from '../modules/helper-components';
+
+// COMPONENT
+export * from './components/wall/public_api';
+
+// REGISTRY
+export * from './registry/public_api';
+
+// MODEL
+export * from './model/public_api';
+
+// DOMAIN
+// Domain Definition
+export {IWallDefinition} from './domain/definitions/wall-definition.interface';
+export {IBrickDefinition} from './domain/definitions/brick-definition.interface';
+export {ILayoutDefinition} from './domain/definitions/layout-definition.interface';
+export {IRowLayoutDefinition} from './domain/definitions/row-layout-definition.interface';
+export {IColumnLayoutDefinition} from './domain/definitions/column-layout-definition.interface';
+
+// Domain plugin
+export {IWallPlugin} from './domain/plugin/wall-plugin.interface';

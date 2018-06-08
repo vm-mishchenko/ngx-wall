@@ -1,7 +1,7 @@
+import {IBrickSnapshot} from '../../..';
 import {BrickRegistry} from '../../../registry/brick-registry.service';
-import {IWallRow} from '../../model.interfaces';
 import {WallBrick} from '../../wall-brick.model';
-import {IBrickSnapshot} from '../../wall.events';
+import {IWallRow} from './interfaces/wall-row.interface';
 
 export class LayoutWalker {
     rows: IWallRow[] = [];

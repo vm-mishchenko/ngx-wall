@@ -1,8 +1,8 @@
-import { DOCUMENT } from '@angular/common';
-import { ComponentFactoryResolver, Directive, Inject, Input, OnInit, ViewContainerRef } from '@angular/core';
-import { ComponentRef } from '@angular/core/src/linker/component_factory';
-import { ResizableHandlerComponent } from './resizable-handler.component';
-import { LEFT_HANDLER_CLASS, RIGHT_HANDLER_CLASS } from './resizable.const';
+import {DOCUMENT} from '@angular/common';
+import {ComponentFactoryResolver, Directive, Inject, Input, NgZone, OnInit, ViewContainerRef} from '@angular/core';
+import {ComponentRef} from '@angular/core/src/linker/component_factory';
+import {ResizableHandlerComponent} from './resizable-handler.component';
+import {LEFT_HANDLER_CLASS, RIGHT_HANDLER_CLASS} from './resizable.const';
 
 export interface IResizeData {
     xInitial: number;
@@ -34,7 +34,10 @@ export class ResizableDirective implements OnInit {
 
     private resizeData: IResizeData = null;
 
-    constructor(private el: ViewContainerRef, private cfr: ComponentFactoryResolver, @Inject(DOCUMENT) private doc) {
+    constructor(private el: ViewContainerRef,
+                private zone: NgZone,
+                private cfr: ComponentFactoryResolver,
+                @Inject(DOCUMENT) private doc) {
     }
 
     ngOnInit() {

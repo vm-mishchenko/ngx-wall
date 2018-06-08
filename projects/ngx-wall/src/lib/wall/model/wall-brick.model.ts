@@ -1,4 +1,4 @@
-import {IBrickSnapshot} from './wall.events';
+import {IBrickSnapshot} from './interfaces/brick-snapshot.interface';
 
 export class WallBrick {
     id: string;

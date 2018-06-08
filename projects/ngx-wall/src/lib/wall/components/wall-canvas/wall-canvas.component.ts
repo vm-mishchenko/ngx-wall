@@ -11,19 +11,21 @@ import {
     ViewChild
 } from '@angular/core';
 import {Subject} from 'rxjs';
-import {ILayout} from './interfaces/layout.interface';
-import {IFocusedBrick} from './wall-canvas.interfaces';
+import {Observable} from 'rxjs/internal/Observable';
+import {IWallModel, IWallRow} from '../../model/public_api';
+import {IFocusedBrick} from '../wall/public_api';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html'
 })
 export class WallCanvasComponent implements OnChanges {
-    @Input() layout: ILayout = {rows: []};
+    @Input() wallModel: IWallModel;
+    @Input() rows: IWallRow[] = [];
 
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrick: IFocusedBrick = null;
-    @Input() isMediaInteractionEnabled: boolean = true;
+    @Input() isMediaInteractionEnabled$: Observable<boolean>;
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
     @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
@@ -32,7 +34,6 @@ export class WallCanvasComponent implements OnChanges {
     // public API for sub components
     focusedBrick$: Subject<IFocusedBrick> = new Subject();
     selectedBricks$: Subject<string[]> = new Subject();
-    isMediaInteractionEnabled$: Subject<boolean> = new Subject();
 
     doc: any = null;
 
@@ -63,10 +64,6 @@ export class WallCanvasComponent implements OnChanges {
 
         if (changes.selectedBricks) {
             this.selectedBricks$.next(changes.selectedBricks.currentValue || []);
-        }
-
-        if (changes.isMediaInteractionEnabled) {
-            this.isMediaInteractionEnabled$.next(changes.isMediaInteractionEnabled.currentValue);
         }
     }
 

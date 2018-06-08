@@ -10,7 +10,7 @@ import {StopPickOut} from './events/stop-pick-out.event';
 export class PickOutCoordinator {
     changes: Subject<any> = new Subject();
 
-    private isPickOutAllowed: boolean = true;
+    private isPickOutAllowed = true;
 
     constructor(private radar: Radar) {
     }
@@ -28,8 +28,6 @@ export class PickOutCoordinator {
     }
 
     startPickOut() {
-        this.radar.updateSpotsInfo();
-
         this.changes.next(new StartPickOut());
     }
 

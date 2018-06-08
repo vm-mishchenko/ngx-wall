@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { PickOutAreaModel } from './pick-out-area.model';
+import {Component} from '@angular/core';
+import {PickOutAreaModel} from './pick-out-area.model';
 
 @Component({
     templateUrl: './pick-out-area.component.html'

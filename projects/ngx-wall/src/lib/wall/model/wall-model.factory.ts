@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BrickRegistry} from '../registry/brick-registry.service';
-import {IWallDefinition} from '../wall.interfaces';
-import {IWallModel} from './model.interfaces';
+import {IWallModelConfig} from './interfaces/wall-model-config.interface';
+import {IWallModel} from './interfaces/wall-model.interface';
 import {WallModel} from './wall.model';
 
 @Injectable()
@@ -9,25 +9,28 @@ export class WallModelFactory {
     constructor(private brickRegistry: BrickRegistry) {
     }
 
-    // todo after pass config with plugins to create method
-    create(plan?: IWallDefinition): IWallModel {
-        const defaultPlan = {
-            bricks: [],
-            layout: {
-                bricks: []
-            }
+    create(config?: IWallModelConfig): IWallModel {
+        const defaultConfig = {
+            plan: {
+                bricks: [],
+                layout: {
+                    bricks: []
+                }
+            },
+            plugins: []
         };
 
-        const defaultConfig = {
-            plugins: []
+        config = {
+            ...defaultConfig,
+            ...config
         };
 
         const wallModel = new WallModel(
             this.brickRegistry,
-            defaultConfig
-        ) as any; // todo: remove after refactoring
+            config
+        );
 
-        wallModel.setPlan(plan || defaultPlan);
+        wallModel.api.core.setPlan(config.plan);
 
         return wallModel;
     }

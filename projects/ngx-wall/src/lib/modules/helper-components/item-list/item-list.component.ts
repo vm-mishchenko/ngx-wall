@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
-import { IListItem } from './item-list.interface';
+import {ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Input, Output} from '@angular/core';
+import {IListItem} from './item-list.interface';
 
 @Component({
     selector: 'w-item-list',
