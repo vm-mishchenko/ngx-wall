@@ -4,6 +4,7 @@ export class FirstSubStringNode {
     private readonly subString: string;
 
     constructor(private root: HTMLElement, private subStringHTML: string) {
+        // get text representation
         this.subString = this.getSubStringTextContent();
 
         if (subStringHTML.length !== 0) {
@@ -34,7 +35,7 @@ export class FirstSubStringNode {
         return firstLevelSubStringNodes.reverse();
     }
 
-    private getSubStringTextContent() {
+    private getSubStringTextContent(): string {
         const pNode = document.createElement('P');
 
         pNode.innerHTML = this.subStringHTML;

@@ -4,18 +4,33 @@ import {debounceTime} from 'rxjs/operators';
 import {DeepLeftNodeChild} from '../../modules/utils/deep-left-node-child';
 import {DeepRightNodeChild} from '../../modules/utils/deep-right-node-child';
 import {FirstSubStringNode} from '../../modules/utils/first-sub-string-node';
+import {CaretStartEndPosition} from '../../modules/utils/node/caret-start-end-position';
+import {CursorLeftCoordinate} from '../../modules/utils/node/cursor-left-coordinate';
+import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
+import {PlaceCaretToPosition} from '../../modules/utils/node/place-caret-to-position';
+import {StringWithoutEmptyNodes} from '../../modules/utils/node/string-without-empty-nodes';
 import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall';
-import {FOCUS_INITIATOR} from './base-text-brick.constant';
+import {
+    BACK_SPACE_KEY,
+    BOTTOM_KEY,
+    DELETE_KEY,
+    ENTER_KEY,
+    ESCAPE_KEY,
+    FOCUS_INITIATOR,
+    LEFT_KEY,
+    RIGHT_KEY,
+    TOP_KEY
+} from './base-text-brick.constant';
 import {IBaseTextState} from './base-text-state.interface';
+import {BottomKeyHandler} from './keypress-handlers/bottom-key.handler';
+import {EnterKeyHandler} from './keypress-handlers/enter-key.handler';
+import {LeftKeyHandler} from './keypress-handlers/left-key.handler';
+import {RightKeyHandler} from './keypress-handlers/right-key.handler';
+import {TopKeyHandler} from './keypress-handlers/top-key.handler';
 
 enum LineType {
     first = 'FIRST',
     last = 'LAST'
-}
-
-export interface IBreakLineInfo {
-    countOfLines: number;
-    breakIndexes: number[];
 }
 
 export interface ICursorPositionInLine {
@@ -32,6 +47,14 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     @ViewChild('editor') editor: ElementRef;
 
+    keypressHandlers = {
+        top: new TopKeyHandler(this),
+        enter: new EnterKeyHandler(this),
+        left: new LeftKeyHandler(this),
+        right: new RightKeyHandler(this),
+        bottom: new BottomKeyHandler(this)
+    };
+
     wallUiApi: IWallUiApi;
 
     scope: IBaseTextState = {
@@ -42,11 +65,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     textChangeSubscription: Subscription;
 
-    onPasteBound: any;
+    onPasteBound: (e: ClipboardEvent) => any;
 
     ngOnInit() {
         if (this.state && this.state.text !== this.scope.text) {
-            this.scope.text = this.state.text || '';
+            this.setTextState(this.state.text);
         }
 
         this.onPasteBound = this.onPaste.bind(this);
@@ -58,6 +81,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 debounceTime(100)
             )
             .subscribe(() => {
+                this.setTextState(this.scope.text);
                 this.saveCurrentState();
             });
 
@@ -66,7 +90,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     onWallStateChange(newState: IBaseTextState) {
         if (newState && newState.text !== this.scope.text) {
-            this.scope.text = newState.text || '';
+            this.setTextState(newState.text);
         }
     }
 
@@ -96,16 +120,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         this.textChange.next(this.scope.text);
     }
 
+    // general handler of all key events
     onKeyPress(e: KeyboardEvent) {
-        const ENTER_KEY = 13;
-        const DELETE_KEY = 46;
-        const BACK_SPACE_KEY = 8;
-        const LEFT_KEY = 37;
-        const TOP_KEY = 38;
-        const RIGHT_KEY = 39;
-        const BOTTOM_KEY = 40;
-        const ESCAPE_KEY = 27;
-
         if (this.noMetaKeyIsPressed(e)) {
             if (e.keyCode === TOP_KEY) {
                 this.topKeyPressed(e);
@@ -123,12 +139,19 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.rightKeyPressed(e);
             }
 
-            if (e.keyCode === BACK_SPACE_KEY && this.isCaretAtStart() &&
-                this.scope.text.length && !this.isTextSelected()) {
+            if (e.keyCode === ENTER_KEY) {
+                this.enterKeyPressed(e);
+            }
+
+            if (e.keyCode === ESCAPE_KEY) {
+                this.escapeKeyPressed(e);
+            }
+
+            if (e.keyCode === BACK_SPACE_KEY && this.scope.text.length && this.isCaretAtStart() && !this.isTextSelected()) {
                 this.concatWithPreviousTextSupportingBrick(e);
             }
 
-            if (e.keyCode === DELETE_KEY && this.isCaretAtEnd() && !this.isTextSelected() && this.scope.text.length) {
+            if (e.keyCode === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
                 this.concatWithNextTextSupportingBrick(e);
             }
 
@@ -141,53 +164,39 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                     this.onDeleteAndFocusToNext(e);
                 }
             }
-
-            if (e.keyCode === ENTER_KEY) {
-                this.enterKeyPressed(e);
-            }
-
-            if (e.keyCode === ESCAPE_KEY) {
-                this.escapeKeyPressed(e);
-            }
         }
+    }
+
+    proxyToKeyHandler(keyHandlerName: string, e: KeyboardEvent) {
+        this.keypressHandlers[keyHandlerName].execute(e);
     }
 
     // key handler
     topKeyPressed(e: KeyboardEvent) {
-        const caretLeftCoordinate = this.getCaretLeftCoordinate();
-
-        if (this.isCaretAtFirstLine()) {
-            e.preventDefault();
-
-            const focusContext: IFocusContext = {
-                initiator: FOCUS_INITIATOR,
-                details: {
-                    topKey: true,
-                    caretLeftCoordinate
-                }
-            };
-
-            this.wallModel.api.ui.focusOnPreviousTextBrick(this.id, focusContext);
-        }
+        this.proxyToKeyHandler('top', e);
     }
 
     bottomKeyPressed(e: KeyboardEvent) {
-        if (this.isCaretAtLastLine()) {
-            e.preventDefault();
-
-            const caretLeftCoordinate = this.getCaretLeftCoordinate();
-
-            const focusContext: IFocusContext = {
-                initiator: FOCUS_INITIATOR,
-                details: {
-                    bottomKey: true,
-                    caretLeftCoordinate
-                }
-            };
-
-            this.wallUiApi.focusOnNextTextBrick(this.id, focusContext);
-        }
+        this.proxyToKeyHandler('bottom', e);
     }
+
+    enterKeyPressed(e: KeyboardEvent) {
+        this.proxyToKeyHandler('enter', e);
+    }
+
+    leftKeyPressed(e: KeyboardEvent) {
+        this.proxyToKeyHandler('left', e);
+    }
+
+    rightKeyPressed(e) {
+        this.proxyToKeyHandler('right', e);
+    }
+
+    escapeKeyPressed(e: KeyboardEvent) {
+        // do nothing
+    }
+
+    // end key handlers
 
     isCaretAtFirstLine(): boolean {
         return this.getCursorPositionInLine().isOnFirstLine;
@@ -199,93 +208,16 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     getCaretLeftCoordinate(): number {
         const sel = window.getSelection();
+        const leftRightText = this.getSplittedText(sel.focusOffset, sel.focusNode);
 
-        const div = this.createElementClone();
-        const span = document.createElement('SPAN');
-        const leftRightText = this.getLeftRightText(sel.focusOffset, sel.focusNode);
-
-        div.innerHTML = leftRightText.left;
-        span.innerHTML = leftRightText.right;
-
-        div.appendChild(span);
-
-        div.style.position = 'absolute';
-
-        document.body.appendChild(div);
-
-        const leftCoordinate = span.offsetLeft;
-
-        div.remove();
-
-        return leftCoordinate;
+        return (new CursorLeftCoordinate(leftRightText.left, leftRightText.right, this.editor.nativeElement)).get();
     }
 
     getCursorPositionInLine(): ICursorPositionInLine {
-        // http://jsbin.com/qifezupu/31/edit?js,output
-        if (!this.scope.text) {
-            return {
-                isOnLastLine: true,
-                isOnFirstLine: true
-            };
-        } else {
-            const div = this.createElementClone();
+        const sel = window.getSelection();
+        const leftRightText = this.getSplittedText(sel.focusOffset, sel.focusNode);
 
-            document.body.appendChild(div);
-
-            const span1 = document.createElement('SPAN');
-            const span2 = document.createElement('SPAN');
-
-            div.appendChild(span1);
-            div.appendChild(span2);
-
-            span1.innerText = 'a';
-
-            const lh = span1.offsetHeight;
-
-            const sel = window.getSelection();
-            const leftRightText = this.getLeftRightText(sel.focusOffset, sel.focusNode);
-
-            span1.innerHTML = leftRightText.left;
-            span2.innerHTML = leftRightText.right;
-
-            const isOnFirstLine = span1.textContent.length === 0 ||
-                (span1.offsetHeight === lh && span1.getBoundingClientRect().top === span2.getBoundingClientRect().top);
-
-            const isOnLastLine = span2.offsetHeight === lh;
-
-            div.remove();
-
-            return {
-                isOnLastLine,
-                isOnFirstLine
-            };
-        }
-    }
-
-    leftKeyPressed(e: Event) {
-        e.preventDefault();
-
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                leftKey: true
-            }
-        };
-
-        this.wallUiApi.focusOnPreviousTextBrick(this.id, focusContext);
-    }
-
-    rightKeyPressed(e) {
-        e.preventDefault();
-
-        const focusContext: IFocusContext = {
-            initiator: FOCUS_INITIATOR,
-            details: {
-                rightKey: true
-            }
-        };
-
-        this.wallUiApi.focusOnNextTextBrick(this.id, focusContext);
+        return new CursorPositionInLine(leftRightText.left, leftRightText.right, this.editor.nativeElement);
     }
 
     concatWithPreviousTextSupportingBrick(e) {
@@ -296,10 +228,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             const previousBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(previousTextBrickId);
 
-            const concatenationText = this.scope.text || '';
-
             this.wallModel.api.core.updateBrickState(previousTextBrickId, {
-                text: (previousBrickSnapshot.state.text || '') + concatenationText
+                text: this.cleanUpText(previousBrickSnapshot.state.text) + this.scope.text
             });
 
             this.wallUiApi.removeBrick(this.id);
@@ -308,7 +238,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 initiator: FOCUS_INITIATOR,
                 details: {
                     concatText: true,
-                    concatenationText
+                    concatenationText: this.scope.text
                 }
             };
 
@@ -326,15 +256,15 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             const concatenationText = nextTextBrickSnapshot.state.text || '';
 
-            this.scope.text += concatenationText;
-
-            this.wallUiApi.removeBrick(nextTextBrickId);
-
-            setTimeout(() => {
-                this.placeCaretBaseOnConcatenaitedText(concatenationText);
-            }, 0);
+            this.setTextState(this.scope.text + concatenationText);
 
             this.saveCurrentState();
+
+            this.wallModel.api.core.removeBrick(nextTextBrickId);
+
+            setTimeout(() => {
+                this.placeCaretBaseOnConcatenatedText(concatenationText);
+            }, 10);
         }
     }
 
@@ -376,38 +306,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         }
     }
 
-    enterKeyPressed(e: KeyboardEvent) {
-        e.preventDefault();
-
-        const sel = window.getSelection();
-
-        const leftRightText = this.getLeftRightText(sel.focusOffset, sel.focusNode);
-
-        const newTextState = {
-            text: leftRightText.right
-        };
-
-        this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text', newTextState);
-
-        setTimeout(() => {
-            // update current brick
-            this.scope.text = leftRightText.left;
-
-            if (newTextState.text.length) {
-                this.saveCurrentState();
-            }
-        }, 0);
-    }
-
-    getLeftRightText(offset: number, target: Node): { left: string, right: string } {
+    getSplittedText(offset: number, target: Node): { left: string, right: string } {
         return {
             left: this.scope.text.slice(0, offset),
             right: this.scope.text.slice(offset) || ''
         };
-    }
-
-    escapeKeyPressed(e: KeyboardEvent) {
-        // do nothing
     }
 
     // key handler end
@@ -420,7 +323,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             }
 
             if (context.details.concatText) {
-                this.placeCaretBaseOnConcatenaitedText(context.details.concatenationText);
+                this.placeCaretBaseOnConcatenatedText(context.details.concatenationText);
             }
 
             if (context.details.leftKey) {
@@ -437,6 +340,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
             }
         }
+    }
+
+    setTextState(text: string = '') {
+        this.scope.text = this.cleanUpText(text);
     }
 
     saveCurrentState() {
@@ -469,225 +376,71 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     placeCaretAtNodeToPosition(el: Node, position: number) {
-        const range = document.createRange();
-        const sel = window.getSelection();
-
-        range.setStart(el, position);
-
-        sel.removeAllRanges();
-        sel.addRange(range);
+        (new PlaceCaretToPosition(el, position)).place();
     }
 
-    placeCaretBaseOnConcatenaitedText(concatenationText: string) {
-        // find first level nodes for the text that was concatenated
-        const subStringNodes = new FirstSubStringNode(
-            this.editor.nativeElement,
-            concatenationText
-        );
+    // find the node which contains concatenated text and position in this node where cursor should be placed
+    placeCaretBaseOnConcatenatedText(concatenationText: string) {
+        if (concatenationText !== '') {
+            // find first level nodes for the text that was concatenated
+            const subStringNodes = new FirstSubStringNode(
+                this.editor.nativeElement,
+                concatenationText
+            );
 
-        const firstLevelSubStringNode = subStringNodes.firstLevelSubStringNodes[0];
+            // first level node which contains concatenated text
+            const firstLevelSubStringNode = subStringNodes.firstLevelSubStringNodes[0];
 
-        if (firstLevelSubStringNode) {
-            let focusNode;
-            let position;
+            if (firstLevelSubStringNode) {
+                let focusNode;
+                let position;
 
-            if (firstLevelSubStringNode.nodeType === Node.TEXT_NODE) {
-                // if first concatenated node is TEXT_NODE it might
-                // be automatically concatenated with previous existing TEXT_NODE
-                focusNode = firstLevelSubStringNode;
+                if (firstLevelSubStringNode.nodeType === Node.TEXT_NODE) {
+                    // if first concatenated node is TEXT_NODE it might
+                    // be automatically concatenated with previous existing TEXT_NODE
+                    focusNode = firstLevelSubStringNode;
 
-                // find text content for first concatenated TEXT_NODE
-                const p = document.createElement('P');
-                p.innerHTML = concatenationText;
-                const firstLevelSubStringTextContent = p.childNodes[0].textContent;
+                    // find text content for first concatenated TEXT_NODE
+                    const p = document.createElement('P');
+                    p.innerHTML = concatenationText;
+                    const firstLevelSubStringTextContent = p.childNodes[0].textContent;
 
-                // finally find cursor position
-                position = focusNode.textContent.indexOf(firstLevelSubStringTextContent);
-            } else {
-                focusNode = new DeepLeftNodeChild(firstLevelSubStringNode).child;
+                    // finally find cursor position
+                    position = focusNode.textContent.length - firstLevelSubStringTextContent.length;
+                } else {
+                    focusNode = new DeepLeftNodeChild(firstLevelSubStringNode).child;
 
-                position = 0;
+                    position = 0;
+                }
+
+                this.placeCaretAtNodeToPosition(focusNode, position);
             }
-
-            this.placeCaretAtNodeToPosition(focusNode, position);
-        } else {
-            this.placeCaretAtStart();
         }
     }
 
     placeCaretAtLeftCoordinate(leftCoordinate: number, line: string) {
-        // todo: find the way to solve it
+        // todo: find the way to set caret based on coordinate number
         if (line === LineType.last) {
             this.placeCaretAtEnd();
         } else {
             this.placeCaretAtStart();
         }
-
-        // this.placeCaretAtPosition(this.getCaretPositionByLeftCaretCoordinate(leftCoordinate, line));
     }
 
     isCaretAtStart(): boolean {
-        let atStart = false;
-
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            const selRange = sel.getRangeAt(0);
-            const testRange = selRange.cloneRange();
-
-            testRange.selectNodeContents(this.editor.nativeElement);
-            testRange.setEnd(selRange.startContainer, selRange.startOffset);
-            atStart = (testRange.toString().trim() === '');
-        }
-
-        return atStart;
+        return (new CaretStartEndPosition(this.editor.nativeElement)).isCaretAtStart();
     }
 
     isCaretAtEnd(): boolean {
-        let atEnd = false;
-
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            const selRange = sel.getRangeAt(0);
-            const testRange = selRange.cloneRange();
-
-            testRange.selectNodeContents(this.editor.nativeElement);
-            testRange.setStart(selRange.endContainer, selRange.endOffset);
-            atEnd = (testRange.toString().trim() === '');
-        }
-
-        return atEnd;
+        return (new CaretStartEndPosition(this.editor.nativeElement)).isCaretAtEnd();
     }
 
-    createElementClone(): HTMLElement {
-        const div = document.createElement('DIV');
-
-        const style = getComputedStyle(this.editor.nativeElement);
-
-        [].forEach.call(style, (prop) => {
-            div.style[prop] = style[prop];
-        });
-
-        return div;
+    // remove all unnecessary tags
+    cleanUpText(text: string): string {
+        return (new StringWithoutEmptyNodes(text)).get();
     }
 
-    noMetaKeyIsPressed(e): boolean {
+    private noMetaKeyIsPressed(e): boolean {
         return !((e.shiftKey || e.altKey || e.ctrlKey || e.metaKey));
     }
-
-    /*getBreakLineInfo(): IBreakLineInfo {
-        const info: IBreakLineInfo = {
-            countOfLines: 1,
-            breakIndexes: []
-        };
-
-        const div = this.createElementClone();
-
-        div.style.visibility = 'hidden';
-
-        document.body.appendChild(div);
-
-        let currentHeight = div.clientHeight;
-
-        div.style.height = 'auto';
-
-        let lastCaretPosition = this.scope.text.length;
-
-        // todo: extra inefficient loop, leads to Layout Thrashing!
-        while (lastCaretPosition !== 0) {
-            div.textContent = this.scope.text.substr(0, lastCaretPosition);
-
-            if (div.clientHeight < currentHeight) {
-                info.countOfLines++;
-                info.breakIndexes.push(lastCaretPosition);
-
-                currentHeight = div.clientHeight;
-            }
-
-            lastCaretPosition--;
-        }
-
-        div.remove();
-
-        info.breakIndexes.reverse();
-
-        return info;
-    }*/
-
-    /*
-
-    getCaretPosition() {
-        const sel = window.getSelection();
-
-        if (sel.rangeCount) {
-            return sel.getRangeAt(0).endOffset;
-        }
-    }
-
-    placeCaretAtPosition(position: number) {
-        if (this.scope.text.length) {
-            const el = this.editor.nativeElement;
-
-            const range = document.createRange();
-            const sel = window.getSelection();
-
-            // position might be less than text length
-            if (this.scope.text.length < position) {
-                position = this.scope.text.length;
-            }
-
-            range.setStart(el.firstChild, position);
-
-            sel.removeAllRanges();
-            sel.addRange(range);
-        }
-    }*/
-
-    /*getCaretPositionByLeftCaretCoordinate(caretCoordinate: number, line: string): number {
-        const span = document.createElement('SPAN');
-        const div = this.createElementClone();
-
-        const breakLineInfo = this.getBreakLineInfo();
-
-        div.style.position = 'absolute';
-        document.body.appendChild(div);
-
-        let currentLeftPosition = -1;
-        let currentCaretPosition;
-
-        if (breakLineInfo.countOfLines > 1 && line === LineType.last) {
-            currentCaretPosition = breakLineInfo.breakIndexes[breakLineInfo.breakIndexes.length - 1];
-        } else {
-            currentCaretPosition = 0;
-        }
-
-        while (currentLeftPosition < caretCoordinate && this.scope.text.length > currentCaretPosition) {
-            if (currentLeftPosition !== -1) {
-                div.removeChild(span);
-            }
-
-            div.textContent = this.scope.text.substr(0, currentCaretPosition);
-            span.textContent = this.scope.text.substr(currentCaretPosition) || '.';
-
-            div.appendChild(span);
-
-            currentLeftPosition = span.offsetLeft;
-            currentCaretPosition++;
-        }
-
-        currentCaretPosition--; // compensate the last while digest
-
-        div.remove();
-
-        if (currentLeftPosition === caretCoordinate) {
-            // caret stay on the right position
-            return currentCaretPosition;
-        } else if (this.scope.text.length - 1 === currentCaretPosition) {
-            // we reach the limit of available symbols
-            return this.scope.text.length;
-        } else {
-            return currentCaretPosition;
-        }
-    }*/
 }

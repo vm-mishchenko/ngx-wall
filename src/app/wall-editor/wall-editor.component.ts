@@ -1,5 +1,6 @@
 import {Component, Injector} from '@angular/core';
 import {
+    BeforeChangeEvent,
     CopyPlugin,
     IWallConfiguration,
     IWallDefinition,
@@ -456,11 +457,13 @@ export class WallEditorComponent {
         this.wall2Model = this.wallModelFactory.create(modelConfig);
 
         // todo: fix it
-        /*this.wall2Model.api.core.subscribe(() => {
-            // update current plan
-            console.log(`update current plan`);
+        this.wall2Model.api.core.subscribe((e) => {
+            if (!(e instanceof BeforeChangeEvent)) {
+                // update current plan
+                console.log(`update current plan`);
 
-            this.plan = this.wall2Model.api.core.getPlan();
-        });*/
+                this.plan = this.wall2Model.api.core.getPlan();
+            }
+        });
     }
 }

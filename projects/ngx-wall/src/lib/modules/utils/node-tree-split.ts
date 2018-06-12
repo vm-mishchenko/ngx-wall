@@ -2,99 +2,97 @@ export class NodeTreeSplit {
     leftTree: HTMLElement;
     rightTree: HTMLElement;
 
-    private parentNodes: HTMLElement[] = [];
-
     constructor(private root: HTMLElement,
-                private target: Node,
+                private targetElement: Node, // text node
                 private offset: number) {
-        this.parentNodes = this.calculateParentNodes();
-
-        if (this.parentNodes.length) {
-            this.leftTree = this.calculateLeftTree();
-            this.rightTree = this.calculateRightTree();
+        if (root === targetElement) {
+            // edge case scenario, just return root node itself
+            this.leftTree = root as HTMLElement;
+            this.rightTree = root as HTMLElement;
         } else {
-            this.leftTree = this.rightTree = document.createElement('P');
-        }
-    }
+            // get direct parent of target node
+            let parent = targetElement.parentNode;
 
-    calculateLeftTree() {
-        const parentClones = this.parentNodes.map((parentNode) => this.getCloneWithChildren(parentNode, 'left'));
+            // create left and right trees which will be returned as result
+            let rightTree = parent.cloneNode(false);
+            let leftTree = parent.cloneNode(false);
 
-        const lastNode = parentClones[parentClones.length - 1];
+            // Build Right tree
 
-        lastNode.appendChild(document.createTextNode(this.target.textContent.slice(0, this.offset)));
+            // as soon as targetElement is a Text Node, split text of that node using offset
+            rightTree.appendChild(
+                document.createTextNode(targetElement.textContent.slice(offset))
+            );
 
-        for (let i = 0; i < parentClones.length; i++) {
-            if (i !== 0) {
-                const parentClone = parentClones[i - 1];
-                const childClone = parentClones[i];
+            // parent node could contains other Nodes besides target node
+            // add all next siblings of target node to the right tree
+            this.appendNextSiblingsToNode(rightTree, targetElement);
 
-                // add only node which contains any useful information
-                if (childClone.textContent.length) {
-                    parentClone.appendChild(childClone);
-                }
-            }
-        }
+            // Build Left tree
 
-        return parentClones[0];
-    }
+            // as soon as targetElement is a Text Node, split text of that node using offset
+            leftTree.appendChild(
+                document.createTextNode(targetElement.textContent.slice(0, offset))
+            );
 
-    calculateRightTree() {
-        const parentClones = this.parentNodes.map((parentNode) => this.getCloneWithChildren(parentNode, 'right'));
+            // parent node could contains other Nodes besides target node
+            // add all previous siblings of target node to the left tree
+            this.prependPreviousSiblingsToNode(leftTree, targetElement);
 
-        const lastNode = parentClones[parentClones.length - 1];
-
-        lastNode.prepend(document.createTextNode(this.target.textContent.slice(this.offset)));
-
-        for (let i = 0; i < parentClones.length; i++) {
-            if (i !== 0) {
-                const parentClone = parentClones[i - 1];
-                const childClone = parentClones[i];
-
-                // add only node which contains any useful information
-                if (childClone.textContent.length) {
-                    parentClone.prepend(childClone);
-                }
-            }
-        }
-
-        return parentClones[0];
-    }
-
-    getCloneWithChildren(node, side) {
-        const nodeClone = document.createElement(node.tagName);
-
-        let i = side === 'left' ? 0 : (node.childNodes.length - 1);
-
-        let currentNode = node.childNodes[i];
-
-        while (currentNode && currentNode !== this.target && this.parentNodes.indexOf(currentNode) === -1) {
-            const currentNodeClone = currentNode.cloneNode(true);
-
-            if (side === 'left') {
-                nodeClone.appendChild(currentNodeClone);
-                i++;
+            if (root === parent) {
+                // we already fully build left and right trees
+                this.leftTree = leftTree as HTMLElement;
+                this.rightTree = rightTree as HTMLElement;
             } else {
-                nodeClone.prepend(currentNodeClone);
-                i--;
+                // recursively build left and right trees
+                // climbing from parent node to the root node
+                let leftParentTree;
+                let rightParentTree;
+                let grandparent = parent.parentNode;
+
+                while (root.contains(grandparent) || grandparent === root) {
+                    rightParentTree = grandparent.cloneNode(false);
+                    leftParentTree = grandparent.cloneNode(false);
+
+                    // Process Left tree
+                    this.prependPreviousSiblingsToNode(leftParentTree, parent);
+
+                    leftParentTree.appendChild(leftTree);
+                    leftTree = leftParentTree;
+
+                    // Process Right tree
+                    this.appendNextSiblingsToNode(rightParentTree, parent);
+
+                    rightParentTree.prepend(rightTree);
+                    rightTree = rightParentTree;
+
+                    parent = grandparent;
+                    grandparent = grandparent.parentNode;
+                }
+
+                this.leftTree = leftTree as HTMLElement;
+                this.rightTree = rightTree as HTMLElement;
             }
-
-            currentNode = node.childNodes[i];
         }
-
-        return nodeClone;
     }
 
-    calculateParentNodes() {
-        const parentNodes = [];
-        let currentNode: any = this.target;
+    private prependPreviousSiblingsToNode(leftTree, targetNode: Node): void {
+        let previousSibling = targetNode.previousSibling;
 
-        while (currentNode !== this.root) {
-            parentNodes.push(currentNode.parentNode);
+        while (previousSibling) {
+            leftTree.prepend(previousSibling.cloneNode(true));
 
-            currentNode = currentNode.parentNode;
+            previousSibling = previousSibling.previousSibling;
         }
+    }
 
-        return parentNodes.reverse();
+    private appendNextSiblingsToNode(rightTree, targetElement: Node): void {
+        let nextSibling = targetElement.nextSibling;
+
+        while (nextSibling) {
+            rightTree.appendChild(nextSibling.cloneNode(true));
+
+            nextSibling = nextSibling.nextSibling;
+        }
     }
 }

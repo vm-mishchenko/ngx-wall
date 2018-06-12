@@ -165,7 +165,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
         }
     }
 
-    getLeftRightText(offset: number, target: Node): { left: string, right: string } {
+    getSplittedText(offset: number, target: Node): { left: string, right: string } {
         const nodeTreeSplit = new NodeTreeSplit(this.editor.nativeElement, target, offset);
 
         return {

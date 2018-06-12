@@ -49,7 +49,19 @@ wall-canvas-brick {
 
   .wall-canvas-brick__wrapper {
     position: relative;
-    transition: background-color 0.3s ease;
+
+      &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background-color: initial;
+          pointer-events: none;
+          opacity: 0.2;
+          transition: background-color 0.1s ease;
+      }
   }
 
   .wall-canvas-brick__draggable-box {
@@ -79,15 +91,7 @@ wall-canvas-brick {
     position: relative;
 
     &:after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
       background-color: #9be0ff;
-      pointer-events: none;
-      opacity: 0.2;
     }
   }
 
