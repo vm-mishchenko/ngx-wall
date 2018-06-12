@@ -23,3 +23,6 @@ script:
   # Use Chromium instead of Chrome.
   - export CHROME_BIN=chromium-browser
   - xvfb-run -a npm run test:cli
+
+after_success:
+  - npm run coveralls

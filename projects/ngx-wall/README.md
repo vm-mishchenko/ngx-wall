@@ -1,7 +1,6 @@
 # ngx-wall
-[![npm version](https://travis-ci.org/vm-mishchenko/ngx-wall.svg?branch=master)](https://travis-ci.org/vm-mishchenko/ngx-wall/builds)
-[![Coverage Status](https://coveralls.io/repos/github/vm-mishchenko/ngx-wall/badge.svg?branch=master)](https://coveralls.io/github/vm-mishchenko/ngx-wall?branch=master)
 [![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
+[![npm version](https://travis-ci.org/vm-mishchenko/ngx-wall.svg?branch=master)](https://travis-ci.org/vm-mishchenko/ngx-wall/builds)
 [![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
 
 ## What
