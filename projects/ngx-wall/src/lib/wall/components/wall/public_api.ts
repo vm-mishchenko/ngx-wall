@@ -1,3 +1,4 @@
+export {SelectedBrickEvent} from './events/selected-brick.event';
 export {IFocusedBrick} from './interfaces/focused-brick.interface';
 export {WALL} from './wall.constant';
 export {IWallUiApi} from './interfaces/ui-api.interface';

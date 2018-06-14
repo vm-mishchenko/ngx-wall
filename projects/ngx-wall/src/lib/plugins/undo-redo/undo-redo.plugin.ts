@@ -3,6 +3,7 @@ import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {BeforeChangeEvent, IWallDefinition, IWallModel, IWallPlugin, SetPlanEvent} from '../../wall';
 import {IUndoRedoApi} from './undo-redo-api.interface';
+import {UNDO_REDO_API_NAME} from './undo-redo.constant';
 
 export class UndoRedoPlugin implements IWallPlugin {
     name: 'undoredo';
@@ -28,7 +29,7 @@ export class UndoRedoPlugin implements IWallPlugin {
     onWallInitialize(wallModel: IWallModel) {
         this.wallModel = wallModel;
 
-        this.wallModel.registerApi('undo', {
+        this.wallModel.registerApi(UNDO_REDO_API_NAME, {
             undo: this.undo.bind(this),
             undoSize: this.undoSize.bind(this),
             redo: this.redo.bind(this),

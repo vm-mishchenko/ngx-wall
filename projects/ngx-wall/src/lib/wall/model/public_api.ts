@@ -1,3 +1,4 @@
+export {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 export {WallModelFactory} from './wall-model.factory';
 export {IBrickSnapshot} from './interfaces/brick-snapshot.interface';
 export {IWallModelConfig} from './interfaces/wall-model-config.interface';

@@ -1,7 +1,6 @@
 import {Subscription} from 'rxjs';
 import {IBrickSnapshot} from '../../../..';
 import {IWallDefinition} from '../../../../domain/definitions/wall-definition.interface';
-import {WallBrick} from '../../../wall-brick.model';
 
 export interface IWallCorePluginApi {
     // COMMAND METHODS
@@ -53,7 +52,7 @@ export interface IWallCorePluginApi {
 
     traverse(fn: (row: any) => any): void; // todo - traverse quite strange method?
 
-    filterBricks(predictor: (wallBrick: WallBrick) => boolean): IBrickSnapshot[];
+    filterBricks(predictor: (wallBrick: IBrickSnapshot) => boolean): IBrickSnapshot[];
 
     sortBrickIdsByLayoutOrder(brickIds: string[]): string[];
 

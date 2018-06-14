@@ -1,5 +1,8 @@
+import {Observable, Subject} from 'rxjs';
+import {Subscription} from 'rxjs/index';
 import {IWallPlugin} from '../domain/plugin/wall-plugin.interface';
 import {BrickRegistry} from '../registry/public_api';
+import {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 import {IWallModelConfig} from './interfaces/wall-model-config.interface';
 import {IWallModel} from './interfaces/wall-model.interface';
 import {IWallCorePluginApi} from './plugins/core/interfaces/wall-core-plugin-api.interface';
@@ -15,6 +18,8 @@ export class WallModel implements IWallModel {
     } = {
         core: null
     };
+
+    private events$: Observable<any> = new Subject();
 
     private plugins: Map<string, IWallPlugin> = new Map();
 
@@ -37,10 +42,21 @@ export class WallModel implements IWallModel {
         this.plugins.forEach((plugin) => this.destroyPlugin(plugin));
     }
 
+    // proxy events from all plugins
+    subscribe(callback): Subscription {
+        return this.events$.subscribe(callback);
+    }
+
+    private dispatch(e: any): void {
+        (this.events$ as Subject<any>).next(e);
+    }
+
     private initializePlugin(plugin: IWallPlugin) {
         plugin.onWallInitialize(this);
 
         this.plugins.set(plugin.name, plugin);
+
+        this.dispatch(new WallPluginInitializedEvent(plugin.name));
     }
 
     private destroyPlugin(plugin: IWallPlugin) {

@@ -10,5 +10,7 @@ export interface IWallModel {
 
     destroy();
 
+    subscribe(callback: any);
+
     registerApi(apiName: string, api: object);
 }
