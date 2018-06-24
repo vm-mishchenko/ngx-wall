@@ -1,5 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ContextModalService} from '../../../modules/modal';
+import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
 import {InputContextComponent} from './input-context.component';
 
@@ -33,7 +33,7 @@ export class WebBookmarkBrickComponent implements OnInit {
     loading = false;
 
     constructor(private el: ElementRef,
-                private contextModalService: ContextModalService) {
+                private ngxStickyModalService: StickyModalService) {
     }
 
     ngOnInit() {
@@ -70,12 +70,19 @@ export class WebBookmarkBrickComponent implements OnInit {
 
     showPanel() {
         if (!this.loading) {
-            this.contextModalService.open({
+            this.ngxStickyModalService.open({
                 component: InputContextComponent,
-                context: {
-                    relative: {
-                        nativeElement: this.el.nativeElement
+                positionStrategy: {
+                    name: StickyPositionStrategy.flexibleConnected,
+                    options: {
+                        relativeTo: this.el.nativeElement
                     }
+                },
+                position: {
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top'
                 }
             }).result.then((result) => {
                 this.applySrc(result.src);

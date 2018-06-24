@@ -1,20 +1,21 @@
-import {Component, Input} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Inject} from '@angular/core';
+import {STICKY_MODAL_DATA, StickyModalRef} from 'ngx-sticky-modal';
 import {IListItem} from '../../../modules/helper-components/item-list';
+
+export interface IModeListComponentConfig {
+    modes: IListItem[];
+}
 
 @Component({
     selector: 'w-mode-list-component',
     templateUrl: './mode-list.component.html'
 })
 export class ModeListComponent {
-    @Input() config: {
-        modes: IListItem[];
-    };
-
-    constructor(public activeModal: NgbActiveModal) {
+    constructor(@Inject(STICKY_MODAL_DATA) public config: IModeListComponentConfig,
+                private ngxStickyModalRef: StickyModalRef) {
     }
 
     onSelected(mode: string) {
-        this.activeModal.close(mode);
+        this.ngxStickyModalRef.close(mode);
     }
 }

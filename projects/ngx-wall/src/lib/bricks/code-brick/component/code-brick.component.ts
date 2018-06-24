@@ -3,7 +3,7 @@ import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/xml/xml';
-import {ContextModalService} from '../../../modules/modal';
+import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {DEFAULT_THEME, SUPPORTED_MODES} from '../code-brick.constant';
 import {ModeListComponent} from '../mode-list/mode-list.component';
 
@@ -37,7 +37,7 @@ export class CodeBrickComponent implements OnInit {
 
     @Output() stateChanges: EventEmitter<ICodeBrickState> = new EventEmitter();
 
-    constructor(private contextModalService: ContextModalService) {
+    constructor(private ngxStickyModalService: StickyModalService) {
     }
 
     ngOnInit() {
@@ -92,13 +92,14 @@ export class CodeBrickComponent implements OnInit {
             };
         });
 
-        this.contextModalService.open({
+        this.ngxStickyModalService.open({
             component: ModeListComponent,
-            componentData: {modes},
-            context: {
-                coordinate: {
-                    x: elementBoundingRect.x,
-                    y: elementBoundingRect.y + 35
+            data: {modes},
+            positionStrategy: {
+                name: StickyPositionStrategy.coordinate,
+                options: {
+                    clientX: elementBoundingRect.x,
+                    clientY: elementBoundingRect.y + 35
                 }
             }
         }).result.then((mode: any) => {

@@ -8,7 +8,7 @@
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
-        "build": "ng build",
+        "build": "ng build ngx-wall",
         "release": "npm run test:once && ng build ngx-wall --prod",
         "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
         "test": "ng test ngx-wall",
@@ -19,19 +19,10 @@
         "e2e": "ng e2e"
     },
     "private": true,
-    "peerDependencies": {
-        "@angular/forms": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-        "codemirror": "5.37.0",
-        "open-iconic": "1.1.1",
-        "bootstrap": "4.0.0",
-        "rxjs": "^6.0.0",
-        "@ng-bootstrap/ng-bootstrap": "2.0.0"
-    },
     "dependencies": {
         "@angular/common": "^6.0.0",
         "@angular/core": "^6.0.0",
+        "@angular/cdk": "^6.0.0",
         "@angular/compiler": "^6.0.0",
         "@angular/animations": "^6.0.0",
         "@angular/forms": "^6.0.0",
@@ -45,7 +36,8 @@
         "codemirror": "5.37.0",
         "@ng-bootstrap/ng-bootstrap": "2.0.0",
         "open-iconic": "1.1.1",
-        "bootstrap": "4.0.0"
+        "bootstrap": "4.0.0",
+        "ngx-sticky-modal": "^0.0.3"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.6.1",

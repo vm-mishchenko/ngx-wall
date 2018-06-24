@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {StickyModalModule} from 'ngx-sticky-modal';
 import {HelperComponentsModule} from '../../modules/helper-components';
 import {TowModule} from '../../modules/tow';
 import {BrickRegistry} from '../../wall';
@@ -10,6 +11,7 @@ import {WebBookmarkBrickComponent} from './component/web-bookmark-brick.componen
 @NgModule({
     imports: [
         CommonModule,
+        StickyModalModule,
         HelperComponentsModule,
         TowModule
     ],

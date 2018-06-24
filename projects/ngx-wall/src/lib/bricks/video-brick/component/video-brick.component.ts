@@ -1,6 +1,5 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {ContextModalService} from '../../../modules/modal';
+import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {IOnWallFocus} from '../../../wall';
 import {IVideoBrickState} from '../video-brick-state.interface';
 import {InputContextComponent} from './input-context.component';
@@ -29,11 +28,11 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
         src: ''
     };
 
-    videoSrcPlaceholderRef: NgbModalRef;
+    videoSrcPlaceholderRef: StickyModalRef;
 
-    constructor(private r: Renderer2,
+    constructor(private renderer2: Renderer2,
                 private el: ElementRef,
-                private contextModalService: ContextModalService) {
+                private ngxStickyModalService: StickyModalService) {
     }
 
     ngOnInit() {
@@ -44,7 +43,7 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
                 this.uiState = this.uiStates.video;
 
                 setTimeout(() => {
-                    this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                    this.renderer2.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
                 }, 10);
             }
         }
@@ -58,7 +57,7 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
                 this.uiState = this.uiStates.video;
 
                 setTimeout(() => {
-                    this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                    this.renderer2.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
                 }, 10);
             }
         }
@@ -82,7 +81,7 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
             if (youtubeId) {
                 this.scope.src = `https://www.youtube.com/embed/${youtubeId}`;
 
-                this.r.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
+                this.renderer2.setAttribute(this.iframe.nativeElement, 'src', this.scope.src);
 
                 this.save();
 
@@ -92,12 +91,19 @@ export class VideoBrickComponent implements OnInit, IOnWallFocus {
     }
 
     showVideoPanel() {
-        this.videoSrcPlaceholderRef = this.contextModalService.open({
+        this.videoSrcPlaceholderRef = this.ngxStickyModalService.open({
             component: InputContextComponent,
-            context: {
-                relative: {
-                    nativeElement: this.el.nativeElement
+            positionStrategy: {
+                name: StickyPositionStrategy.flexibleConnected,
+                options: {
+                    relativeTo: this.el.nativeElement
                 }
+            },
+            position: {
+                originX: 'center',
+                originY: 'bottom',
+                overlayX: 'center',
+                overlayY: 'top'
             }
         });
 

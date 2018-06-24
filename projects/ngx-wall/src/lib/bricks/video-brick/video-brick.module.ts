@@ -1,5 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {StickyModalModule} from 'ngx-sticky-modal';
 import {HelperComponentsModule} from '../../modules/helper-components';
 import {BrickRegistry} from '../../wall';
 import {InputContextComponent} from './component/input-context.component';
@@ -9,6 +10,7 @@ import {VideoBrickTextRepresentationClass} from './video-brick-text-representati
 @NgModule({
     imports: [
         CommonModule,
+        StickyModalModule,
         HelperComponentsModule
     ],
     exports: [VideoBrickComponent],

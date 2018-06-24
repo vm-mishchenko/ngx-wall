@@ -23,7 +23,7 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/styles.css",
+                            "src/styles.scss",
                             "./node_modules/bootstrap/dist/css/bootstrap.css",
                             "./node_modules/open-iconic/font/css/open-iconic-bootstrap.css",
                             "./node_modules/codemirror/lib/codemirror.css",
@@ -77,7 +77,7 @@
                         "tsConfig": "src/tsconfig.spec.json",
                         "karmaConfig": "src/karma.conf.js",
                         "styles": [
-                            "src/styles.css"
+                            "src/styles.scss"
                         ],
                         "scripts": [],
                         "assets": [
@@ -126,7 +126,7 @@
             "root": "projects/ngx-wall",
             "sourceRoot": "projects/ngx-wall/src",
             "projectType": "library",
-            "prefix": "w",
+            "prefix": "",
             "architect": {
                 "build": {
                     "builder": "@angular-devkit/build-ng-packagr:build",

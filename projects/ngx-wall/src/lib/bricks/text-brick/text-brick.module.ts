@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {StickyModalModule} from 'ngx-sticky-modal';
 import {ContenteditableModule} from '../../modules/contenteditable';
 import {HelperComponentsModule} from '../../modules/helper-components';
-import {ModalModule} from '../../modules/modal';
 import {BrickRegistry} from '../../wall';
 import {TextRepresentation} from '../base-text-brick/base-text-representation.class';
 import {BricksListComponent} from './bricks-list/bricks-list.component';
@@ -16,7 +16,7 @@ import {TextContextMenuComponent} from './text-context-menu/text-context-menu.co
         CommonModule,
         ContenteditableModule,
         HelperComponentsModule,
-        ModalModule
+        StickyModalModule
     ],
     exports: [
         TextBrickComponent,

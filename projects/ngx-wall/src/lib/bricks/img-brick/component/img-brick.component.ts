@@ -1,7 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {FileUploaderService} from '../../../modules/file-uploader';
-import {ContextModalService} from '../../../modules/modal';
 import {IResizeData} from '../../../modules/resizable/resizable.directive';
 import {Base64ToFile} from '../../../modules/utils/base64-to-file';
 import {Guid} from '../../../modules/utils/guid';
@@ -32,7 +31,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
     lastWidth: number;
 
-    imageSrcPlaceholderRef: NgbModalRef;
+    imageSrcPlaceholderRef: StickyModalRef;
 
     resizable = {
         resize: this.onResize.bind(this),
@@ -40,9 +39,9 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         resizeEnd: this.onResizeEnd.bind(this)
     };
 
-    constructor(private contextModalService: ContextModalService,
-                private fileUploader: FileUploaderService,
+    constructor(private fileUploader: FileUploaderService,
                 private renderer: Renderer2,
+                private ngxStickyModalService: StickyModalService,
                 private el: ElementRef) {
     }
 
@@ -130,26 +129,35 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     }
 
     showPanel() {
-        this.imageSrcPlaceholderRef = this.contextModalService.open({
-            component: InputContextComponent,
-            context: {
-                relative: {
-                    nativeElement: this.el.nativeElement
+        if (!this.imageSrcPlaceholderRef) {
+            this.imageSrcPlaceholderRef = this.ngxStickyModalService.open({
+                component: InputContextComponent,
+                positionStrategy: {
+                    name: StickyPositionStrategy.flexibleConnected,
+                    options: {
+                        relativeTo: this.el.nativeElement
+                    }
+                },
+                position: {
+                    originX: 'center',
+                    originY: 'bottom',
+                    overlayX: 'center',
+                    overlayY: 'top'
                 }
-            }
-        });
+            });
 
-        this.imageSrcPlaceholderRef.result.then((result) => {
-            this.imageSrcPlaceholderRef = null;
+            this.imageSrcPlaceholderRef.result.then((result) => {
+                this.imageSrcPlaceholderRef = null;
 
-            if (result.src) {
-                this.applyImageSrc(result.src);
-            } else {
-                this.applyImageFile(result.file);
-            }
-        }, () => {
-            this.imageSrcPlaceholderRef = null;
-        });
+                if (result.src) {
+                    this.applyImageSrc(result.src);
+                } else {
+                    this.applyImageFile(result.file);
+                }
+            }, () => {
+                this.imageSrcPlaceholderRef = null;
+            });
+        }
     }
 
     isBase64(str: string) {

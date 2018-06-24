@@ -7,6 +7,18 @@
       "paths": {
           "ngx-wall": [
               "projects/ngx-wall/src/public_api.ts"
+          ],
+          "ngx-sticky-modal": [
+              "../ngx-sticky-modal/projects/ngx-sticky-modal/src/public_api.ts"
+          ],
+          "@angular/*": [
+              "./node_modules/@angular/*"
+          ],
+          "rxjs": [
+              "./node_modules/rxjs"
+          ],
+          "rxjs/*": [
+              "./node_modules/rxjs/*"
           ]
       }
   },

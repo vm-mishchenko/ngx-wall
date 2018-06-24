@@ -1,7 +1,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
+import {StickyModalModule} from 'ngx-sticky-modal';
 import {FileUploaderModule} from '../../modules/file-uploader';
-import {ModalModule} from '../../modules/modal';
 import {ResizableModule} from '../../modules/resizable';
 import {TowModule} from '../../modules/tow';
 import {BrickRegistry, HelperComponentsModule, IBrickSnapshot} from '../../wall';
@@ -13,11 +13,11 @@ import {ImgBrickTextRepresentation} from './img-brick-text-representation.class'
 @NgModule({
     imports: [
         CommonModule,
-        ModalModule,
         HelperComponentsModule,
         ResizableModule,
         TowModule,
-        FileUploaderModule
+        FileUploaderModule,
+        StickyModalModule
     ],
     exports: [ImgBrickComponent],
     declarations: [ImgBrickComponent, InputContextComponent],

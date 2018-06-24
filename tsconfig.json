@@ -15,6 +15,20 @@
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+      "paths": {
+          "ngx-sticky-modal": [
+              "../ngx-sticky-modal/dist/ngx-sticky-modal"
+          ],
+          "@angular/*": [
+              "./node_modules/@angular/*"
+          ],
+          "rxjs": [
+              "./node_modules/rxjs"
+          ],
+          "rxjs/*": [
+              "./node_modules/rxjs/*"
+          ]
+      }
   }
 }

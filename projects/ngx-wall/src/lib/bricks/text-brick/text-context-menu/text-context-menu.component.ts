@@ -1,20 +1,25 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
+import {STICKY_MODAL_DATA} from 'ngx-sticky-modal';
 import {ITextBrickApi} from '../text-brick-api.interface';
+
+export interface ITextContextMenuComponent {
+    api: ITextBrickApi;
+}
 
 @Component({
     selector: 'w-text-context-menu',
     templateUrl: './text-context-menu.component.html'
 })
 export class TextContextMenuComponent implements OnInit {
-    @Input() config: {
-        api: ITextBrickApi
-    };
-
     @ViewChild('linkEl') linkEl: ElementRef;
 
     ui = {
         showLinkForm: false
     };
+
+    constructor(@Inject(STICKY_MODAL_DATA) public config: ITextContextMenuComponent) {
+
+    }
 
     ngOnInit() {
         this.config.api.saveSelection();

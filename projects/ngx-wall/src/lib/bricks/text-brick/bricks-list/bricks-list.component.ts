@@ -1,7 +1,16 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {STICKY_MODAL_DATA} from 'ngx-sticky-modal';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {BrickRegistry, IBrickDefinition, IBrickSpecification} from '../../../wall';
 import {TEXT_BRICK_TAG} from '../text-brick.constant';
+
+export interface IBricksListComponentConfig {
+    text$: Observable<string>;
+    up$: Observable<any>;
+    down$: Observable<any>;
+    enter$: Observable<any>;
+    selectedTag$: Subject<string>;
+}
 
 @Component({
     selector: 'w-bricks-list',
@@ -9,21 +18,14 @@ import {TEXT_BRICK_TAG} from '../text-brick.constant';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BricksListComponent implements OnInit, OnDestroy {
-    @Input() config: {
-        text$: Observable<string>,
-        up$: Observable<any>,
-        down$: Observable<any>,
-        enter$: Observable<any>
-        selectedTag$: Subject<string>
-    };
-
     selectedTag$: BehaviorSubject<string> = new BehaviorSubject(null);
 
     bricksList$: BehaviorSubject<IBrickSpecification[]> = new BehaviorSubject([]);
 
     private subscriptions: Subscription[] = [];
 
-    constructor(private brickRegistry: BrickRegistry) {
+    constructor(private brickRegistry: BrickRegistry,
+                @Inject(STICKY_MODAL_DATA) public config: IBricksListComponentConfig) {
         this.updateBricksList('');
     }
 

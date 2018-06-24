@@ -1,8 +1,7 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {fromEvent, Subject, Subscription} from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
-import {ContextModalService} from '../../../modules/modal';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
 import {NodeTreeSplit} from '../../../modules/utils/node-tree-split';
 import {TreeNodeTraverse} from '../../../modules/utils/node/tree-node-traverse.';
@@ -22,8 +21,8 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
     placeholder = null;
 
-    brickSelectionModalRef: NgbModalRef;
-    contextMenuModalRef: NgbModalRef;
+    brickSelectionModalRef: StickyModalRef;
+    contextMenuModalRef: StickyModalRef;
 
     up$ = new Subject();
     down$ = new Subject();
@@ -31,8 +30,6 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
     selectedTag$: Subject<string> = new Subject();
 
     subscriptions: Subscription[] = [];
-
-    ranges: any;
 
     selectionInfo: {
         ranges: Range[],
@@ -51,8 +48,8 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
         unlink: this.unlink.bind(this)
     };
 
-    constructor(private contextModalService: ContextModalService,
-                private zone: NgZone,
+    constructor(private zone: NgZone,
+                private ngxStickyModalService: StickyModalService,
                 private cd: ChangeDetectorRef,
                 private el: ElementRef) {
         super();
@@ -195,19 +192,20 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
             const elementBoundingRect = this.el.nativeElement.getBoundingClientRect();
 
-            this.brickSelectionModalRef = this.contextModalService.open({
+            this.brickSelectionModalRef = this.ngxStickyModalService.open({
                 component: BricksListComponent,
-                componentData: {
+                data: {
                     text$: this.textChange,
                     up$: this.up$,
                     down$: this.down$,
                     enter$: this.enter$,
                     selectedTag$: this.selectedTag$
                 },
-                context: {
-                    coordinate: {
-                        x: elementBoundingRect.x,
-                        y: elementBoundingRect.y + 35
+                positionStrategy: {
+                    name: StickyPositionStrategy.coordinate,
+                    options: {
+                        clientX: elementBoundingRect.x,
+                        clientY: elementBoundingRect.y + 35
                     }
                 }
             });
@@ -336,16 +334,20 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
         const elementBoundingRect = sel.getRangeAt(0).getBoundingClientRect();
 
-        this.contextMenuModalRef = this.contextModalService.open({
+        this.contextMenuModalRef = this.ngxStickyModalService.open({
             component: TextContextMenuComponent,
-            componentData: {
+            data: {
                 api: this.api
             },
-            context: {
-                coordinate: {
-                    x: elementBoundingRect.left + ((elementBoundingRect.right - elementBoundingRect.left) / 2.5),
-                    y: elementBoundingRect.top - 35
+            positionStrategy: {
+                name: StickyPositionStrategy.coordinate,
+                options: {
+                    clientX: elementBoundingRect.left + ((elementBoundingRect.right - elementBoundingRect.left) / 2.5),
+                    clientY: elementBoundingRect.top - 35
                 }
+            },
+            overlayConfig: {
+                hasBackdrop: false
             }
         });
 

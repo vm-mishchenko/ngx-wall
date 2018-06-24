@@ -1,7 +1,6 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {PlaceholderRendererModule} from '../modules/components/placeholder-renderer';
-import {ModalModule} from '../modules/modal';
 import {PickOutModule} from '../modules/pick-out';
 import {RadarModule} from '../modules/radar';
 import {TowModule} from '../modules/tow';
@@ -16,7 +15,6 @@ import {BrickRegistry} from './registry/brick-registry.service';
         PickOutModule,
         TowModule,
         RadarModule,
-        ModalModule,
         PlaceholderRendererModule
     ],
 

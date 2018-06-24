@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {StickyModalRef} from 'ngx-sticky-modal';
 
 @Component({
     template: `
@@ -36,7 +36,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class InputContextComponent implements OnInit {
     @ViewChild('src') srcInput: ElementRef;
 
-    constructor(public activeModal: NgbActiveModal) {
+    constructor(private ngxStickyModalRef: StickyModalRef) {
     }
 
     ngOnInit() {
@@ -58,7 +58,7 @@ export class InputContextComponent implements OnInit {
     }
 
     notify(data) {
-        this.activeModal.close(data);
+        this.ngxStickyModalRef.close(data);
     }
 
     onSubmit(e) {

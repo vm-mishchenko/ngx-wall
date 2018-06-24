@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
+import {StickyModalModule} from 'ngx-sticky-modal';
 import {HelperComponentsModule} from '../../modules/helper-components';
-import {ModalModule} from '../../modules/modal';
 import {BrickRegistry, WallModule} from '../../wall';
 import {CodeBrickComponent} from './component/code-brick.component';
 import {ModeListComponent} from './mode-list/mode-list.component';
@@ -8,8 +8,8 @@ import {ModeListComponent} from './mode-list/mode-list.component';
 @NgModule({
     imports: [
         WallModule,
-        ModalModule,
-        HelperComponentsModule
+        HelperComponentsModule,
+        StickyModalModule
     ],
     declarations: [
         CodeBrickComponent,

@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~@angular/cdk/overlay';
+
+@include cdk-overlay;
+
+// add animation to modal
+.cdk-overlay-pane {
+    opacity: 0;
+    transition: opacity .15s linear;
+
+    &__show {
+        opacity: 1;
+    }
+}
