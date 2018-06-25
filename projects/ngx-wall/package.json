@@ -1,16 +1,16 @@
 {
-  "name": "ngx-wall",
-  "version": "1.1.14",
-  "peerDependencies": {
-    "@angular/forms": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/cdk": "^6.0.0-rc.0 || ^6.0.0",
-    "codemirror": "5.37.0",
-    "open-iconic": "1.1.1",
-    "bootstrap": "4.0.0",
-    "rxjs": "^6.0.0",
-    "ngx-sticky-modal": "^0.0.2",
-    "@ng-bootstrap/ng-bootstrap": "2.0.0"
-  }
+    "name": "ngx-wall",
+    "version": "1.1.15",
+    "peerDependencies": {
+        "@angular/forms": "^6.0.0-rc.0 || ^6.0.0",
+        "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
+        "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+        "@angular/cdk": "^6.0.0-rc.0 || ^6.0.0",
+        "codemirror": "5.37.0",
+        "open-iconic": "1.1.1",
+        "bootstrap": "4.0.0",
+        "rxjs": "^6.0.0",
+        "ngx-sticky-modal": "^0.0.3",
+        "@ng-bootstrap/ng-bootstrap": "2.0.0"
+    }
 }
