@@ -9,7 +9,8 @@
         "ng": "ng",
         "start": "ng serve",
         "build": "ng build ngx-wall",
-        "release": "npm run test:once && ng build ngx-wall --prod",
+        "copy:scss": "cpx \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
+        "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
         "test": "ng test ngx-wall",
         "test:once": "ng test ngx-wall --watch=false --code-coverage",
@@ -63,6 +64,7 @@
         "tsickle": ">=0.25.5",
         "tslib": "^1.7.1",
         "tslint": "~5.9.1",
-        "typescript": "~2.7.2"
+        "typescript": "~2.7.2",
+        "cpx": "1.5.0"
     }
 }
