@@ -1,0 +1,87 @@
+@mixin w-selection-list($theme) {
+    .w-selection-list {
+        &__item {
+            &:hover {
+                background: map-get($theme, thin-color);
+            }
+
+            &:active {
+                background: map-get($theme, slight-color);
+            }
+        }
+
+        &__selected_item {
+            & > .w-selection-list__item {
+                background: map-get($theme, thin-color);
+
+                &:hover {
+                    background: map-get($theme, slight-color);
+                }
+
+                &:active {
+                    background: map-get($theme, light-color);
+                }
+            }
+
+            .w-btn.btn-link {
+                &:hover {
+                    background: map-get($theme, light-color);
+                    color: map-get($theme, default-color);
+                }
+
+                &:active {
+                    background: map-get($theme, medium-color);
+                }
+            }
+        }
+    }
+
+    .w-secondary-zone {
+        .w-selection-list {
+            &__item {
+                &:hover {
+                    background: map-get($theme, slight-color);
+                }
+
+                &:active {
+                    background: map-get($theme, light-color);
+                }
+
+                .w-btn.btn-link {
+                    &:hover {
+                        background: map-get($theme, light-color);
+                        color: map-get($theme, default-color);
+                    }
+
+                    &:active {
+                        background: map-get($theme, medium-color);
+                    }
+                }
+            }
+
+            &__selected_item {
+                & > .w-selection-list__item {
+                    background: map-get($theme, slight-color);
+
+                    &:hover {
+                        background: map-get($theme, light-color);
+                    }
+
+                    &:active {
+                        background: map-get($theme, medium-color);
+                    }
+
+                    .w-btn.btn-link {
+                        &:hover {
+                            background: map-get($theme, medium-color);
+                        }
+
+                        &:active {
+                            background: map-get($theme, dark-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

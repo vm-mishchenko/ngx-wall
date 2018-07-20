@@ -1,0 +1,9 @@
+@mixin header-brick-theme($theme) {
+    header-brick {
+        [contenteditable] {
+            &:empty:before {
+                color: map-get($theme, sub-text-color);
+            }
+        }
+    }
+}

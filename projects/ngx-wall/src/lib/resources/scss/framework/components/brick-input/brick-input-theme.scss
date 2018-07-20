@@ -1,0 +1,8 @@
+@mixin w-brick-input($theme) {
+    .w-brick-input {
+        &__description {
+            color: map-get($theme, sub-text-color);
+            font-size: map-get($theme, sub-font-size);
+        }
+    }
+}

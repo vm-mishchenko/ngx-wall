@@ -1,0 +1,22 @@
+@import "../core/variables";
+
+$w-default-theme: (
+    // fonts
+    default-font-size: $w-default-font-size,
+    main-font-size: $w-main-font-size,
+    sub-font-size: $w-sub-font-size,
+
+    // colors
+    default-color: $w-default-color,
+    sub-text-color: $w-sub-text-color,
+    thin-color: $w-thin-color,
+    slight-color: $w-slight-color,
+    light-color: $w-light-color,
+    medium-color: $w-medium-color,
+    dark-color: $w-dark-color,
+    heavy-color: $w-heavy-color,
+    active-color: $w-active-color,
+    active-light-color: $w-active-light-color,
+    active-medium-color: $w-active-medium-color,
+    pick-out-color: $w-pick-out-color
+)

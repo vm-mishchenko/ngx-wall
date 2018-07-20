@@ -1,0 +1,16 @@
+@mixin w-form-theme($theme) {
+    .w-input {
+        border: 1px solid map-get($theme, light-color);
+        color: map-get($theme, default-color);
+        background-color: map-get($theme, thin-color);
+        font-size: map-get($theme, main-font-size);
+    }
+
+    .w-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: map-get($theme, dark-color);
+    }
+
+    .w-input::-moz-placeholder { /* Firefox 19+ */
+        color: map-get($theme, dark-color);
+    }
+}

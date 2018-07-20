@@ -1,0 +1,5 @@
+@mixin w-secondary-zone-theme($theme) {
+    .w-secondary-zone {
+        background: map-get($theme, thin-color);
+    }
+}

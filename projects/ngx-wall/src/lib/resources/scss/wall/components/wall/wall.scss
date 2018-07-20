@@ -1,0 +1,88 @@
+wall {
+    a {
+        text-decoration: underline;
+    }
+}
+
+wall-canvas {
+    display: block;
+
+    .wall-canvas__editor {
+        min-height: 200px;
+        cursor: text;
+    }
+
+    .wall-canvas__expander {
+        min-height: 250px;
+    }
+}
+
+wall-canvas-brick {
+    display: block;
+    margin: 0 0 2px;
+
+    .wall-canvas-brick__draggable {
+        .wall-canvas-brick__draggable-handler {
+            display: block;
+        }
+    }
+
+    .wall-canvas-brick__wrapper {
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: initial;
+            pointer-events: none;
+            opacity: 0.2;
+            transition: background-color 0.1s ease;
+        }
+    }
+
+    .wall-canvas-brick__draggable-box {
+        padding: 2px 5px 2px 7px;
+        border-radius: 3px;
+    }
+
+    .wall-canvas-brick__draggable-handler {
+        display: none;
+        position: absolute;
+        left: -35px;
+        top: -4px;
+        padding: 5px;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    .wall-canvas-brick__selected {
+        position: relative;
+    }
+
+    .wall-canvas-brick__disabled-interaction {
+        pointer-events: none;
+    }
+}
+
+wall-canvas-row {
+    display: flex;
+
+    .wall-canvas-row__column {
+        flex: 1;
+        margin: 0 10px;
+        min-width: 0; // hack to truncate long text
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

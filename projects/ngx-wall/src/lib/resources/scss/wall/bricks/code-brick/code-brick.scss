@@ -1,0 +1,24 @@
+code-brick {
+    position: relative;
+    display: block;
+
+    .CodeMirror {
+        padding: 1rem 1.4rem;
+        height: auto;
+
+        .CodeMirror-cursor {
+            width: 1px;
+        }
+
+        .CodeMirror-scroll {
+            overflow: hidden !important;
+        }
+    }
+
+    .w-btn {
+        position: absolute;
+        right: 0.7rem;
+        bottom: 0.7rem;
+        z-index: 2;
+    }
+}

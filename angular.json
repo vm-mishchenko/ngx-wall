@@ -28,7 +28,7 @@
                             "./node_modules/open-iconic/font/css/open-iconic-bootstrap.css",
                             "./node_modules/codemirror/lib/codemirror.css",
                             "./node_modules/codemirror/theme/neo.css",
-                            "projects/ngx-wall/src/lib/resources/scss/lib.scss"
+                            "projects/ngx-wall/src/lib/resources/scss/index.scss"
                         ],
                         "scripts": []
                     },

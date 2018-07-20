@@ -1,0 +1,7 @@
+@import "./core/core-theme";
+@import "./components/components-theme";
+
+@mixin w-framework-theme($theme) {
+    @include w-core-theme($theme);
+    @include w-framework-components-theme($theme);
+}

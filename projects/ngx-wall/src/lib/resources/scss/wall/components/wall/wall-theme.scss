@@ -1,0 +1,26 @@
+@mixin w-wall-component-theme($theme) {
+    wall {
+        color: map-get($theme, default-color);
+        font-size: map-get($theme, default-font-size);
+    }
+
+    wall-canvas-brick {
+        .wall-canvas-brick__draggable-box {
+            color: map-get($theme, dark-color);
+        }
+
+        .wall-canvas-brick__draggable-handler {
+            &:hover {
+                .wall-canvas-brick__draggable-box {
+                    background: map-get($theme, thin-color);
+                }
+            }
+        }
+
+        .wall-canvas-brick__selected {
+            &:after {
+                background-color: map-get($theme, active-medium-color);
+            }
+        }
+    }
+}

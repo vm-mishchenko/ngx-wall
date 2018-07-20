@@ -1,0 +1,17 @@
+@mixin w-brick-input-placeholder($theme) {
+    .w-brick-input-placeholder {
+        color: map-get($theme, sub-text-color);
+        font-size: map-get($theme, sub-font-size);
+
+        background: map-get($theme, thin-color);
+        border: 1px dashed map-get($theme, slight-color);
+
+        &:hover {
+            background: map-get($theme, slight-color);
+        }
+
+        &:active {
+            background: map-get($theme, light-color);
+        }
+    }
+}

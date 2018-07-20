@@ -1,0 +1,5 @@
+@mixin w-tow-placeholder-theme($theme) {
+    .tow-placeholder {
+        background-color: map-get($theme, active-color);
+    }
+}

@@ -1,0 +1,7 @@
+@mixin w-dropdown($theme) {
+    .w-dropdown {
+        .dropdown-item {
+            font-size: map-get($theme, main-font-size);
+        }
+    }
+}

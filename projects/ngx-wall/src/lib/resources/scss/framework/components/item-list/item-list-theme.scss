@@ -1,0 +1,20 @@
+@mixin w-item-list($theme) {
+    .w-item-list {
+        li {
+            font-size: map-get($theme, main-font-size);
+
+            &:hover {
+                background: map-get($theme, thin-color);
+            }
+        }
+
+        &__description {
+            color: map-get($theme, sub-text-color);
+            font-size: map-get($theme, sub-font-size);
+        }
+
+        &__selected {
+            background: map-get($theme, thin-color);
+        }
+    }
+}

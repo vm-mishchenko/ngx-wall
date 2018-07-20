@@ -1,0 +1,16 @@
+@mixin code-brick-theme($theme) {
+    code-brick {
+        .CodeMirror {
+            background: map-get($theme, thin-color) !important;
+            font-size: map-get($theme, main-font-size);
+
+            .CodeMirror-cursor {
+                background: map-get($theme, default-color);
+            }
+
+            pre {
+                font-size: map-get($theme, main-font-size);
+            }
+        }
+    }
+}

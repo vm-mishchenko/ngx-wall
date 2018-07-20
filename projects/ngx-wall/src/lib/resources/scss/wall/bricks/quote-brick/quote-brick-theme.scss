@@ -1,0 +1,9 @@
+@mixin quote-brick-theme($theme) {
+    quote-brick {
+        [contenteditable] {
+            &:empty:before {
+                color: map-get($theme, sub-text-color);
+            }
+        }
+    }
+}
