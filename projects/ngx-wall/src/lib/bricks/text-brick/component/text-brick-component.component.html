@@ -5,6 +5,7 @@
    (keydown)="onKeyPress($event)"
    (click)="onClick($event)"
    class="text-brick__editor"
+   [ngClass]="'text-brick-tabs-' + scope.tabs"
    (blur)="onBlur()"
    (focus)="onFocus()"
    contenteditable

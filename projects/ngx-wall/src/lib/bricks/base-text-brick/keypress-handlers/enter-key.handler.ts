@@ -11,8 +11,10 @@ export class EnterKeyHandler {
 
         const splittedText = this.baseTextBrickComponent.getSplittedText(sel.focusOffset, sel.focusNode);
 
+
         const newTextState = {
-            text: this.baseTextBrickComponent.cleanUpText(splittedText.right)
+            text: this.baseTextBrickComponent.cleanUpText(splittedText.right),
+            tabs: this.baseTextBrickComponent.scope.tabs
         };
 
         // update current brick

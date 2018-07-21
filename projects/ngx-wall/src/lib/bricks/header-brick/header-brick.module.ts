@@ -1,3 +1,4 @@
+import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {ContenteditableModule} from '../../modules/contenteditable';
@@ -8,6 +9,7 @@ import {HeaderBrickComponent} from './component/header-brick.component';
 @NgModule({
     imports: [
         FormsModule,
+        CommonModule,
         ContenteditableModule
     ],
     exports: [HeaderBrickComponent],

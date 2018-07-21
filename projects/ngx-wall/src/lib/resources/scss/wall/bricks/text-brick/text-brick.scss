@@ -16,4 +16,16 @@ text-brick {
     [contenteditable]:empty:before {
         content: attr(placeholder)
     }
+
+    .text-brick-tabs-1 {
+        margin-left: 1.5rem;
+    }
+
+    .text-brick-tabs-2 {
+        margin-left: 3rem;
+    }
+
+    .text-brick-tabs-3 {
+        margin-left: 4.5rem;
+    }
 }

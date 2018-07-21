@@ -19,6 +19,7 @@ import {
     FOCUS_INITIATOR,
     LEFT_KEY,
     RIGHT_KEY,
+    TAB_KEY,
     TOP_KEY
 } from './base-text-brick.constant';
 import {IBaseTextState} from './base-text-state.interface';
@@ -58,8 +59,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     wallUiApi: IWallUiApi;
 
     scope: IBaseTextState = {
-        text: ''
+        text: '',
+        tabs: 0
     };
+
+    maxTabNumber = 3;
 
     textChange: Subject<string> = new Subject();
 
@@ -72,6 +76,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             this.setTextState(this.state.text);
         }
 
+        this.scope.tabs = this.state.tabs || 0;
+
         this.onPasteBound = this.onPaste.bind(this);
 
         this.editor.nativeElement.addEventListener('paste', this.onPasteBound);
@@ -82,6 +88,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             )
             .subscribe(() => {
                 this.setTextState(this.scope.text);
+
                 this.saveCurrentState();
             });
 
@@ -89,6 +96,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     onWallStateChange(newState: IBaseTextState) {
+        this.scope.tabs = this.state.tabs || this.scope.tabs;
+
         if (newState && newState.text !== this.scope.text) {
             this.setTextState(newState.text);
         }
@@ -147,22 +156,20 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.escapeKeyPressed(e);
             }
 
-            if (e.keyCode === BACK_SPACE_KEY && this.scope.text.length && this.isCaretAtStart() && !this.isTextSelected()) {
-                this.concatWithPreviousTextSupportingBrick(e);
+            if (e.keyCode === BACK_SPACE_KEY && !this.isTextSelected()) {
+                this.backSpaceKeyPressed(e);
             }
 
             if (e.keyCode === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
                 this.concatWithNextTextSupportingBrick(e);
             }
 
-            if (this.scope.text === '') {
-                if (e.keyCode === BACK_SPACE_KEY) {
-                    this.onDeleteAndFocusToPrevious(e);
-                }
+            if (e.keyCode === TAB_KEY && this.isCaretAtStart()) {
+                this.onTabPressed(e);
+            }
 
-                if (e.keyCode === DELETE_KEY) {
-                    this.onDeleteAndFocusToNext(e);
-                }
+            if (e.keyCode === DELETE_KEY && this.scope.text === '') {
+                this.onDeleteAndFocusToNext(e);
             }
         }
     }
@@ -194,6 +201,28 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     escapeKeyPressed(e: KeyboardEvent) {
         // do nothing
+    }
+
+    onTabPressed(e: KeyboardEvent) {
+        e.preventDefault();
+
+        this.increaseTab();
+        this.saveCurrentState();
+    }
+
+    backSpaceKeyPressed(e: KeyboardEvent) {
+        if (this.isCaretAtStart()) {
+            if (this.scope.tabs) {
+                this.decreaesTab();
+                this.saveCurrentState();
+            } else {
+                if (this.scope.text.length) {
+                    this.concatWithPreviousTextSupportingBrick(e);
+                } else {
+                    this.onDeleteAndFocusToPrevious(e);
+                }
+            }
+        }
     }
 
     // end key handlers
@@ -344,6 +373,18 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     setTextState(text: string = '') {
         this.scope.text = this.cleanUpText(text);
+    }
+
+    increaseTab() {
+        if (this.scope.tabs < this.maxTabNumber) {
+            this.scope.tabs++;
+        }
+    }
+
+    decreaesTab() {
+        if (this.scope.tabs > 0) {
+            this.scope.tabs--;
+        }
     }
 
     saveCurrentState() {
