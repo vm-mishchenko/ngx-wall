@@ -121,7 +121,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             document.execCommand('insertHTML', false, textArr[0]);
         } else if (textArr.length > 1) {
             // todo: add interface for UI api
-            textArr.reverse().forEach((text) => this.wallModel.api.ui.addBrickAfterBrickId(this.id, 'text', {text}));
+            textArr.reverse().forEach((text) => this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text', {text}));
         }
     }
 
