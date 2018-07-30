@@ -344,7 +344,13 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     // key handler end
     onWallFocus(context?: IFocusContext): void {
-        this.editor.nativeElement.focus();
+        if (this.isCaretAtStart()) {
+            const deepLeftNodeChild = new DeepLeftNodeChild(this.editor.nativeElement);
+
+            (new PlaceCaretToPosition(deepLeftNodeChild.child, 0)).place();
+        } else {
+            this.editor.nativeElement.focus();
+        }
 
         if (context && context.initiator === FOCUS_INITIATOR) {
             if (context.details.deletePreviousText) {
