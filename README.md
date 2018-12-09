@@ -4,6 +4,8 @@
 [![npm version](https://badge.fury.io/js/ngx-wall.svg)](https://www.npmjs.com/package/ngx-wall)
 [![peerDependencies Status](https://david-dm.org/vm-mishchenko/ngx-wall/peer-status.svg)](https://david-dm.org/vm-mishchenko/ngx-wall?type=peer)
 
+[![](https://codescene.io/projects/3593/status.svg)](https://codescene.io/projects/3593/jobs/latest-successful/results)
+
 ## What
 ngx-wall is library which helps build <i>content editor</i> for note-taking application.
 
