@@ -5,6 +5,9 @@ import {IWallColumn} from './interfaces/wall-column.interface';
 import {IWallRow} from './interfaces/wall-row.interface';
 import {LayoutWalker} from './layout-walker.class';
 
+/*
+* Modify layout wall rows
+* */
 export class WallLayout {
     rows: IWallRow[] = [];
 
@@ -141,6 +144,8 @@ export class WallLayout {
 
         let columnIndex;
 
+        // todo: move side to constant
+        // todo: search across project for all hard coded variables
         if (side === 'left') {
             columnIndex = beforeBrickPosition.columnIndex;
         } else if (side === 'right') {

@@ -18,6 +18,10 @@ import {IWallRow} from './interfaces/wall-row.interface';
 import {LayoutWalker} from './layout-walker.class';
 import {WallLayout} from './wall-layout.model';
 
+/*
+* Contains Wall data structure and registers API for data manipulation.
+* Responsible to IWallDefinition->Layout and Layout->IWallDefinition transformation
+* */
 export class WallCorePlugin implements IWallPlugin {
     name = 'core';
     version = '0.0.0';

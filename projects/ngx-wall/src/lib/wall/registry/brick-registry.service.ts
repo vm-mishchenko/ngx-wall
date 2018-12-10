@@ -5,6 +5,8 @@ import {IBrickSpecification} from './interfaces/brick-specification.interface';
 export class BrickRegistry {
     private bricks: IBrickSpecification[] = [];
 
+    // todo: add unregister functionality
+
     register(brickConfiguration: IBrickSpecification) {
         this.bricks.push(brickConfiguration);
     }
