@@ -20,6 +20,7 @@ export class WallLayout {
         const lastRowIndex = totalRowCount - 1;
 
         // user cannot create row in position more than last row index + 1
+        // todo: remove helper checks, lets face the problem earlier
         if (rowIndex > (lastRowIndex + 1)) {
             rowIndex = lastRowIndex + 1;
         }
@@ -37,6 +38,7 @@ export class WallLayout {
             const bricksCount = column.bricks.length;
 
             // user cannot put brick in position more than total brick count + 1
+            // todo: remove helper checks, lets face the problem earlier
             if (brickIndex > (bricksCount + 1)) {
                 brickIndex = bricksCount + 1;
             }
@@ -53,6 +55,7 @@ export class WallLayout {
             const columnCount = row.columns.length;
 
             // user cannot create column in position more than total column cound + 1
+            // todo: remove helper checks, lets face the problem earlier
             if (columnIndex > (columnCount + 1)) {
                 columnIndex = columnCount + 1;
             }
@@ -80,7 +83,7 @@ export class WallLayout {
     }
 
     moveBrickAfterInSameColumn(afterBrickId: string, movedBrickIds: string[]): void {
-        movedBrickIds.forEach((movedBrickId) => {
+        movedBrickIds.forEach((movedBrickId, index) => {
             const currentMovedBrick = this.layoutWalker.getBrickById(movedBrickId);
 
             this.removeBrick(movedBrickId);
@@ -90,7 +93,7 @@ export class WallLayout {
             this.addBrickToExistingColumn(
                 afterBrickPosition.rowIndex,
                 afterBrickPosition.columnIndex,
-                afterBrickPosition.brickIndex + 1,
+                afterBrickPosition.brickIndex + index + 1,
                 currentMovedBrick);
         });
     }

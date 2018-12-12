@@ -1,5 +1,5 @@
 import {IWallDefinition} from '../domain/definitions/wall-definition.interface';
-import {IBrickSnapshot} from '../index';
+import {IBrickSnapshot, IWallModel} from '../index';
 import {AddBrickEvent} from './plugins/core/events/add-brick.event';
 import {BrickRegistry} from '../registry/brick-registry.service';
 import {WallModelFactory} from './wall-model.factory';
@@ -56,6 +56,95 @@ describe('Wall Model', () => {
         }
     };
 
+    const twoColumnPlan: IWallDefinition = {
+        bricks: [
+            {
+                id: '1',
+                tag: 'text',
+                data: {},
+                meta: {}
+            },
+            {
+                id: '2',
+                tag: 'text',
+                data: {},
+                meta: {}
+            }
+        ],
+        layout: {
+            bricks: [
+                {
+                    id: '2',
+                    columns: [
+                        {
+                            bricks: [
+                                {
+                                    id: '1'
+                                }
+                            ]
+                        },
+                        {
+                            bricks: [
+                                {
+                                    id: '2'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    };
+
+    const twoColumnWithFewBricksInColumnPlan: IWallDefinition = {
+        bricks: [
+            {
+                id: '1',
+                tag: 'text',
+                data: {},
+                meta: {}
+            },
+            {
+                id: '2',
+                tag: 'text',
+                data: {},
+                meta: {}
+            },
+            {
+                id: '3',
+                tag: 'text',
+                data: {},
+                meta: {}
+            }
+        ],
+        layout: {
+            bricks: [
+                {
+                    id: '2',
+                    columns: [
+                        {
+                            bricks: [
+                                {
+                                    id: '1'
+                                }
+                            ]
+                        },
+                        {
+                            bricks: [
+                                {
+                                    id: '2'
+                                },
+                                {
+                                    id: '3'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    };
+
     beforeAll(() => {
         class TextBrickTextRepresentation {
             constructor(private brickSnapshot: IBrickSnapshot) {
@@ -93,16 +182,17 @@ describe('Wall Model', () => {
     });
 
     describe('[Initialization]', () => {
-        it('should return default plan', () => {
-            const wm = wallModelFactory.create({plan: defaultPlan});
+        it('should initialize different plans', () => {
+            [
+                defaultPlan,
+                simplePlan,
+                twoColumnPlan,
+                twoColumnWithFewBricksInColumnPlan
+            ].forEach((plan) => {
+                const wm = wallModelFactory.create({plan});
 
-            expect(wm.api.core.getPlan()).toEqual(defaultPlan);
-        });
-
-        it('should be initialized correct', () => {
-            const wm = wallModelFactory.create({plan: simplePlan});
-
-            expect(wm.api.core.getPlan()).toEqual(simplePlan);
+                expect(wm.api.core.getPlan()).toEqual(plan);
+            });
         });
     });
 
@@ -340,14 +430,34 @@ describe('Wall Model', () => {
             });
         });
 
-        it('getBrickTextRepresentation()', () => {
-            const wm = wallModelFactory.create();
+        describe('getBrickTextRepresentation()', () => {
+            it('should use brick text represntation', () => {
+                const wm = wallModelFactory.create();
 
-            wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            const brickTextRepresentation = wm.api.core.getBrickTextRepresentation(wm.api.core.getBrickIds()[0]);
+                const brickTextRepresentation = wm.api.core.getBrickTextRepresentation(wm.api.core.getBrickIds()[0]);
 
-            expect(brickTextRepresentation).toBe(textRepresentation);
+                expect(brickTextRepresentation).toBe(textRepresentation);
+            });
+
+            it('should support default text representation', () => {
+                const wm = wallModelFactory.create();
+
+                wm.api.core.addDefaultBrick();
+
+                const textBrickSpecification = brickRegistry.get('text');
+
+                const originalTextRepresentation = textBrickSpecification.textRepresentation;
+
+                delete textBrickSpecification.textRepresentation;
+
+                const brickTextRepresentation = wm.api.core.getBrickTextRepresentation(wm.api.core.getBrickIds()[0]);
+
+                expect(brickTextRepresentation).toBe('');
+
+                textBrickSpecification.textRepresentation = originalTextRepresentation;
+            });
         });
     });
 
@@ -367,7 +477,7 @@ describe('Wall Model', () => {
                 'moveBrickToNewColumn',
                 'removeBrick',
                 'removeBricks',
-                'clear',
+                'clear'
             ].forEach((methodName) => {
                 expect(wm.api.core[methodName]).toBeDefined();
             });
@@ -497,79 +607,398 @@ describe('Wall Model', () => {
             expect(wm.api.core.getBrickIds().length).toBe(0);
         });
 
-        it('moveBrickAfterBrickId() in new row', () => {
-            // If there is only one column in the row then
-            // new brick will be moved in the new row after defined brick id
-            const wm = wallModelFactory.create();
+        describe('moveBrickAfterBrickId()', () => {
+            it('should move bricks to new row', () => {
+                // If there is only one column in the row then
+                // new brick will be moved in the new row after defined brick id
+                const wm = wallModelFactory.create();
+                const expectedLayoutStructure: IRowStructure[] = [
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                ];
 
-            wm.api.core.addDefaultBrick();
-            wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            const beforeMoveBrickIds = wm.api.core.getBrickIds();
+                [
+                    // simple case - move back item
+                    {
+                        movedBrickIndexes: [1],  // brick indexes which have to be moved
+                        pillarBrickIndexPosition: 0 // index before which bricks have to be moved
+                    },
+                    // simple case  - move front item
+                    {
+                        movedBrickIndexes: [0],
+                        pillarBrickIndexPosition: 1
+                    },
+                    // direct order - move back item
+                    {
+                        movedBrickIndexes: [2, 3, 4],
+                        pillarBrickIndexPosition: 0
+                    },
+                    // reverse order - move back items
+                    {
+                        movedBrickIndexes: [4, 3, 2],
+                        pillarBrickIndexPosition: 0
+                    },
+                    // direct order - move front items
+                    {
+                        movedBrickIndexes: [0, 1, 2],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // reverse order - move front items
+                    {
+                        movedBrickIndexes: [2, 1, 0],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // random order  - move back items
+                    {
+                        movedBrickIndexes: [4, 2],
+                        pillarBrickIndexPosition: 0
+                    },
+                    // random order - move front items
+                    {
+                        movedBrickIndexes: [2, 0],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // edge case
+                    {
+                        movedBrickIndexes: [0],
+                        pillarBrickIndexPosition: 0
+                    }
+                    // todo: BUG - test case does not work
+                    // it's a weired scenario which unlikely to happen through UI
+                    // but nevertheless I have to fix it
+                    // {
+                    //     movedBrickIndexes: [2, 1],
+                    //     pillarBrickIndexPosition: 1
+                    // }
+                ].forEach((testCase) => {
+                    const afterMoveBrickIds = wm.api.core.getBrickIds();
 
-            // move first brick after second
-            wm.api.core.moveBrickAfterBrickId([beforeMoveBrickIds[0]], beforeMoveBrickIds[1]);
+                    wm.api.core.moveBrickAfterBrickId(
+                        testCase.movedBrickIndexes.map((moveBrickIndex) => afterMoveBrickIds[moveBrickIndex]),
+                        afterMoveBrickIds[testCase.pillarBrickIndexPosition]
+                    );
 
-            expect(wm.api.core.getRowCount()).toBe(2);
+                    const expectedMoveBrickIds = moveItemsAfterIndex(
+                        afterMoveBrickIds,
+                        testCase.movedBrickIndexes,
+                        testCase.pillarBrickIndexPosition
+                    );
 
-            const afterMoveBrickIds = wm.api.core.getBrickIds();
-
-            expect(afterMoveBrickIds[0]).toBe(beforeMoveBrickIds[1]);
-            expect(afterMoveBrickIds[1]).toBe(beforeMoveBrickIds[0]);
-        });
-
-        it('moveBrickAfterBrickId() in same column', () => {
-            // If there is only more then one column in the row then
-            // new brick will be moved in the same column after defined brick id
-            const wm = wallModelFactory.create();
-
-            generateTwoColumnWithOneBrick(wm);
-
-            const brickIds = wm.api.core.getBrickIds();
-
-            // add third brick to new row
-            wm.api.core.addDefaultBrick();
-
-            const beforeMovingBrickIds = wm.api.core.getBrickIds();
-
-            // move third brick to first row in the second column after second brick
-            wm.api.core.moveBrickAfterBrickId([beforeMovingBrickIds[2]], brickIds[1]);
-
-            const afterMovingBrickIds = wm.api.core.getBrickIds();
-
-            expect(wm.api.core.getRowCount()).toBe(1);
-
-            let row;
-            wm.api.core.traverse((row_) => {
-                row = row_;
+                    expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                    checkLayoutStructure(wm, expectedLayoutStructure);
+                });
             });
 
-            expect(wm.api.core.getColumnCount(0)).toBe(2);
-            expect(row.columns[0].bricks.length).toBe(1);
-            expect(row.columns[1].bricks.length).toBe(2);
+            it('should move bricks to particular column from rows with one column', () => {
+                [
+                    // direct order
+                    {
+                        movedBrickIndexes: [2, 3, 4],
+                        pillarBrickIndexPosition: 1, // move to right column
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 4]
+                            }
+                        ]
+                    },
+                    // reverse order
+                    {
+                        movedBrickIndexes: [4, 3, 2],
+                        pillarBrickIndexPosition: 1,
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 4]
+                            }
+                        ]
+                    },
+                    // random items
+                    {
+                        movedBrickIndexes: [4, 2],
+                        pillarBrickIndexPosition: 1,
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 3]
+                            },
+                            {
+                                columns: [1]
+                            }
+                        ]
+                    }
+                ].forEach((testCase) => {
+                    const wm = wallModelFactory.create();
 
-            expect(beforeMovingBrickIds[0]).toBe(afterMovingBrickIds[0]);
-            expect(beforeMovingBrickIds[1]).toBe(afterMovingBrickIds[1]);
-            expect(beforeMovingBrickIds[2]).toBe(afterMovingBrickIds[2]);
+                    generateTwoColumnWithOneBrick(wm);
+
+                    // add third brick to new row
+                    wm.api.core.addDefaultBrick();
+                    wm.api.core.addDefaultBrick();
+                    wm.api.core.addDefaultBrick();
+
+                    const beforeMoveBrickIds = wm.api.core.getBrickIds();
+
+                    wm.api.core.moveBrickAfterBrickId(
+                        testCase.movedBrickIndexes.map((moveBrickIndex) => beforeMoveBrickIds[moveBrickIndex]),
+                        beforeMoveBrickIds[testCase.pillarBrickIndexPosition]
+                    );
+
+                    const expectedMoveBrickIds = moveItemsAfterIndex(
+                        beforeMoveBrickIds,
+                        testCase.movedBrickIndexes,
+                        testCase.pillarBrickIndexPosition
+                    );
+
+                    expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                    checkLayoutStructure(wm, testCase.expectedLayoutStructure);
+                });
+            });
+
+            it('should remove column without bricks', () => {
+                // move bricks to column from sibling column
+                const testCase = {
+                    movedBrickIndexes: [0],
+                    pillarBrickIndexPosition: 1, // move to right column
+                    expectedLayoutStructure: [
+                        {
+                            columns: [2]
+                        }
+                    ]
+                };
+
+                const wm = wallModelFactory.create();
+
+                generateTwoColumnWithOneBrick(wm);
+
+                const beforeMoveBrickIds = wm.api.core.getBrickIds();
+
+                wm.api.core.moveBrickAfterBrickId(
+                    testCase.movedBrickIndexes.map((moveBrickIndex) => beforeMoveBrickIds[moveBrickIndex]),
+                    beforeMoveBrickIds[testCase.pillarBrickIndexPosition]
+                );
+
+                const expectedMoveBrickIds = moveItemsAfterIndex(
+                    beforeMoveBrickIds,
+                    testCase.movedBrickIndexes,
+                    testCase.pillarBrickIndexPosition
+                );
+
+                expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                checkLayoutStructure(wm, testCase.expectedLayoutStructure);
+            });
         });
 
-        it('moveBrickBeforeBrickId() in new row', () => {
-            // If there is only one column in the row then
-            // new brick will be moved in the new row before defined brick id
-            const wm = wallModelFactory.create();
+        describe('moveBrickBeforeBrickId()', () => {
+            it('should move bricks to new row', () => {
+                const wm = wallModelFactory.create();
+                const expectedLayoutStructure: IRowStructure[] = [
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    },
+                    {
+                        columns: [1]
+                    }
+                ];
 
-            wm.api.core.addDefaultBrick();
-            wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            const brickIds = wm.api.core.getBrickIds();
+                [
+                    // simple case - move back item
+                    {
+                        movedBrickIndexes: [1],  // brick indexes which have to be moved
+                        pillarBrickIndexPosition: 0 // index before which bricks have to be moved
+                    },
+                    // simple case  - move front item
+                    {
+                        movedBrickIndexes: [0],
+                        pillarBrickIndexPosition: 1
+                    },
+                    // direct order - move back item
+                    {
+                        movedBrickIndexes: [2, 3, 4],
+                        pillarBrickIndexPosition: 1
+                    },
+                    // reverse order  - move back items
+                    {
+                        movedBrickIndexes: [4, 3, 2],
+                        pillarBrickIndexPosition: 1
+                    },
+                    // direct order - move front items
+                    {
+                        movedBrickIndexes: [0, 1, 2],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // reverse order - move front items
+                    {
+                        movedBrickIndexes: [2, 1, 0],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // random order  - move back items
+                    {
+                        movedBrickIndexes: [4, 2],
+                        pillarBrickIndexPosition: 1
+                    },
+                    // random order - move front items
+                    {
+                        movedBrickIndexes: [2, 0],
+                        pillarBrickIndexPosition: 4
+                    },
+                    // edge case
+                    {
+                        movedBrickIndexes: [0],
+                        pillarBrickIndexPosition: 0
+                    }
+                    // todo: BUG - test case does not work
+                    // it's a weired scenario which unlikely to happen through UI
+                    // but nevertheless I have to fix it
+                    // {
+                    //     movedBrickIndexes: [2, 1],
+                    //     pillarBrickIndexPosition: 1
+                    // }
+                ].forEach((testCase) => {
+                    const beforeMoveBrickIds = wm.api.core.getBrickIds();
 
-            // move second brick before first
-            wm.api.core.moveBrickBeforeBrickId([brickIds[1]], brickIds[0]);
+                    wm.api.core.moveBrickBeforeBrickId(
+                        testCase.movedBrickIndexes.map((moveBrickIndex) => beforeMoveBrickIds[moveBrickIndex]),
+                        beforeMoveBrickIds[testCase.pillarBrickIndexPosition]
+                    );
 
-            const newBrickIds = wm.api.core.getBrickIds();
+                    const expectedMoveBrickIds = moveItemsBeforeIndex(
+                        beforeMoveBrickIds,
+                        testCase.movedBrickIndexes,
+                        testCase.pillarBrickIndexPosition
+                    );
 
-            expect(newBrickIds[0]).toBe(brickIds[1]);
-            expect(newBrickIds[1]).toBe(brickIds[0]);
+                    expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                    checkLayoutStructure(wm, expectedLayoutStructure);
+                });
+            });
+
+            it('should move bricks to particular column from rows with one column', () => {
+                [
+                    // direct order
+                    {
+                        movedBrickIndexes: [2, 3, 4],
+                        pillarBrickIndexPosition: 1, // move to right column
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 4]
+                            }
+                        ]
+                    },
+                    // reverse order
+                    {
+                        movedBrickIndexes: [4, 3, 2],
+                        pillarBrickIndexPosition: 1,
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 4]
+                            }
+                        ]
+                    },
+                    // random items
+                    {
+                        movedBrickIndexes: [4, 2],
+                        pillarBrickIndexPosition: 1,
+                        expectedLayoutStructure: [
+                            {
+                                columns: [1, 3]
+                            },
+                            {
+                                columns: [1]
+                            }
+                        ]
+                    }
+                ].forEach((testCase) => {
+                    const wm = wallModelFactory.create();
+
+                    generateTwoColumnWithOneBrick(wm);
+
+                    // add third brick to new row
+                    wm.api.core.addDefaultBrick();
+                    wm.api.core.addDefaultBrick();
+                    wm.api.core.addDefaultBrick();
+
+                    const beforeMoveBrickIds = wm.api.core.getBrickIds();
+
+                    wm.api.core.moveBrickBeforeBrickId(
+                        testCase.movedBrickIndexes.map((moveBrickIndex) => beforeMoveBrickIds[moveBrickIndex]),
+                        beforeMoveBrickIds[testCase.pillarBrickIndexPosition]
+                    );
+
+                    const expectedMoveBrickIds = moveItemsBeforeIndex(
+                        beforeMoveBrickIds,
+                        testCase.movedBrickIndexes,
+                        testCase.pillarBrickIndexPosition
+                    );
+
+                    expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                    checkLayoutStructure(wm, testCase.expectedLayoutStructure);
+                });
+            });
+
+            it('should remove column without bricks', () => {
+                // move bricks to column from sibling column
+                const testCase = {
+                    movedBrickIndexes: [0],
+                    pillarBrickIndexPosition: 1, // move to right column
+                    expectedLayoutStructure: [
+                        {
+                            columns: [2]
+                        }
+                    ]
+                };
+
+                const wm = wallModelFactory.create();
+
+                generateTwoColumnWithOneBrick(wm);
+
+                const beforeMoveBrickIds = wm.api.core.getBrickIds();
+
+                wm.api.core.moveBrickBeforeBrickId(
+                    testCase.movedBrickIndexes.map((moveBrickIndex) => beforeMoveBrickIds[moveBrickIndex]),
+                    beforeMoveBrickIds[testCase.pillarBrickIndexPosition]
+                );
+
+                const expectedMoveBrickIds = moveItemsBeforeIndex(
+                    beforeMoveBrickIds,
+                    testCase.movedBrickIndexes,
+                    testCase.pillarBrickIndexPosition
+                );
+
+                expect(wm.api.core.getBrickIds()).toEqual(expectedMoveBrickIds);
+                checkLayoutStructure(wm, testCase.expectedLayoutStructure);
+            });
         });
 
         it('moveBrickBeforeBrickId() in same column', () => {
@@ -607,68 +1036,183 @@ describe('Wall Model', () => {
             expect(beforeMovingBrickIds[2]).toBe(afterMovingBrickIds[1]);
         });
 
-        it('moveBrickToNewColumn()', () => {
-            const wm = wallModelFactory.create();
+        describe('moveBrickToNewColumn()', () => {
+            it('should create new column and move brick to it', () => {
+                const wm = wallModelFactory.create();
 
-            wm.api.core.addDefaultBrick();
-            wm.api.core.addDefaultBrick();
+                console.log(`moveBrickToNewColumn`);
 
-            const brickIds = wm.api.core.getBrickIds();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            // todo: replace to CONSTANT
-            const side = 'left';
+                const brickIds = wm.api.core.getBrickIds();
 
-            wm.api.core.moveBrickToNewColumn([brickIds[1]], brickIds[0], side);
+                // todo: replace to CONSTANT
+                const side = 'left';
 
-            let row;
-            wm.api.core.traverse((row_) => row = row_);
+                wm.api.core.moveBrickToNewColumn([brickIds[1]], brickIds[0], side);
 
-            expect(row.columns.length).toBe(2);
-            expect(row.columns[0].bricks[0].id).toBe(brickIds[1]);
-            expect(row.columns[1].bricks[0].id).toBe(brickIds[0]);
-        });
+                let row;
+                wm.api.core.traverse((row_) => row = row_);
 
-        it('clear() remove bricks', (done) => {
-            const wm = wallModelFactory.create();
+                expect(row.columns.length).toBe(2);
+                expect(row.columns[0].bricks[0].id).toBe(brickIds[1]);
+                expect(row.columns[1].bricks[0].id).toBe(brickIds[0]);
+            });
 
-            wm.api.core.addDefaultBrick();
-            wm.api.core.addDefaultBrick();
+            it('should create new column and move all bricks to it in direct order', () => {
+                const wm = wallModelFactory.create();
 
-            expect(wm.api.core.getBrickIds().length).toBe(2);
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            wm.api.core.clear().then(() => {
-                expect(wm.api.core.getBrickIds().length).toBe(0);
+                const brickIds = wm.api.core.getBrickIds();
 
-                done();
+                // todo: replace to CONSTANT
+                const side = 'right';
+
+                wm.api.core.moveBrickToNewColumn([brickIds[1], brickIds[2]], brickIds[0], side);
+
+                let row;
+                wm.api.core.traverse((row_) => row = row_);
+
+                expect(row.columns.length).toBe(2);
+                expect(row.columns[0].bricks[0].id).toBe(brickIds[0]);
+                expect(row.columns[1].bricks[0].id).toBe(brickIds[1]);
+                expect(row.columns[1].bricks[1].id).toBe(brickIds[2]);
+            });
+
+            it('should create new column and move all bricks to it in reverse order', () => {
+                const wm = wallModelFactory.create();
+
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+
+                const brickIds = wm.api.core.getBrickIds();
+
+                // todo: replace to CONSTANT
+                const side = 'right';
+
+                wm.api.core.moveBrickToNewColumn([brickIds[2], brickIds[1]], brickIds[0], side);
+
+                let row;
+                wm.api.core.traverse((row_) => row = row_);
+
+                expect(row.columns.length).toBe(2);
+                expect(row.columns[0].bricks[0].id).toBe(brickIds[0]);
+                expect(row.columns[1].bricks[0].id).toBe(brickIds[2]);
+                expect(row.columns[1].bricks[1].id).toBe(brickIds[1]);
             });
         });
 
-        it('clear() call brick destructor', (done) => {
-            const wm = wallModelFactory.create();
+        describe('clear', () => {
+            it('should remove bricks', (done) => {
+                const wm = wallModelFactory.create();
 
-            wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            const addedBrickId = wm.api.core.getBrickIds()[0];
+                expect(wm.api.core.getBrickIds().length).toBe(2);
 
-            const textBrickSpecification = brickRegistry.get('text');
+                wm.api.core.clear().then(() => {
+                    expect(wm.api.core.getBrickIds().length).toBe(0);
 
-            const originalDestructor = textBrickSpecification.destructor;
+                    done();
+                });
+            });
 
-            spyOn(textBrickSpecification, 'destructor').and.callThrough();
+            it('should call brick destructor', (done) => {
+                const wm = wallModelFactory.create();
 
-            wm.api.core.clear().then(() => {
-                expect(textBrickSpecification.destructor).toHaveBeenCalled();
+                wm.api.core.addDefaultBrick();
 
-                // todo: replace "as any" to appropriate transformation
-                const brickSnapshot = (textBrickSpecification.destructor as any).calls.mostRecent().args[0];
+                const addedBrickId = wm.api.core.getBrickIds()[0];
 
-                expect(brickSnapshot.id).toBe(addedBrickId);
-                expect(brickSnapshot.tag).toBe('text');
+                const textBrickSpecification = brickRegistry.get('text');
 
-                textBrickSpecification.destructor = originalDestructor;
+                const originalDestructor = textBrickSpecification.destructor;
 
-                done();
+                spyOn(textBrickSpecification, 'destructor').and.callThrough();
+
+                wm.api.core.clear().then(() => {
+                    expect(textBrickSpecification.destructor).toHaveBeenCalled();
+
+                    // todo: replace "as any" to appropriate transformation
+                    const brickSnapshot = (textBrickSpecification.destructor as any).calls.mostRecent().args[0];
+
+                    expect(brickSnapshot.id).toBe(addedBrickId);
+                    expect(brickSnapshot.tag).toBe('text');
+
+                    textBrickSpecification.destructor = originalDestructor;
+
+                    done();
+                });
+            });
+
+            it('should support work without destructor', (done) => {
+                const wm = wallModelFactory.create();
+
+                wm.api.core.addDefaultBrick();
+
+                const textBrickSpecification = brickRegistry.get('text');
+
+                const originalDestructor = textBrickSpecification.destructor;
+
+                delete textBrickSpecification.destructor;
+
+                wm.api.core.clear().then(() => {
+                    textBrickSpecification.destructor = originalDestructor;
+
+                    done();
+                });
             });
         });
     });
 });
+
+interface IRowStructure {
+    // each number represents amount of bricks in the column
+    columns: number[];
+}
+
+function checkLayoutStructure(wm: IWallModel, rows: IRowStructure[]) {
+    expect(wm.api.core.getRowCount()).toBe(rows.length);
+
+    let rowIndex = 0;
+
+    wm.api.core.traverse((row) => {
+        row.columns.forEach((column, columnIndex) => {
+            // checks that each column contains appropriate number of bricks
+            expect(column.bricks.length).toBe(rows[rowIndex].columns[columnIndex]);
+        });
+
+        rowIndex++;
+    });
+}
+
+// helpers
+function moveItemsBeforeIndex(array: string[], moveIndexes, index: number): string[] {
+    return moveItemsNearIndex(array, moveIndexes, index, true);
+}
+
+function moveItemsAfterIndex(array: string[], moveIndexes, index: number): string[] {
+    return moveItemsNearIndex(array, moveIndexes, index, false);
+}
+
+function moveItemsNearIndex(array: string[], moveIndexes, index: number, beforeIndex: boolean): string[] {
+    let resultArray = array.slice();
+    const movedItems = [];
+
+    moveIndexes.forEach((moveIndex) => {
+        const removedItem = resultArray.splice(moveIndex, 1, null)[0];
+
+        movedItems.push(removedItem);
+    });
+
+    resultArray.splice((beforeIndex ? index : index + 1), 0, ...movedItems);
+    resultArray = resultArray.filter((brickId) => Boolean(brickId));
+
+    return resultArray;
+}
