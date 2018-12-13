@@ -12,7 +12,7 @@ import {StringWithoutEmptyNodes} from '../../modules/utils/node/string-without-e
 import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall';
 import {
     BACK_SPACE_KEY,
-    BOTTOM_KEY,
+    BOTTOM_KEY, DEBOUNCE_TIME,
     DELETE_KEY,
     ENTER_KEY,
     ESCAPE_KEY,
@@ -84,7 +84,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         this.textChangeSubscription = this.textChange
             .pipe(
-                debounceTime(100)
+                debounceTime(DEBOUNCE_TIME)
             )
             .subscribe(() => {
                 this.setTextState(this.scope.text);
@@ -148,7 +148,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.rightKeyPressed(e);
             }
 
-            if (e.keyCode === ENTER_KEY) {
+            if (e.code === ENTER_KEY) {
+                console.log(e);
                 this.enterKeyPressed(e);
             }
 

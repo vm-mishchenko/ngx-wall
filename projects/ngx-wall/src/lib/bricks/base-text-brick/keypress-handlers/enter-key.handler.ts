@@ -9,8 +9,10 @@ export class EnterKeyHandler {
 
         const sel = window.getSelection();
 
-        const splittedText = this.baseTextBrickComponent.getSplittedText(sel.focusOffset, sel.focusNode);
-
+        const splittedText = this.baseTextBrickComponent.getSplittedText(
+            sel.focusOffset,
+            sel.focusNode
+        );
 
         const newTextState = {
             text: this.baseTextBrickComponent.cleanUpText(splittedText.right),
