@@ -1,10 +1,10 @@
 import {Subject, Subscription} from 'rxjs';
-import {IBrickSnapshot, IWallModel, IWallPlugin} from '../../..';
-import {Guid} from '../../../../modules/utils';
-import {IBrickDefinition} from '../../../domain/definitions/brick-definition.interface';
-import {IWallDefinition} from '../../../domain/definitions/wall-definition.interface';
-import {BrickRegistry} from '../../../registry/brick-registry.service';
-import {WallBrick} from '../../wall-brick.model';
+import {IBrickSnapshot, IWallModel, IWallPlugin} from '../..';
+import {Guid} from '../../../modules/utils';
+import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
+import {IWallDefinition} from '../../model/interfaces/wall-definition.interface';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {WallBrick} from '../../model/wall-brick.model';
 import {AddBrickEvent} from './events/add-brick.event';
 import {BeforeChangeEvent} from './events/before-change.event';
 import {MoveBrickEvent} from './events/move-brick.event';
@@ -13,8 +13,8 @@ import {RemoveBricksEvent} from './events/remove-bricks.event';
 import {SetPlanEvent} from './events/set-plan.event';
 import {TurnBrickIntoEvent} from './events/turn-brick-into.event';
 import {UpdateBrickStateEvent} from './events/update-brick-state.event';
-import {IWallColumn} from './interfaces/wall-column.interface';
-import {IWallRow} from './interfaces/wall-row.interface';
+import {IWallColumn} from '../../model/interfaces/wall-column.interface';
+import {IWallRow} from '../../model/interfaces/wall-row.interface';
 import {LayoutWalker} from './layout-walker.class';
 import {WallLayout} from './wall-layout.model';
 

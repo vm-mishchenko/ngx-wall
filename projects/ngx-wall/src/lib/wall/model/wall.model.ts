@@ -1,12 +1,11 @@
 import {Observable, Subject} from 'rxjs';
 import {Subscription} from 'rxjs/index';
-import {IWallPlugin} from '../domain/plugin/wall-plugin.interface';
+import {IWallPlugin} from './interfaces/wall-plugin.interface';
 import {BrickRegistry} from '../registry/public_api';
 import {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 import {IWallModelConfig} from './interfaces/wall-model-config.interface';
 import {IWallModel} from './interfaces/wall-model.interface';
-import {IWallCorePluginApi} from './plugins/core/interfaces/wall-core-plugin-api.interface';
-import {WallCorePlugin} from './plugins/core/wall-core.plugin';
+import {IWallCorePluginApi} from './interfaces/wall-core-plugin-api.interface';
 
 export class WallModel implements IWallModel {
     version: '0.0.0';
@@ -24,11 +23,6 @@ export class WallModel implements IWallModel {
     private plugins: Map<string, IWallPlugin> = new Map();
 
     constructor(private brickRegistry: BrickRegistry, config: IWallModelConfig) {
-        // initialize core plugins
-        [
-            new WallCorePlugin(brickRegistry)
-        ].forEach((plugin) => this.initializePlugin(plugin));
-
         // initialize 3rd party plugins
         config.plugins.forEach((plugin) => this.initializePlugin(plugin));
     }

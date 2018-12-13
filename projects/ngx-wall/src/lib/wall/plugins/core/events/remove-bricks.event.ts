@@ -1,4 +1,4 @@
-import {IBrickSnapshot} from '../../../..';
+import {IBrickSnapshot} from '../../..';
 
 export class RemoveBricksEvent {
     constructor(public bricks: IBrickSnapshot[],

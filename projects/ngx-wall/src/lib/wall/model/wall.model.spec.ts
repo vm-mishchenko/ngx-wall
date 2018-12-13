@@ -1,8 +1,7 @@
-import {IWallDefinition} from '../domain/definitions/wall-definition.interface';
-import {IBrickSnapshot, IWallModel} from '../index';
-import {AddBrickEvent} from './plugins/core/events/add-brick.event';
+import {IWallDefinition} from './interfaces/wall-definition.interface';
+import {AddBrickEvent, IBrickSnapshot, IWallModel} from '../index';
 import {BrickRegistry} from '../registry/brick-registry.service';
-import {WallModelFactory} from './wall-model.factory';
+import {WallModelFactory} from '../factory/wall-model.factory';
 
 function generateTwoColumnWithOneBrick(wm) {
     wm.api.core.addDefaultBrick();

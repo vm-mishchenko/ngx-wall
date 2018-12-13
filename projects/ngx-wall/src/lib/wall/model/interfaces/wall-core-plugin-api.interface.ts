@@ -1,6 +1,6 @@
 import {Subscription} from 'rxjs';
-import {IBrickSnapshot} from '../../../..';
-import {IWallDefinition} from '../../../../domain/definitions/wall-definition.interface';
+import {IBrickSnapshot} from '../..';
+import {IWallDefinition} from './wall-definition.interface';
 
 export interface IWallCorePluginApi {
     // COMMAND METHODS

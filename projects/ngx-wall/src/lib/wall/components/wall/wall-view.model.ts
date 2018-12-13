@@ -5,13 +5,15 @@ import {Observable} from 'rxjs/internal/Observable';
 import {
     AddBrickEvent,
     BeforeChangeEvent,
-    IWallModel,
-    IWallRow,
     MoveBrickEvent,
     RemoveBrickEvent,
     RemoveBricksEvent,
     TurnBrickIntoEvent,
     UpdateBrickStateEvent
+} from '../../plugins/core/public_api';
+import {
+    IWallModel,
+    IWallRow
 } from '../../model/public_api';
 import {BrickRegistry} from '../../registry/public_api';
 import {SelectedBrickEvent} from './events/selected-brick.event';

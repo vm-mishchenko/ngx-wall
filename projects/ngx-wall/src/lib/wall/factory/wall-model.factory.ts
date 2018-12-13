@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {BrickRegistry} from '../registry/brick-registry.service';
-import {IWallModelConfig} from './interfaces/wall-model-config.interface';
-import {IWallModel} from './interfaces/wall-model.interface';
-import {WallModel} from './wall.model';
+import {WallCorePlugin} from '../plugins/core/wall-core.plugin';
+import {BrickRegistry} from '../registry/public_api';
+import {IWallModelConfig, IWallModel} from '../model/public_api';
+import {WallModel} from '../model/wall.model';
 
 @Injectable()
 export class WallModelFactory {
@@ -24,6 +24,10 @@ export class WallModelFactory {
             ...defaultConfig,
             ...config
         };
+
+        // inject core plugin as initial first plugin
+        // in this way factory will decouple WallModel from WallCorePlugin
+        config.plugins.unshift(new WallCorePlugin(this.brickRegistry));
 
         const wallModel = new WallModel(
             this.brickRegistry,

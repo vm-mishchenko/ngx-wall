@@ -6,7 +6,7 @@ import {RadarModule} from '../modules/radar';
 import {TowModule} from '../modules/tow';
 import {WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent} from './components/wall-canvas';
 import {WallComponent} from './components/wall/wall.component';
-import {WallModelFactory} from './model/wall-model.factory';
+import {WallModelFactory} from './factory/wall-model.factory';
 import {BrickRegistry} from './registry/brick-registry.service';
 
 @NgModule({

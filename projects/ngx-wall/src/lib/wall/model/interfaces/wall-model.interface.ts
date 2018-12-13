@@ -1,4 +1,4 @@
-import {IWallCorePluginApi} from '../plugins/core/interfaces/wall-core-plugin-api.interface';
+import {IWallCorePluginApi} from './wall-core-plugin-api.interface';
 
 export interface IWallModel {
     version: string;
