@@ -3,7 +3,6 @@ import {DebugElement} from '@angular/core';
 import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
-import {forEach} from '@angular/router/src/utils/collection';
 import {StickyModalModule} from 'ngx-sticky-modal';
 import {ContenteditableModule} from '../../../modules/contenteditable';
 import {HelperComponentsModule} from '../../../modules/helper-components';
@@ -74,6 +73,30 @@ class TestScope {
 
     getDOMInnerHTML(): string {
         return this.nativeElement.innerHTML;
+    }
+
+    // mocking
+    /*
+    * @param {string} apiString "core.removeBrick"
+    * @param {string} apiString "ui.focusOnBrick"
+    * */
+    mock(apiString: string): jasmine.Spy {
+        const [api, method] = apiString.split('.');
+
+        this.mockWallModel.api[api][method] = jasmine.createSpy(method);
+
+        return this.mockWallModel.api[api][method];
+    }
+
+    mockMethods(apis: string[]) {
+        apis.forEach((apiString) => this.mock(apiString));
+    }
+
+    getRecentArguments(apiString): any[] {
+        const [api, method] = apiString.split('.');
+
+        return (this.mockWallModel.api[api][method] as any)
+            .calls.mostRecent().args;
     }
 
     private createComponent(): Promise<any> {
@@ -486,6 +509,94 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).not.toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('[Backspace key]', () => {
+            it('should delete current brick and focus on previous text brick', async(() => {
+                testScope.updateComponentState({
+                    text: '',
+                    tabs: 0
+                }).then(() => {
+                    const previousTextBrickId = '2';
+
+                    testScope.mock('core.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
+                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
+
+                    (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Backspace'}));
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+
+                    // test assertions
+                    const removeBrickCallArguments = testScope.getRecentArguments('ui.removeBrick');
+                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+
+                    expect(removeBrickCallArguments[0]).toBe(testScope.component.id);
+                    expect(focusOnBrickIdCallArguments[0]).toBe(previousTextBrickId);
+                    expect(focusOnBrickIdCallArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            deletePreviousText: true
+                        }
+                    });
+                });
+            }));
+
+            it('should concat with previous text supporting brick and delete current brick', async(() => {
+                const newState = {
+                    text: 'initial',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const previousTextBrickId = '2';
+                    const previousTextSupportingBrickSnapshot = {
+                        state: {
+                            text: 'previous'
+                        }
+                    };
+
+                    testScope.mock('core.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
+                    testScope.mock('core.getBrickSnapshot').and.returnValue(previousTextSupportingBrickSnapshot);
+                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId', 'core.updateBrickState']);
+
+                    (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Backspace'}));
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core.getBrickSnapshot).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core.updateBrickState).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+
+                    // test assertions
+                    const removeBrickCallArguments = testScope.getRecentArguments('ui.removeBrick');
+                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const updateBrickStateCallArguments = testScope.getRecentArguments('core.updateBrickState');
+
+                    expect(removeBrickCallArguments[0]).toBe(testScope.component.id);
+                    expect(focusOnBrickIdCallArguments[0]).toBe(previousTextBrickId);
+                    expect(focusOnBrickIdCallArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            concatText: true,
+                            concatenationText: newState.text
+                        }
+                    });
+                    expect(updateBrickStateCallArguments[0]).toBe(previousTextBrickId);
+                    expect(updateBrickStateCallArguments[1]).toEqual({
+                        text: previousTextSupportingBrickSnapshot.state.text + newState.text
+                    });
                 });
             }));
         });

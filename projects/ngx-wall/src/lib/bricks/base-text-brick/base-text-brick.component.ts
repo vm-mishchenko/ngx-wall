@@ -157,7 +157,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.escapeKeyPressed(e);
             }
 
-            if (e.keyCode === BACK_SPACE_KEY && !this.isTextSelected()) {
+            if (e.code === BACK_SPACE_KEY && !this.isTextSelected()) {
                 this.backSpaceKeyPressed(e);
             }
 
