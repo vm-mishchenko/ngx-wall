@@ -132,11 +132,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     // general handler of all key events
     onKeyPress(e: KeyboardEvent) {
         if (this.noMetaKeyIsPressed(e)) {
-            if (e.keyCode === TOP_KEY) {
+            if (e.code === TOP_KEY) {
                 this.topKeyPressed(e);
             }
 
-            if (e.keyCode === BOTTOM_KEY) {
+            if (e.code === BOTTOM_KEY) {
                 this.bottomKeyPressed(e);
             }
 

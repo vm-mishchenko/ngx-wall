@@ -8,7 +8,7 @@ import {StickyModalModule} from 'ngx-sticky-modal';
 import {ContenteditableModule} from '../../../modules/contenteditable';
 import {HelperComponentsModule} from '../../../modules/helper-components';
 import {IWallModel} from '../../../wall';
-import {DEBOUNCE_TIME} from '../../base-text-brick/base-text-brick.constant';
+import {DEBOUNCE_TIME, FOCUS_INITIATOR} from '../../base-text-brick/base-text-brick.constant';
 import {IBaseTextState} from '../../base-text-brick/base-text-state.interface';
 import {TEXT_BRICK_TAG} from '../text-brick.constant';
 import {TextBrickComponent} from './text-brick.component';
@@ -38,10 +38,12 @@ class TestScope {
     fixture: ComponentFixture<TextBrickComponent>;
 
     constructor(options?: TestScopeOptions) {
-        this.initialState = {
-            ...this.initialState,
-            ...options.initialState
-        };
+        if (options && options.initialState) {
+            this.initialState = {
+                ...this.initialState,
+                ...options.initialState
+            };
+        }
     }
 
     initialize(): Promise<any> {
@@ -104,7 +106,6 @@ class TestScope {
 }
 
 describe('TextBrickComponent', () => {
-    let initialState: IBaseTextState;
     let testScope: TestScope;
 
     beforeEach(async(() => {
@@ -121,7 +122,7 @@ describe('TextBrickComponent', () => {
     }));
 
     beforeEach((done) => {
-        testScope = new TestScope({initialState});
+        testScope = new TestScope();
         testScope.initialize().then(done);
     });
 
@@ -239,6 +240,138 @@ describe('TextBrickComponent', () => {
                         });
                     });
                 }, Promise.resolve());
+            }));
+        });
+
+        describe('[Top key]', () => {
+            it('should focus on previous text Brick', async(() => {
+                const mockGetSelection = spyOn(window, 'getSelection');
+
+                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowUp'});
+
+                    mockGetSelection.and.returnValue({
+                        focusOffset: 0,
+                        focusNode: testScope.nativeElement.childNodes[0]
+                    });
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    const callArguments = (testScope.mockWallModel.api.ui.focusOnPreviousTextBrick as any)
+                        .calls.mostRecent().args;
+
+                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).toHaveBeenCalled();
+                    expect(/*initiator component id*/callArguments[0]).toBe(testScope.component.id);
+                    expect(callArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            topKey: true,
+                            caretLeftCoordinate: 0
+                        }
+                    });
+                });
+            }));
+
+            it('should not focus on previous text Brick when cursor is not on first line', async(() => {
+                const mockGetSelection = spyOn(window, 'getSelection');
+
+                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+
+                const newState = {
+                    text: 'Long initial text, Long initial text, Long initial text, Long initial text',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowUp'});
+
+                    mockGetSelection.and.returnValue({
+                        focusOffset: newState.text.length - 5,
+                        focusNode: testScope.nativeElement.childNodes[0]
+                    });
+
+                    // make width narrow so cursor will be not in the first line
+                    testScope.nativeElement.style.width = '20px';
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).not.toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('[Bottom key]', () => {
+            it('should focus on next text Brick', async(() => {
+                const mockGetSelection = spyOn(window, 'getSelection');
+
+                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowDown'});
+
+                    mockGetSelection.and.returnValue({
+                        focusOffset: 0,
+                        focusNode: testScope.nativeElement.childNodes[0]
+                    });
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    const callArguments = (testScope.mockWallModel.api.ui.focusOnNextTextBrick as any)
+                        .calls.mostRecent().args;
+
+                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).toHaveBeenCalled();
+                    expect(/*initiator component id*/callArguments[0]).toBe(testScope.component.id);
+                    expect(callArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            bottomKey: true,
+                            caretLeftCoordinate: 0
+                        }
+                    });
+                });
+            }));
+
+            it('should not focus on next text Brick when cursor is not on last line', async(() => {
+                const mockGetSelection = spyOn(window, 'getSelection');
+
+                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+
+                const newState = {
+                    text: 'Long initial text, Long initial text, Long initial text, Long initial text',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowDown'});
+
+                    mockGetSelection.and.returnValue({
+                        focusOffset: 0,
+                        focusNode: testScope.nativeElement.childNodes[0]
+                    });
+
+                    // make width narrow so cursor will be not in the first line
+                    testScope.nativeElement.style.width = '20px';
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).not.toHaveBeenCalled();
+                });
             }));
         });
     });
