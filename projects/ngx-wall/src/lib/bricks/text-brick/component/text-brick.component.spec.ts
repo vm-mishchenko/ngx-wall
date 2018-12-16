@@ -7,6 +7,7 @@ import {forEach} from '@angular/router/src/utils/collection';
 import {StickyModalModule} from 'ngx-sticky-modal';
 import {ContenteditableModule} from '../../../modules/contenteditable';
 import {HelperComponentsModule} from '../../../modules/helper-components';
+import {PlaceCaretToPosition} from '../../../modules/utils/node/place-caret-to-position';
 import {IWallModel} from '../../../wall';
 import {DEBOUNCE_TIME, FOCUS_INITIATOR} from '../../base-text-brick/base-text-brick.constant';
 import {IBaseTextState} from '../../base-text-brick/base-text-state.interface';
@@ -164,7 +165,7 @@ describe('TextBrickComponent', () => {
         }));
     });
 
-    describe('[Keypress]', () => {
+    describe('[Keypress Navigation]', () => {
         describe('[Enter]', () => {
             it('should create new text brick and split text', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
@@ -365,6 +366,120 @@ describe('TextBrickComponent', () => {
 
                     // make width narrow so cursor will be not in the first line
                     testScope.nativeElement.style.width = '20px';
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).not.toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('[Left key]', () => {
+            it('should navigate to previous text brick', async(() => {
+                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowLeft'});
+
+                    // place caret at first position
+                    (new PlaceCaretToPosition(testScope.nativeElement.childNodes[0], /*cursor position*/0)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    const callArguments = (testScope.mockWallModel.api.ui.focusOnPreviousTextBrick as any)
+                        .calls.mostRecent().args;
+
+                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).toHaveBeenCalled();
+
+                    expect(callArguments[0]).toBe(testScope.component.id);
+                    expect(callArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            leftKey: true
+                        }
+                    });
+                });
+            }));
+
+            it('should not navigate to previous text brick when cursor is not at the beginning', async(() => {
+                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowLeft'});
+
+                    // place caret at first position
+                    (new PlaceCaretToPosition(testScope.nativeElement.childNodes[0], /*cursor position*/1)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).not.toHaveBeenCalled();
+                });
+            }));
+        });
+
+        describe('[Right key]', () => {
+            it('should navigate to next text brick', async(() => {
+                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+
+                const newState = {
+                    text: 'initial',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowRight'});
+
+                    // place caret at first position
+                    (new PlaceCaretToPosition(
+                        testScope.nativeElement.childNodes[0],
+                        /*cursor position*/newState.text.length))
+                        .place();
+
+                    // test action
+                    testScope.component.onKeyPress(keyEvent);
+
+                    // test assertions
+                    const callArguments = (testScope.mockWallModel.api.ui.focusOnNextTextBrick as any)
+                        .calls.mostRecent().args;
+
+                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).toHaveBeenCalled();
+
+                    expect(callArguments[0]).toBe(testScope.component.id);
+                    expect(callArguments[1]).toEqual({
+                        initiator: FOCUS_INITIATOR,
+                        details: {
+                            rightKey: true
+                        }
+                    });
+                });
+            }));
+
+            it('should not navigate to next text brick when cursor is not at the end', async(() => {
+                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowRight'});
+
+                    // place caret at first position
+                    (new PlaceCaretToPosition(
+                        testScope.nativeElement.childNodes[0],
+                        /*cursor position*/0))
+                        .place();
 
                     // test action
                     testScope.component.onKeyPress(keyEvent);

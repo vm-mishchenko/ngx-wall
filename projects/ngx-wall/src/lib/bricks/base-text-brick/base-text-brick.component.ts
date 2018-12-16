@@ -140,11 +140,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.bottomKeyPressed(e);
             }
 
-            if (e.keyCode === LEFT_KEY && this.isCaretAtStart()) {
+            if (e.code === LEFT_KEY && this.isCaretAtStart()) {
                 this.leftKeyPressed(e);
             }
 
-            if (e.keyCode === RIGHT_KEY && this.isCaretAtEnd()) {
+            if (e.code === RIGHT_KEY && this.isCaretAtEnd()) {
                 this.rightKeyPressed(e);
             }
 
