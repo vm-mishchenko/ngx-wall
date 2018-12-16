@@ -149,7 +149,6 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             }
 
             if (e.code === ENTER_KEY) {
-                console.log(e);
                 this.enterKeyPressed(e);
             }
 
@@ -161,15 +160,15 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.backSpaceKeyPressed(e);
             }
 
-            if (e.keyCode === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
+            if (e.code === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
                 this.concatWithNextTextSupportingBrick(e);
             }
 
-            if (e.keyCode === TAB_KEY && this.isCaretAtStart()) {
+            if (e.code === TAB_KEY && this.isCaretAtStart()) {
                 this.onTabPressed(e);
             }
 
-            if (e.keyCode === DELETE_KEY && this.scope.text === '') {
+            if (e.code === DELETE_KEY && this.scope.text === '') {
                 this.onDeleteAndFocusToNext(e);
             }
         }
@@ -214,7 +213,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     backSpaceKeyPressed(e: KeyboardEvent) {
         if (this.isCaretAtStart()) {
             if (this.scope.tabs) {
-                this.decreaesTab();
+                this.decreaseTab();
                 this.saveCurrentState();
             } else {
                 if (this.scope.text.length) {
@@ -320,11 +319,11 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     onDeleteAndFocusToNext(e: KeyboardEvent) {
         e.preventDefault();
 
-        const previousTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
+        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
 
         this.wallUiApi.removeBrick(this.id);
 
-        if (previousTextBrickId) {
+        if (nextTextBrickId) {
             const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
                 details: {
@@ -332,7 +331,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 }
             };
 
-            this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+            this.wallUiApi.focusOnBrickId(nextTextBrickId, focusContext);
         }
     }
 
@@ -345,35 +344,32 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     // key handler end
     onWallFocus(context?: IFocusContext): void {
-        if (this.isCaretAtStart()) {
-            const deepLeftNodeChild = new DeepLeftNodeChild(this.editor.nativeElement);
-
-            (new PlaceCaretToPosition(deepLeftNodeChild.child, 0)).place();
-        } else {
+        if (this.editor.nativeElement !== document.activeElement) {
+            // focus by API call
             this.editor.nativeElement.focus();
-        }
 
-        if (context && context.initiator === FOCUS_INITIATOR) {
-            if (context.details.deletePreviousText) {
-                this.placeCaretAtEnd();
-            }
+            if (context && context.initiator === FOCUS_INITIATOR) {
+                if (context.details.deletePreviousText) {
+                    this.placeCaretAtEnd();
+                }
 
-            if (context.details.concatText) {
-                this.placeCaretBaseOnConcatenatedText(context.details.concatenationText);
-            }
+                if (context.details.concatText) {
+                    this.placeCaretBaseOnConcatenatedText(context.details.concatenationText);
+                }
 
-            if (context.details.leftKey) {
-                this.placeCaretAtEnd();
-            }
+                if (context.details.leftKey) {
+                    this.placeCaretAtEnd();
+                }
 
-            if (context.details.rightKey) {
-                this.placeCaretAtStart();
-            }
+                if (context.details.rightKey) {
+                    this.placeCaretAtStart();
+                }
 
-            if (context.details.bottomKey || context.details.topKey) {
-                const line = context.details.bottomKey ? LineType.first : LineType.last;
+                if (context.details.bottomKey || context.details.topKey) {
+                    const line = context.details.bottomKey ? LineType.first : LineType.last;
 
-                this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
+                    this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
+                }
             }
         }
     }
@@ -388,7 +384,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         }
     }
 
-    decreaesTab() {
+    decreaseTab() {
         if (this.scope.tabs > 0) {
             this.scope.tabs--;
         }

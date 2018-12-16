@@ -21,11 +21,6 @@ export class WallComponent implements OnChanges, OnDestroy {
         this.wallViewModel.onCanvasClick();
     }
 
-    // callback when user focused to some brick by mouse click
-    onFocusedBrick(brickId: string) {
-        this.wallViewModel.onFocusedBrick(brickId);
-    }
-
     onBrickStateChanged(event) {
         this.wallViewModel.onBrickStateChanged(event.brickId, event.brickState);
     }

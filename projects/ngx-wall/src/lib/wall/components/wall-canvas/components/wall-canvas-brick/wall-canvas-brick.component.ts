@@ -109,10 +109,6 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
         }
     }
 
-    onFocused() {
-        this.wallCanvasComponent.onFocused(this.brick.id);
-    }
-
     private callInstanceApi(methodName: string, data?: any) {
         if (this.componentReference.instance[methodName]) {
             this.componentReference.instance[methodName](data);

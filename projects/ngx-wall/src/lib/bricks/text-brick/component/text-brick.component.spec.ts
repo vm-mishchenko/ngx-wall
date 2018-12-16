@@ -56,9 +56,7 @@ class TestScope {
     updateComponentState(newState: IBaseTextState): Promise<any> {
         this.fixture.componentInstance.state = newState;
         this.fixture.componentInstance.onWallStateChange(newState);
-        this.fixture.detectChanges();
-
-        return this.fixture.whenStable();
+        return this.whenRendering();
     }
 
     setDOMInnerText(newText: string) {
@@ -73,6 +71,13 @@ class TestScope {
 
     getDOMInnerHTML(): string {
         return this.nativeElement.innerHTML;
+    }
+
+    // waiting until component state will be rendered
+    whenRendering(): Promise<any> {
+        this.fixture.detectChanges();
+
+        return this.fixture.whenStable();
     }
 
     // mocking
@@ -193,7 +198,12 @@ describe('TextBrickComponent', () => {
             it('should create new text brick and split text', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
 
-                testScope.mockWallModel.api.core.addBrickAfterBrickId = jasmine.createSpy('addBrickAfterBrickId');
+                const mockNewAddedBrickSnapshot = {
+                    id: '2'
+                };
+
+                testScope.mock('core.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
+                testScope.mock('ui.focusOnBrickId');
 
                 [
                     {
@@ -248,19 +258,18 @@ describe('TextBrickComponent', () => {
                             testScope.component.onKeyPress(keyEvent);
 
                             // test assertions
-                            const callArguments = (testScope.mockWallModel.api.core.addBrickAfterBrickId as any)
-                                .calls.mostRecent().args;
+                            const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
+                            const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
 
                             expect(testScope.mockWallModel.api.core.addBrickAfterBrickId).toHaveBeenCalled();
-                            expect(callArguments[0]).toBe(testScope.component.id);
-                            expect(callArguments[1]).toBe(TEXT_BRICK_TAG);
-                            expect(callArguments[2]).toEqual({
+                            expect(addBrickArguments[0]).toBe(testScope.component.id);
+                            expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
+                            expect(addBrickArguments[2]).toEqual({
                                 text: config.expectedNewText,
                                 tabs: testScope.component.state.tabs
                             });
                             expect(testScope.component.scope.text).toEqual(config.expectedFirstText);
-
-                            (window.getSelection as jasmine.Spy).calls.reset();
+                            expect(focusOnBrickIdArguments[0]).toBe(mockNewAddedBrickSnapshot.id);
                         });
                     });
                 }, Promise.resolve());
@@ -464,7 +473,7 @@ describe('TextBrickComponent', () => {
                 testScope.updateComponentState(newState).then(() => {
                     const keyEvent = new KeyboardEvent('keydown', {code: 'ArrowRight'});
 
-                    // place caret at first position
+                    // place caret at the end
                     (new PlaceCaretToPosition(
                         testScope.nativeElement.childNodes[0],
                         /*cursor position*/newState.text.length))
@@ -599,7 +608,432 @@ describe('TextBrickComponent', () => {
                     });
                 });
             }));
+
+            it('should decrease tab', async(() => {
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 1
+                }).then(() => {
+                    (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
+
+                    let capturedState: IBaseTextState;
+
+                    testScope.component.stateChanges.subscribe((newState) => capturedState = newState);
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Backspace'}));
+
+                    // test assertions
+                    expect(capturedState).toEqual({
+                        tabs: 0,
+                        text: 'initial'
+                    });
+                });
+            }));
         });
+
+        describe('[Delete key]', () => {
+            it('should concat with next text supporting brick', async(() => {
+                const newState = {
+                    text: 'initial',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const nextTextBrickId = '2';
+                    const nextTextSupportingBrickSnapshot = {
+                        id: nextTextBrickId,
+                        state: {
+                            text: 'previous'
+                        }
+                    };
+
+                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mock('core.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
+                    testScope.mockMethods(['core.removeBrick']);
+
+                    let capturedState;
+                    testScope.component.stateChanges.subscribe((updatedState) => capturedState = updatedState);
+
+                    // place caret at the end
+                    (new PlaceCaretToPosition(
+                        testScope.nativeElement.childNodes[0],
+                        /*cursor position*/newState.text.length))
+                        .place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Delete'}));
+
+                    // test assertions
+                    testScope.whenRendering().then(() => {
+                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core.getBrickSnapshot).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core.removeBrick).toHaveBeenCalled();
+
+                        // test assertions
+                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('core.getBrickSnapshot')[0]).toBe(nextTextBrickId);
+                        expect(testScope.getRecentArguments('core.removeBrick')[0])
+                            .toBe(nextTextSupportingBrickSnapshot.id);
+
+                        expect(capturedState.text).toBe(newState.text + nextTextSupportingBrickSnapshot.state.text);
+                    });
+                });
+            }));
+
+            it('should set up caret after text concatenation', fakeAsync(() => {
+                const mockRange = {
+                    setStart: jasmine.createSpy('Range setStart')
+                };
+
+                const mockSelection = {
+                    removeAllRanges: jasmine.createSpy('removeAllRanges'),
+                    addRange: jasmine.createSpy('addRange'),
+                };
+
+                // have to mock to check caret position and element
+                const mockCreateRangeMethod = spyOn(document, 'createRange');
+                mockCreateRangeMethod.and.callThrough();
+
+                // have to mock just to prevent errors
+                const mockGetSelectionMethod = spyOn(window, 'getSelection');
+                mockGetSelectionMethod.and.callThrough();
+
+                [
+                    {
+                        initialText: 'initial',
+                        nextBrickText: 'foo',
+                        caretNode: () => testScope.nativeElement.childNodes[0],
+                        caretEndPosition: 7,
+                        expectedResultText: 'initialfoo',
+                        expectedCaretPosition: 7,
+                        expectedCaretNode: () => testScope.nativeElement.childNodes[0]
+                    },
+                    {
+                        initialText: '<b>init</b>ial',
+                        nextBrickText: 'foo',
+                        caretNode: () => testScope.nativeElement.childNodes[1],
+                        caretEndPosition: 3,
+                        expectedResultText: '<b>init</b>ialfoo',
+                        expectedCaretPosition: 3,
+                        expectedCaretNode: () => testScope.nativeElement.childNodes[1]
+                    },
+                    {
+                        initialText: 'init<b>ial</b>',
+                        nextBrickText: 'foo',
+                        caretNode: () => testScope.nativeElement.childNodes[1].childNodes[0],
+                        caretEndPosition: 3,
+                        expectedResultText: 'init<b>ial</b>foo',
+                        expectedCaretPosition: 0,
+                        expectedCaretNode: () => testScope.nativeElement.childNodes[2]
+                    },
+                    {
+                        initialText: 'init<b>ial</b>',
+                        nextBrickText: '<b>foo</b>',
+                        caretNode: () => testScope.nativeElement.childNodes[1].childNodes[0],
+                        caretEndPosition: 3,
+                        expectedResultText: 'init<b>ial</b><b>foo</b>',
+                        expectedCaretPosition: 0,
+                        expectedCaretNode: () => testScope.nativeElement.childNodes[2].childNodes[0]
+                    },
+                    {
+                        initialText: 'initial',
+                        nextBrickText: '<b>foo</b>',
+                        caretNode: () => testScope.nativeElement.childNodes[0],
+                        caretEndPosition: 7,
+                        expectedResultText: 'initial<b>foo</b>',
+                        expectedCaretPosition: 0,
+                        expectedCaretNode: () => testScope.nativeElement.childNodes[1].childNodes[0]
+                    }
+                ].reduce((promise, testCase) => {
+                    return promise.then(() => {
+                        return testScope.updateComponentState({
+                            text: testCase.initialText,
+                            tabs: 0
+                        }).then(() => {
+                            const nextTextBrickId = '2';
+                            const nextTextSupportingBrickSnapshot = {
+                                id: nextTextBrickId,
+                                state: {
+                                    text: testCase.nextBrickText
+                                }
+                            };
+
+                            testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                            testScope.mock('core.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
+                            testScope.mockMethods(['core.removeBrick']);
+
+                            // place caret at the end
+                            (new PlaceCaretToPosition(
+                                testCase.caretNode(),
+                                testCase.caretEndPosition))
+                                .place();
+
+                            let capturedState;
+                            testScope.component.stateChanges.subscribe((updatedState) => {
+                                capturedState = updatedState;
+                            });
+
+                            // test action
+                            testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Delete'}));
+
+                            // test assertions
+                            return testScope.whenRendering().then(() => {
+                                mockCreateRangeMethod.and.returnValue(mockRange);
+                                mockGetSelectionMethod.and.returnValue(mockSelection);
+
+                                tick(100);
+
+                                expect(capturedState.text).toBe(testCase.expectedResultText);
+
+                                expect(mockRange.setStart).toHaveBeenCalled();
+
+                                const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+                                expect(createRangeArguments[0]).toBe(testCase.expectedCaretNode());
+                                expect(createRangeArguments[1]).toBe(testCase.expectedCaretPosition);
+
+                                mockCreateRangeMethod.and.callThrough();
+                                mockGetSelectionMethod.and.callThrough();
+                            });
+                        });
+                    });
+                }, Promise.resolve());
+            }));
+
+            it('should delete current brick and focus to next brick', async(() => {
+                const newState = {
+                    text: '',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const nextTextBrickId = '2';
+                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
+
+                    // place caret at the start
+                    (new PlaceCaretToPosition(testScope.nativeElement, 0)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Delete'}));
+
+                    // test assertions
+                    testScope.whenRendering().then(() => {
+                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+
+                        // test assertions
+                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('ui.removeBrick')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('ui.focusOnBrickId')[0]).toBe(nextTextBrickId);
+                        expect(testScope.getRecentArguments('ui.focusOnBrickId')[1]).toEqual({
+                            initiator: FOCUS_INITIATOR,
+                            details: {
+                                deletePreviousText: true
+                            }
+                        });
+                    });
+                });
+            }));
+        });
+
+        describe('[Tab key]', () => {
+            it('should add tab', async(() => {
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    let capturedState;
+                    testScope.component.stateChanges.subscribe((updatedState) => capturedState = updatedState);
+
+                    // place caret at the start
+                    (new PlaceCaretToPosition(
+                        testScope.nativeElement.childNodes[0], 0))
+                        .place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Tab'}));
+
+                    // test assertions
+                    expect(capturedState.tabs).toBe(1);
+                });
+            }));
+
+            it('should not add tab if caret is not at the start position', async(() => {
+                testScope.updateComponentState({
+                    text: 'initial',
+                    tabs: 0
+                }).then(() => {
+                    let capturedState;
+                    testScope.component.stateChanges.subscribe((updatedState) => capturedState = updatedState);
+
+                    // place caret not at the start
+                    (new PlaceCaretToPosition(
+                        testScope.nativeElement.childNodes[0], 1))
+                        .place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Tab'}));
+
+                    // test assertions
+                    expect(capturedState).not.toBeDefined();
+                    expect(testScope.component.state.tabs).toBe(0);
+                });
+            }));
+        });
+    });
+
+    describe('onWallFocus()', () => {
+        let mockRange;
+
+        beforeEach(() => {
+            // set the activeElement back to the default
+            (document.activeElement as HTMLElement).blur();
+
+            mockRange = {
+                setStart: jasmine.createSpy('setStart')
+            };
+
+            spyOn(document, 'createRange').and.returnValue(mockRange);
+
+            spyOn(window, 'getSelection').and.returnValue({
+                removeAllRanges: jasmine.createSpy('removeAllRanges'),
+                addRange: jasmine.createSpy('addRange'),
+            });
+        });
+
+        it('should focus on the node if there API call', () => {
+            spyOn(testScope.nativeElement, 'focus');
+
+            testScope.component.onWallFocus();
+
+            expect(testScope.nativeElement.focus).toHaveBeenCalled();
+        });
+
+        it('should place caret at the end when previous text brick was deleted', () => {
+            testScope.component.onWallFocus({
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    deletePreviousText: true
+                }
+            });
+
+            const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+            expect(mockRange.setStart).toHaveBeenCalled();
+            expect(createRangeArguments[0]).toBe(testScope.nativeElement.childNodes[0]);
+            expect(createRangeArguments[1]).toBe(7);
+        });
+
+        it('should place caret at the end after left key pressed', () => {
+            testScope.component.onWallFocus({
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    leftKey: true
+                }
+            });
+
+            const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+            expect(mockRange.setStart).toHaveBeenCalled();
+            expect(createRangeArguments[0]).toBe(testScope.nativeElement.childNodes[0]);
+            expect(createRangeArguments[1]).toBe(7);
+        });
+
+        it('should place caret at the start after right key pressed', () => {
+            testScope.component.onWallFocus({
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    rightKey: true
+                }
+            });
+
+            const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+            expect(mockRange.setStart).toHaveBeenCalled();
+            expect(createRangeArguments[0]).toBe(testScope.nativeElement.childNodes[0]);
+            expect(createRangeArguments[1]).toBe(0);
+        });
+
+        it('should place caret based on concatenated text', async(() => {
+            [
+                {
+                    initialText: 'init',
+                    concatenatedText: 'ial',
+                    expectedFocusNode: () => testScope.nativeElement.childNodes[0],
+                    expectedCaretPosition: 4
+                },
+                {
+                    initialText: 'initial',
+                    concatenatedText: '<b>concatenated</b>',
+                    expectedFocusNode: () => testScope.nativeElement.childNodes[1].childNodes[0],
+                    expectedCaretPosition: 0
+                }
+                ,
+                {
+                    initialText: '<b>initial</b>',
+                    concatenatedText: '<b>concatenated</b>',
+                    expectedFocusNode: () => testScope.nativeElement.childNodes[1].childNodes[0],
+                    expectedCaretPosition: 0
+                }
+            ].reduce((promise, testCase) => {
+                return promise.then(() => {
+                    return testScope.updateComponentState({
+                        text: `${testCase.initialText}${testCase.concatenatedText}`,
+                        tabs: 0
+                    }).then(() => {
+                        // set the activeElement back to the default
+                        (document.activeElement as HTMLElement).blur();
+
+                        testScope.component.onWallFocus({
+                            initiator: FOCUS_INITIATOR,
+                            details: {
+                                concatText: true,
+                                concatenationText: testCase.concatenatedText
+                            }
+                        });
+
+                        const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+                        expect(mockRange.setStart).toHaveBeenCalled();
+                        expect(createRangeArguments[0]).toBe(testCase.expectedFocusNode());
+                        expect(createRangeArguments[1]).toBe(testCase.expectedCaretPosition);
+                    });
+                });
+            }, Promise.resolve());
+        }));
+
+        it('should place caret at the start if bottom key was pressed', async(() => {
+            testScope.component.onWallFocus({
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    bottomKey: true
+                }
+            });
+
+            const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+            expect(mockRange.setStart).toHaveBeenCalled();
+            expect(createRangeArguments[0]).toBe(testScope.nativeElement.childNodes[0]);
+            expect(createRangeArguments[1]).toBe(0);
+        }));
+
+        it('should place caret at the end if top key was pressed', async(() => {
+            testScope.component.onWallFocus({
+                initiator: FOCUS_INITIATOR,
+                details: {
+                    topKey: true
+                }
+            });
+
+            const createRangeArguments = mockRange.setStart.calls.mostRecent().args;
+
+            expect(mockRange.setStart).toHaveBeenCalled();
+            expect(createRangeArguments[0]).toBe(testScope.nativeElement.childNodes[0]);
+            expect(createRangeArguments[1]).toBe(7);
+        }));
     });
 
     describe('[TextContextMenuComponent]', () => {

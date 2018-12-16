@@ -117,7 +117,7 @@ export class WallViewModel implements IWallUiApi {
 
         this.wallModelSubscription = this.wallModel.api.core.subscribe((event) => {
             if (event instanceof AddBrickEvent) {
-                this.focusOnBrickId(event.brickId);
+                // this.focusOnBrickId(event.brickId);
             }
 
             if (event instanceof TurnBrickIntoEvent) {
@@ -130,17 +130,17 @@ export class WallViewModel implements IWallUiApi {
 
             if (event instanceof RemoveBrickEvent) {
                 if (event.previousBrickId) {
-                    this.focusOnBrickId(event.previousBrickId);
+                    // this.focusOnBrickId(event.previousBrickId);
                 } else if (event.nextBrickId) {
-                    this.focusOnBrickId(event.nextBrickId);
+                    // this.focusOnBrickId(event.nextBrickId);
                 }
             }
 
             if (event instanceof RemoveBricksEvent) {
                 if (event.previousBrickId) {
-                    this.focusOnBrickId(event.previousBrickId);
+                    // this.focusOnBrickId(event.previousBrickId);
                 } else if (event.nextBrickId) {
-                    this.focusOnBrickId(event.nextBrickId);
+                    // this.focusOnBrickId(event.nextBrickId);
                 } else if (!this.wallModel.api.core.getBricksCount()) {
                     this.wallModel.api.core.addDefaultBrick();
                 }
@@ -339,18 +339,6 @@ export class WallViewModel implements IWallUiApi {
         } else {
             this.focusOnBrickId(currentBrickIds[0]);
         }
-    }
-
-    // canvas interaction
-    onFocusedBrick(brickId: string) {
-        if (!this.focusedBrick || (this.focusedBrick.id !== brickId)) {
-            this.focusedBrick = {
-                id: brickId,
-                context: undefined
-            };
-        }
-
-        this.unSelectBricks();
     }
 
     // canvas interaction

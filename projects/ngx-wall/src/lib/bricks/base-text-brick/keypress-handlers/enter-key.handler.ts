@@ -27,7 +27,9 @@ export class EnterKeyHandler {
             this.baseTextBrickComponent.saveCurrentState();
         }
 
-        this.baseTextBrickComponent.wallModel.api.core
+        const addedBrick = this.baseTextBrickComponent.wallModel.api.core
             .addBrickAfterBrickId(this.baseTextBrickComponent.id, 'text', newTextState);
+
+        this.baseTextBrickComponent.wallUiApi.focusOnBrickId(addedBrick.id);
     }
 }

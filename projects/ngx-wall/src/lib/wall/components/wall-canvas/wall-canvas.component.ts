@@ -28,7 +28,6 @@ export class WallCanvasComponent implements OnChanges {
     @Input() isMediaInteractionEnabled$: Observable<boolean>;
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
-    @Output() onFocusedBrick: EventEmitter<any> = new EventEmitter();
     @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
 
     // public API for sub components
@@ -47,10 +46,6 @@ export class WallCanvasComponent implements OnChanges {
         if (e.target === this.expander.nativeElement) {
             this.canvasClick.emit();
         }
-    }
-
-    onFocused(brickId: string) {
-        this.onFocusedBrick.emit(brickId);
     }
 
     ngOnChanges(changes: SimpleChanges) {

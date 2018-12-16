@@ -1,6 +1,5 @@
 <wall-canvas *ngIf="wallViewModel.canvasLayout"
              (canvasClick)="onCanvasClick()"
-             (onFocusedBrick)="onFocusedBrick($event)"
              (onBrickStateChanged)="onBrickStateChanged($event)"
 
              [wallModel]="wallViewModel.wallModel"

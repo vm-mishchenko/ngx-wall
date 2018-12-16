@@ -1039,8 +1039,6 @@ describe('Wall Model', () => {
             it('should create new column and move brick to it', () => {
                 const wm = wallModelFactory.create();
 
-                console.log(`moveBrickToNewColumn`);
-
                 wm.api.core.addDefaultBrick();
                 wm.api.core.addDefaultBrick();
 
