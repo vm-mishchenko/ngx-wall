@@ -116,10 +116,6 @@ export class WallViewModel implements IWallUiApi {
         this.wallModel.registerApi('ui', coreApi);
 
         this.wallModelSubscription = this.wallModel.api.core.subscribe((event) => {
-            if (event instanceof AddBrickEvent) {
-                // this.focusOnBrickId(event.brickId);
-            }
-
             if (event instanceof TurnBrickIntoEvent) {
                 this.focusOnBrickId(event.brickId);
             }
@@ -128,25 +124,13 @@ export class WallViewModel implements IWallUiApi {
                 this.unSelectBricks();
             }
 
-            if (event instanceof RemoveBrickEvent) {
-                if (event.previousBrickId) {
-                    // this.focusOnBrickId(event.previousBrickId);
-                } else if (event.nextBrickId) {
-                    // this.focusOnBrickId(event.nextBrickId);
-                }
-            }
-
             if (event instanceof RemoveBricksEvent) {
-                if (event.previousBrickId) {
-                    // this.focusOnBrickId(event.previousBrickId);
-                } else if (event.nextBrickId) {
-                    // this.focusOnBrickId(event.nextBrickId);
-                } else if (!this.wallModel.api.core.getBricksCount()) {
+                if (!this.wallModel.api.core.getBricksCount()) {
                     this.wallModel.api.core.addDefaultBrick();
                 }
             }
 
-            if (!(event instanceof BeforeChangeEvent) && !(event instanceof UpdateBrickStateEvent)) {
+            if (!(event instanceof BeforeChangeEvent)) {
                 this.canvasLayout = this.getCanvasLayout();
             }
         });
@@ -259,15 +243,10 @@ export class WallViewModel implements IWallUiApi {
      * @public-api
      */
     focusOnBrickId(brickId: string, focusContext?: IFocusContext): void {
-        this.focusedBrick = null;
-
-        // wait until new brick will be rendered
-        setTimeout(() => {
-            this.focusedBrick = {
-                id: brickId,
-                context: focusContext
-            };
-        });
+        this.focusedBrick = {
+            id: brickId,
+            context: focusContext
+        };
     }
 
     /**

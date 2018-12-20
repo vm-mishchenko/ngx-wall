@@ -11,13 +11,13 @@ import {PlaceCaretToPosition} from '../../modules/utils/node/place-caret-to-posi
 import {StringWithoutEmptyNodes} from '../../modules/utils/node/string-without-empty-nodes';
 import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall';
 import {
-    BACK_SPACE_KEY,
+    BACK_SPACE_KEY, BACK_SPACE_KEY_CODE_ANDROID,
     BOTTOM_KEY, DEBOUNCE_TIME,
     DELETE_KEY,
-    ENTER_KEY,
+    ENTER_KEY, ENTER_KEY_CODE_ANDROID,
     ESCAPE_KEY,
     FOCUS_INITIATOR,
-    LEFT_KEY,
+    LEFT_KEY, NUMPUB_ENTER_KEY,
     RIGHT_KEY,
     TAB_KEY,
     TOP_KEY
@@ -148,7 +148,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.rightKeyPressed(e);
             }
 
-            if (e.code === ENTER_KEY) {
+            if (e.code === ENTER_KEY || e.keyCode === ENTER_KEY_CODE_ANDROID || e.code === NUMPUB_ENTER_KEY) {
                 this.enterKeyPressed(e);
             }
 
@@ -156,7 +156,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 this.escapeKeyPressed(e);
             }
 
-            if (e.code === BACK_SPACE_KEY && !this.isTextSelected()) {
+            if ((e.code === BACK_SPACE_KEY || e.keyCode === BACK_SPACE_KEY_CODE_ANDROID) && !this.isTextSelected()) {
                 this.backSpaceKeyPressed(e);
             }
 
@@ -261,17 +261,22 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 text: this.cleanUpText(previousBrickSnapshot.state.text) + this.scope.text
             });
 
-            this.wallUiApi.removeBrick(this.id);
+            // wait for component re-rendering
+            setTimeout(() => {
+                const focusContext: IFocusContext = {
+                    initiator: FOCUS_INITIATOR,
+                    details: {
+                        concatText: true,
+                        concatenationText: this.scope.text
+                    }
+                };
 
-            const focusContext: IFocusContext = {
-                initiator: FOCUS_INITIATOR,
-                details: {
-                    concatText: true,
-                    concatenationText: this.scope.text
-                }
-            };
+                this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
 
-            this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+                // remove only after focus will be established
+                // that prevents flickering on mobile
+                this.wallUiApi.removeBrick(this.id);
+            });
         }
     }
 

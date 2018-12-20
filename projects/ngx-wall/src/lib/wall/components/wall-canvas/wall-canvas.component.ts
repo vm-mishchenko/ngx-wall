@@ -49,12 +49,8 @@ export class WallCanvasComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.focusedBrick) {
-            if (!changes.focusedBrick.currentValue) {
-                this.doc.activeElement.blur();
-            } else {
-                this.focusedBrick$.next(changes.focusedBrick.currentValue);
-            }
+        if (changes.focusedBrick && changes.focusedBrick.currentValue) {
+            this.focusedBrick$.next(changes.focusedBrick.currentValue);
         }
 
         if (changes.selectedBricks) {
