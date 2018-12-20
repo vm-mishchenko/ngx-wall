@@ -1,4 +1,4 @@
-import {CommonModule} from '@angular/common';
+    import {CommonModule} from '@angular/common';
 import {DebugElement} from '@angular/core';
 import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import {FormsModule} from '@angular/forms';
