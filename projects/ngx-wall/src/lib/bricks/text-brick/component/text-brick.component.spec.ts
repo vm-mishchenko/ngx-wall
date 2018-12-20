@@ -64,9 +64,6 @@ class TestScope {
 
         // after dispatching Angular call template call back
         this.nativeElement.dispatchEvent(new Event('input'));
-
-        // tick - execute all async tasks which will be finished in passed time
-        tick(DEBOUNCE_TIME);
     }
 
     getDOMInnerHTML(): string {

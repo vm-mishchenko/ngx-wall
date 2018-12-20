@@ -1,6 +1,5 @@
 import {ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
-import {debounceTime} from 'rxjs/operators';
 import {DeepLeftNodeChild} from '../../modules/utils/deep-left-node-child';
 import {DeepRightNodeChild} from '../../modules/utils/deep-right-node-child';
 import {FirstSubStringNode} from '../../modules/utils/first-sub-string-node';
@@ -11,13 +10,16 @@ import {PlaceCaretToPosition} from '../../modules/utils/node/place-caret-to-posi
 import {StringWithoutEmptyNodes} from '../../modules/utils/node/string-without-empty-nodes';
 import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall';
 import {
-    BACK_SPACE_KEY, BACK_SPACE_KEY_CODE_ANDROID,
-    BOTTOM_KEY, DEBOUNCE_TIME,
+    BACK_SPACE_KEY,
+    BACK_SPACE_KEY_CODE_ANDROID,
+    BOTTOM_KEY,
     DELETE_KEY,
-    ENTER_KEY, ENTER_KEY_CODE_ANDROID,
+    ENTER_KEY,
+    ENTER_KEY_CODE_ANDROID,
     ESCAPE_KEY,
     FOCUS_INITIATOR,
-    LEFT_KEY, NUMPUB_ENTER_KEY,
+    LEFT_KEY,
+    NUMPUB_ENTER_KEY,
     RIGHT_KEY,
     TAB_KEY,
     TOP_KEY
@@ -82,15 +84,10 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         this.editor.nativeElement.addEventListener('paste', this.onPasteBound);
 
-        this.textChangeSubscription = this.textChange
-            .pipe(
-                debounceTime(DEBOUNCE_TIME)
-            )
-            .subscribe(() => {
-                this.setTextState(this.scope.text);
-
-                this.saveCurrentState();
-            });
+        this.textChangeSubscription = this.textChange.subscribe(() => {
+            this.setTextState(this.scope.text);
+            this.saveCurrentState();
+        });
 
         this.wallUiApi = this.wallModel.api.ui;
     }

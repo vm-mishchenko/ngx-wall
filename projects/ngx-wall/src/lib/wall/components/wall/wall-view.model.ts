@@ -315,8 +315,6 @@ export class WallViewModel implements IWallUiApi {
             } else {
                 this.focusOnBrickId(currentBrickIds[0]);
             }
-        } else {
-            this.focusOnBrickId(currentBrickIds[0]);
         }
     }
 

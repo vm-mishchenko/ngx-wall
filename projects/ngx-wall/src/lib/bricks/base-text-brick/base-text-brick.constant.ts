@@ -12,5 +12,3 @@ export const RIGHT_KEY = 'ArrowRight';
 export const BOTTOM_KEY = 'ArrowDown';
 export const ESCAPE_KEY = 27;
 export const TAB_KEY = 'Tab';
-
-export const DEBOUNCE_TIME = 100;
