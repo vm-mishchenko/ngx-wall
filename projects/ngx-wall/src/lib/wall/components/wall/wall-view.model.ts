@@ -30,7 +30,6 @@ export class WallViewModel implements IWallUiApi {
     // UI
     focusedBrick: IFocusedBrick = null;
     selectedBricks: string[] = [];
-    isEditMode$: Observable<boolean> = new BehaviorSubject(true);
     isMediaInteractionEnabled$: Observable<boolean> = new BehaviorSubject(true);
     canvasLayout: IWallRow[] = [];
 
@@ -71,10 +70,6 @@ export class WallViewModel implements IWallUiApi {
 
         // initialize view core API
         const coreApi = [
-            'isEditMode$',
-            'switchToReadMode',
-            'switchToEditMode',
-
             // SELECTION
             'getSelectedBrickIds',
             'selectBrick',
@@ -136,24 +131,6 @@ export class WallViewModel implements IWallUiApi {
         });
 
         this.canvasLayout = this.getCanvasLayout();
-
-        setTimeout(() => {
-            this.switchToReadMode();
-        }, 1000);
-    }
-
-    /**
-     * @public-api
-     */
-    switchToEditMode() {
-        (this.isEditMode$ as BehaviorSubject<boolean>).next(true);
-    }
-
-    /**
-     * @public-api
-     */
-    switchToReadMode() {
-        (this.isEditMode$ as BehaviorSubject<boolean>).next(false);
     }
 
     /**
