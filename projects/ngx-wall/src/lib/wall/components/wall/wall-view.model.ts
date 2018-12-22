@@ -174,9 +174,7 @@ export class WallViewModel implements IWallUiApi {
      */
     selectBricks(brickIds: string[]) {
         if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks)) {
-            const sortedBrickIds = this.wallModel.api.core.sortBrickIdsByLayoutOrder(brickIds);
-
-            this.selectedBricks = sortedBrickIds;
+            this.selectedBricks = this.wallModel.api.core.sortBrickIdsByLayoutOrder(brickIds);
 
             const selectedBricksClone = this.selectedBricks.slice(0);
 
@@ -185,6 +183,7 @@ export class WallViewModel implements IWallUiApi {
     }
 
     /**
+     * @deprecated
      * @public-api
      */
     addBrickToSelection(brickId: string): void {
@@ -200,6 +199,7 @@ export class WallViewModel implements IWallUiApi {
     }
 
     /**
+     * @deprecated
      * @public-api
      */
     removeBrickFromSelection(brickId: string): void {
@@ -227,9 +227,7 @@ export class WallViewModel implements IWallUiApi {
      * @public-api
      */
     getSelectedBrickIds(): string[] {
-        const selectedBricksClone = this.selectedBricks.slice(0);
-
-        return selectedBricksClone;
+        return this.selectedBricks.slice(0);
     }
 
     /**

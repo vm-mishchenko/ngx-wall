@@ -18,7 +18,7 @@ import {
     IOnWallFocus,
     IOnWallStateChange,
     IWallComponent,
-    IWallModel, IWallUiApi,
+    IWallModel, IWallUiApi, SelectedBrickEvent,
     WallModelFactory
 } from '../..';
 import {TextBrickModule} from '../../../bricks/text-brick';
@@ -379,6 +379,131 @@ describe('WallComponent', () => {
                 expect(textBrickDebugElement.componentInstance.onWallFocus).toHaveBeenCalled();
             });
         }));
+
+        describe('selectBrick()', () => {
+            it('should select brick', () => {
+                const textBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('text');
+
+                // test action
+                testScope.uiApi.selectBrick(textBrickSnapshot.id);
+
+                // test assertions
+                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+
+                expect(selectedBricks.length).toBe(1);
+                expect(selectedBricks[0]).toBe(textBrickSnapshot.id);
+            });
+
+            it('should trigger SelectedBrick event after brick selection', () => {
+                const textBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('text');
+
+                let event;
+                testScope.uiApi.subscribe((e) => event = e);
+
+                // test action
+                testScope.uiApi.selectBrick(textBrickSnapshot.id);
+
+                expect(event).toBeDefined();
+                expect(event instanceof SelectedBrickEvent).toBeTruthy();
+                expect(event.selectedBrickIds).toEqual([textBrickSnapshot.id]);
+            });
+
+            it('should select new brick and discard previous', () => {
+                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAtStart('text');
+
+                testScope.uiApi.selectBrick(textBrickSnapshot1.id);
+                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+                expect(testScope.uiApi.getSelectedBrickIds()[0]).toBe(textBrickSnapshot1.id);
+
+                // test action
+                testScope.uiApi.selectBrick(textBrickSnapshot2.id);
+                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+                expect(testScope.uiApi.getSelectedBrickIds()[0]).toBe(textBrickSnapshot2.id);
+            });
+
+            it('should select few bricks', () => {
+                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
+
+                // test action
+                testScope.uiApi.selectBricks([textBrickSnapshot1.id, textBrickSnapshot2.id]);
+
+                // test assertions
+                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+
+                expect(selectedBricks.length).toBe(2);
+                expect(selectedBricks[0]).toBe(textBrickSnapshot1.id);
+                expect(selectedBricks[1]).toBe(textBrickSnapshot2.id);
+            });
+
+            it('should sort selected bricks based their layout position', () => {
+                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
+
+                // test action
+                testScope.uiApi.selectBricks([textBrickSnapshot2.id, textBrickSnapshot1.id]);
+
+                // test assertions
+                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+
+                expect(selectedBricks.length).toBe(2);
+                expect(selectedBricks[0]).toBe(textBrickSnapshot1.id);
+                expect(selectedBricks[1]).toBe(textBrickSnapshot2.id);
+            });
+
+            it('should trigger SelectedBrickEvent event after brick selection', () => {
+                testScope.wallModel.api.core.addDefaultBrick();
+                testScope.wallModel.api.core.addDefaultBrick();
+
+                let event;
+                testScope.uiApi.subscribe((e) => event = e);
+
+                const brickIds = testScope.wallModel.api.core.getBrickIds();
+
+                // test action
+                testScope.uiApi.selectBricks(brickIds);
+
+                expect(event).toBeDefined();
+                expect(event instanceof SelectedBrickEvent).toBeTruthy();
+                expect(event.selectedBrickIds).toEqual(brickIds);
+            });
+        });
+
+        describe('unSelectBricks()', () => {
+            it('should unselect all brick ids', () => {
+                testScope.wallModel.api.core.addDefaultBrick();
+
+                // test action
+                testScope.uiApi.selectBricks(testScope.wallModel.api.core.getBrickIds());
+
+                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+
+                // test assertions
+                testScope.uiApi.unSelectBricks();
+
+                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(0);
+            });
+
+            it('should trigger SelectedBrickEvent event after brick unselection', () => {
+                testScope.wallModel.api.core.addDefaultBrick();
+
+                // test action
+                testScope.uiApi.selectBricks(testScope.wallModel.api.core.getBrickIds());
+                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+
+                let event;
+                testScope.uiApi.subscribe((e) => event = e);
+
+                // test assertions
+                testScope.uiApi.unSelectBricks();
+
+                // test assertions
+                expect(event).toBeDefined();
+                expect(event instanceof SelectedBrickEvent).toBeTruthy();
+                expect(event.selectedBrickIds).toEqual([]);
+            });
+        });
     });
 
     describe('[Model events reaction]', () => {
