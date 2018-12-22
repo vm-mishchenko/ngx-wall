@@ -504,6 +504,53 @@ describe('WallComponent', () => {
                 expect(event.selectedBrickIds).toEqual([]);
             });
         });
+
+        describe('focusOnPreviousTextBrick()', () => {
+            it('should call onWallFocus callback', async(() => {
+                const brickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const brickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
+
+                testScope.render().then(() => {
+                    const textBrickDebugElement = testScope.getDebugElementByCss('text-brick');
+
+                    spyOn(textBrickDebugElement.componentInstance, 'onWallFocus');
+
+                    // test action
+                    testScope.uiApi.focusOnPreviousTextBrick(brickSnapshot2.id);
+                    testScope.fixture.detectChanges();
+
+                    // test assertion
+                    expect(textBrickDebugElement.componentInstance.onWallFocus).toHaveBeenCalled();
+                });
+            }));
+
+            it('should pass focus context', async(() => {
+                const brickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const brickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
+
+                testScope.render().then(() => {
+                    const textBrickDebugElement = testScope.getDebugElementByCss('text-brick');
+
+                    spyOn(textBrickDebugElement.componentInstance, 'onWallFocus');
+
+                    // test action
+                    const focusContext = {
+                        initiator: 'unit-test',
+                        details: 'foo'
+                    };
+                    testScope.uiApi.focusOnPreviousTextBrick(brickSnapshot2.id, focusContext);
+                    testScope.fixture.detectChanges();
+
+                    // test assertion
+                    expect(textBrickDebugElement.componentInstance.onWallFocus).toHaveBeenCalled();
+
+                    const onWallFocusArgs = (textBrickDebugElement.componentInstance.onWallFocus as jasmine.Spy)
+                        .calls.mostRecent().args;
+
+                    expect(onWallFocusArgs[0]).toEqual(focusContext);
+                });
+            }));
+        });
     });
 
     describe('[Model events reaction]', () => {
