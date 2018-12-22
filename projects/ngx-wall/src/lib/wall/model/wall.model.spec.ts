@@ -503,43 +503,81 @@ describe('Wall Model', () => {
             expect(firstBrick.state.text).toBe(brickState.text);
         });
 
-        it('addBrickAfterBrickId() in new row', () => {
-            // If there is only one column in the row then
-            // new brick will be added in the new row after defined brick id
-            const wm = wallModelFactory.create();
+        describe('addBrickAfterBrickId()', () => {
+            it('should add in new row', () => {
+                // If there is only one column in the row then
+                // new brick will be added in the new row after defined brick id
+                const wm = wallModelFactory.create();
 
-            wm.api.core.addDefaultBrick();
-            wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
+                wm.api.core.addDefaultBrick();
 
-            const brickIds = wm.api.core.getBrickIds();
+                const brickIds = wm.api.core.getBrickIds();
 
-            wm.api.core.addBrickAfterBrickId(brickIds[0], 'header', {text: 'header'});
+                wm.api.core.addBrickAfterBrickId(brickIds[0], 'header', {text: 'header'});
 
-            const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[1]);
+                const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[1]);
 
-            // check that brick was added to right position
-            expect(expectedBrickSnapshot.tag).toBe('header');
-            expect(expectedBrickSnapshot.state.text).toBe('header');
-            expect(wm.api.core.getRowCount()).toBe(3);
+                // check that brick was added to right position
+                expect(expectedBrickSnapshot.tag).toBe('header');
+                expect(expectedBrickSnapshot.state.text).toBe('header');
+                expect(wm.api.core.getRowCount()).toBe(3);
+            });
+
+            it('should add in same column', () => {
+                // If there is only one column in the row then
+                // new brick will be added in the new row after defined brick id
+                const wm = wallModelFactory.create();
+
+                generateTwoColumnWithOneBrick(wm);
+
+                const brickIds = wm.api.core.getBrickIds();
+
+                wm.api.core.addBrickAfterBrickId(brickIds[1], 'header', {text: 'header'});
+
+                const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[2]);
+
+                // check that brick was added to right position
+                expect(expectedBrickSnapshot.tag).toBe('header');
+                expect(expectedBrickSnapshot.state.text).toBe('header');
+                expect(wm.api.core.getRowCount()).toBe(1);
+            });
         });
 
-        it('addBrickAfterBrickId() in same column', () => {
-            // If there is only one column in the row then
-            // new brick will be added in the new row after defined brick id
-            const wm = wallModelFactory.create();
+        describe('addBrickBeforeBrickId', () => {
+            it('should add to new row', () => {
+                const wm = wallModelFactory.create();
 
-            generateTwoColumnWithOneBrick(wm);
+                wm.api.core.addDefaultBrick();
 
-            const brickIds = wm.api.core.getBrickIds();
+                const brickIds = wm.api.core.getBrickIds();
 
-            wm.api.core.addBrickAfterBrickId(brickIds[1], 'header', {text: 'header'});
+                wm.api.core.addBrickBeforeBrickId(brickIds[0], 'header', {text: 'header'});
 
-            const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[2]);
+                const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[0]);
 
-            // check that brick was added to right position
-            expect(expectedBrickSnapshot.tag).toBe('header');
-            expect(expectedBrickSnapshot.state.text).toBe('header');
-            expect(wm.api.core.getRowCount()).toBe(1);
+                // check that brick was added to right position
+                expect(expectedBrickSnapshot.tag).toBe('header');
+                expect(expectedBrickSnapshot.state.text).toBe('header');
+                expect(wm.api.core.getRowCount()).toBe(2);
+            });
+
+            it('should add in the same column', () => {
+                const wm = wallModelFactory.create();
+
+                generateTwoColumnWithOneBrick(wm);
+
+                const brickIds = wm.api.core.getBrickIds();
+
+                wm.api.core.addBrickBeforeBrickId(brickIds[1], 'header', {text: 'header'});
+
+                const expectedBrickSnapshot = wm.api.core.getBrickSnapshot(wm.api.core.getBrickIds()[1]);
+
+                // check that brick was added to right position
+                expect(expectedBrickSnapshot.tag).toBe('header');
+                expect(expectedBrickSnapshot.state.text).toBe('header');
+                expect(wm.api.core.getRowCount()).toBe(1);
+            });
         });
 
         it('updateBrickState()', () => {

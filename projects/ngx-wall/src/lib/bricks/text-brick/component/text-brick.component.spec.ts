@@ -8,7 +8,7 @@ import {ContenteditableModule} from '../../../modules/contenteditable';
 import {HelperComponentsModule} from '../../../modules/helper-components';
 import {PlaceCaretToPosition} from '../../../modules/utils/node/place-caret-to-position';
 import {IWallModel} from '../../../wall';
-import {DEBOUNCE_TIME, FOCUS_INITIATOR} from '../../base-text-brick/base-text-brick.constant';
+import {FOCUS_INITIATOR} from '../../base-text-brick/base-text-brick.constant';
 import {IBaseTextState} from '../../base-text-brick/base-text-state.interface';
 import {TEXT_BRICK_TAG} from '../text-brick.constant';
 import {TextBrickComponent} from './text-brick.component';
@@ -192,7 +192,7 @@ describe('TextBrickComponent', () => {
 
     describe('[Keypress Navigation]', () => {
         describe('[Enter]', () => {
-            it('should add empty brick after when there is not text and focus on it', fakeAsync(() => {
+            it('should add empty brick after and focus on it when there is not text', fakeAsync(() => {
                 testScope.updateComponentState({
                     text: '',
                     tabs: 0
@@ -235,7 +235,7 @@ describe('TextBrickComponent', () => {
                 });
             }));
 
-            it('should add empty brick after when caret stay at the end and focus on it', fakeAsync(() => {
+            it('should add empty brick after and focus on it when caret stay at the end', fakeAsync(() => {
                 testScope.updateComponentState({
                     text: 'initial',
                     tabs: 0
@@ -285,10 +285,7 @@ describe('TextBrickComponent', () => {
                 }).then(() => {
                     const mockGetSelection = spyOn(window, 'getSelection');
 
-                    const mockPreviousTextBrickId = '3';
-
-                    testScope.mock('core.getPreviousTextBrickId').and.returnValue(mockPreviousTextBrickId);
-                    testScope.mock('core.addBrickAfterBrickId');
+                    testScope.mock('core.addBrickBeforeBrickId');
                     spyOn(testScope.nativeElement, 'scrollIntoView');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
@@ -303,14 +300,10 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     expect(testScope.nativeElement.scrollIntoView).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.addBrickAfterBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core.addBrickBeforeBrickId).toHaveBeenCalled();
 
-                    const getPreviousBrickIdArguments = testScope.getRecentArguments('core.getPreviousTextBrickId');
-                    expect(getPreviousBrickIdArguments[0]).toBe(testScope.component.id);
-
-                    const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
-                    expect(addBrickArguments[0]).toBe(mockPreviousTextBrickId);
+                    const addBrickArguments = testScope.getRecentArguments('core.addBrickBeforeBrickId');
+                    expect(addBrickArguments[0]).toBe(testScope.component.id);
                     expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
                     expect(addBrickArguments[2]).toEqual({
                         text: '',
@@ -1006,6 +999,35 @@ describe('TextBrickComponent', () => {
                                 deletePreviousText: true
                             }
                         });
+                    });
+                });
+            }));
+
+            it('should not delete current brick if there is any next text brick', async(() => {
+                const newState = {
+                    text: '',
+                    tabs: 0
+                };
+
+                testScope.updateComponentState(newState).then(() => {
+                    const nextTextBrickId = null;
+                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
+
+                    // place caret at the start
+                    (new PlaceCaretToPosition(testScope.nativeElement, 0)).place();
+
+                    // test action
+                    testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Delete'}));
+
+                    // test assertions
+                    testScope.whenRendering().then(() => {
+                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.ui.removeBrick).not.toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.ui.focusOnBrickId).not.toHaveBeenCalled();
+
+                        // test assertions
+                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
                     });
                 });
             }));

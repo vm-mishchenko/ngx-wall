@@ -49,10 +49,8 @@ export class EnterKeyHandler {
             tabs: this.baseTextBrickComponent.scope.tabs
         };
 
-        const previousTextBrickId = this.baseTextBrickComponent.wallModel.api.core.getPreviousTextBrickId(this.baseTextBrickComponent.id);
-
         this.baseTextBrickComponent.wallModel.api.core
-            .addBrickAfterBrickId(previousTextBrickId, 'text', newTextState);
+            .addBrickBeforeBrickId(this.baseTextBrickComponent.id, 'text', newTextState);
 
         // scroll browser view to element
         this.baseTextBrickComponent.editor.nativeElement.scrollIntoView({

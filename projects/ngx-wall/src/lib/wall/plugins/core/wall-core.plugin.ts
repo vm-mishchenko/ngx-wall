@@ -126,6 +126,28 @@ export class WallCorePlugin implements IWallPlugin {
         return this.getBrickSnapshot(newBrick.id);
     }
 
+    addBrickBeforeBrickId(brickId: string, tag: string, state?: any): IBrickSnapshot {
+        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
+
+        const brickPosition = this.layoutWalker.getBrickPosition(brickId);
+        const columnCount = this.layoutWalker.getColumnCount(brickPosition.rowIndex);
+        const newBrick = this.createBrick(tag, state);
+
+        if (columnCount === 1) {
+            this.layout.addBrickToNewRow(brickPosition.rowIndex, newBrick);
+        } else if (columnCount > 1) {
+            this.layout.addBrickToExistingColumn(
+                brickPosition.rowIndex,
+                brickPosition.columnIndex,
+                brickPosition.brickIndex,
+                newBrick);
+        }
+
+        this.dispatch(new AddBrickEvent(newBrick.id));
+
+        return this.getBrickSnapshot(newBrick.id);
+    }
+
     // Add text brick to the bottom of wall in the new row
     addDefaultBrick() {
         this.dispatch(new BeforeChangeEvent(AddBrickEvent));

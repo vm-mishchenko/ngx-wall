@@ -323,9 +323,9 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
 
-        this.wallUiApi.removeBrick(this.id);
-
         if (nextTextBrickId) {
+            this.wallUiApi.removeBrick(this.id);
+
             const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
                 details: {
