@@ -10,6 +10,8 @@ export interface IWallCorePluginApi {
 
     addBrickBeforeBrickId(brickId: string, tag: string, state?: object): IBrickSnapshot;
 
+    getBrickResourcePaths(brickId: string): string[];
+
     // QUERY METHODS
 
     getNextBrickId(brickId: string): string;

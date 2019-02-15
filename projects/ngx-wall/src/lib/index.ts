@@ -20,3 +20,4 @@ export * from './modules/pick-out';
 export * from './modules/tow';
 export * from './modules/radar';
 export * from './modules/file-uploader';
+export * from './modules/file-uploader';

@@ -1,12 +1,13 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
-import {FileUploaderService} from '../../../modules/file-uploader';
+import {WALL_FILE_UPLOADER} from '../../../modules/file-uploader/file-uploader.token';
+import {IWallFileUploader, IWallFileUploaderResult} from '../../../modules/file-uploader/file-uploader.types';
 import {IResizeData} from '../../../modules/resizable/resizable.directive';
 import {Base64ToFile} from '../../../modules/utils/base64-to-file';
 import {Guid} from '../../../modules/utils/guid';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
 import {IOnWallFocus} from '../../../wall';
-import {ImgBrickState} from '../img-brick-state.interface';
+import {ImgBrickState, ImgBrickStateMetadata} from '../img-brick-state.interface';
 import {InputContextComponent} from './input-context.component';
 
 @Component({
@@ -39,9 +40,9 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         resizeEnd: this.onResizeEnd.bind(this)
     };
 
-    constructor(private fileUploader: FileUploaderService,
-                private renderer: Renderer2,
+    constructor(private renderer: Renderer2,
                 private ngxStickyModalService: StickyModalService,
+                @Inject(WALL_FILE_UPLOADER) private wallFileUploader: IWallFileUploader,
                 private el: ElementRef) {
     }
 
@@ -94,7 +95,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         this.save();
     }
 
-    applyImageSrc(imageSrc: string, metadata?: any): Promise<any> {
+    applyImageSrc(imageSrc: string, metadata?: ImgBrickStateMetadata): Promise<any> {
         return this.isImage(imageSrc)
             .then(() => {
                 this.scope.src = imageSrc;
@@ -123,7 +124,9 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
 
     processBase64ImgSrc(): Promise<void> {
         return this.uploadImage().then((uploadInfo) => {
-            return this.applyImageSrc(uploadInfo.fileUrl, uploadInfo.metadata);
+            return this.applyImageSrc(uploadInfo.downloadURL, {
+                path: uploadInfo.path
+            });
         }, () => {
         });
     }
@@ -170,27 +173,15 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
         }
     }
 
-    private uploadImage(): Promise<{ fileUrl: string, metadata: any }> {
-        return new Promise((resolve, reject) => {
-            if (this.fileUploader.canUploadFile()) {
-                const imgReference = this.fileUploader.getFileReference(`img-brick/${(new Guid()).get()}`);
+    private uploadImage(): Promise<IWallFileUploaderResult> {
+        if (!this.wallFileUploader.canUploadFile()) {
+            return Promise.reject();
+        }
 
-                const imgFile = (new Base64ToFile(this.scope.src, `${imgReference}`)).getFile();
+        const fileName = (new Guid()).get();
+        const imgFile = (new Base64ToFile(this.scope.src, fileName)).getFile();
 
-                this.fileUploader.upload(imgReference, imgFile)
-                    .snapshotChanges()
-                    .subscribe((snapshot) => {
-                        resolve({
-                            fileUrl: snapshot.downloadURL,
-                            metadata: {
-                                reference: imgReference
-                            }
-                        });
-                    }, reject);
-            } else {
-                reject(new Error('File uploader service does not allow upload file'));
-            }
-        });
+        return this.wallFileUploader.upload(this.id, imgFile);
     }
 
     private setUpImageWidth(): Promise<void> {
