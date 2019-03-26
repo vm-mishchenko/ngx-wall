@@ -1,5 +1,0 @@
-@mixin w-pick-out-area-theme($theme) {
-    .pick-out-area {
-        background-color: map-get($theme, pick-out-color);
-    }
-}

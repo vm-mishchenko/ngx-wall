@@ -1,0 +1,15 @@
+[contenteditable] {
+    max-width: 100%;
+    width: 100%;
+    padding-left: 1.25em;
+    padding-right: 1.25em;
+    font-size: 21px;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:empty:before {
+        content: attr(placeholder)
+    }
+}

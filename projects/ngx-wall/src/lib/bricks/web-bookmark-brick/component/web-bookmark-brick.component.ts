@@ -1,11 +1,12 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
-import {InputContextComponent} from './input-context.component';
+import {InputContextComponent} from '../input-context/input-context.component';
 
 @Component({
     selector: 'web-bookmark-brick',
-    templateUrl: './web-bookmark-brick.component.html'
+    templateUrl: './web-bookmark-brick.component.html',
+    styleUrls: ['./web-bookmark-brick.component.scss']
 })
 export class WebBookmarkBrickComponent implements OnInit {
     @Input() id: string;

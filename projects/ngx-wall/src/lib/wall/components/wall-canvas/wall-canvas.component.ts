@@ -17,7 +17,8 @@ import {IFocusedBrick} from '../wall/public_api';
 
 @Component({
     selector: 'wall-canvas',
-    templateUrl: './wall-canvas-component.component.html'
+    templateUrl: './wall-canvas-component.component.html',
+    styleUrls: ['./wall-canvas.component.scss']
 })
 export class WallCanvasComponent implements OnChanges {
     @Input() wallModel: IWallModel;

@@ -14,7 +14,8 @@ import {TextContextMenuComponent} from '../text-context-menu/text-context-menu.c
 
 @Component({
     selector: 'text-brick',
-    templateUrl: './text-brick-component.component.html'
+    templateUrl: './text-brick.component.html',
+    styleUrls: ['./text-brick.component.scss']
 })
 export class TextBrickComponent extends BaseTextBrickComponent implements OnInit, OnDestroy, ITextBrickApi {
     @Input() wallModel: IWallModel;

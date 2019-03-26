@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+
+@mixin header-brick-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    header-brick {
+        [contenteditable] {
+            font-weight: mat-font-weight($typography, title);
+            font-size: mat-font-size($typography, title);
+            line-height: mat-line-height($typography, title);
+
+            &:empty:before {
+                color: mat-color($foreground, secondary-text);
+            }
+        }
+    }
+}

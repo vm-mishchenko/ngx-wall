@@ -1,0 +1,17 @@
+<div class="w-context-panel w-brick-input mat-elevation-z4">
+    <div class="w-brick-input__body">
+        <form (submit)="onSubmit($event)">
+            <mat-form-field>
+                <input #src matInput placeholder="Paste in https://...">
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" (click)="applySrc()" type="button">
+                Create Bookmark
+            </button>
+        </form>
+
+        <p class="w-brick-input__description">
+            Create a visual bookmark from a link...
+        </p>
+    </div>
+</div>

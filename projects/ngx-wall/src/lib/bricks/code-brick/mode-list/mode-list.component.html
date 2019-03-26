@@ -1,3 +1,7 @@
-<div class="w-context-panel">
-    <w-item-list [items]="config.modes" (selected)="onSelected($event)"></w-item-list>
+<div class="w-context-panel mat-elevation-z4">
+    <mat-action-list>
+        <button mat-list-item *ngFor="let mode of config.modes" (click)="onSelected(mode)">
+            {{mode.name}}
+        </button>
+    </mat-action-list>
 </div>

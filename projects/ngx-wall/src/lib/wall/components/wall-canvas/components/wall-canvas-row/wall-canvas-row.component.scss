@@ -1,0 +1,17 @@
+:host {
+    display: flex;
+
+    .wall-canvas-row__column {
+        flex: 1;
+        margin: 0 10px;
+        min-width: 0; // hack to truncate long text
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}

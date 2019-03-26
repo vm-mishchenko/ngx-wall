@@ -1,0 +1,51 @@
+:host {
+    display: block;
+    margin: 0 0 2px;
+
+    .wall-canvas-brick__draggable {
+        .wall-canvas-brick__draggable-handler {
+            display: block;
+        }
+    }
+
+    .wall-canvas-brick__wrapper {
+        position: relative;
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+            opacity: 0.2;
+            transition: background-color 0.1s ease;
+        }
+    }
+
+    .wall-canvas-brick__draggable-box {
+        padding: 1px;
+        border-radius: 3px;
+        line-height: 0;
+    }
+
+    .wall-canvas-brick__draggable-handler {
+        display: none;
+        position: absolute;
+        left: -35px;
+        top: -4px;
+        padding: 5px;
+        margin: 0;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    .wall-canvas-brick__selected {
+        position: relative;
+    }
+
+    .wall-canvas-brick__disabled-interaction {
+        pointer-events: none;
+    }
+}

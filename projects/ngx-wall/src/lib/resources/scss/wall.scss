@@ -1,0 +1,5 @@
+@import "./components/components";
+
+@mixin wall() {
+    @include wall-components();
+}

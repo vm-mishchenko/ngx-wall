@@ -1,0 +1,38 @@
+@import '~@angular/material/theming';
+
+@mixin web-bookmark-brick-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    web-bookmark-brick {
+        .web-bookmark {
+            &__content {
+                &:hover {
+                    background: mat-color($background, hover);
+                }
+            }
+
+            &__title {
+                font-size: mat-font-size($typography, body-1);
+                color: mat-color($foreground, text)
+            }
+
+            &__description {
+                font-size: mat-font-size($typography, caption);
+                color: mat-color($foreground, secondary-text)
+            }
+
+            &__link {
+                font-size: mat-font-size($typography, caption);
+                color: mat-color($foreground, secondary-text);
+
+                p {
+                    color: mat-color($foreground, text);
+                }
+            }
+        }
+    }
+}

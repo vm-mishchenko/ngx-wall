@@ -20,7 +20,7 @@ import {WallEditorComponent} from './wall-editor.component';
 @NgModule({
     imports: [
         // core wall modules
-        WallModule,
+        WallModule.forRoot(),
         PickOutModule,
 
         // brick modules

@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
 
 @Component({
-    templateUrl: './placeholder.component.html'
+    templateUrl: './placeholder.component.html',
+    styleUrls: ['./placeholder.component.scss']
 })
 export class PlaceholderComponent {
     x: number;

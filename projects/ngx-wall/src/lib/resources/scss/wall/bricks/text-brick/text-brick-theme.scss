@@ -1,7 +1,0 @@
-@mixin text-brick-theme($theme) {
-    text-brick {
-        [contenteditable]:empty:before {
-            color: map-get($theme, sub-text-color);
-        }
-    }
-}

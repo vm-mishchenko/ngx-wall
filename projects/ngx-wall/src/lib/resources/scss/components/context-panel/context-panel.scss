@@ -1,0 +1,27 @@
+@mixin context-panel() {
+    .w-context-panel {
+        min-height: 50px;
+        border-radius: 3px;
+    }
+
+    .w-text-context-menu-panel {
+        min-height: auto;
+        padding: 0.3rem;
+
+        form {
+            display: flex;
+            margin-top: 0.4rem;
+            align-items: center;
+            margin-left: 18px;
+        }
+
+        .w-form-group {
+            margin-bottom: 0.2rem;
+        }
+
+        .w-text-context-menu__selected-link {
+            text-decoration: underline;
+        }
+    }
+}
+

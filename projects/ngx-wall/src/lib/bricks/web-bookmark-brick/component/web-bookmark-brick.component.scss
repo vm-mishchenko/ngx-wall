@@ -1,0 +1,62 @@
+:host {
+    position: relative;
+    display: block;
+
+    .web-bookmark {
+        display: flex;
+        height: 6rem;
+        overflow: hidden;
+        outline: 1px solid silver;
+        margin: 0.3rem 0 0.3rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &__content {
+            width: 70%;
+            border-right: none;
+            text-decoration: none;
+            margin: 0.4rem 0.7rem;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        &__title {
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        &__description {
+            overflow: hidden;
+            height: 2.4rem;
+            margin-bottom: 0.3rem;
+        }
+
+        &__link {
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 18px;
+                height: 18px;
+                object-fit: cover;
+                margin-right: 0.4rem;
+            }
+
+            p {
+                overflow: hidden;
+                margin: 0;
+                height: 1.2rem;
+            }
+        }
+
+        &__img {
+            width: 30%;
+            background-position: center center;
+            background-size: cover;
+        }
+    }
+}

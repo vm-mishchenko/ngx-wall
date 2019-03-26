@@ -1,0 +1,12 @@
+:host {
+    display: block;
+
+    .wall-canvas__editor {
+        min-height: 200px;
+        cursor: text;
+    }
+
+    .wall-canvas__expander {
+        min-height: 250px;
+    }
+}

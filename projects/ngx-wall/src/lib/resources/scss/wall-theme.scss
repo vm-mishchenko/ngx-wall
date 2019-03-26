@@ -1,0 +1,9 @@
+@import "./core/core-theme";
+@import "./components/components-theme";
+@import "./bricks/bricks-theme";
+
+@mixin wall-theme($theme, $typography) {
+    @include w-core-theme($theme, $typography);
+    @include w-wall-components-theme($theme, $typography);
+    @include w-wall-bricks-theme($theme, $typography);
+}

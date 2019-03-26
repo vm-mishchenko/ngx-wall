@@ -9,6 +9,7 @@ import {TextRepresentation} from '../base-text-brick/base-text-representation.cl
 import {BricksListComponent} from './bricks-list/bricks-list.component';
 import {TextBrickComponent} from './component/text-brick.component';
 import {TextContextMenuComponent} from './text-context-menu/text-context-menu.component';
+import {MatButtonModule, MatFormFieldModule, MatInputModule, MatListModule} from '@angular/material';
 
 @NgModule({
     imports: [
@@ -16,7 +17,11 @@ import {TextContextMenuComponent} from './text-context-menu/text-context-menu.co
         CommonModule,
         ContenteditableModule,
         HelperComponentsModule,
-        StickyModalModule
+        StickyModalModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatListModule
     ],
     exports: [
         TextBrickComponent,

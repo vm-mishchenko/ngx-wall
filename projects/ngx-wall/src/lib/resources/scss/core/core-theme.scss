@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+
+@mixin w-core-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    *::selection {
+        background: mat-color($primary, 0.2);
+    }
+
+    *::-moz-selection {
+        background: mat-color($primary, 0.2);
+    }
+}

@@ -1,9 +1,8 @@
 import {Component, Inject} from '@angular/core';
 import {STICKY_MODAL_DATA, StickyModalRef} from 'ngx-sticky-modal';
-import {IListItem} from '../../../modules/helper-components/item-list';
 
 export interface IModeListComponentConfig {
-    modes: IListItem[];
+    modes: { value: string, name: string }[];
 }
 
 @Component({

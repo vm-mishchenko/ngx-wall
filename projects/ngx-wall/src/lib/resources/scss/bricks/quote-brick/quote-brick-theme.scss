@@ -1,0 +1,19 @@
+@import '~@angular/material/theming';
+
+@mixin quote-brick-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    quote-brick {
+        [contenteditable] {
+            border-left: 4px solid mat-color($background, status-bar);
+
+            &:empty:before {
+                color: mat-color($foreground, secondary-text);
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+@import '~@angular/material/theming';
+
+@mixin w-brick-input-placeholder($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    w-brick-input-placeholder {
+        .placeholder {
+            color: mat-color($foreground, secondary-text);
+            font-size: mat-font-size($typography, body-1);
+
+            background: mat-color($background, background);
+            border: 1px dashed mat-color($background, selected-button);
+
+            &:hover {
+                background: mat-color($background, hover);
+            }
+        }
+    }
+}

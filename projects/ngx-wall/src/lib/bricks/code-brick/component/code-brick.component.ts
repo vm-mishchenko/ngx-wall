@@ -14,7 +14,8 @@ export interface ICodeBrickState {
 
 @Component({
     selector: 'code-brick',
-    templateUrl: './code-brick.component.html'
+    templateUrl: './code-brick.component.html',
+    styleUrls: ['./code-brick.component.scss']
 })
 export class CodeBrickComponent implements OnInit {
     scope: ICodeBrickState = {

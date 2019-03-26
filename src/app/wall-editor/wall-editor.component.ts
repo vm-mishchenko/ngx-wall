@@ -460,8 +460,6 @@ export class WallEditorComponent {
         this.wall2Model.api.core.subscribe((e) => {
             if (!(e instanceof BeforeChangeEvent)) {
                 // update current plan
-                console.log(`update current plan`);
-
                 this.plan = this.wall2Model.api.core.getPlan();
             }
         });

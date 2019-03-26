@@ -1,0 +1,19 @@
+<div class="w-context-panel w-brick-input mat-elevation-z4">
+    <div class="w-brick-input__body">
+        <form (submit)="onSubmit($event)">
+            <mat-form-field>
+                <input #src matInput placeholder="Paste the image link">
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" (click)="applyImageSrc()" type="button">
+                Add image
+            </button>
+        </form>
+
+        <p class="w-brick-input__description mb-2">
+            Add link or upload image
+        </p>
+
+        <input accept="image/*" (change)="onFileChange($event)" type="file">
+    </div>
+</div>

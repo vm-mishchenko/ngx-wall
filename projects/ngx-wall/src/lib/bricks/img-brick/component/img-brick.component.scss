@@ -1,0 +1,50 @@
+:host {
+    position: relative;
+    display: block;
+
+    &:hover {
+        .original-btn {
+            display: block;
+        }
+    }
+}
+
+.original-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: none;
+}
+
+.container {
+    margin: 0 auto;
+    position: relative;
+    max-width: 100%;
+
+    .left-handler,
+    .right-handler {
+        position: absolute;
+        display: block;
+        width: 40px;
+        height: 100%;
+        top: 0;
+        cursor: col-resize;
+    }
+
+    .left-handler {
+        left: 0;
+    }
+
+    .right-handler {
+        right: 0;
+    }
+
+    img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
+    }
+}

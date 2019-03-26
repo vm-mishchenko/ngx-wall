@@ -1,0 +1,31 @@
+:host {
+    display: block;
+
+    .text-brick__editor {
+        word-break: break-all;
+        padding: 3px 2px;
+        line-height: 1.4;
+        margin: 0;
+        box-sizing: content-box;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    [contenteditable]:empty:before {
+        content: attr(placeholder)
+    }
+
+    .text-brick-tabs-1 {
+        margin-left: 1.5rem;
+    }
+
+    .text-brick-tabs-2 {
+        margin-left: 3rem;
+    }
+
+    .text-brick-tabs-3 {
+        margin-left: 4.5rem;
+    }
+}

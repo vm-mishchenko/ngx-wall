@@ -5,6 +5,7 @@ import {WallViewModel} from './wall-view.model';
 @Component({
     selector: 'wall',
     templateUrl: './wall.component.html',
+    styleUrls: ['./wall.component.scss'],
     providers: [
         WallViewModel
     ]

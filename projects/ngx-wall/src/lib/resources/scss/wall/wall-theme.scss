@@ -1,7 +1,0 @@
-@import "./components/components-theme";
-@import "./bricks/bricks-theme";
-
-@mixin w-wall-theme($theme) {
-    @include w-wall-components-theme($theme);
-    @include w-wall-bricks-theme($theme);
-}

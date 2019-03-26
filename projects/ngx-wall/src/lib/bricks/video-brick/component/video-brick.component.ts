@@ -2,11 +2,12 @@ import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, V
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {IOnWallFocus} from '../../../wall';
 import {IVideoBrickState} from '../video-brick-state.interface';
-import {InputContextComponent} from './input-context.component';
+import {InputContextComponent} from '../input-context/input-context.component';
 
 @Component({
     selector: 'video-brick',
-    templateUrl: './video-brick.component.html'
+    templateUrl: './video-brick.component.html',
+    styleUrls: ['./video-brick.component.scss']
 })
 export class VideoBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;

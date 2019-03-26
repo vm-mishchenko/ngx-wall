@@ -1,0 +1,21 @@
+@import '~@angular/material/theming';
+
+@mixin w-bricks-list-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    .w-bricks-list {
+        mat-list-item {
+            &:hover {
+                background: mat-color($primary, 0.3)
+            }
+        }
+
+        &__selected {
+            background: mat-color($primary, 0.3)
+        }
+    }
+}

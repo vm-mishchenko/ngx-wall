@@ -1,0 +1,13 @@
+@import "text-brick/text-brick-theme";
+@import "quote-brick/quote-brick-theme";
+@import "header-brick/header-brick-theme";
+@import "web-bookmark-brick/web-bookmark-brick-theme";
+@import "code-brick/code-brick-theme";
+
+@mixin w-wall-bricks-theme($theme, $typography) {
+    @include text-brick-theme($theme, $typography);
+    @include quote-brick-theme($theme, $typography);
+    @include header-brick-theme($theme, $typography);
+    @include web-bookmark-brick-theme($theme, $typography);
+    @include code-brick-theme($theme, $typography);
+}

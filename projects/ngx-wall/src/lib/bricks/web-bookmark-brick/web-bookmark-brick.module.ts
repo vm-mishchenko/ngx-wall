@@ -5,15 +5,19 @@ import {HelperComponentsModule} from '../../modules/helper-components';
 import {TowModule} from '../../modules/tow';
 import {BrickRegistry} from '../../wall';
 import {VideoBrickTextRepresentationClass} from '../video-brick/video-brick-text-representation.class';
-import {InputContextComponent} from './component/input-context.component';
+import {InputContextComponent} from './input-context/input-context.component';
 import {WebBookmarkBrickComponent} from './component/web-bookmark-brick.component';
+import {MatButtonModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 
 @NgModule({
     imports: [
         CommonModule,
         StickyModalModule,
         HelperComponentsModule,
-        TowModule
+        TowModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule
     ],
     exports: [
         WebBookmarkBrickComponent

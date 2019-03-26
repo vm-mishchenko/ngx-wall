@@ -1,0 +1,6 @@
+<div class="placeholder" (click)="onClick($event)">
+    <mat-icon>{{icon}}</mat-icon>
+    <span> {{ text }} </span>
+</div>
+
+<w-loading-wrapper [message]="'Loading'" *ngIf="loading"></w-loading-wrapper>

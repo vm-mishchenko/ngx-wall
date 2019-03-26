@@ -1,22 +1,21 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {BrickInputPlaceholderComponent} from './brick-input-placeholder.component';
-import {ItemListComponent} from './item-list/item-list.component';
+import {BrickInputPlaceholderComponent} from './brick-input-placeholder/brick-input-placeholder.component';
 import {LoadingWrapperComponent} from './loading-wrapper/loading-wrapper.component';
+import {MatIconModule} from '@angular/material';
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
+        MatIconModule
     ],
     exports: [
         BrickInputPlaceholderComponent,
         LoadingWrapperComponent,
-        ItemListComponent
     ],
     declarations: [
         BrickInputPlaceholderComponent,
         LoadingWrapperComponent,
-        ItemListComponent
     ],
     providers: []
 })

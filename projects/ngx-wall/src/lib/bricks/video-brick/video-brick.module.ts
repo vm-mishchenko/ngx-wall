@@ -3,15 +3,19 @@ import {NgModule} from '@angular/core';
 import {StickyModalModule} from 'ngx-sticky-modal';
 import {HelperComponentsModule} from '../../modules/helper-components';
 import {BrickRegistry} from '../../wall';
-import {InputContextComponent} from './component/input-context.component';
+import {InputContextComponent} from './input-context/input-context.component';
 import {VideoBrickComponent} from './component/video-brick.component';
 import {VideoBrickTextRepresentationClass} from './video-brick-text-representation.class';
+import {MatButtonModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 
 @NgModule({
     imports: [
         CommonModule,
         StickyModalModule,
-        HelperComponentsModule
+        HelperComponentsModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule
     ],
     exports: [VideoBrickComponent],
     declarations: [VideoBrickComponent, InputContextComponent],

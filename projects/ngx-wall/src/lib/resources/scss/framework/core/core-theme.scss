@@ -1,9 +1,0 @@
-@mixin w-core-theme($theme) {
-    *::selection {
-        background: map-get($theme, active-light-color);
-    }
-
-    *::-moz-selection {
-        background: map-get($theme, active-light-color);
-    }
-}

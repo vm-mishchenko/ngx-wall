@@ -23,12 +23,9 @@
                             "src/assets"
                         ],
                         "styles": [
-                            "src/styles.scss",
-                            "./node_modules/bootstrap/dist/css/bootstrap.css",
-                            "./node_modules/open-iconic/font/css/open-iconic-bootstrap.css",
                             "./node_modules/codemirror/lib/codemirror.css",
                             "./node_modules/codemirror/theme/neo.css",
-                            "projects/ngx-wall/src/lib/resources/scss/index.scss"
+                            "src/styles.scss"
                         ],
                         "scripts": []
                     },

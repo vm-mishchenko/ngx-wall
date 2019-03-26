@@ -1,0 +1,19 @@
+@import "bricks-list/bricks-list-theme";
+@import "wall/wall-theme";
+@import 'pick-out-area/pick-out-area-theme';
+@import 'tow-placeholder/tow-placeholder-theme';
+@import "brick-input/brick-input-theme";
+@import "brick-input-placeholder/brick-input-placeholder-theme";
+@import "loading-wrapper/loading-wrapper-theme";
+@import "context-panel/context-panel-theme";
+
+@mixin w-wall-components-theme($theme, $typography) {
+    @include w-bricks-list-theme($theme, $typography);
+    @include w-wall-component-theme($theme, $typography);
+    @include w-pick-out-area-theme($theme, $typography);
+    @include w-tow-placeholder-theme($theme, $typography);
+    @include w-brick-input($theme, $typography);
+    @include w-brick-input-placeholder($theme, $typography);
+    @include w-context-panel($theme, $typography);
+    @include w-loading-wrapper($theme, $typography);
+}

@@ -1,0 +1,21 @@
+<div class="w-context-panel w-brick-input mat-elevation-z4">
+    <div class="w-brick-input__header"></div>
+
+    <div class="w-brick-input__body">
+        <form (submit)="onSubmit($event)">
+            <mat-form-field>
+                <input #src matInput placeholder="Paste the youtube video link">
+            </mat-form-field>
+
+            <button mat-flat-button color="primary" (click)="applySrc()" type="button">
+                Add video
+            </button>
+        </form>
+
+        <p class="w-brick-input__description">
+            Youtube video
+        </p>
+    </div>
+
+    <div class="w-brick-input__footer"></div>
+</div>

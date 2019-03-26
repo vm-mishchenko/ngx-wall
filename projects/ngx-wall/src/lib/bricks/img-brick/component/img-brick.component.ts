@@ -8,11 +8,12 @@ import {Guid} from '../../../modules/utils/guid';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
 import {IOnWallFocus} from '../../../wall';
 import {ImgBrickState, ImgBrickStateMetadata} from '../img-brick-state.interface';
-import {InputContextComponent} from './input-context.component';
+import {InputContextComponent} from '../input-context/input-context.component';
 
 @Component({
     selector: 'img-brick',
-    templateUrl: './img-brick.component.html'
+    templateUrl: './img-brick.component.html',
+    styleUrls: ['./img-brick.component.scss']
 })
 export class ImgBrickComponent implements OnInit, IOnWallFocus {
     @Input() id: string;

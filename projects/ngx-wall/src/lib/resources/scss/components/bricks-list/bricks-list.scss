@@ -1,0 +1,23 @@
+@mixin brick-list() {
+    .w-bricks-list {
+        mat-list {
+            padding: 0;
+            max-height: 20rem;
+            overflow: auto;
+            position: relative;
+        }
+
+        mat-list-item {
+            list-style: none;
+            padding: 0.45rem 2.5rem;
+            min-width: 17rem;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+        }
+
+        p {
+            margin: 0;
+        }
+    }
+}
+

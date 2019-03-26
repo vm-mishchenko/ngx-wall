@@ -1,9 +1,9 @@
 <w-brick-input-placeholder
-        [text]="'Add a Web Bookmark'"
-        [icon]="'oi-link-intact'"
-        [loading]="loading"
-        *ngIf="!scope.src"
-        (selected)="showPanel()">
+    [text]="'Add a Web Bookmark'"
+    [icon]="'link'"
+    [loading]="loading"
+    *ngIf="!scope.src"
+    (selected)="showPanel()">
 </w-brick-input-placeholder>
 
 <div *ngIf="scope.src" class="web-bookmark">

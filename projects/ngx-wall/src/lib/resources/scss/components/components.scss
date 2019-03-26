@@ -1,0 +1,9 @@
+@import 'bricks-list/bricks-list';
+@import 'brick-input/brick-input';
+@import 'context-panel/context-panel';
+
+@mixin wall-components() {
+    @include brick-list();
+    @include brick-input();
+    @include context-panel();
+}

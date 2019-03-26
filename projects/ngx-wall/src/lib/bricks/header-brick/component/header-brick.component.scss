@@ -1,0 +1,30 @@
+div {
+    display: block;
+
+    &[contenteditable] {
+        letter-spacing: -0.002em;
+        word-break: break-all;
+        padding: 6px 2px;
+        margin: 8px 0 0 0;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:empty:before {
+            content: attr(placeholder)
+        }
+    }
+
+    &.header-brick-tabs-1 {
+        margin-left: 1.5rem;
+    }
+
+    &.header-brick-tabs-2 {
+        margin-left: 3rem;
+    }
+
+    &.header-brick-tabs-3 {
+        margin-left: 4.5rem;
+    }
+}

@@ -1,0 +1,24 @@
+@import '~@angular/material/theming';
+
+@mixin code-brick-theme($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    code-brick {
+        .CodeMirror {
+            background: mat-color($background, background) !important;
+            font-size: mat-font-size($typography, body-1);
+
+            .CodeMirror-cursor {
+                background: mat-color($foreground, text);
+            }
+
+            pre {
+                font-size: mat-font-size($typography, body-1);
+            }
+        }
+    }
+}

@@ -4,12 +4,17 @@ import {HelperComponentsModule} from '../../modules/helper-components';
 import {BrickRegistry, WallModule} from '../../wall';
 import {CodeBrickComponent} from './component/code-brick.component';
 import {ModeListComponent} from './mode-list/mode-list.component';
+import {MatButtonModule, MatListModule} from '@angular/material';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
     imports: [
+        CommonModule,
         WallModule,
         HelperComponentsModule,
-        StickyModalModule
+        StickyModalModule,
+        MatButtonModule,
+        MatListModule
     ],
     declarations: [
         CodeBrickComponent,

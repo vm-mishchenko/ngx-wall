@@ -1,0 +1,19 @@
+.w-loading-wrapper__wrapper,
+.w-loading-wrapper__message {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.w-loading-wrapper__wrapper {
+    opacity: 0.2;
+    cursor: progress;
+}
+
+.w-loading-wrapper__message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

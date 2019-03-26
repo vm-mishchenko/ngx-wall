@@ -1,0 +1,16 @@
+.placeholder {
+    padding: 15px;
+    display: flex;
+    cursor: pointer;
+    border-radius: 4px;
+    align-items: center;
+}
+
+mat-icon {
+    margin-right: 10px;
+}
+
+:host {
+    position: relative;
+    display: block;
+}

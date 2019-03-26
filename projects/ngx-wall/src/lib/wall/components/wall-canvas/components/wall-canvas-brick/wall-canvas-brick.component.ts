@@ -19,7 +19,8 @@ import {WallCanvasComponent} from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
-    templateUrl: './wall-canvas-brick.component.html'
+    templateUrl: './wall-canvas-brick.component.html',
+    styleUrls: ['./wall-canvas-brick.component.scss']
 })
 export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     // todo add type

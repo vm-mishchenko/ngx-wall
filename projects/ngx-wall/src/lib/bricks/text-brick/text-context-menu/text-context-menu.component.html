@@ -1,32 +1,32 @@
-<div class="w-context-panel w-text-context-menu-panel">
+<div class="w-context-panel w-text-context-menu-panel mat-elevation-z4">
     <div>
         <button [ngClass]="{'w-text-context-menu__selected-link': config.api.isLinkSelected()}"
-                class="btn w-btn btn-sm btn-link"
+                mat-button
                 (click)="link()">
             Link
         </button>
 
-        <button class="btn w-btn btn-sm btn-link" (click)="bold()">Bold</button>
-        <button class="btn w-btn btn-sm btn-link" (click)="italic()">Italic</button>
+        <button mat-button (click)="bold()">Bold</button>
+        <button mat-button (click)="italic()">Italic</button>
     </div>
 
     <div>
         <form *ngIf="ui.showLinkForm" (submit)="applyLink()">
-            <div class="form-group w-form-group">
-                <input #linkEl #src class="form-control w-input" placeholder="Paste the url">
-            </div>
+            <mat-form-field>
+                <input #linkEl #src matInput placeholder="Paste the url">
+            </mat-form-field>
 
-            <div class="form-group w-form-group">
+            <div>
                 <button (click)="applyLink()"
                         type="button"
-                        class="btn w-btn btn-link">
+                        mat-button>
                     Link
                 </button>
 
                 <button *ngIf="config.api.isLinkSelected()"
                         (click)="unlink()"
                         type="button"
-                        class="btn w-btn btn-link">
+                        mat-button>
                     Unlink
                 </button>
             </div>

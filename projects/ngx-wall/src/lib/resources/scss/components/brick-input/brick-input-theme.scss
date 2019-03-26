@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+
+@mixin w-brick-input($theme, $typography) {
+    $primary: map-get($theme, primary);
+    $accent: map-get($theme, accent);
+    $warn: map-get($theme, accent);
+    $foreground: map-get($theme, foreground);
+    $background: map-get($theme, background);
+
+    .w-brick-input {
+        &__description {
+            color: mat-color($foreground, secondary-text);
+            font-size: mat-font-size($typography, caption);
+        }
+    }
+}
