@@ -7,6 +7,10 @@ import {Radar, SpotModel} from '../../modules/radar';
 import {StartWorkingEvent, StopWorkingEvent, TOW, TowService, WorkInProgressEvent} from '../../modules/tow';
 import {IWallModel, IWallPlugin} from '../../wall';
 
+export interface ISelectionOptions {
+    shouldUnselectBrick: (e: MouseEvent) => boolean;
+}
+
 export class SelectionPlugin implements IWallPlugin {
     name: 'selection';
     version: '0.0.0';
@@ -35,7 +39,14 @@ export class SelectionPlugin implements IWallPlugin {
     private towServiceSubscription: Subscription;
     private pickOutServiceSubscription: Subscription;
 
-    constructor(private injector: Injector) {
+    private options: ISelectionOptions;
+
+    constructor(private injector: Injector, options: ISelectionOptions) {
+        // extension point for client to prevent brick un-selection
+        this.options = {
+            shouldUnselectBrick: () => true,
+            ...options
+        };
     }
 
     onWallInitialize(wallModel: IWallModel) {
@@ -208,7 +219,7 @@ export class SelectionPlugin implements IWallPlugin {
     }
 
     onMouseDown(e: MouseEvent) {
-        if (!this.isMouseOverDraggableBox(e.clientX, e.clientY)) {
+        if (!this.isMouseOverDraggableBox(e.clientX, e.clientY) && this.options.shouldUnselectBrick(e)) {
             this.wallModel.api.ui.unSelectBricks();
         }
     }
