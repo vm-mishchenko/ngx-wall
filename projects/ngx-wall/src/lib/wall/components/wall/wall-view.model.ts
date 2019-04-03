@@ -2,19 +2,8 @@ import {Injectable} from '@angular/core';
 import {Subject, Subscription} from 'rxjs';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {Observable} from 'rxjs/internal/Observable';
-import {
-    AddBrickEvent,
-    BeforeChangeEvent,
-    MoveBrickEvent,
-    RemoveBrickEvent,
-    RemoveBricksEvent,
-    TurnBrickIntoEvent,
-    UpdateBrickStateEvent
-} from '../../plugins/core/public_api';
-import {
-    IWallModel,
-    IWallRow
-} from '../../model/public_api';
+import {BeforeChangeEvent, MoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent} from '../../plugins/core/public_api';
+import {IWallModel, IWallRow} from '../../model/public_api';
 import {BrickRegistry} from '../../registry/public_api';
 import {SelectedBrickEvent} from './events/selected-brick.event';
 import {IFocusedBrick} from './interfaces/focused-brick.interface';

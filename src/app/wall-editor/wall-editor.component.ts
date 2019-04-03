@@ -1,4 +1,4 @@
-import {Component, Injector} from '@angular/core';
+import {Component, Injector, OnInit} from '@angular/core';
 import {
     BeforeChangeEvent,
     CopyPlugin,
@@ -22,8 +22,8 @@ import {
         }
     `]
 })
-export class WallEditorComponent {
-    plan: any = null;
+export class WallEditorComponent implements OnInit {
+    plan: IWallDefinition;
 
     wallConfiguration: IWallConfiguration = {
         mode: WALL.MODES.EDIT
@@ -441,7 +441,7 @@ export class WallEditorComponent {
         }
     };
 
-    wall2Model: IWallModel;
+    wallModel: IWallModel;
 
     constructor(private wallModelFactory: WallModelFactory,
                 private injector: Injector) {
@@ -454,14 +454,17 @@ export class WallEditorComponent {
             ]
         };
 
-        this.wall2Model = this.wallModelFactory.create(modelConfig);
+        this.wallModel = this.wallModelFactory.create(modelConfig);
+    }
 
-        // todo: fix it
-        this.wall2Model.api.core.subscribe((e) => {
-            if (!(e instanceof BeforeChangeEvent)) {
-                // update current plan
-                this.plan = this.wall2Model.api.core.getPlan();
-            }
-        });
+    ngOnInit() {
+        setTimeout(() => {
+            this.wallModel.api.core.subscribe((e) => {
+                if (!(e instanceof BeforeChangeEvent)) {
+                    // update current plan
+                    this.plan = this.wallModel.api.core.getPlan();
+                }
+            });
+        }, 10);
     }
 }

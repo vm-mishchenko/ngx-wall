@@ -41,7 +41,7 @@ export class SelectionPlugin implements IWallPlugin {
 
     private options: ISelectionOptions;
 
-    constructor(private injector: Injector, options: ISelectionOptions) {
+    constructor(private injector: Injector, options?: ISelectionOptions) {
         // extension point for client to prevent brick un-selection
         this.options = {
             shouldUnselectBrick: () => true,
