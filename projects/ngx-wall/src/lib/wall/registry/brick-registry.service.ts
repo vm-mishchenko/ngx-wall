@@ -3,10 +3,6 @@ import {IBrickSpecification} from './interfaces/brick-specification.interface';
 
 @Injectable()
 export class BrickRegistry {
-    constructor() {
-        console.log(`BrickRegistry created`);
-    }
-
     private bricks: IBrickSpecification[] = [];
 
     // todo: add unregister functionality
