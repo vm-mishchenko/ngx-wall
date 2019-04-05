@@ -14,7 +14,7 @@
 
     wall-canvas-brick {
         .wall-canvas-brick__draggable-box {
-            color: mat-color($background, lighter-contrast);
+            color: mat-color($background, focused-button);
         }
 
         .wall-canvas-brick__draggable-handler {

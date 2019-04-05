@@ -1,6 +1,6 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
-import {IOnWallFocus} from '../../../wall';
+import {IOnWallFocus} from '../../../wall/wall';
 import {IVideoBrickState} from '../video-brick-state.interface';
 import {InputContextComponent} from '../input-context/input-context.component';
 

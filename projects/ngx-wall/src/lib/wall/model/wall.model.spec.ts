@@ -1,5 +1,5 @@
 import {IWallDefinition} from './interfaces/wall-definition.interface';
-import {AddBrickEvent, IBrickSnapshot, IWallModel} from '../index';
+import {AddBrickEvent, IBrickSnapshot, IWallModel} from '../wall';
 import {BrickRegistry} from '../registry/brick-registry.service';
 import {WallModelFactory} from '../factory/wall-model.factory';
 

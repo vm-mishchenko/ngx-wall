@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
-import {IWallConfiguration, IWallModel} from '../..';
 import {WallViewModel} from './wall-view.model';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {IWallConfiguration} from './interfaces/wall-configuration.interface';
 
 @Component({
     selector: 'wall',

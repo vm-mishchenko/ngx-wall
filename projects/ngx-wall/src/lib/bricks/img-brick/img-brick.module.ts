@@ -1,15 +1,17 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {StickyModalModule} from 'ngx-sticky-modal';
-import {ResizableModule} from '../../modules/resizable';
-import {TowModule} from '../../modules/tow';
-import {BrickRegistry, HelperComponentsModule, IBrickSnapshot} from '../../wall';
 import {ImgBrickComponent} from './component/img-brick.component';
 import {InputContextComponent} from './input-context/input-context.component';
 import {ImgModel} from './img-brick-destructor.class';
 import {ImgBrickState} from './img-brick-state.interface';
 import {ImgBrickTextRepresentation} from './img-brick-text-representation.class';
 import {MatButtonModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {ResizableModule} from '../../modules/resizable/resizable.module';
+import {TowModule} from '../../modules/tow/tow.module';
+import {HelperComponentsModule} from '../../modules/helper-components/helper-components.module';
+import {IBrickSnapshot} from '../../wall/model/interfaces/brick-snapshot.interface';
+import {BrickRegistry} from '../../wall/registry/brick-registry.service';
 
 @NgModule({
     imports: [

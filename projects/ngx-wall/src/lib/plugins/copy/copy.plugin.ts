@@ -1,6 +1,6 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
-import {IWallModel, IWallPlugin} from '../../wall';
+import {IWallModel, IWallPlugin} from '../../wall/wall';
 
 export class CopyPlugin implements IWallPlugin {
     name: 'copy';

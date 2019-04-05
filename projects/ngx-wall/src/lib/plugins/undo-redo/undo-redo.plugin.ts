@@ -1,7 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {BeforeChangeEvent, IWallDefinition, IWallModel, IWallPlugin, SetPlanEvent} from '../../wall';
+import {BeforeChangeEvent, IWallDefinition, IWallModel, IWallPlugin, SetPlanEvent} from '../../wall/wall';
 import {IUndoRedoApi} from './undo-redo-api.interface';
 import {UNDO_REDO_API_NAME} from './undo-redo.constant';
 

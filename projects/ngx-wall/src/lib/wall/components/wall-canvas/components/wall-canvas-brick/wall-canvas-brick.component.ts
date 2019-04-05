@@ -13,9 +13,10 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {LocationUpdatedEvent, Radar} from '../../../../../modules/radar';
-import {IWallComponent} from '../../../wall/public_api';
 import {WallCanvasComponent} from '../../wall-canvas.component';
+import {Radar} from '../../../../../modules/radar/radar.service';
+import {LocationUpdatedEvent} from '../../../../../modules/radar/events/location-updated.event';
+import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
 
 @Component({
     selector: 'wall-canvas-brick',

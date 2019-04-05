@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs';
-import {IWallModel} from '../../../..';
+import {IWallModel} from '../../../../model/interfaces/wall-model.interface';
 
 export interface IWallComponent {
     id: string;

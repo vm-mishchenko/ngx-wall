@@ -1,9 +1,9 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
-import {RadarModule} from '../radar';
 import {TowCoordinator} from './tow-coordinator.service';
 import {TowSlaveDirective} from './tow-slave/tow-slave.directive';
 import {TowService} from './tow.service';
+import {RadarModule} from '../radar/radar.module';
 
 @NgModule({
     imports: [

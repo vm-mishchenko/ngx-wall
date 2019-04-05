@@ -8,7 +8,7 @@ import {CursorLeftCoordinate} from '../../modules/utils/node/cursor-left-coordin
 import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
 import {PlaceCaretToPosition} from '../../modules/utils/node/place-caret-to-position';
 import {StringWithoutEmptyNodes} from '../../modules/utils/node/string-without-empty-nodes';
-import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall';
+import {IFocusContext, IOnWallFocus, IOnWallStateChange, IWallComponent, IWallModel, IWallUiApi} from '../../wall/wall';
 import {
     BACK_SPACE_KEY,
     BACK_SPACE_KEY_CODE_ANDROID,

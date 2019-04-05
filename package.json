@@ -1,6 +1,6 @@
 {
     "name": "ngx-wall",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "repository": {
         "url": "https://github.com/vm-mishchenko/ngx-wall.git",
         "type": "git"
@@ -8,7 +8,11 @@
     "scripts": {
         "start": "ng serve",
         "build": "ng build ngx-wall",
+        "build:prod": "ng build ngx-wall --prod",
+        "build:watch": "ng build ngx-wall --watch",
+        "build-for-origin": "run-p build:watch copy:scss:watch",
         "copy:scss": "cpx \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
+        "copy:scss:watch": "cpx -w \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
         "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
         "test": "ng test ngx-wall",
@@ -38,10 +42,10 @@
         "ngx-sticky-modal": "^0.0.3"
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "~0.11.0",
-        "@angular-devkit/build-ng-packagr": "~0.6.3",
-        "@angular/cli": "~7.1.1",
-        "@angular/compiler-cli": "^7.1.2",
+        "@angular-devkit/build-angular": "^0.13.0",
+        "@angular-devkit/build-ng-packagr": "^0.13.0",
+        "@angular/cli": "^7.3.7",
+        "@angular/compiler-cli": "^7.2.0",
         "@angular/language-service": "^7.1.2",
         "@types/jasmine": "~2.8.8",
         "@types/jasminewd2": "~2.0.3",
@@ -56,9 +60,10 @@
         "karma-coverage-istanbul-reporter": "~2.0.1",
         "karma-jasmine": "~1.1.2",
         "karma-jasmine-html-reporter": "^0.2.2",
-        "ng-packagr": "^3.0.0-rc.2",
+        "ng-packagr": "^5.0.1",
+        "npm-run-all": "^4.1.5",
         "protractor": "~5.3.0",
-        "ts-node": "~5.0.1",
+        "ts-node": "~8.0.3",
         "tsickle": "0.34.0",
         "tslib": "^1.7.1",
         "tslint": "~5.9.1",

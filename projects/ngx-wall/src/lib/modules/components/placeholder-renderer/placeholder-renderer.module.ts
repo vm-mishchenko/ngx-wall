@@ -7,8 +7,12 @@ import {PlaceholderRenderer} from './placeholder-renderer.service';
     imports: [
         CommonModule
     ],
-    declarations: [PlaceholderComponent],
-    providers: [PlaceholderRenderer],
+    declarations: [
+        PlaceholderComponent
+    ],
+    providers: [
+        PlaceholderRenderer
+    ],
     entryComponents: [
         PlaceholderComponent
     ]

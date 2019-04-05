@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import {STICKY_MODAL_DATA} from 'ngx-sticky-modal';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
-import {BrickRegistry, IBrickDefinition, IBrickSpecification} from '../../../wall';
+import {BrickRegistry, IBrickDefinition, IBrickSpecification} from '../../../wall/wall';
 import {TEXT_BRICK_TAG} from '../text-brick.constant';
 
 export interface IBricksListComponentConfig {

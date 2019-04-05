@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {BrickRegistry} from '../../wall';
+import {BrickRegistry} from '../../wall/wall';
 import {DividerBrickComponent} from './component/divider-brick.component';
 import {DIVIDER_BRICK_TAG} from './divider-brick.constant';
 

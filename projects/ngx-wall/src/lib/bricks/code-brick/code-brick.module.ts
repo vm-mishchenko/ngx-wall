@@ -1,11 +1,12 @@
 import {NgModule} from '@angular/core';
 import {StickyModalModule} from 'ngx-sticky-modal';
-import {HelperComponentsModule} from '../../modules/helper-components';
-import {BrickRegistry, WallModule} from '../../wall';
 import {CodeBrickComponent} from './component/code-brick.component';
 import {ModeListComponent} from './mode-list/mode-list.component';
 import {MatButtonModule, MatListModule} from '@angular/material';
 import {CommonModule} from '@angular/common';
+import {WallModule} from '../../wall/wall.module';
+import {BrickRegistry} from '../../wall/registry/brick-registry.service';
+import {HelperComponentsModule} from '../../modules/helper-components/helper-components.module';
 
 @NgModule({
     imports: [

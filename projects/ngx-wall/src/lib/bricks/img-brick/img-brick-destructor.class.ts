@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
-import {IWallFileUploader, WALL_FILE_UPLOADER} from '../../modules/file-uploader';
-import {IBrickSnapshot} from '../../wall';
+import {IWallFileUploader, WALL_FILE_UPLOADER} from '../../modules/file-uploader/file-uploader';
+import {IBrickSnapshot} from '../../wall/wall';
 import {ImgBrickState} from './img-brick-state.interface';
 
 @Injectable()

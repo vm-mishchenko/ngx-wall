@@ -1,4 +1,4 @@
-import {IBrickSnapshot} from '../../wall';
+import {IBrickSnapshot} from '../../wall/wall';
 import {IBaseTextState} from './base-text-state.interface';
 
 export class TextRepresentation {

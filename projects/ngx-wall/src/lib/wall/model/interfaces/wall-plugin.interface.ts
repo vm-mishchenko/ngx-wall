@@ -1,4 +1,4 @@
-import {IWallModel} from '../..';
+import {IWallModel} from './wall-model.interface';
 
 export interface IWallPlugin {
     name: string;

@@ -1,13 +1,13 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {StickyModalModule} from 'ngx-sticky-modal';
-import {HelperComponentsModule} from '../../modules/helper-components';
-import {TowModule} from '../../modules/tow';
-import {BrickRegistry} from '../../wall';
 import {VideoBrickTextRepresentationClass} from '../video-brick/video-brick-text-representation.class';
 import {InputContextComponent} from './input-context/input-context.component';
 import {WebBookmarkBrickComponent} from './component/web-bookmark-brick.component';
 import {MatButtonModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {TowModule} from '../../modules/tow/tow.module';
+import {HelperComponentsModule} from '../../modules/helper-components/helper-components.module';
+import {BrickRegistry} from '../../wall/registry/brick-registry.service';
 
 @NgModule({
     imports: [

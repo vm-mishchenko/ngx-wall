@@ -4,13 +4,13 @@ import {fromEvent, Subject, Subscription} from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
 import {NodeTreeSplit} from '../../../modules/utils/node-tree-split';
-import {TreeNodeTraverse} from '../../../modules/utils/node/tree-node-traverse.';
-import {IWallModel} from '../../../wall';
+import {TreeNodeTraverse} from '../../../modules/utils/node/tree-node-traverse';
 import {BaseTextBrickComponent} from '../../base-text-brick/base-text-brick.component';
-import {DIVIDER_BRICK_TAG} from '../../divider-brick';
 import {BricksListComponent} from '../bricks-list/bricks-list.component';
 import {ITextBrickApi} from '../text-brick-api.interface';
 import {TextContextMenuComponent} from '../text-context-menu/text-context-menu.component';
+import {IWallModel} from '../../../wall/model/interfaces/wall-model.interface';
+import {DIVIDER_BRICK_TAG} from '../../divider-brick/divider-brick.constant';
 
 @Component({
     selector: 'text-brick',

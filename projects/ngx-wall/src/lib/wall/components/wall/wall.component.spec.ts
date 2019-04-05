@@ -1,34 +1,24 @@
 import {CommonModule} from '@angular/common';
-import {
-    Component,
-    DebugElement,
-    EventEmitter,
-    Injectable,
-    Input,
-    NgModule,
-    OnInit,
-    Output,
-    SimpleChanges
-} from '@angular/core';
+import {Component, DebugElement, EventEmitter, Input, NgModule, OnInit, Output, SimpleChanges} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {
-    BrickRegistry,
-    IFocusContext,
-    IOnWallFocus,
-    IOnWallStateChange,
-    IWallComponent,
-    IWallModel, IWallUiApi, SelectedBrickEvent,
-    WallModelFactory
-} from '../..';
-import {TextBrickModule} from '../../../bricks/text-brick';
+import {TextBrickModule} from '../../../bricks/text-brick/text-brick';
 import {TEXT_BRICK_TAG} from '../../../bricks/text-brick/text-brick.constant';
-import {PlaceholderRendererModule} from '../../../modules/components/placeholder-renderer';
-import {PickOutModule} from '../../../modules/pick-out';
-import {RadarModule} from '../../../modules/radar';
-import {TowModule} from '../../../modules/tow';
-import {WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent} from '../wall-canvas';
+import {RadarModule} from '../../../modules/radar/radar';
+import {TowModule} from '../../../modules/tow/tow';
+import {WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent} from '../wall-canvas/wall-canvas';
 import {WallComponent} from './wall.component';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {WallModelFactory} from '../../factory/wall-model.factory';
+import {IOnWallStateChange} from './interfaces/wall-component/on-wall-state-change.interface';
+import {IOnWallFocus} from './interfaces/wall-component/on-wall-focus.interface';
+import {IWallComponent} from './interfaces/wall-component/wall-component.interface';
+import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {SelectedBrickEvent} from './events/selected-brick.event';
+import {IWallUiApi} from './interfaces/ui-api.interface';
+import {PlaceholderRendererModule} from '../../../modules/components/placeholder-renderer/placeholder-renderer.module';
+import {PickOutModule} from '../../../modules/pick-out/pick-out.module';
 
 class TestScope {
     rootNativeElement: HTMLElement;
@@ -452,7 +442,7 @@ describe('WallComponent', () => {
                 expect(selectedBricks[1]).toBe(textBrickSnapshot2.id);
             });
 
-            it('should trigger SelectedBrickEvent event after brick selection', () => {
+            it('should trigger SelectedBrickEvent event after brick selections', () => {
                 testScope.wallModel.api.core.addDefaultBrick();
                 testScope.wallModel.api.core.addDefaultBrick();
 

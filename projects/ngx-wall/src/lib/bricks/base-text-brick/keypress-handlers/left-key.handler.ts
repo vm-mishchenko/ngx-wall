@@ -1,4 +1,4 @@
-import {IFocusContext} from '../../../wall';
+import {IFocusContext} from '../../../wall/wall';
 import {BaseTextBrickComponent} from '../base-text-brick.component';
 import {FOCUS_INITIATOR} from '../base-text-brick.constant';
 

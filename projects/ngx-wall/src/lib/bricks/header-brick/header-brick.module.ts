@@ -1,10 +1,10 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ContenteditableModule} from '../../modules/contenteditable';
-import {BrickRegistry} from '../../wall';
 import {TextRepresentation} from '../base-text-brick/base-text-representation.class';
 import {HeaderBrickComponent} from './component/header-brick.component';
+import {BrickRegistry} from '../../wall/registry/brick-registry.service';
+import {ContenteditableModule} from '../../modules/contenteditable/contenteditable.module';
 
 @NgModule({
     imports: [

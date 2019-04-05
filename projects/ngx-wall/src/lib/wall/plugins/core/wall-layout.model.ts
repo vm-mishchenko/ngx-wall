@@ -1,4 +1,4 @@
-import {Guid} from '../../../modules/utils';
+import {Guid} from '../../../modules/utils/utils';
 import {BrickRegistry} from '../../registry/public_api';
 import {WallBrick} from '../../model/wall-brick.model';
 import {IWallColumn} from '../../model/interfaces/wall-column.interface';

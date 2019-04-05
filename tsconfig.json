@@ -1,34 +1,39 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-      "paths": {
-          "ngx-sticky-modal": [
-              "../ngx-sticky-modal/dist/ngx-sticky-modal"
-          ],
-          "@angular/*": [
-              "./node_modules/@angular/*"
-          ],
-          "rxjs": [
-              "./node_modules/rxjs"
-          ],
-          "rxjs/*": [
-              "./node_modules/rxjs/*"
-          ]
-      }
-  }
+    "compileOnSave": false,
+    "compilerOptions": {
+        "baseUrl": "./",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "module": "es2015",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es5",
+        "typeRoots": [
+            "node_modules/@types"
+        ],
+        "lib": [
+            "es2018",
+            "dom"
+        ],
+        "paths": {
+            "ngx-sticky-modal": [
+                "../ngx-sticky-modal/dist/ngx-sticky-modal"
+            ],
+            "@angular/*": [
+                "./node_modules/@angular/*"
+            ],
+            "rxjs": [
+                "./node_modules/rxjs"
+            ],
+            "tslib": [
+                "./node_modules/tslib"
+            ],
+            "rxjs/*": [
+                "./node_modules/rxjs/*"
+            ]
+        }
+    }
 }

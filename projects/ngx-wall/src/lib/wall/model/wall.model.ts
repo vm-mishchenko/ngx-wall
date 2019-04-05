@@ -1,11 +1,10 @@
-import {Observable, Subject} from 'rxjs';
-import {Subscription} from 'rxjs/index';
+import {Observable, Subject, Subscription} from 'rxjs';
 import {IWallPlugin} from './interfaces/wall-plugin.interface';
-import {BrickRegistry} from '../registry/public_api';
 import {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 import {IWallModelConfig} from './interfaces/wall-model-config.interface';
 import {IWallModel} from './interfaces/wall-model.interface';
 import {IWallCorePluginApi} from './interfaces/wall-core-plugin-api.interface';
+import {BrickRegistry} from '../registry/brick-registry.service';
 
 export class WallModel implements IWallModel {
     version: '0.0.0';

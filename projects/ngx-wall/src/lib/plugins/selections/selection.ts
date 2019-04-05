@@ -1,11 +1,20 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer';
-import {EndPickOut, PickOutItems, PickOutService, StartPickOut} from '../../modules/pick-out';
-import {Radar, SpotModel} from '../../modules/radar';
-import {StartWorkingEvent, StopWorkingEvent, TOW, TowService, WorkInProgressEvent} from '../../modules/tow';
-import {IWallModel, IWallPlugin} from '../../wall';
+import {Radar} from '../../modules/radar/radar.service';
+import {SpotModel} from '../../modules/radar/spot.model';
+import {PickOutService} from '../../modules/pick-out/pick-out.service';
+import {StartPickOut} from '../../modules/pick-out/events/start-pick-out.event';
+import {PickOutItems} from '../../modules/pick-out/events/pick-out-items.event';
+import {EndPickOut} from '../../modules/pick-out/events/end-pick-out.event';
+import {IWallPlugin} from '../../wall/model/interfaces/wall-plugin.interface';
+import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
+import {TowService} from '../../modules/tow/tow.service';
+import {TOW} from '../../modules/tow/tow.constant';
+import {StopWorkingEvent} from '../../modules/tow/events/stop-working.event';
+import {WorkInProgressEvent} from '../../modules/tow/events/work-in-progress.event';
+import {StartWorkingEvent} from '../../modules/tow/events/start-working.event';
+import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer/placeholder-renderer.service';
 
 export interface ISelectionOptions {
     shouldUnselectBrick: (e: MouseEvent) => boolean;
@@ -42,7 +51,7 @@ export class SelectionPlugin implements IWallPlugin {
     private options: ISelectionOptions;
 
     constructor(private injector: Injector, options?: ISelectionOptions) {
-        // extension point for client to prevent brick un-selection
+        // extension point for client to prevent brick un-selections
         this.options = {
             shouldUnselectBrick: () => true,
             ...options

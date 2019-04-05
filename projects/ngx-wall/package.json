@@ -1,14 +1,14 @@
 {
     "name": "ngx-wall",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "peerDependencies": {
-        "@angular/forms": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/cdk": "^6.0.0-rc.0 || ^6.0.0",
-        "@angular/material": "^6.0.0-rc.0 || ^6.0.0",
-        "codemirror": "5.37.0",
-        "rxjs": "^6.0.0",
+        "@angular/forms": "^7.1.2",
+        "@angular/common": "^7.1.2",
+        "@angular/core": "^7.1.2",
+        "@angular/cdk": "^7.3.6",
+        "@angular/material": "^7.3.6",
+        "codemirror": "5.42.0",
+        "rxjs": "^6.3.3",
         "ngx-sticky-modal": "^0.0.3"
     }
 }

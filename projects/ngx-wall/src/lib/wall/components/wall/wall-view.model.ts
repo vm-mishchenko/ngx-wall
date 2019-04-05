@@ -1,14 +1,16 @@
 import {Injectable} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
-import {Observable} from 'rxjs/internal/Observable';
-import {BeforeChangeEvent, MoveBrickEvent, RemoveBricksEvent, TurnBrickIntoEvent} from '../../plugins/core/public_api';
-import {IWallModel, IWallRow} from '../../model/public_api';
-import {BrickRegistry} from '../../registry/public_api';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {SelectedBrickEvent} from './events/selected-brick.event';
 import {IFocusedBrick} from './interfaces/focused-brick.interface';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {IWallRow} from '../../model/interfaces/wall-row.interface';
+import {RemoveBricksEvent} from '../../plugins/core/events/remove-bricks.event';
+import {MoveBrickEvent} from '../../plugins/core/events/move-brick.event';
+import {TurnBrickIntoEvent} from '../../plugins/core/events/turn-brick-into.event';
+import {BeforeChangeEvent} from '../../plugins/core/events/before-change.event';
 
 @Injectable()
 export class WallViewModel implements IWallUiApi {

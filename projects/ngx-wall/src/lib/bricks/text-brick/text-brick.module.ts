@@ -2,14 +2,14 @@ import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {StickyModalModule} from 'ngx-sticky-modal';
-import {ContenteditableModule} from '../../modules/contenteditable';
-import {HelperComponentsModule} from '../../modules/helper-components';
-import {BrickRegistry} from '../../wall';
 import {TextRepresentation} from '../base-text-brick/base-text-representation.class';
 import {BricksListComponent} from './bricks-list/bricks-list.component';
 import {TextBrickComponent} from './component/text-brick.component';
 import {TextContextMenuComponent} from './text-context-menu/text-context-menu.component';
 import {MatButtonModule, MatFormFieldModule, MatInputModule, MatListModule} from '@angular/material';
+import {HelperComponentsModule} from '../../modules/helper-components/helper-components.module';
+import {ContenteditableModule} from '../../modules/contenteditable/contenteditable.module';
+import {BrickRegistry} from '../../wall/registry/brick-registry.service';
 
 @NgModule({
     imports: [

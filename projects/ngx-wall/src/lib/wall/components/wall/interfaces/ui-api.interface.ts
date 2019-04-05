@@ -1,5 +1,4 @@
 import {Subscription} from 'rxjs';
-import {Observable} from 'rxjs/internal/Observable';
 import {IFocusContext} from './wall-component/wall-component-focus-context.interface';
 
 export interface IWallUiApi {

@@ -1,19 +1,9 @@
 import {DOCUMENT} from '@angular/common';
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Inject,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-    ViewChild
-} from '@angular/core';
-import {Subject} from 'rxjs';
-import {Observable} from 'rxjs/internal/Observable';
-import {IWallModel, IWallRow} from '../../model/public_api';
-import {IFocusedBrick} from '../wall/public_api';
+import {Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Observable, Subject} from 'rxjs';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {IWallRow} from '../../model/interfaces/wall-row.interface';
+import {IFocusedBrick} from '../wall/interfaces/focused-brick.interface';
 
 @Component({
     selector: 'wall-canvas',

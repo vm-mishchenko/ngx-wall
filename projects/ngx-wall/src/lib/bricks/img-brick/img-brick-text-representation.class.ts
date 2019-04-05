@@ -1,4 +1,4 @@
-import {IBrickSnapshot} from '../../wall';
+import {IBrickSnapshot} from '../../wall/wall';
 import {ImgBrickState} from './img-brick-state.interface';
 
 export class ImgBrickTextRepresentation {

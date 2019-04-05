@@ -1,4 +1,4 @@
-import {IBrickSnapshot} from '../../wall';
+import {IBrickSnapshot} from '../../wall/wall';
 import {IVideoBrickState} from './video-brick-state.interface';
 
 export class VideoBrickTextRepresentationClass {

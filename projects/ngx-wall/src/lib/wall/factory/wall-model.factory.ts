@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
 import {WallCorePlugin} from '../plugins/core/wall-core.plugin';
-import {BrickRegistry} from '../registry/public_api';
-import {IWallModelConfig, IWallModel} from '../model/public_api';
 import {WallModel} from '../model/wall.model';
+import {BrickRegistry} from '../registry/brick-registry.service';
+import {IWallModel} from '../model/interfaces/wall-model.interface';
+import {IWallModelConfig} from '../model/interfaces/wall-model-config.interface';
 
 @Injectable()
 export class WallModelFactory {
