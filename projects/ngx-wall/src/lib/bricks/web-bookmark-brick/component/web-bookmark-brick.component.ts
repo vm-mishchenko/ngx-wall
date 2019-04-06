@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
 import {InputContextComponent} from '../input-context/input-context.component';
@@ -34,6 +34,7 @@ export class WebBookmarkBrickComponent implements OnInit {
     loading = false;
 
     constructor(private el: ElementRef,
+                private componentFactoryResolver: ComponentFactoryResolver,
                 private ngxStickyModalService: StickyModalService) {
     }
 
@@ -84,7 +85,8 @@ export class WebBookmarkBrickComponent implements OnInit {
                     originY: 'bottom',
                     overlayX: 'center',
                     overlayY: 'top'
-                }
+                },
+                componentFactoryResolver: this.componentFactoryResolver
             }).result.then((result) => {
                 this.applySrc(result.src);
             }, () => {

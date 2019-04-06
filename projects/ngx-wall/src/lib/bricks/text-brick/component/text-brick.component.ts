@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ElementRef, Input, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {fromEvent, Subject, Subscription} from 'rxjs';
 import {debounceTime, filter} from 'rxjs/operators';
@@ -52,6 +52,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
     constructor(private zone: NgZone,
                 private ngxStickyModalService: StickyModalService,
                 private cd: ChangeDetectorRef,
+                private componentFactoryResolver: ComponentFactoryResolver,
                 private el: ElementRef) {
         super();
 
@@ -208,7 +209,8 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
                         clientX: elementBoundingRect.x,
                         clientY: elementBoundingRect.y + 35
                     }
-                }
+                },
+                componentFactoryResolver: this.componentFactoryResolver
             });
 
             setTimeout(() => {
@@ -349,7 +351,8 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
             },
             overlayConfig: {
                 hasBackdrop: false
-            }
+            },
+            componentFactoryResolver: this.componentFactoryResolver
         });
 
         this.contextMenuModalRef.result.then(() => {

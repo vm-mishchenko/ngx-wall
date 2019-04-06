@@ -1,4 +1,15 @@
-import {Component, ElementRef, EventEmitter, Inject, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {
+    Component,
+    ComponentFactoryResolver,
+    ElementRef,
+    EventEmitter,
+    Inject,
+    Input,
+    OnInit,
+    Output,
+    Renderer2,
+    ViewChild
+} from '@angular/core';
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {WALL_FILE_UPLOADER} from '../../../modules/file-uploader/file-uploader.token';
 import {IWallFileUploader, IWallFileUploaderResult} from '../../../modules/file-uploader/file-uploader.types';
@@ -42,6 +53,7 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
     };
 
     constructor(private renderer: Renderer2,
+                private componentFactoryResolver: ComponentFactoryResolver,
                 private ngxStickyModalService: StickyModalService,
                 @Inject(WALL_FILE_UPLOADER) private wallFileUploader: IWallFileUploader,
                 private el: ElementRef) {
@@ -147,7 +159,8 @@ export class ImgBrickComponent implements OnInit, IOnWallFocus {
                     originY: 'bottom',
                     overlayX: 'center',
                     overlayY: 'top'
-                }
+                },
+                componentFactoryResolver: this.componentFactoryResolver
             });
 
             this.imageSrcPlaceholderRef.result.then((result) => {

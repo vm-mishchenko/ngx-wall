@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import CodeMirror from 'codemirror';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/shell/shell';
@@ -38,7 +38,8 @@ export class CodeBrickComponent implements OnInit {
 
     @Output() stateChanges: EventEmitter<ICodeBrickState> = new EventEmitter();
 
-    constructor(private ngxStickyModalService: StickyModalService) {
+    constructor(private ngxStickyModalService: StickyModalService,
+                private componentFactoryResolver: ComponentFactoryResolver) {
     }
 
     ngOnInit() {
@@ -102,7 +103,8 @@ export class CodeBrickComponent implements OnInit {
                     clientX: elementBoundingRect.x,
                     clientY: elementBoundingRect.y + 35
                 }
-            }
+            },
+            componentFactoryResolver: this.componentFactoryResolver
         }).result.then((mode: any) => {
             Object.assign(this.scope, {
                 ...this.state,

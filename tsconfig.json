@@ -19,9 +19,6 @@
             "dom"
         ],
         "paths": {
-            "ngx-sticky-modal": [
-                "../ngx-sticky-modal/dist/ngx-sticky-modal"
-            ],
             "@angular/*": [
                 "./node_modules/@angular/*"
             ],
