@@ -14,13 +14,7 @@ import {
 
 @Component({
     selector: 'app-wall-editor',
-    templateUrl: 'wall-editor.component.html',
-    styles: [`
-        .wrapper {
-            width: 800px;
-            margin: 0 auto;
-        }
-    `]
+    templateUrl: 'wall-editor.component.html'
 })
 export class WallEditorComponent implements OnInit {
     plan: IWallDefinition;

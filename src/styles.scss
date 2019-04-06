@@ -1,4 +1,6 @@
 @import '~@angular/material/theming';
+@import '~bootstrap/scss/bootstrap-reboot';
+@import '~bootstrap/scss/bootstrap-grid';
 @import '../projects/ngx-wall/src/lib/resources/scss/index';
 
 /* Material Icons */
@@ -230,6 +232,12 @@ $theme: mat-light-theme(
 // include wall core styles
 @include wall();
 
+html, body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
 body {
     font-family: mat-font-family($typography);
     font-size: mat-font-size($typography, body-1);
@@ -245,6 +253,18 @@ a {
 button:focus {
     outline: none;
 }
+
+
+@media (max-width: 680px) {
+    wall-canvas-row {
+        flex-direction: column;
+
+        .wall-canvas-row__column {
+            margin: 0 !important;
+        }
+    }
+}
+
 
 // Include the alternative theme styles inside of a block with a CSS class. You can make this
 // CSS class whatever you want. In this example, any component inside of an element with

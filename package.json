@@ -39,7 +39,8 @@
         "rxjs": "^6.3.3",
         "zone.js": "^0.8.26",
         "codemirror": "5.42.0",
-        "ngx-sticky-modal": "^0.0.4"
+        "ngx-sticky-modal": "^0.0.4",
+        "bootstrap": "^4.3.1"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.13.0",
