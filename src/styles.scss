@@ -229,6 +229,12 @@ $theme: mat-light-theme(
         $theme-warn
 );
 
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+$warn: map-get($theme, accent);
+$foreground: map-get($theme, foreground);
+$background: map-get($theme, background);
+
 // include wall core styles
 @include wall();
 
@@ -241,6 +247,7 @@ html, body {
 body {
     font-family: mat-font-family($typography);
     font-size: mat-font-size($typography, body-1);
+    background: mat-color($background, background);
 }
 
 a {

@@ -9,7 +9,7 @@
 
     code-brick {
         .CodeMirror {
-            background: mat-color($background, background) !important;
+            background: mat-color($background, app-bar) !important;
             font-size: mat-font-size($typography, body-1);
 
             .CodeMirror-cursor {
