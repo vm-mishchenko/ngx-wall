@@ -19,6 +19,7 @@ import {SelectedBrickEvent} from './events/selected-brick.event';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {PlaceholderRendererModule} from '../../../modules/components/placeholder-renderer/placeholder-renderer.module';
 import {PickOutModule} from '../../../modules/pick-out/pick-out.module';
+import {MatIconModule} from '@angular/material';
 
 class TestScope {
     rootNativeElement: HTMLElement;
@@ -151,7 +152,8 @@ describe('WallComponent', () => {
                 RadarModule,
                 PlaceholderRendererModule,
                 TextBrickModule,
-                FixtureModule
+                FixtureModule,
+                MatIconModule
             ],
             providers: [
                 BrickRegistry,

@@ -464,7 +464,7 @@ describe('TextBrickComponent', () => {
                         .calls.mostRecent().args;
 
                     expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).toHaveBeenCalled();
-                    expect(/*initiator component id*/callArguments[0]).toBe(testScope.component.id);
+                    expect(/* initiator component id = */callArguments[0]).toBe(testScope.component.id);
                     expect(callArguments[1]).toEqual({
                         initiator: FOCUS_INITIATOR,
                         details: {

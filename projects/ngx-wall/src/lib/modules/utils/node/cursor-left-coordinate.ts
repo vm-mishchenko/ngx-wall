@@ -11,7 +11,12 @@ export class CursorLeftCoordinate {
 
         div.appendChild(span);
 
+        // make sure element stay at top left corner
         div.style.position = 'absolute';
+        div.style.top = '0';
+        div.style.left = '0';
+        div.style.padding = '0';
+        div.style.margin = '0';
 
         document.body.appendChild(div);
 
