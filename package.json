@@ -6,7 +6,7 @@
         "type": "git"
     },
     "scripts": {
-        "start": "ng serve",
+        "start": "ng serve --port=4300",
         "build": "ng build ngx-wall",
         "build:prod": "ng build ngx-wall --prod",
         "build:watch": "ng build ngx-wall --watch",

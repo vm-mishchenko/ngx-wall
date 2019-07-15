@@ -1,4 +1,4 @@
-import {Subject, Subscription} from 'rxjs';
+import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {Guid} from '../../../modules/utils/utils';
 import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
 import {IWallColumn} from '../../model/interfaces/wall-column.interface';
@@ -27,6 +27,8 @@ import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 export class WallCorePlugin implements IWallPlugin {
     name = 'core';
     version = '0.0.0';
+
+    isReadOnly$: Observable<boolean> = new BehaviorSubject(false);
 
     // sub plugins
     private layout: WallLayout;
@@ -315,6 +317,14 @@ export class WallCorePlugin implements IWallPlugin {
 
             this.dispatch(new MoveBrickEvent(targetBrickIds, beforeBrickId));
         }
+    }
+
+    enableReadOnly() {
+        (this.isReadOnly$ as BehaviorSubject<boolean>).next(true);
+    }
+
+    disableReadOnly() {
+        (this.isReadOnly$ as BehaviorSubject<boolean>).next(false);
     }
 
     // QUERY METHODS

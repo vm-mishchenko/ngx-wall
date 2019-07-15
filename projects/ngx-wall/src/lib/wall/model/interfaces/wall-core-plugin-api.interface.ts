@@ -1,8 +1,11 @@
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {IWallDefinition} from './wall-definition.interface';
 import {IBrickSnapshot} from './brick-snapshot.interface';
 
 export interface IWallCorePluginApi {
+    // STATE
+    isReadOnly$: Observable<boolean>;
+
     // COMMAND METHODS
     setPlan(plan: IWallDefinition);
 
@@ -11,6 +14,10 @@ export interface IWallCorePluginApi {
     addBrickBeforeBrickId(brickId: string, tag: string, state?: object): IBrickSnapshot;
 
     getBrickResourcePaths(brickId: string): string[];
+
+    enableReadOnly();
+
+    disableReadOnly();
 
     // QUERY METHODS
 
