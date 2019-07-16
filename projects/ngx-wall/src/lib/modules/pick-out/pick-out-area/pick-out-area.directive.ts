@@ -20,6 +20,10 @@ import {IPickOutAreaConfig} from './pick-out-area-config.interface';
 import {PickOutAreaComponent} from './pick-out-area.component';
 import {PickOutAreaModel} from './pick-out-area.model';
 
+/**
+ * Renders selection square.
+ * Sends information when selection starts/ends and update coordinates in the middle.
+ */
 @Directive({
     selector: '[pick-out-area]'
 })
@@ -73,6 +77,10 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
+        if (!this.pickOutCoordinator.canPickOut()) {
+            return;
+        }
+
         if (event.button === MOUSE_LEFT_KEY_CODE && !this.isMouseOverDraggableElement(event.clientX, event.clientY)) {
             const scrollContextRect = this.config.scrollableContainer.getBoundingClientRect();
             const pageX = event.clientX - scrollContextRect.left;
@@ -90,6 +98,10 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     onMouseMove(event: any) {
+        if (!this.pickOutCoordinator.canPickOut()) {
+            return;
+        }
+
         if (this.pickOutAreaModel) {
             this.pickOutAreaModel.updateCurrentClientPosition(event.clientX, event.clientY);
             this.pickOutAreaModel.updateCurrentBrickId(this.findBrickIdByCoordinate(event.clientX, event.clientY));
@@ -107,6 +119,10 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     onMouseUp() {
+        if (!this.pickOutCoordinator.canPickOut()) {
+            return;
+        }
+
         this.onStopPickOut();
     }
 
@@ -143,7 +159,6 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
             .rootNodes[0] as HTMLElement;
 
         // 4. Append DOM element to the body
-
         this.config.scrollableContainer.appendChild(domElem);
     }
 

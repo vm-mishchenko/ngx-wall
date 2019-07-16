@@ -3,6 +3,10 @@
         <div class="col-md-10 offset-md-1
             col-lg-8 offset-lg-2
             col-xl-8 offset-xl-2">
+
+            <button (click)="wallModel.api.core.enableReadOnly()">Enable Read only</button>
+            <button (click)="wallModel.api.core.disableReadOnly()">Disable Read only</button>
+
             <div #container>
                 <wall [model]="wallModel"
                       [configuration]="wallConfiguration"></wall>

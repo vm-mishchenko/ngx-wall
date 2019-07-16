@@ -15,6 +15,8 @@ export interface IWallCorePluginApi {
 
     getBrickResourcePaths(brickId: string): string[];
 
+    isReadOnly(): boolean;
+
     enableReadOnly();
 
     disableReadOnly();

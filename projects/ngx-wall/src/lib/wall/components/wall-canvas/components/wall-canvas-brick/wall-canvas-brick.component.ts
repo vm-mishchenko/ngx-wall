@@ -13,10 +13,10 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {Subscription} from 'rxjs';
-import {WallCanvasComponent} from '../../wall-canvas.component';
-import {Radar} from '../../../../../modules/radar/radar.service';
 import {LocationUpdatedEvent} from '../../../../../modules/radar/events/location-updated.event';
+import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
+import {WallCanvasComponent} from '../../wall-canvas.component';
 
 @Component({
     selector: 'wall-canvas-brick',
@@ -64,14 +64,23 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
         this.componentReference = this.renderBrick();
 
+        this.wallCanvasComponent.wallModel.api.core.isReadOnly();
+
+        // show/hide drag-and-drop handler
         this.radarSubscription = this.radar.subscribe((e) => {
             if (e instanceof LocationUpdatedEvent) {
-                const currentSpot = e.spots.find((spot) => spot.data.brickId === this.brick.id);
-
-                if (currentSpot.isCross13Line) {
-                    this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;
-                } else {
+                // always hide when model is readonly state
+                if (this.wallCanvasComponent.wallModel.api.core.isReadOnly()) {
                     this.isMouseNear = false;
+                } else {
+                    // show/hide based on distance to the handler
+                    const currentSpot = e.spots.find((spot) => spot.data.brickId === this.brick.id);
+
+                    if (currentSpot.isCross13Line) {
+                        this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;
+                    } else {
+                        this.isMouseNear = false;
+                    }
                 }
 
                 this.cdRef.detectChanges();
@@ -135,5 +144,12 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         return componentReference;
+    }
+
+    private initializeDrag() {
+
+    }
+
+    private stopDrag() {
     }
 }

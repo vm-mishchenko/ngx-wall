@@ -1,12 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {Radar} from '../radar/radar.service';
+import {SpotModel} from '../radar/spot.model';
 import {EndPickOut} from './events/end-pick-out.event';
 import {PickOutItems} from './events/pick-out-items.event';
 import {StartPickOut} from './events/start-pick-out.event';
 import {StopPickOut} from './events/stop-pick-out.event';
-import {Radar} from '../radar/radar.service';
-import {SpotModel} from '../radar/spot.model';
 
+/**
+ * Notified when selection is started by the pick-out-area.directive.
+ * Based on area coordinate calculates which spots are selected.
+ */
 @Injectable()
 export class PickOutCoordinator {
     changes: Subject<any> = new Subject();
@@ -22,6 +26,10 @@ export class PickOutCoordinator {
 
     enablePickOut() {
         this.isPickOutAllowed = true;
+    }
+
+    canPickOut(): boolean {
+        return this.isPickOutAllowed;
     }
 
     stopPickOut() {

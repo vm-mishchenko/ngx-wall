@@ -6,22 +6,22 @@ import {PickOutCoordinator} from './pick-out-coordinator.service';
 export class PickOutService {
     events: Subject<any> = new Subject();
 
-    constructor(private pickOutHandlerService: PickOutCoordinator) {
-        this.pickOutHandlerService.changes.subscribe((e) => {
+    constructor(private pickOutCoordinator: PickOutCoordinator) {
+        this.pickOutCoordinator.changes.subscribe((e) => {
             this.events.next(e);
         });
     }
 
     enablePickOut() {
-        this.pickOutHandlerService.enablePickOut();
+        this.pickOutCoordinator.enablePickOut();
     }
 
     disablePickOut() {
-        this.pickOutHandlerService.disablePickOut();
+        this.pickOutCoordinator.disablePickOut();
     }
 
     stopPickOut() {
-        this.pickOutHandlerService.stopPickOut();
+        this.pickOutCoordinator.stopPickOut();
     }
 
     subscribe(fn): Subscription {

@@ -1,16 +1,17 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {PickOutService} from '../../../modules/pick-out/pick-out.service';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {IWallRow} from '../../model/interfaces/wall-row.interface';
+import {BeforeChangeEvent} from '../../plugins/core/events/before-change.event';
+import {MoveBrickEvent} from '../../plugins/core/events/move-brick.event';
+import {RemoveBricksEvent} from '../../plugins/core/events/remove-bricks.event';
+import {TurnBrickIntoEvent} from '../../plugins/core/events/turn-brick-into.event';
+import {BrickRegistry} from '../../registry/brick-registry.service';
 import {SelectedBrickEvent} from './events/selected-brick.event';
 import {IFocusedBrick} from './interfaces/focused-brick.interface';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
-import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {BrickRegistry} from '../../registry/brick-registry.service';
-import {IWallRow} from '../../model/interfaces/wall-row.interface';
-import {RemoveBricksEvent} from '../../plugins/core/events/remove-bricks.event';
-import {MoveBrickEvent} from '../../plugins/core/events/move-brick.event';
-import {TurnBrickIntoEvent} from '../../plugins/core/events/turn-brick-into.event';
-import {BeforeChangeEvent} from '../../plugins/core/events/before-change.event';
 
 @Injectable()
 export class WallViewModel implements IWallUiApi {
@@ -26,7 +27,7 @@ export class WallViewModel implements IWallUiApi {
 
     private wallModelSubscription: Subscription;
 
-    constructor(private brickRegistry: BrickRegistry) {
+    constructor(private brickRegistry: BrickRegistry, private pickOutService: PickOutService) {
     }
 
     getCanvasLayout(): IWallRow[] {
@@ -56,6 +57,7 @@ export class WallViewModel implements IWallUiApi {
         return rows;
     }
 
+    // called by Wall component
     initialize(wallModel: IWallModel) {
         this.wallModel = wallModel;
 
@@ -122,6 +124,15 @@ export class WallViewModel implements IWallUiApi {
         });
 
         this.canvasLayout = this.getCanvasLayout();
+
+        // disable pick out functionality in read-only mode
+        this.wallModel.api.core.isReadOnly$.subscribe((isReadOnly) => {
+            if (isReadOnly) {
+                this.pickOutService.disablePickOut();
+            } else {
+                this.pickOutService.enablePickOut();
+            }
+        });
     }
 
     /**

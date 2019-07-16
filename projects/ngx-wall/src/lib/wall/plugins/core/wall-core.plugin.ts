@@ -1,8 +1,11 @@
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {Guid} from '../../../modules/utils/utils';
 import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
+import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 import {IWallColumn} from '../../model/interfaces/wall-column.interface';
 import {IWallDefinition} from '../../model/interfaces/wall-definition.interface';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {IWallPlugin} from '../../model/interfaces/wall-plugin.interface';
 import {IWallRow} from '../../model/interfaces/wall-row.interface';
 import {WallBrick} from '../../model/wall-brick.model';
 import {BrickRegistry} from '../../registry/brick-registry.service';
@@ -16,9 +19,6 @@ import {TurnBrickIntoEvent} from './events/turn-brick-into.event';
 import {UpdateBrickStateEvent} from './events/update-brick-state.event';
 import {LayoutWalker} from './layout-walker.class';
 import {WallLayout} from './wall-layout.model';
-import {IWallPlugin} from '../../model/interfaces/wall-plugin.interface';
-import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 
 /*
 * Contains Wall data structure and registers API for data manipulation.
@@ -325,6 +325,10 @@ export class WallCorePlugin implements IWallPlugin {
 
     disableReadOnly() {
         (this.isReadOnly$ as BehaviorSubject<boolean>).next(false);
+    }
+
+    isReadOnly(): boolean {
+        return (this.isReadOnly$ as BehaviorSubject<boolean>).getValue();
     }
 
     // QUERY METHODS
