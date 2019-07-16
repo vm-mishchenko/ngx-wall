@@ -8,7 +8,7 @@
     $background: map-get($theme, background);
 
     header-brick {
-        [contenteditable] {
+        .text-brick__editor {
             font-weight: mat-font-weight($typography, title);
             font-size: mat-font-size($typography, title);
             line-height: mat-line-height($typography, title);

@@ -1,7 +1,15 @@
+<!--Readonly mode-->
+<div attr.placeholder="{{placeholder}}"
+     class="editor"
+     *ngIf="wallModel.api.core.isReadOnly$ | async" [innerHTML]="scope.text">
+</div>
+
+<!--Edit mode-->
 <div #editor
      attr.placeholder="{{placeholder}}"
      (input)="onTextChange()"
      [(ngModel)]="scope.text"
+     [ngClass]="{'hidden': wallModel.api.core.isReadOnly$|async}"
      (keydown)="onKeyPress($event)"
      class="editor"
      contenteditable>

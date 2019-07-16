@@ -7,6 +7,11 @@
         line-height: 1.4;
         margin: 0;
         box-sizing: content-box;
+        min-height: 23px;
+
+        &.hidden {
+            display: none;
+        }
 
         &:focus {
             outline: none;

@@ -8,7 +8,7 @@
     $background: map-get($theme, background);
 
     quote-brick {
-        [contenteditable] {
+        .editor {
             border-left: 4px solid mat-color($background, status-bar);
 
             &:empty:before {
