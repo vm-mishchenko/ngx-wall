@@ -76,19 +76,16 @@ export class SelectionPlugin implements IWallPlugin {
         // listen to picked out items and select appropriate bricks
         this.pickOutServiceSubscription = this.pickOutService.subscribe((e) => {
             if (e instanceof StartPickOut) {
-                console.log(`StartPickOut`);
                 this.isMouseSelection = true;
 
                 this.wallModel.api.ui.disableMediaInteraction();
             }
 
             if (e instanceof PickOutItems) {
-                console.log(`PickOutItems`);
                 this.wallModel.api.ui.selectBricks(e.ids);
             }
 
             if (e instanceof EndPickOut) {
-                console.log(`EndPickOut`);
                 this.wallModel.api.ui.enableMediaInteraction();
             }
         });
