@@ -49,7 +49,7 @@ export class EnterKeyHandler {
             tabs: this.baseTextBrickComponent.scope.tabs
         };
 
-        this.baseTextBrickComponent.wallModel.api.core
+        this.baseTextBrickComponent.wallModel.api.core2
             .addBrickBeforeBrickId(this.baseTextBrickComponent.id, 'text', newTextState);
 
         // scroll browser view to element
@@ -71,12 +71,12 @@ export class EnterKeyHandler {
             tabs: this.baseTextBrickComponent.scope.tabs
         };
 
-        const addedBrick = this.baseTextBrickComponent.wallModel.api.core
+        const addedBrick = this.baseTextBrickComponent.wallModel.api.core2
             .addBrickAfterBrickId(this.baseTextBrickComponent.id, 'text', newTextState);
 
         // wait one tick for component rendering
         setTimeout(() => {
-            this.baseTextBrickComponent.wallUiApi.focusOnBrickId(addedBrick.id);
+            this.baseTextBrickComponent.wallUiApi.mode.edit.focusOnBrickId(addedBrick.id);
         });
     }
 }

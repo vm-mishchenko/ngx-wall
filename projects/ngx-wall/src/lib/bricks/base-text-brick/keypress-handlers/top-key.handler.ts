@@ -20,8 +20,8 @@ export class TopKeyHandler {
                 }
             };
 
-            this.baseTextBrickComponent.wallModel.api.ui
-                .focusOnPreviousTextBrick(this.baseTextBrickComponent.id, focusContext);
+            this.baseTextBrickComponent.wallUiApi
+                .mode.edit.focusOnPreviousTextBrick(this.baseTextBrickComponent.id, focusContext);
         }
     }
 }

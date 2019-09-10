@@ -43,10 +43,10 @@ export class CopyPlugin implements IWallPlugin {
     }
 
     private getSelectedTextRepresentation(): string {
-        const selectedBrickIds = this.wallModel.api.ui.getSelectedBrickIds();
+        const selectedBrickIds = this.wallModel.api.ui.mode.navigation.getSelectedBrickIds();
 
         return selectedBrickIds
-            .map((selectedBrickId) => this.wallModel.api.core.getBrickTextRepresentation(selectedBrickId))
+            .map((selectedBrickId) => this.wallModel.api.core2.getBrickTextRepresentation(selectedBrickId))
             .map((textRepresentation) => textRepresentation.trim())
             .join('\n');
     }

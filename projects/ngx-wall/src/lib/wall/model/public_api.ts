@@ -8,6 +8,7 @@ export {IWallColumn} from './interfaces/wall-column.interface';
 export {IWallCorePluginApi} from './interfaces/wall-core-plugin-api.interface';
 export {IWallRow} from './interfaces/wall-row.interface';
 export {IWallDefinition} from './interfaces/wall-definition.interface';
+export {IWallDefinition2} from './interfaces/wall-definition.interface2';
 export {IBrickDefinition} from './interfaces/brick-definition.interface';
 export {ILayoutDefinition} from './interfaces/layout-definition.interface';
 export {IRowLayoutDefinition} from './interfaces/row-layout-definition.interface';

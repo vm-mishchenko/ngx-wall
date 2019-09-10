@@ -118,7 +118,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             document.execCommand('insertHTML', false, textArr[0]);
         } else if (textArr.length > 1) {
             // todo: add interface for UI api
-            textArr.reverse().forEach((text) => this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text', {text}));
+            textArr.reverse().forEach((text) => this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text', {text}));
         }
     }
 
@@ -247,14 +247,14 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     concatWithPreviousTextSupportingBrick(e) {
-        const previousTextBrickId = this.wallModel.api.core.getPreviousTextBrickId(this.id);
+        const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
         if (previousTextBrickId) {
             e.preventDefault();
 
-            const previousBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(previousTextBrickId);
+            const previousBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(previousTextBrickId);
 
-            this.wallModel.api.core.updateBrickState(previousTextBrickId, {
+            this.wallModel.api.core2.updateBrickState(previousTextBrickId, {
                 text: this.cleanUpText(previousBrickSnapshot.state.text) + this.scope.text
             });
 
@@ -268,22 +268,23 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                     }
                 };
 
-                this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+                // this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+                this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId, focusContext);
 
                 // remove only after focus will be established
                 // that prevents flickering on mobile
-                this.wallUiApi.removeBrick(this.id);
+                this.wallModel.api.core2.removeBrick(this.id);
             });
         }
     }
 
     concatWithNextTextSupportingBrick(e: Event) {
-        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
+        const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
 
         if (nextTextBrickId) {
             e.preventDefault();
 
-            const nextTextBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(nextTextBrickId);
+            const nextTextBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(nextTextBrickId);
 
             const concatenationText = nextTextBrickSnapshot.state.text || '';
 
@@ -291,7 +292,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             this.saveCurrentState();
 
-            this.wallModel.api.core.removeBrick(nextTextBrickId);
+            this.wallModel.api.core2.removeBrick(nextTextBrickId);
 
             setTimeout(() => {
                 this.placeCaretBaseOnConcatenatedText(concatenationText);
@@ -302,9 +303,9 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     onDeleteAndFocusToPrevious(e: KeyboardEvent) {
         e.preventDefault();
 
-        const previousTextBrickId = this.wallModel.api.core.getPreviousTextBrickId(this.id);
+        const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
-        this.wallUiApi.removeBrick(this.id);
+        this.wallModel.api.core2.removeBrick(this.id);
 
         if (previousTextBrickId) {
             const focusContext: IFocusContext = {
@@ -314,17 +315,18 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 }
             };
 
-            this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+            // this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+            this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId, focusContext);
         }
     }
 
     onDeleteAndFocusToNext(e: KeyboardEvent) {
         e.preventDefault();
 
-        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
+        const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
 
         if (nextTextBrickId) {
-            this.wallUiApi.removeBrick(this.id);
+            this.wallModel.api.core2.removeBrick(this.id);
 
             const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
@@ -333,7 +335,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 }
             };
 
-            this.wallUiApi.focusOnBrickId(nextTextBrickId, focusContext);
+            this.wallUiApi.mode.edit.focusOnBrickId(nextTextBrickId, focusContext);
         }
     }
 

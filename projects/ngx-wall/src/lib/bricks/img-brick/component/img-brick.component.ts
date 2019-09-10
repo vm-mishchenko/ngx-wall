@@ -17,9 +17,9 @@ import {IResizeData} from '../../../modules/resizable/resizable.directive';
 import {Base64ToFile} from '../../../modules/utils/base64-to-file';
 import {Guid} from '../../../modules/utils/guid';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
+import {IOnWallFocus} from '../../../wall/components/wall/interfaces/wall-component/on-wall-focus.interface';
 import {ImgBrickState, ImgBrickStateMetadata} from '../img-brick-state.interface';
 import {InputContextComponent} from '../input-context/input-context.component';
-import {IOnWallFocus} from '../../../wall/components/wall/interfaces/wall-component/on-wall-focus.interface';
 
 @Component({
     selector: 'img-brick',
