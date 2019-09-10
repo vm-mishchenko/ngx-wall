@@ -5,16 +5,15 @@
 
 <!--Edit mode-->
 <p #editor
-   [ngClass]="{'hidden': wallModel.api.core.isReadOnly$|async}"
    attr.placeholder="{{placeholder}}"
+   [class.hidden]="(wallModel.api.core.isReadOnly$|async) === true"
    (input)="onTextChange()"
    [(ngModel)]="scope.text"
    (keydown)="onKeyPress($event)"
    (click)="onClick($event)"
-   [className]="'text-brick__editor text-brick-tabs-' + scope.tabs"
+   [ngClass]="['text-brick__editor', 'text-brick-tabs-' + scope.tabs]"
    (blur)="onBlur()"
    (focus)="onFocus()"
    contenteditable
    [propValueAccessor]="'innerHTML'">
 </p>
-
