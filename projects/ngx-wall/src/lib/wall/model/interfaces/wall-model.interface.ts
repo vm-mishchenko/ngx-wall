@@ -1,11 +1,11 @@
-import {IWallCorePluginApi} from './wall-core-plugin-api.interface';
+import {WallCorePlugin2} from '../../plugins/core2/wall-core.plugin2';
 
 export interface IWallModel {
     version: string;
 
     api: {
         [apiName: string]: any;
-        core: IWallCorePluginApi
+        core: WallCorePlugin2
     };
 
     destroy();
