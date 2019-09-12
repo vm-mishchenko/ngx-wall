@@ -5,6 +5,7 @@ import {IWallDefinition2} from '../../model/interfaces/wall-definition.interface
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IBrickDefinition} from '../../wall';
+import {TransactionEvent} from './events';
 
 const DEFAULT_BRICK = 'text';
 
@@ -56,7 +57,7 @@ class PlanStorage {
 
         this.planBehaviour$.next(transaction.plan);
 
-        (this.events$ as Subject<any>).next(transaction.change);
+        (this.events$ as Subject<any>).next(new TransactionEvent(transaction.change));
     }
 
     private plan() {
@@ -65,7 +66,7 @@ class PlanStorage {
 }
 
 // todo: implement separate class for that interfaces
-interface ITransactionChanges {
+export interface ITransactionChanges {
     // newly added brick ids
     added: string[];
 
@@ -508,6 +509,7 @@ export class WallCoreApi2 {
     // todo: implement
     isReadOnly$: Observable<boolean> = new BehaviorSubject(false);
     plan$: Observable<IWallDefinition2>;
+    events$: Observable<TransactionEvent>;
 
     get isReadOnly() {
         return (this.isReadOnly$ as BehaviorSubject<boolean>).getValue();
@@ -523,14 +525,11 @@ export class WallCoreApi2 {
         });
 
         this.plan$ = this.planStorage.plan$;
+        this.events$ = this.planStorage.events$;
     }
 
     query() {
         return this.planStorage.query();
-    }
-
-    subscribe() {
-        return this.planStorage.events$;
     }
 
     // OLD PUBLIC API
@@ -570,7 +569,7 @@ export class WallCoreApi2 {
         const newBrickId = tr.addBrick(DEFAULT_BRICK, this.query().length());
 
         tr.apply();
-        
+
         return this.getBrickSnapshot(newBrickId);
     }
 

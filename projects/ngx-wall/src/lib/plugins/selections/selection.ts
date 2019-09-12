@@ -93,7 +93,7 @@ export class SelectionPlugin implements IWallPlugin {
         // listen for draggable operation and move bricks accordingly
         this.towServiceSubscription = this.towService.subscribe((e) => {
             if (e instanceof StartWorkingEvent) {
-                if (this.wallModel.api.core.getBrickSnapshot(e.slaveId)) {
+                if (this.wallModel.api.core2.getBrickSnapshot(e.slaveId)) {
                     this.isEnableDropZoneHighlight = true;
                 } else {
                     this.isEnableDropZoneHighlight = false;
@@ -117,14 +117,14 @@ export class SelectionPlugin implements IWallPlugin {
 
                     if (this.nearestBrickToDrop.type === TOW.dropTypes.horizontal) {
                         if (this.nearestBrickToDrop.side === TOW.dropSides.top) {
-                            this.wallModel.api.core.moveBrickBeforeBrickId(
+                            this.wallModel.api.core2.moveBrickBeforeBrickId(
                                 movedBrickIds,
                                 this.nearestBrickToDrop.spot.data.brickId
                             );
                         }
 
                         if (this.nearestBrickToDrop.side === TOW.dropSides.bottom) {
-                            this.wallModel.api.core.moveBrickAfterBrickId(
+                            this.wallModel.api.core2.moveBrickAfterBrickId(
                                 movedBrickIds, this.nearestBrickToDrop.spot.data.brickId
                             );
                         }
@@ -257,7 +257,7 @@ export class SelectionPlugin implements IWallPlugin {
         if (e.key === 'ArrowUp' && selectedBrickIds.length) {
             e.preventDefault();
 
-            const previousBrickId = this.wallModel.api.core.getPreviousBrickId(lastSelectedBrickId);
+            const previousBrickId = this.wallModel.api.core2.getPreviousBrickId(lastSelectedBrickId);
 
             if (previousBrickId) {
                 if (e.shiftKey) {
@@ -275,7 +275,7 @@ export class SelectionPlugin implements IWallPlugin {
         if (e.key === 'ArrowDown' && selectedBrickIds.length) {
             e.preventDefault();
 
-            const nextBrickId = this.wallModel.api.core.getNextBrickId(lastSelectedBrickId);
+            const nextBrickId = this.wallModel.api.core2.getNextBrickId(lastSelectedBrickId);
 
             if (nextBrickId) {
                 if (e.shiftKey) {
@@ -326,7 +326,7 @@ export class SelectionPlugin implements IWallPlugin {
         const lastBrickId = selectedBrickIds[bricksCount - 1];
         const penultimateBrickId = selectedBrickIds[bricksCount - 2];
 
-        return this.wallModel.api.core.isBrickAheadOf(penultimateBrickId, lastBrickId);
+        return this.wallModel.api.core2.isBrickAheadOf(penultimateBrickId, lastBrickId);
     }
 
     private renderPlaceholder() {

@@ -18,7 +18,6 @@ export interface IViewBrickDefinition {
     component: any; // UI component
 }
 
-
 @Injectable()
 export class WallViewModel implements IWallUiApi {
     wallModel: IWallModel = null;
@@ -84,25 +83,26 @@ export class WallViewModel implements IWallUiApi {
         this.wallModel.registerApi('ui', coreApi);
 
         // todo-refactoring: fix subscription
-        /*this.wallModelSubscription = this.wallModel.api.core.subscribe((event) => {
-            if (event instanceof TurnBrickIntoEvent) {
-                this.focusOnBrickId(event.brickId);
+        this.wallModelSubscription = this.wallModel.api.core2.events$.subscribe((event) => {
+            // todo: event changes should have more friendly API,
+            // replace from array to some custom class
+            if (event.changes.turned && event.changes.turned.length) {
+                // wait till component will be rendered
+                // todo: ideally we have to wait (using observable) rendering process
+                // and focus on brick
+                setTimeout(() => {
+                    this.focusOnBrickId(event.changes.turned[0].brickId);
+                });
             }
 
-            if (event instanceof MoveBrickEvent) {
+            /*if (event instanceof MoveBrickEvent) {
                 this.unSelectBricks();
-            }
+            }*/
 
-            if (event instanceof RemoveBricksEvent) {
-                if (!this.wallModel.api.core.getBricksCount()) {
-                    this.wallModel.api.core.addDefaultBrick();
-                }
+            if (event.changes.removed.length && !this.wallModel.api.core2.query().length()) {
+                this.wallModel.api.core2.addDefaultBrick();
             }
-
-            if (!(event instanceof BeforeChangeEvent)) {
-                this.canvasLayout = this.getCanvasLayout();
-            }
-        });*/
+        });
 
         this.viewPlan$ = this.wallModel.api.core2.plan$.pipe(
             map((plan) => {
@@ -145,7 +145,7 @@ export class WallViewModel implements IWallUiApi {
      */
     selectBricks(brickIds: string[]) {
         if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks)) {
-            this.selectedBricks = this.wallModel.api.core.sortBrickIdsByLayoutOrder(brickIds);
+            this.selectedBricks = this.wallModel.api.core2.sortBrickIdsByLayoutOrder(brickIds);
 
             const selectedBricksClone = this.selectedBricks.slice(0);
 
@@ -162,7 +162,7 @@ export class WallViewModel implements IWallUiApi {
 
         selectedBrickIds.push(brickId);
 
-        this.selectedBricks = this.wallModel.api.core.sortBrickIdsByLayoutOrder(selectedBrickIds);
+        this.selectedBricks = this.wallModel.api.core2.sortBrickIdsByLayoutOrder(selectedBrickIds);
 
         const selectedBricksClone = this.selectedBricks.slice(0);
 
