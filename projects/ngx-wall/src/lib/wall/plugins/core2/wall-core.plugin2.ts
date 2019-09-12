@@ -1,4 +1,4 @@
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {Guid} from '../../../modules/utils/guid';
 import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 import {IWallDefinition2} from '../../model/interfaces/wall-definition.interface2';
@@ -29,7 +29,12 @@ interface IPlaneStorageOptions {
 }
 
 class PlanStorage {
-    private planState$: BehaviorSubject<IWallDefinition2> = new BehaviorSubject([]);
+    // todo: share the obsevable
+    events$: Observable<any> = new Subject();
+
+    private planBehaviour$: BehaviorSubject<IWallDefinition2> = new BehaviorSubject([]);
+
+    plan$: Observable<IWallDefinition2> = this.planBehaviour$.asObservable();
 
     constructor(private options?: IPlaneStorageOptions) {
     }
@@ -49,11 +54,13 @@ class PlanStorage {
             });
         }
 
-        this.planState$.next(transaction.plan);
+        this.planBehaviour$.next(transaction.plan);
+
+        (this.events$ as Subject<any>).next(transaction.change);
     }
 
     private plan() {
-        return this.planState$.getValue();
+        return this.planBehaviour$.getValue();
     }
 }
 
@@ -142,7 +149,7 @@ class Transaction {
     }
 
     // SIMPLE LOW LEVEL API
-    addBrick(tag: string, position: number, data?: any) {
+    addBrick(tag: string, position: number, data: any = {}) {
         const brick = this.createNewBrick(tag, data);
 
         const newPlan = [
@@ -160,6 +167,47 @@ class Transaction {
         });
 
         return brick.id;
+    }
+
+    addBrickBefore(targetBrickId: string, tag: string, data: any = {}) {
+        const newBrick = this.createNewBrick(tag, data);
+        const targetBrickPosition = this.query().brickPosition(targetBrickId);
+
+        this.plans.push([
+            ...this.plan.slice(0, targetBrickPosition),
+            newBrick,
+            ...this.plan.slice(targetBrickPosition),
+        ]);
+
+        this.changes.push({
+            added: [newBrick.id],
+            turned: [],
+            removed: [],
+            updated: []
+        });
+
+        return newBrick.id;
+    }
+
+    addBrickAfter(targetBrickId: string, tag: string, data: any = {}) {
+        const newBrick = this.createNewBrick(tag, data);
+        const targetBrickPosition = this.query().brickPosition(targetBrickId);
+        const afterTargetPosition = targetBrickPosition + 1;
+
+        this.plans.push([
+            ...this.plan.slice(0, afterTargetPosition),
+            newBrick,
+            ...this.plan.slice(afterTargetPosition),
+        ]);
+
+        this.changes.push({
+            added: [newBrick.id],
+            turned: [],
+            removed: [],
+            updated: []
+        });
+
+        return newBrick.id;
     }
 
     moveBrickBefore(brickIdsToMove: string | string[], targetBrickId: string) {
@@ -420,17 +468,21 @@ class PlanQuery {
     getPreviousTextBrickId(brickId: string) {
         const previousBricks = this.plan.slice(0, this.brickPosition(brickId));
 
-        const previousBrick = previousBricks.find((nextBrick) => {
-            return nextBrick.tag === DEFAULT_BRICK;
+        const previousTextBrick = previousBricks.reverse().find((previousBrick) => {
+            return previousBrick.tag === DEFAULT_BRICK;
         });
 
-        return previousBrick && previousBrick.id;
+        return previousTextBrick && previousTextBrick.id;
     }
 
     filterBricks(predictor: (brickSnapshot: IBrickSnapshot) => boolean): IBrickSnapshot[] {
         return this.brickSnapshots().filter((brickSnapshot) => {
             return predictor(brickSnapshot);
         });
+    }
+
+    lastBrick() {
+        return this.plan[this.plan.length - 1];
     }
 }
 
@@ -453,7 +505,15 @@ class DestructorTransactionHook implements ITransactionHook {
 
 // high level methods
 export class WallCoreApi2 {
-    planStorage: PlanStorage;
+    // todo: implement
+    isReadOnly$: Observable<boolean> = new BehaviorSubject(false);
+    plan$: Observable<IWallDefinition2>;
+
+    get isReadOnly() {
+        return (this.isReadOnly$ as BehaviorSubject<boolean>).getValue();
+    }
+
+    private planStorage: PlanStorage;
 
     constructor(private brickRegistry: BrickRegistry) {
         this.planStorage = new PlanStorage({
@@ -461,7 +521,19 @@ export class WallCoreApi2 {
                 new DestructorTransactionHook(this.brickRegistry)
             ]
         });
+
+        this.plan$ = this.planStorage.plan$;
     }
+
+    query() {
+        return this.planStorage.query();
+    }
+
+    subscribe() {
+        return this.planStorage.events$;
+    }
+
+    // OLD PUBLIC API
 
     setPlan(plan: IWallDefinition2) {
         this.planStorage.transaction().setPlan(plan).apply();
@@ -476,18 +548,18 @@ export class WallCoreApi2 {
     }
 
     addBrickAfterBrickId(brickId: string, tag: string, data?: any) {
-        const brickPosition = this.query().brickPosition(brickId);
         const tr = this.planStorage.transaction();
-        const newBrickId = tr.addBrick(tag, brickPosition + 1, data);
+        const newBrickId = tr.addBrickAfter(brickId, tag, data);
+
         tr.apply();
 
         return this.getBrickSnapshot(newBrickId);
     }
 
     addBrickBeforeBrickId(brickId: string, tag: string, data?: any) {
-        const brickPosition = this.query().brickPosition(brickId);
         const tr = this.planStorage.transaction();
-        const newBrickId = tr.addBrick(tag, brickPosition === 0 ? brickPosition : brickPosition - 1, data);
+        const newBrickId = tr.addBrickBefore(brickId, tag, data);
+
         tr.apply();
 
         return this.getBrickSnapshot(newBrickId);
@@ -495,10 +567,10 @@ export class WallCoreApi2 {
 
     addDefaultBrick() {
         const tr = this.planStorage.transaction();
-        const bricksLength = this.query().length();
+        const newBrickId = tr.addBrick(DEFAULT_BRICK, this.query().length());
 
-        const newBrickId = tr.addBrick(DEFAULT_BRICK, bricksLength);
         tr.apply();
+        
         return this.getBrickSnapshot(newBrickId);
     }
 
@@ -525,8 +597,6 @@ export class WallCoreApi2 {
     }
 
     moveBrickAfterBrickId(brickIdsToMove: string[], afterBrickId: string) {
-        const afterBrickPosition = this.query().brickPosition(afterBrickId);
-
         this.planStorage.transaction().moveBrickAfter(brickIdsToMove, afterBrickId).apply();
     }
 
@@ -605,10 +675,6 @@ export class WallCoreApi2 {
 
     sortBrickIdsByLayoutOrder(brickIds: string[]) {
         return this.query().sortBrickIdsByLayoutOrder(brickIds);
-    }
-
-    query() {
-        return this.planStorage.query();
     }
 }
 

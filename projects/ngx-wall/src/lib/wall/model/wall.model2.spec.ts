@@ -311,7 +311,7 @@ fdescribe('Wall Model', () => {
             expect(firstBrick.state.text).toBe(brickState.text);
         });
 
-        it('addBrickAfterBrickId()', () => {
+        fit('addBrickAfterBrickId()', () => {
             const wm = wallModelFactory.create();
 
             wm.api.core2.addDefaultBrick();
@@ -328,20 +328,22 @@ fdescribe('Wall Model', () => {
             expect(expectedBrickSnapshot.state.text).toBe('header');
         });
 
-        it('addBrickBeforeBrickId()', () => {
+        it('addBrickBeforeBrickId2()', () => {
             const wm = wallModelFactory.create();
 
-            wm.api.core2.addDefaultBrick();
+            const firstBrick = wm.api.core2.addBrickAtStart('text', {text: 'first'});
+            const secondBrick = wm.api.core2.addBrickAfterBrickId(firstBrick.id, 'text', {text: 'second'});
 
-            const brickIds = wm.api.core2.getBrickIds();
+            wm.api.core2.addBrickBeforeBrickId(secondBrick.id, 'text', {text: 'third'});
 
-            wm.api.core2.addBrickBeforeBrickId(brickIds[0], 'header', {text: 'header'});
+            const newFirstBrick = wm.api.core2.getBrickSnapshot(wm.api.core2.getBrickIds()[0]);
+            expect(newFirstBrick.state.text).toBe('first');
 
-            const expectedBrickSnapshot = wm.api.core2.getBrickSnapshot(wm.api.core2.getBrickIds()[0]);
+            const newSecondBrick = wm.api.core2.getBrickSnapshot(wm.api.core2.getBrickIds()[1]);
+            expect(newSecondBrick.state.text).toBe('third');
 
-            // check that brick was added to right position
-            expect(expectedBrickSnapshot.tag).toBe('header');
-            expect(expectedBrickSnapshot.state.text).toBe('header');
+            const newThirdBrick = wm.api.core2.getBrickSnapshot(wm.api.core2.getBrickIds()[2]);
+            expect(newThirdBrick.state.text).toBe('second');
         });
 
         it('updateBrickState()', () => {

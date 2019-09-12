@@ -247,14 +247,14 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     concatWithPreviousTextSupportingBrick(e) {
-        const previousTextBrickId = this.wallModel.api.core.getPreviousTextBrickId(this.id);
+        const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
         if (previousTextBrickId) {
             e.preventDefault();
 
-            const previousBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(previousTextBrickId);
+            const previousBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(previousTextBrickId);
 
-            this.wallModel.api.core.updateBrickState(previousTextBrickId, {
+            this.wallModel.api.core2.updateBrickState(previousTextBrickId, {
                 text: this.cleanUpText(previousBrickSnapshot.state.text) + this.scope.text
             });
 
@@ -302,7 +302,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     onDeleteAndFocusToPrevious(e: KeyboardEvent) {
         e.preventDefault();
 
-        const previousTextBrickId = this.wallModel.api.core.getPreviousTextBrickId(this.id);
+        const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
         this.wallUiApi.removeBrick(this.id);
 

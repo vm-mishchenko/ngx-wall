@@ -6,5 +6,5 @@
              [isMediaInteractionEnabled$]="wallViewModel.isMediaInteractionEnabled$"
              [focusedBrick]="wallViewModel.focusedBrick"
              [selectedBricks]="wallViewModel.selectedBricks"
-             [rows]="wallViewModel.canvasLayout">
+             [viewPlan]="wallViewModel.viewPlan$ | async">
 </wall-canvas>

@@ -1,17 +1,23 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {PickOutService} from '../../../modules/pick-out/pick-out.service';
+import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
 import {IWallRow} from '../../model/interfaces/wall-row.interface';
-import {BeforeChangeEvent} from '../../plugins/core/events/before-change.event';
-import {MoveBrickEvent} from '../../plugins/core/events/move-brick.event';
-import {RemoveBricksEvent} from '../../plugins/core/events/remove-bricks.event';
-import {TurnBrickIntoEvent} from '../../plugins/core/events/turn-brick-into.event';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {SelectedBrickEvent} from './events/selected-brick.event';
 import {IFocusedBrick} from './interfaces/focused-brick.interface';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
+
+export type IWallViewPlan = IViewBrickDefinition[];
+
+export interface IViewBrickDefinition {
+    brick: IBrickDefinition;
+    component: any; // UI component
+}
+
 
 @Injectable()
 export class WallViewModel implements IWallUiApi {
@@ -24,37 +30,11 @@ export class WallViewModel implements IWallUiApi {
     selectedBricks: string[] = [];
     isMediaInteractionEnabled$: Observable<boolean> = new BehaviorSubject(true);
     canvasLayout: IWallRow[] = [];
+    viewPlan$: Observable<IWallViewPlan>;
 
     private wallModelSubscription: Subscription;
 
     constructor(private brickRegistry: BrickRegistry, private pickOutService: PickOutService) {
-    }
-
-    getCanvasLayout(): IWallRow[] {
-        const rows = [];
-
-        this.wallModel.api.core.traverse((row) => {
-            rows.push({
-                id: row.id,
-
-                columns: row.columns.map((column) => {
-                    return {
-                        bricks: column.bricks.map((brickConfig) => {
-                            const component = this.brickRegistry.get(brickConfig.tag).component;
-
-                            return {
-                                id: brickConfig.id,
-                                hash: brickConfig.tag + brickConfig.id,
-                                state: brickConfig.state,
-                                component
-                            };
-                        })
-                    };
-                })
-            });
-        });
-
-        return rows;
     }
 
     // called by Wall component
@@ -103,7 +83,8 @@ export class WallViewModel implements IWallUiApi {
         // register methods on model itself
         this.wallModel.registerApi('ui', coreApi);
 
-        this.wallModelSubscription = this.wallModel.api.core.subscribe((event) => {
+        // todo-refactoring: fix subscription
+        /*this.wallModelSubscription = this.wallModel.api.core.subscribe((event) => {
             if (event instanceof TurnBrickIntoEvent) {
                 this.focusOnBrickId(event.brickId);
             }
@@ -121,12 +102,23 @@ export class WallViewModel implements IWallUiApi {
             if (!(event instanceof BeforeChangeEvent)) {
                 this.canvasLayout = this.getCanvasLayout();
             }
-        });
+        });*/
 
-        this.canvasLayout = this.getCanvasLayout();
+        this.viewPlan$ = this.wallModel.api.core2.plan$.pipe(
+            map((plan) => {
+                const viewPlan = plan.map((brick) => {
+                    return {
+                        brick,
+                        component: this.brickRegistry.get(brick.tag).component
+                    };
+                });
+
+                return viewPlan;
+            })
+        );
 
         // disable pick out functionality in read-only mode
-        this.wallModel.api.core.isReadOnly$.subscribe((isReadOnly) => {
+        this.wallModel.api.core2.isReadOnly$.subscribe((isReadOnly) => {
             if (isReadOnly) {
                 this.pickOutService.disablePickOut();
             } else {
@@ -230,7 +222,7 @@ export class WallViewModel implements IWallUiApi {
      * @public-api
      */
     focusOnPreviousTextBrick(brickId: string, focusContext?: IFocusContext) {
-        const previousTextBrickId = this.wallModel.api.core.getPreviousTextBrickId(brickId);
+        const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(brickId);
 
         if (previousTextBrickId) {
             this.focusOnBrickId(previousTextBrickId, focusContext);
@@ -241,7 +233,7 @@ export class WallViewModel implements IWallUiApi {
      * @public-api
      */
     focusOnNextTextBrick(brickId: string, focusContext?: IFocusContext) {
-        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(brickId);
+        const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(brickId);
 
         if (nextTextBrickId) {
             this.focusOnBrickId(nextTextBrickId, focusContext);
@@ -280,47 +272,35 @@ export class WallViewModel implements IWallUiApi {
      * @public-api
      */
     removeBricks(brickIds: string[]) {
-        const currentBrickIds = this.wallModel.api.core.getBrickIds();
+        const currentBrickIds = this.wallModel.api.core2.getBrickIds();
 
         if (currentBrickIds.length > 1) {
-            this.wallModel.api.core.removeBricks(brickIds);
+            this.wallModel.api.core2.removeBricks(brickIds);
         } else if (currentBrickIds.length === 1) {
-            const brickSnapshot = this.wallModel.api.core.getBrickSnapshot(currentBrickIds[0]);
+            const brickSnapshot = this.wallModel.api.core2.getBrickSnapshot(currentBrickIds[0]);
 
             if (brickSnapshot.tag !== 'text' || brickSnapshot.state.text) {
-                this.wallModel.api.core.removeBricks(brickIds);
+                this.wallModel.api.core2.removeBricks(brickIds);
             } else {
                 this.focusOnBrickId(currentBrickIds[0]);
             }
         }
     }
 
-    // canvas interaction
     onCanvasClick() {
-        // check whether the last element is empty text brick
-        // which is inside one column row
+        const lastBrick = this.wallModel.api.core2.query().lastBrick();
 
-        const rowCount = this.wallModel.api.core.getRowCount();
-        const brickIds = this.wallModel.api.core.getBrickIds();
-
-        if (rowCount > 0
-            && this.wallModel.api.core.getColumnCount(rowCount - 1) === 1
-            && brickIds.length) {
-            const lastBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(brickIds[brickIds.length - 1]);
-
-            if (lastBrickSnapshot.tag === 'text' && !lastBrickSnapshot.state.text) {
-                this.focusOnBrickId(lastBrickSnapshot.id);
-            } else {
-                this.wallModel.api.core.addDefaultBrick();
-            }
-        } else {
-            this.wallModel.api.core.addDefaultBrick();
+        if (lastBrick && lastBrick.tag === 'text' && !lastBrick.data.text) {
+            this.focusOnBrickId(lastBrick.id);
+            return;
         }
+
+        this.wallModel.api.core2.addDefaultBrick();
     }
 
     // canvas interaction
     onBrickStateChanged(brickId: string, brickState: any): void {
-        this.wallModel.api.core.updateBrickState(brickId, brickState);
+        this.wallModel.api.core2.updateBrickState(brickId, brickState);
     }
 
     reset() {

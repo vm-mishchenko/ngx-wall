@@ -5,12 +5,12 @@ import {debounceTime, filter} from 'rxjs/operators';
 import {ImgEncoder} from '../../../modules/utils/img-encoder.service';
 import {NodeTreeSplit} from '../../../modules/utils/node-tree-split';
 import {TreeNodeTraverse} from '../../../modules/utils/node/tree-node-traverse';
+import {IWallModel} from '../../../wall/model/interfaces/wall-model.interface';
 import {BaseTextBrickComponent} from '../../base-text-brick/base-text-brick.component';
+import {DIVIDER_BRICK_TAG} from '../../divider-brick/divider-brick.constant';
 import {BricksListComponent} from '../bricks-list/bricks-list.component';
 import {ITextBrickApi} from '../text-brick-api.interface';
 import {TextContextMenuComponent} from '../text-context-menu/text-context-menu.component';
-import {IWallModel} from '../../../wall/model/interfaces/wall-model.interface';
-import {DIVIDER_BRICK_TAG} from '../../divider-brick/divider-brick.constant';
 
 @Component({
     selector: 'text-brick',
@@ -60,10 +60,10 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
             if (newTag) {
                 this.hideBricksList();
 
-                this.wallModel.api.core.turnBrickInto(this.id, newTag);
+                this.wallModel.api.core2.turnBrickInto(this.id, newTag);
 
                 if (newTag === DIVIDER_BRICK_TAG) {
-                    this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text');
+                    this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text');
                 }
             }
         });
@@ -152,11 +152,11 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
             if (this.isTag()) {
                 const newTag = this.scope.text.slice(1);
 
-                this.wallModel.api.core.turnBrickInto(this.id, newTag);
+                this.wallModel.api.core2.turnBrickInto(this.id, newTag);
 
                 // d - divider tag
                 if (newTag === 'd') {
-                    this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text');
+                    this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text');
                 }
             } else {
                 super.enterKeyPressed(e);
@@ -226,7 +226,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
             e.preventDefault();
 
             (new ImgEncoder(imageDataTransferItem.getAsFile())).getBase64Representation().then((imgBase64) => {
-                this.wallModel.api.core.turnBrickInto(this.id, 'image', {
+                this.wallModel.api.core2.turnBrickInto(this.id, 'image', {
                     src: imgBase64
                 });
             });
@@ -394,7 +394,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
     private isTag() {
         return this.scope.text && this.scope.text[0] === '/' &&
-            this.wallModel.api.core.isRegisteredBrick(this.scope.text.slice(1));
+            this.wallModel.api.core2.isRegisteredBrick(this.scope.text.slice(1));
     }
 
     private hideBricksList() {

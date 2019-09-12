@@ -1,12 +1,12 @@
 <!--Readonly mode-->
 <p [className]="'text-brick__editor text-brick-tabs-' + scope.tabs"
-   *ngIf="wallModel.api.core.isReadOnly$|async" [innerHTML]="scope.text">
+   *ngIf="wallModel.api.core2.isReadOnly$|async" [innerHTML]="scope.text">
 </p>
 
 <!--Edit mode-->
 <p #editor
    attr.placeholder="{{placeholder}}"
-   [class.hidden]="(wallModel.api.core.isReadOnly$|async) === true"
+   [class.hidden]="(wallModel.api.core2.isReadOnly$|async) === true"
    (input)="onTextChange()"
    [(ngModel)]="scope.text"
    (keydown)="onKeyPress($event)"

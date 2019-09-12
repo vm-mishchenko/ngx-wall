@@ -37,9 +37,11 @@ export class UndoRedoPlugin implements IWallPlugin {
             clear: this.clear.bind(this)
         } as IUndoRedoApi);
 
-        this.apiSubscription = this.wallModel.api.core.subscribe((e) => {
+
+        // todo-refactoring: fix subscription
+        /*this.apiSubscription = this.wallModel.api.core.subscribe((e) => {
             this.wallModelEventHandler(e);
-        });
+        });*/
 
         this.onUndoKeyHandlerBound = this.onUndoKeyHandler.bind(this);
 

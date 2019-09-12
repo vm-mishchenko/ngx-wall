@@ -2,8 +2,8 @@ import {DOCUMENT} from '@angular/common';
 import {Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {Observable, Subject} from 'rxjs';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {IWallRow} from '../../model/interfaces/wall-row.interface';
 import {IFocusedBrick} from '../wall/interfaces/focused-brick.interface';
+import {IViewBrickDefinition, IWallViewPlan} from '../wall/wall-view.model';
 
 @Component({
     selector: 'wall-canvas',
@@ -12,7 +12,7 @@ import {IFocusedBrick} from '../wall/interfaces/focused-brick.interface';
 })
 export class WallCanvasComponent implements OnChanges {
     @Input() wallModel: IWallModel;
-    @Input() rows: IWallRow[] = [];
+    @Input() viewPlan: IWallViewPlan[] = [];
 
     @Input() selectedBricks: string[] = null;
     @Input() focusedBrick: IFocusedBrick = null;
@@ -56,7 +56,7 @@ export class WallCanvasComponent implements OnChanges {
         });
     }
 
-    trackRowsBy(index, item): string {
-        return item.id;
+    trackByBrick(index, viewBrick: IViewBrickDefinition) {
+        return `${viewBrick.brick.id}/${viewBrick.brick.tag}`;
     }
 }

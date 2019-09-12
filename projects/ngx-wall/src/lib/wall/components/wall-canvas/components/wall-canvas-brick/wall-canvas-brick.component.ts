@@ -16,6 +16,7 @@ import {Subscription} from 'rxjs';
 import {LocationUpdatedEvent} from '../../../../../modules/radar/events/location-updated.event';
 import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
+import {IViewBrickDefinition} from '../../../wall/wall-view.model';
 import {WallCanvasComponent} from '../../wall-canvas.component';
 
 @Component({
@@ -25,7 +26,7 @@ import {WallCanvasComponent} from '../../wall-canvas.component';
 })
 export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     // todo add type
-    @Input() brick: any;
+    @Input() viewBrick: IViewBrickDefinition;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
@@ -57,24 +58,22 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
     ngOnInit() {
         this.spot = {
-            brickId: this.brick.id,
+            brickId: this.viewBrick.brick.id,
             isPickOutItem: true,
             isBeacon: true
         };
 
         this.componentReference = this.renderBrick();
 
-        this.wallCanvasComponent.wallModel.api.core.isReadOnly();
-
         // show/hide drag-and-drop handler
         this.radarSubscription = this.radar.subscribe((e) => {
             if (e instanceof LocationUpdatedEvent) {
                 // always hide when model is readonly state
-                if (this.wallCanvasComponent.wallModel.api.core.isReadOnly()) {
+                if (this.wallCanvasComponent.wallModel.api.core2.isReadOnly) {
                     this.isMouseNear = false;
                 } else {
                     // show/hide based on distance to the handler
-                    const currentSpot = e.spots.find((spot) => spot.data.brickId === this.brick.id);
+                    const currentSpot = e.spots.find((spot) => spot.data.brickId === this.viewBrick.brick.id);
 
                     if (currentSpot.isCross13Line) {
                         this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;
@@ -88,13 +87,13 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
         });
 
         this.focusedBrickSubscription = this.wallCanvasComponent.focusedBrick$.subscribe((focusedBrick) => {
-            if (focusedBrick.id === this.brick.id) {
+            if (focusedBrick.id === this.viewBrick.brick.id) {
                 this.callInstanceApi('onWallFocus', focusedBrick.context);
             }
         });
 
         this.selectedBricksSubscription = this.wallCanvasComponent.selectedBricks$.subscribe((selectedBricks) => {
-            this.selected = !Boolean(selectedBricks.indexOf(this.brick.id) === -1);
+            this.selected = !Boolean(selectedBricks.indexOf(this.viewBrick.brick.id) === -1);
         });
 
         this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$
@@ -102,8 +101,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if (changes.brick && !changes.brick.firstChange && changes.brick.currentValue) {
-            this.componentReference.instance.state = this.brick.state;
+        if (changes.viewBrick && !changes.viewBrick.firstChange && changes.viewBrick.currentValue) {
+            this.componentReference.instance.state = this.viewBrick.brick.data;
 
             this.callInstanceApi('onWallStateChange', this.componentReference.instance.state);
         }
@@ -127,19 +126,19 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     private renderBrick() {
-        const factory = this.resolver.resolveComponentFactory(this.brick.component);
+        const factory = this.resolver.resolveComponentFactory(this.viewBrick.component);
 
         const componentReference = this.container.createComponent(factory, null, this.injector);
 
         const componentInstance = componentReference.instance as IWallComponent;
 
-        componentInstance.id = this.brick.id;
-        componentInstance.state = this.brick.state;
+        componentInstance.id = this.viewBrick.brick.id;
+        componentInstance.state = this.viewBrick.brick.data;
         componentInstance.wallModel = this.wallCanvasComponent.wallModel;
 
         if (componentInstance.stateChanges) {
             this.stateChangesSubscription = componentInstance.stateChanges.subscribe((newState) => {
-                this.wallCanvasComponent.brickStateChanged(this.brick.id, newState);
+                this.wallCanvasComponent.brickStateChanged(this.viewBrick.brick.id, newState);
             });
         }
 

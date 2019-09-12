@@ -1,10 +1,10 @@
 <div [spot]="spot"
-     data-id="{{brick.id}}"
+     data-id="{{viewBrick.brick.id}}"
      class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
      [ngClass]="{'wall-canvas-brick__selected': selected,
      		'wall-canvas-brick__draggable': isMouseNear}">
 
-    <div class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">
+    <div class="wall-canvas-brick__draggable-handler" [tow-slave]="viewBrick.brick.id">
         <div class="wall-canvas-brick__draggable-box">
             <mat-icon>drag_handle</mat-icon>
         </div>

@@ -1,24 +1,22 @@
 import {Component, Injector, OnInit} from '@angular/core';
 import {
-    BeforeChangeEvent,
     CopyPlugin,
     IWallConfiguration,
     IWallDefinition,
     IWallModel,
-    IWallModelConfig,
     SelectionPlugin,
     UndoRedoPlugin,
     WALL,
     WallModelFactory
 } from 'ngx-wall';
+import {IWallDefinition2} from '../../../projects/ngx-wall/src/lib/wall/model/interfaces/wall-definition.interface2';
+import {IWallModelConfig2} from '../../../projects/ngx-wall/src/lib/wall/model/interfaces/wall-model-config.interface2';
 
 @Component({
     selector: 'app-wall-editor',
     templateUrl: 'wall-editor.component.html'
 })
 export class WallEditorComponent implements OnInit {
-    plan: IWallDefinition;
-
     wallConfiguration: IWallConfiguration = {
         mode: WALL.MODES.EDIT
     };
@@ -58,12 +56,23 @@ export class WallEditorComponent implements OnInit {
         }
     };
 
+    wallPlan2: IWallDefinition2 = [
+        {
+            'id': '82600916-c474-c669-7a0a-a362fb134a69',
+            'tag': 'text',
+            'meta': {},
+            'data': {
+                'text': 'Hi, World!'
+            }
+        }
+    ];
+
     wallModel: IWallModel;
 
     constructor(private wallModelFactory: WallModelFactory,
                 private injector: Injector) {
-        const modelConfig: IWallModelConfig = {
-            plan: this.wallPlan,
+        const modelConfig: IWallModelConfig2 = {
+            plan: this.wallPlan2,
             plugins: [
                 new CopyPlugin(this.injector),
                 new UndoRedoPlugin(this.injector),
@@ -75,13 +84,5 @@ export class WallEditorComponent implements OnInit {
     }
 
     ngOnInit() {
-        setTimeout(() => {
-            this.wallModel.api.core.subscribe((e) => {
-                if (!(e instanceof BeforeChangeEvent)) {
-                    // update current plan
-                    this.plan = this.wallModel.api.core.getPlan();
-                }
-            });
-        }, 10);
     }
 }
