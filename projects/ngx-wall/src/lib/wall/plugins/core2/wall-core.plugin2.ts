@@ -1,416 +1,601 @@
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
+import {Guid} from '../../../modules/utils/guid';
+import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 import {IWallDefinition2} from '../../model/interfaces/wall-definition.interface2';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {IWallPlugin} from '../../model/interfaces/wall-plugin.interface';
 import {BrickRegistry} from '../../registry/brick-registry.service';
-import {LayoutWalker} from '../core/layout-walker.class';
-import {WallLayout} from '../core/wall-layout.model';
+import {IBrickDefinition} from '../../wall';
 
-/*
-* Contains Wall data structure and registers API for data manipulation.
-* Responsible to IWallDefinition->Layout and Layout->IWallDefinition transformation
-* */
-export class WallCorePlugin2 {
-    name = 'core';
-    version = '0.0.0';
+const DEFAULT_BRICK = 'text';
 
-    isReadOnly$: Observable<boolean> = new BehaviorSubject(false);
-
-    // sub plugins
-    private layout: WallLayout;
-    private layoutWalker: LayoutWalker = new LayoutWalker(this.brickRegistry);
-
-    private wallModel: IWallModel;
-
-    private DEFAULT_BRICK = 'text';
-
-    private events: Subject<any> = new Subject();
-
-    constructor(private brickRegistry: BrickRegistry) {
+// store data and method to modify it
+class Plan {
+    constructor(private bricks: any[] = []) {
     }
 
-    // START API
-
-    onWallInitialize(wallModel: IWallModel) {
-        this.wallModel = wallModel;
-
-        [
-            'getRowCount',
-            'getBrickTag',
-            'getPreviousBrickId',
-            'getNextBrickId',
-            'getColumnCount',
-            'getBrickIds',
-            'getBricksCount',
-            'getNextTextBrickId',
-            'getPreviousTextBrickId',
-            'filterBricks',
-            'isBrickAheadOf'
-        ].forEach((methodName) => {
-            this[methodName] = this.layoutWalker[methodName].bind(this.layoutWalker);
-        });
-
-        this.wallModel.registerApi(this.name, this);
+    add(id: string): Plan {
+        // immutable
+        return new Plan([]);
     }
 
+    remove(): Plan {
+        // immutable
+        return new Plan([]);
+    }
+}
+
+interface IPlaneStorageOptions {
+    transactionHooks: ITransactionHook[];
+}
+
+class PlanStorage {
+    private planState$: BehaviorSubject<IWallDefinition2> = new BehaviorSubject([]);
+
+    constructor(private options?: IPlaneStorageOptions) {
+    }
+
+    query() {
+        return new PlanQuery(this.plan());
+    }
+
+    transaction() {
+        return new Transaction(this);
+    }
+
+    applyTransaction(transaction: Transaction) {
+        if (this.options && this.options.transactionHooks) {
+            this.options.transactionHooks.forEach((hook) => {
+                hook.apply(transaction);
+            });
+        }
+
+        this.planState$.next(transaction.plan);
+    }
+
+    private plan() {
+        return this.planState$.getValue();
+    }
+}
+
+// todo: implement separate class for that interfaces
+interface ITransactionChanges {
+    // newly added brick ids
+    added: string[];
+
+    // removed brick ids
+    removed: IBrickSnapshot[];
+
+    turned: Array<{
+        brickId: string,
+        previousTag: string,
+        newTag: string,
+    }>;
+
+    // removed brick ids
+    updated: Array<{
+        brickId: string;
+        previousData: any;
+        newData: any;
+    }>;
+}
+
+interface ITransactionHook {
+    apply(transaction: Transaction);
+}
+
+class Transaction {
+    private changes: ITransactionChanges[] = [];
+    // todo: implement separate class for plan
+    private plans: IWallDefinition2[] = [];
+
+    constructor(private planStorage: PlanStorage) {
+    }
+
+    get change(): ITransactionChanges {
+        const initialChange: ITransactionChanges = {
+            updated: [],
+            removed: [],
+            added: [],
+            turned: [],
+        };
+
+        return this.changes.reduce((result, change) => {
+            result = {
+                removed: [
+                    ...result.removed,
+                    ...change.removed
+                ],
+                added: [
+                    ...result.added,
+                    ...change.added
+                ],
+                turned: [
+                    ...result.turned,
+                    ...change.turned
+                ],
+                updated: [
+                    ...result.updated,
+                    ...change.updated
+                ]
+            };
+
+            return result;
+        }, initialChange);
+    }
+
+    get plan(): IWallDefinition2 {
+        const last = this.plans.length - 1;
+        return last < 0 ? this.planStorage.query().plan : this.plans[last];
+    }
 
     setPlan(plan: IWallDefinition2) {
-
-
-        /*this.dispatch(new BeforeChangeEvent(SetPlanEvent));
-
-        this.layout = new WallLayout(this.brickRegistry, this.layoutWalker);
-
-        this.layoutWalker.setLayout(this.layout.rows);
-
-        // build tree
-        plan.layout.bricks.forEach((row, rowIndex) => {
-            row.columns.forEach((column, columnIndex) => {
-                column.bricks.forEach((brick, brickIndex) => {
-                    const planBrick = plan.bricks.find((currentPlanBrick) => {
-                        return brick.id === currentPlanBrick.id;
-                    });
-
-                    const wallBrick = this.restoreBrick(planBrick);
-
-                    // first column in new row
-                    if (columnIndex === 0) {
-                        if (brickIndex === 0) {
-                            this.layout.addBrickToNewRow(rowIndex, wallBrick, row.id);
-                        } else {
-                            this.layout.addBrickToExistingColumn(rowIndex, columnIndex, brickIndex, wallBrick);
-                        }
-                    } else {
-                        if (brickIndex === 0) {
-                            this.layout.addBrickToNewColumn(rowIndex, columnIndex, wallBrick);
-                        } else {
-                            this.layout.addBrickToExistingColumn(rowIndex, columnIndex, brickIndex, wallBrick);
-                        }
-                    }
-                });
-            });
-        });
-
-        this.dispatch(new SetPlanEvent());*/
+        this.plans.push(plan);
+        return this;
     }
 
-    // COMMAND METHODS
-    /*
+    apply() {
+        this.planStorage.applyTransaction(this);
+    }
 
-    addBrickAfterBrickId(brickId: string, tag: string, state?: any): IBrickSnapshot {
-        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
+    query() {
+        return new PlanQuery(this.plan);
+    }
 
-        const brickPosition = this.layoutWalker.getBrickPosition(brickId);
-        const columnCount = this.layoutWalker.getColumnCount(brickPosition.rowIndex);
-        const newBrick = this.createBrick(tag, state);
+    // SIMPLE LOW LEVEL API
+    addBrick(tag: string, position: number, data?: any) {
+        const brick = this.createNewBrick(tag, data);
 
-        if (columnCount === 1) {
-            this.layout.addBrickToNewRow(brickPosition.rowIndex + 1, newBrick);
-        } else if (columnCount > 1) {
-            this.layout.addBrickToExistingColumn(
-                brickPosition.rowIndex,
-                brickPosition.columnIndex,
-                brickPosition.brickIndex + 1,
-                newBrick);
+        const newPlan = [
+            ...this.plan.slice(0, position),
+            brick,
+            ...this.plan.slice(position)
+        ];
+
+        this.plans.push(newPlan);
+        this.changes.push({
+            added: [brick.id],
+            turned: [],
+            removed: [],
+            updated: []
+        });
+
+        return brick.id;
+    }
+
+    moveBrickBefore(brickIdsToMove: string | string[], targetBrickId: string) {
+        if (!Array.isArray(brickIdsToMove)) {
+            brickIdsToMove = [brickIdsToMove];
         }
 
-        this.dispatch(new AddBrickEvent(newBrick.id));
+        const orderedBrickIdsToMove = this.query().sortBrickIdsByLayoutOrder(brickIdsToMove);
 
-        return this.getBrickSnapshot(newBrick.id);
+        const orderedBricksToMove = orderedBrickIdsToMove.map((orderedBrickIdToMove) => {
+            return this.plan.find((brick) => brick.id === orderedBrickIdToMove);
+        });
+
+        // new plan without moved brick ids
+        let newPlan: IWallDefinition2 = this.plan.filter((brick) => {
+            return !brickIdsToMove.includes(brick.id);
+        });
+
+        const targetBrickIdPosition = new PlanQuery(newPlan).brickPosition(targetBrickId);
+        const beforeTargetBrickIdPosition = targetBrickIdPosition;
+
+        newPlan = [
+            ...newPlan.slice(0, beforeTargetBrickIdPosition),
+            ...orderedBricksToMove,
+            ...newPlan.slice(beforeTargetBrickIdPosition)
+        ];
+
+        this.plans.push(newPlan);
+
+        return this;
     }
 
-    addBrickBeforeBrickId(brickId: string, tag: string, state?: any): IBrickSnapshot {
-        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
-
-        const brickPosition = this.layoutWalker.getBrickPosition(brickId);
-        const columnCount = this.layoutWalker.getColumnCount(brickPosition.rowIndex);
-        const newBrick = this.createBrick(tag, state);
-
-        if (columnCount === 1) {
-            this.layout.addBrickToNewRow(brickPosition.rowIndex, newBrick);
-        } else if (columnCount > 1) {
-            this.layout.addBrickToExistingColumn(
-                brickPosition.rowIndex,
-                brickPosition.columnIndex,
-                brickPosition.brickIndex,
-                newBrick);
+    moveBrickAfter(brickIdsToMove: string | string[], targetBrickId: string) {
+        if (!Array.isArray(brickIdsToMove)) {
+            brickIdsToMove = [brickIdsToMove];
         }
 
-        this.dispatch(new AddBrickEvent(newBrick.id));
+        const orderedBrickIdsToMove = this.query().sortBrickIdsByLayoutOrder(brickIdsToMove);
 
-        return this.getBrickSnapshot(newBrick.id);
-    }
-
-    // Add text brick to the bottom of wall in the new row
-    addDefaultBrick() {
-        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
-
-        const brickCount = this.layoutWalker.getBricksCount();
-        const newBrick = this.createBrick(this.DEFAULT_BRICK);
-        const rowIndex = brickCount ? this.layoutWalker.getRowCount() + 1 : 0;
-
-        this.layout.addBrickToNewRow(rowIndex, newBrick);
-
-        this.dispatch(new AddBrickEvent(newBrick.id));
-    }
-
-    addBrickAtStart(tag: string, state?: any): IBrickSnapshot {
-        this.dispatch(new BeforeChangeEvent(AddBrickEvent));
-
-        const newBrick = this.createBrick(tag, state);
-
-        this.layout.addBrickToNewRow(0, newBrick);
-
-        this.dispatch(new AddBrickEvent(newBrick.id));
-
-        return this.getBrickSnapshot(newBrick.id);
-    }
-
-    updateBrickState(brickId, brickState): void {
-        this.dispatch(new BeforeChangeEvent(UpdateBrickStateEvent));
-
-        const brick = this.layoutWalker.getBrickById(brickId);
-
-        const oldState = JSON.parse(JSON.stringify(brick.getState()));
-
-        brick.updateState(JSON.parse(JSON.stringify(brickState)));
-
-        this.dispatch(new UpdateBrickStateEvent(
-            brickId,
-            JSON.parse(JSON.stringify(brick.getState())),
-            oldState
-        ));
-    }
-
-    // todo: should be async operation
-    removeBrick(brickId: string): void {
-        this.dispatch(new BeforeChangeEvent(RemoveBrickEvent));
-
-        const nextTextBrick = this.layoutWalker.getNextTextBrick(brickId);
-        const previousTextBrick = this.layoutWalker.getPreviousTextBrick(brickId);
-
-        this.clearBrickResources(brickId).then(() => {
+        const orderedBricksToMove = orderedBrickIdsToMove.map((orderedBrickIdToMove) => {
+            return this.plan.find((brick) => brick.id === orderedBrickIdToMove);
         });
 
-        const removedBrick = this.layoutWalker.getBrickById(brickId);
-
-        this.layout.removeBrick(brickId);
-
-        this.dispatch(new RemoveBrickEvent(
-            removedBrick.getSnapshot(),
-            previousTextBrick && previousTextBrick.id,
-            nextTextBrick && nextTextBrick.id
-        ));
-    }
-
-    // todo: should be async operation
-    removeBricks(brickIds): void {
-        this.dispatch(new BeforeChangeEvent(RemoveBricksEvent));
-
-        const nextTextBrick = this.layoutWalker.getNextBrick(brickIds[brickIds.length - 1]);
-        const previousBrick = this.layoutWalker.getPreviousBrick(brickIds[0]);
-
-        const clearPromises = brickIds.map((brickId) => this.clearBrickResources(brickId));
-
-        Promise.all(clearPromises).then(() => {
+        // new plan without moved brick ids
+        let newPlan: IWallDefinition2 = this.plan.filter((brick) => {
+            return !brickIdsToMove.includes(brick.id);
         });
 
-        const removedBricks = brickIds.map((brickId) => {
-            const removedBrick = this.layoutWalker.getBrickById(brickId);
+        const targetBrickIdPosition = new PlanQuery(newPlan).brickPosition(targetBrickId);
+        const afterTargetBrickIdPosition = targetBrickIdPosition + 1;
 
-            this.layout.removeBrick(brickId);
+        newPlan = [
+            ...newPlan.slice(0, afterTargetBrickIdPosition),
+            ...orderedBricksToMove,
+            ...newPlan.slice(afterTargetBrickIdPosition)
+        ];
+
+        this.plans.push(newPlan);
+
+        return this;
+    }
+
+    updateBrick(brickId: string, data: any) {
+        const previousData = this.query().brickSnapshot(brickId).state;
+        const newData = {
+            ...previousData,
+            ...data
+        };
+
+        const newPlan = this.plan.map((brick) => {
+            if (brick.id !== brickId) {
+                return brick;
+            }
 
             return {
-                id: removedBrick.id,
-                tag: removedBrick.tag,
-                state: removedBrick.state
+                ...brick,
+                data: newData
             };
         });
 
-        this.dispatch(new RemoveBricksEvent(
-            removedBricks,
-            previousBrick && previousBrick.id,
-            nextTextBrick && nextTextBrick.id
-        ));
-    }
-
-    /!**
-     * Remove all bricks from layout
-     * Clear all bricks external dependencies
-     *!/
-    clear(): Promise<any> {
-        const brickIds = this.layoutWalker.getBrickIds();
-
-        // todo: replace it after removeBricks will be async
-        const clearPromises = brickIds.map((brickId) => this.clearBrickResources(brickId));
-
-        return Promise.all(clearPromises).then(() => {
-            brickIds.forEach((brickId) => {
-                this.layout.removeBrick(brickId);
-            });
+        this.plans.push(newPlan);
+        this.changes.push({
+            updated: [{
+                brickId,
+                newData,
+                previousData
+            }],
+            removed: [],
+            turned: [],
+            added: []
         });
+
+        return this;
     }
 
-    turnBrickInto(brickId: string, newTag: string, state: any = {}) {
-        this.dispatch(new BeforeChangeEvent(TurnBrickIntoEvent));
+    removeBrick(brickId: string) {
+        const brickSnapshot = this.query().brickSnapshot(brickId);
 
-        const brick = this.layoutWalker.getBrickById(brickId);
-        const oldTag = brick.tag;
+        const newPlan = this.plan.filter((brick) => {
+            if (brick.id !== brickId) {
+                return brick;
+            }
+        });
 
-        brick
-            .turnInto(newTag)
-            .updateState(state);
+        this.plans.push(newPlan);
+        this.changes.push({
+            removed: [brickSnapshot],
+            added: [],
+            turned: [],
+            updated: []
+        });
 
-        this.dispatch(new TurnBrickIntoEvent(brickId, newTag, oldTag));
+        return this;
     }
 
-    moveBrickAfterBrickId(movedBrickIds: string[], afterBrickId: string): void {
-        if (movedBrickIds.indexOf(afterBrickId) === -1) {
-            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+    turnBrickInto(brickId: string, newTag: string, data: any = {}) {
+        const previousTag = this.query().tagByBrickId(brickId);
 
-            const afterBrickPosition = this.layoutWalker.getBrickPosition(afterBrickId);
-            const columnCount = this.layoutWalker.getColumnCount(afterBrickPosition.rowIndex);
-
-            if (columnCount === 1) {
-                this.layout.moveBrickAfterInNewRow(afterBrickId, movedBrickIds);
-            } else {
-                this.layout.moveBrickAfterInSameColumn(afterBrickId, movedBrickIds);
+        const newPlan = this.plan.map((brick) => {
+            if (brick.id !== brickId) {
+                return brick;
             }
 
-            this.dispatch(new MoveBrickEvent(movedBrickIds, afterBrickId));
-        }
+            return {
+                ...brick,
+                tag: newTag,
+                data
+            };
+        });
+
+        this.plans.push(newPlan);
+        this.changes.push({
+            turned: [
+                {
+                    brickId,
+                    newTag,
+                    previousTag
+                }
+            ],
+            updated: [],
+            added: [],
+            removed: []
+        });
+
+        return this;
     }
 
-    moveBrickBeforeBrickId(movedBrickIds: string[], beforeBrickId: string): void {
-        if (movedBrickIds.indexOf(beforeBrickId) === -1) {
-            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
+    clear() {
+        const removedBrickSnapshots = this.query().brickSnapshots();
 
-            const beforeBrickPosition = this.layoutWalker.getBrickPosition(beforeBrickId);
-            const columnCount = this.layoutWalker.getColumnCount(beforeBrickPosition.rowIndex);
+        this.plans.push([]);
+        this.changes.push({
+            removed: removedBrickSnapshots,
+            added: [],
+            updated: [],
+            turned: []
+        });
 
-            if (columnCount === 1) {
-                this.layout.moveBrickBeforeInNewRow(beforeBrickId, movedBrickIds);
-            } else {
-                this.layout.moveBrickBeforeInSameColumn(beforeBrickId, movedBrickIds);
-            }
-
-            this.dispatch(new MoveBrickEvent(movedBrickIds, beforeBrickId));
-        }
+        return this;
     }
 
-    moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string): void {
-        if (targetBrickIds.indexOf(beforeBrickId) === -1) {
-            this.dispatch(new BeforeChangeEvent(MoveBrickEvent));
-
-            this.layout.moveBrickToNewColumn(targetBrickIds, beforeBrickId, side);
-
-            this.dispatch(new MoveBrickEvent(targetBrickIds, beforeBrickId));
-        }
-    }
-
-    enableReadOnly() {
-        (this.isReadOnly$ as BehaviorSubject<boolean>).next(true);
-    }
-
-    disableReadOnly() {
-        (this.isReadOnly$ as BehaviorSubject<boolean>).next(false);
-    }
-
-    isReadOnly(): boolean {
-        return (this.isReadOnly$ as BehaviorSubject<boolean>).getValue();
-    }
-
-    // QUERY METHODS
-    getPlan(): IWallDefinition {
-        const plan = {
-            bricks: [],
-            layout: {
-                bricks: []
-            }
+    private createNewBrick(tag: string, data: any): IBrickDefinition {
+        return {
+            id: new Guid().get(),
+            tag,
+            data,
+            meta: {}
         };
+    }
+}
 
-        this.layoutWalker.traverse((row: IWallRow) => {
-            const columns = [];
+class PlanQuery {
+    constructor(readonly plan: IWallDefinition2) {
+    }
 
-            row.columns.forEach((column: IWallColumn) => {
-                const planColumn = {
-                    bricks: []
-                };
+    brickIdBasedOnPosition(position) {
+        return this.plan[position].id;
+    }
 
-                column.bricks.forEach((brick: WallBrick) => {
-                    plan.bricks.push({
-                        id: brick.id,
-                        tag: brick.tag,
-                        meta: brick.meta,
-                        data: brick.state
-                    });
-
-                    planColumn.bricks.push({
-                        id: brick.id
-                    });
-                });
-
-                columns.push(planColumn);
-            });
-
-            plan.layout.bricks.push({
-                columns,
-                id: row.id
-            });
+    brickPosition(brickId: string) {
+        return this.plan.findIndex((brick) => {
+            return brick.id === brickId;
         });
+    }
 
-        return JSON.parse(JSON.stringify(plan));
+    brickSnapshot(brickId: string): IBrickSnapshot {
+        const requestedBrick = this.plan.filter((brick) => brick.id === brickId)[0];
+
+        // convert data key to state
+        // super stupid but what can I do now
+        const {data, ...brickData} = requestedBrick;
+
+        return {
+            ...brickData,
+            state: data
+        };
+    }
+
+    brickIds() {
+        return this.plan.map((brick) => brick.id);
+    }
+
+    brickSnapshots() {
+        return this.plan.map((brick) => this.brickSnapshot(brick.id));
+    }
+
+    length() {
+        return this.plan.length;
+    }
+
+    tagByBrickId(brickId: string) {
+        const requestedBrick = this.plan.filter((brick) => brick.id === brickId)[0];
+
+        return requestedBrick.tag;
     }
 
     sortBrickIdsByLayoutOrder(brickIds: string[]) {
-        const bricksSequence = this.layoutWalker.getBrickSequence(() => true);
-
-        return bricksSequence
-            .filter((brick) => brickIds.indexOf(brick.id) !== -1)
-            .map((brick) => brick.id);
-    }
-
-    traverse(fn): void {
-        return this.layoutWalker.traverse((row: IWallRow) => {
-            const preparedRow = {
-                id: row.id,
-
-                columns: row.columns.map((column) => {
-                    return {
-                        bricks: column.bricks.map((brick) => brick.getSnapshot())
-                    };
-                })
+        return brickIds.map((brickId) => {
+            return {
+                brickId,
+                position: this.brickPosition(brickId)
             };
-
-            fn(preparedRow);
+        }).sort((a, b) => {
+            return a.position > b.position ? 1 : -1;
+        }).map((brickIdWithPosition) => {
+            return brickIdWithPosition.brickId;
         });
     }
 
-    getBrickSnapshot(brickId: string): IBrickSnapshot {
-        const brick = this.layoutWalker.getBrickById(brickId);
-
-        return brick ? brick.getSnapshot() : null;
+    isBrickAheadOf(firstBrickId: string, secondBrickId: string) {
+        return this.brickPosition(firstBrickId) < this.brickPosition(secondBrickId);
     }
 
-    getBrickResourcePaths(brickId: string): string[] {
-        const brick = this.layoutWalker.getBrickById(brickId);
+    getNextBrickId(brickId: string) {
+        const brickPosition = this.brickPosition(brickId);
+        const nextBrick = this.plan[brickPosition + 1];
 
-        const brickSpecification = this.brickRegistry.get(brick.tag);
-
-        if (!brickSpecification.getBrickResourcePaths) {
-            return [];
-        }
-
-        return brickSpecification.getBrickResourcePaths(brick.getSnapshot());
+        return nextBrick && nextBrick.id;
     }
 
-    getBrickTextRepresentation(brickId: string): string {
-        const brick = this.layoutWalker.getBrickById(brickId);
+    getPreviousBrickId(brickId: string) {
+        const brickPosition = this.brickPosition(brickId);
+        const previousBrick = this.plan[brickPosition - 1];
 
-        const brickSpecification = this.brickRegistry.get(brick.tag);
+        return previousBrick && previousBrick.id;
+    }
+
+    getNextTextBrickId(brickId: string) {
+        const nextBricks = this.plan.slice(this.brickPosition(brickId) + 1);
+
+        const nextTextBrick = nextBricks.find((nextBrick) => {
+            return nextBrick.tag === DEFAULT_BRICK;
+        });
+
+        return nextTextBrick && nextTextBrick.id;
+    }
+
+    getPreviousTextBrickId(brickId: string) {
+        const previousBricks = this.plan.slice(0, this.brickPosition(brickId));
+
+        const previousBrick = previousBricks.find((nextBrick) => {
+            return nextBrick.tag === DEFAULT_BRICK;
+        });
+
+        return previousBrick && previousBrick.id;
+    }
+
+    filterBricks(predictor: (brickSnapshot: IBrickSnapshot) => boolean): IBrickSnapshot[] {
+        return this.brickSnapshots().filter((brickSnapshot) => {
+            return predictor(brickSnapshot);
+        });
+    }
+}
+
+class DestructorTransactionHook implements ITransactionHook {
+    constructor(private brickRegistry: BrickRegistry) {
+    }
+
+    apply(transaction: Transaction) {
+        transaction.change.removed.forEach((removedBrickSnapshot) => {
+            const brickSpecification = this.brickRegistry.get(removedBrickSnapshot.tag);
+
+            // ignore promise, model does not care about any side effects
+            // any async operations should be handled by async services and model clients
+            if (brickSpecification.destructor) {
+                brickSpecification.destructor(removedBrickSnapshot);
+            }
+        });
+    }
+}
+
+// high level methods
+export class WallCoreApi2 {
+    planStorage: PlanStorage;
+
+    constructor(private brickRegistry: BrickRegistry) {
+        this.planStorage = new PlanStorage({
+            transactionHooks: [
+                new DestructorTransactionHook(this.brickRegistry)
+            ]
+        });
+    }
+
+    setPlan(plan: IWallDefinition2) {
+        this.planStorage.transaction().setPlan(plan).apply();
+    }
+
+    addBrickAtStart(tag: string, state?: any): IBrickSnapshot {
+        const tr = this.planStorage.transaction();
+        const newBrickId = tr.addBrick(tag, 0, state);
+        tr.apply();
+
+        return this.getBrickSnapshot(newBrickId);
+    }
+
+    addBrickAfterBrickId(brickId: string, tag: string, data?: any) {
+        const brickPosition = this.query().brickPosition(brickId);
+        const tr = this.planStorage.transaction();
+        const newBrickId = tr.addBrick(tag, brickPosition + 1, data);
+        tr.apply();
+
+        return this.getBrickSnapshot(newBrickId);
+    }
+
+    addBrickBeforeBrickId(brickId: string, tag: string, data?: any) {
+        const brickPosition = this.query().brickPosition(brickId);
+        const tr = this.planStorage.transaction();
+        const newBrickId = tr.addBrick(tag, brickPosition === 0 ? brickPosition : brickPosition - 1, data);
+        tr.apply();
+
+        return this.getBrickSnapshot(newBrickId);
+    }
+
+    addDefaultBrick() {
+        const tr = this.planStorage.transaction();
+        const bricksLength = this.query().length();
+
+        const newBrickId = tr.addBrick(DEFAULT_BRICK, bricksLength);
+        tr.apply();
+        return this.getBrickSnapshot(newBrickId);
+    }
+
+    updateBrickState(brickId: string, data: any) {
+        this.planStorage.transaction().updateBrick(brickId, data).apply();
+    }
+
+    removeBrick(brickId: string) {
+        this.planStorage.transaction().removeBrick(brickId).apply();
+    }
+
+    removeBricks(brickIds: string[]) {
+        const tr = this.planStorage.transaction();
+
+        brickIds.forEach((brickId) => {
+            tr.removeBrick(brickId);
+        });
+
+        tr.apply();
+    }
+
+    turnBrickInto(brickId: string, newTag: string, data: any = {}) {
+        this.planStorage.transaction().turnBrickInto(brickId, newTag, data).apply();
+    }
+
+    moveBrickAfterBrickId(brickIdsToMove: string[], afterBrickId: string) {
+        const afterBrickPosition = this.query().brickPosition(afterBrickId);
+
+        this.planStorage.transaction().moveBrickAfter(brickIdsToMove, afterBrickId).apply();
+    }
+
+    moveBrickBeforeBrickId(brickIdsToMove: string[], afterBrickId: string) {
+        const beforeBrickPosition = this.query().brickPosition(afterBrickId);
+
+        this.planStorage.transaction()
+            .moveBrickBefore(brickIdsToMove, afterBrickId).apply();
+    }
+
+    clear() {
+        this.planStorage.transaction().clear().apply();
+    }
+
+    getBrickSnapshot(brickId: string) {
+        return this.planStorage.query().brickSnapshot(brickId);
+    }
+
+    getPlan() {
+        return this.planStorage.query().plan;
+    }
+
+    getBrickIds() {
+        return this.planStorage.query().brickIds();
+    }
+
+    isBrickAheadOf(firstBrickId: string, secondBrickId: string) {
+        return this.planStorage.query().isBrickAheadOf(firstBrickId, secondBrickId);
+    }
+
+    getBricksCount() {
+        return this.query().length();
+    }
+
+    getBrickTag(brickId: string) {
+        return this.query().tagByBrickId(brickId);
+    }
+
+    getNextBrickId(brickId: string) {
+        return this.query().getNextBrickId(brickId);
+    }
+
+    getPreviousBrickId(brickId: string) {
+        return this.query().getPreviousBrickId(brickId);
+    }
+
+    getNextTextBrickId(brickId: string) {
+        return this.query().getNextTextBrickId(brickId);
+    }
+
+    getPreviousTextBrickId(brickId: string) {
+        return this.query().getPreviousTextBrickId(brickId);
+    }
+
+    filterBricks(predictor: (brickSnapshot: IBrickSnapshot) => boolean): IBrickSnapshot[] {
+        return this.query().filterBricks(predictor);
+    }
+
+    isRegisteredBrick(tag: string) {
+        return Boolean(this.brickRegistry.get(tag));
+    }
+
+    getBrickTextRepresentation(brickId: string) {
+        const brickSnapshot = this.query().brickSnapshot(brickId);
+
+        const brickSpecification = this.brickRegistry.get(brickSnapshot.tag);
 
         if (brickSpecification.textRepresentation) {
-            const brickTextRepresentation = new brickSpecification.textRepresentation(brick.getSnapshot());
+            const brickTextRepresentation = new brickSpecification.textRepresentation(brickSnapshot);
 
             return brickTextRepresentation.getText() || '';
         } else {
@@ -418,55 +603,31 @@ export class WallCorePlugin2 {
         }
     }
 
-    subscribe(callback): Subscription {
-        return this.events.subscribe(callback);
+    sortBrickIdsByLayoutOrder(brickIds: string[]) {
+        return this.query().sortBrickIdsByLayoutOrder(brickIds);
     }
 
-    isRegisteredBrick(tag: string): boolean {
-        return Boolean(this.brickRegistry.get(tag));
+    query() {
+        return this.planStorage.query();
+    }
+}
+
+export class WallCorePlugin2 {
+    name = 'core2';
+    version = '0.0.0';
+
+    private wallModel: IWallModel;
+
+    constructor(private brickRegistry: BrickRegistry) {
     }
 
-    private dispatch(e: any): void {
-        this.events.next(e);
-    }
+    onWallInitialize(wallModel: IWallModel) {
+        this.wallModel = wallModel;
 
-    private createBrick(tag, state?: any) {
-        const id = this.generateGuid();
-        const meta = {};
-        const brick = new WallBrick(id, tag, meta);
-
-        if (state) {
-            brick.updateState(state);
-        }
-
-        return brick;
-    }
-
-    private restoreBrick(brickDefinition: IBrickDefinition): WallBrick {
-        const brick = new WallBrick(
-            brickDefinition.id,
-            brickDefinition.tag,
-            brickDefinition.meta
+        const api = new WallCoreApi2(
+            this.brickRegistry
         );
 
-        brick.updateState(brickDefinition.data);
-
-        return brick;
+        this.wallModel.registerApi(this.name, api);
     }
-
-    private clearBrickResources(brickId): Promise<any> {
-        const brick = this.layoutWalker.getBrickById(brickId);
-
-        const brickSpecification = this.brickRegistry.get(brick.tag);
-
-        if (brickSpecification.destructor) {
-            return brickSpecification.destructor(brick.getSnapshot());
-        } else {
-            return Promise.resolve();
-        }
-    }
-
-    private generateGuid(): string {
-        return (new Guid()).get();
-    }*/
 }

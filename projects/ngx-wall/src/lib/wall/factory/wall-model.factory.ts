@@ -31,7 +31,7 @@ export class WallModelFactory {
             config
         );
 
-        wallModel.api.core.setPlan(config.plan);
+        wallModel.api.core2.setPlan(config.plan);
 
         return wallModel;
     }

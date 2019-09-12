@@ -748,7 +748,7 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.getBrickSnapshot).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core.brickSnapshot).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.core.updateBrickState).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
@@ -832,7 +832,7 @@ describe('TextBrickComponent', () => {
                     // test assertions
                     testScope.whenRendering().then(() => {
                         expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
-                        expect(testScope.mockWallModel.api.core.getBrickSnapshot).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core.brickSnapshot).toHaveBeenCalled();
                         expect(testScope.mockWallModel.api.core.removeBrick).toHaveBeenCalled();
 
                         // test assertions
