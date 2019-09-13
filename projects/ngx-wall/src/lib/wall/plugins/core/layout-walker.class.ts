@@ -1,7 +1,7 @@
-import {BrickRegistry} from '../../registry/brick-registry.service';
-import {WallBrick} from '../../model/wall-brick.model';
-import {IWallRow} from '../../model/interfaces/wall-row.interface';
 import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
+import {IWallRow} from '../../model/interfaces/wall-row.interface';
+import {WallBrick} from '../../model/wall-brick.model';
+import {BrickRegistry} from '../../registry/brick-registry.service';
 
 /*
 * Execute queries commands over rows

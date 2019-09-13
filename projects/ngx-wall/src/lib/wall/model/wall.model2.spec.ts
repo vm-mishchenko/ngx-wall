@@ -3,7 +3,7 @@ import {BrickRegistry} from '../registry/brick-registry.service';
 import {IBrickSnapshot} from '../wall';
 import {IWallDefinition2} from './interfaces/wall-definition.interface2';
 
-fdescribe('Wall Model', () => {
+describe('Wall Model', () => {
     const brickRegistry = new BrickRegistry();
     const wallModelFactory = new WallModelFactory(brickRegistry);
 
@@ -311,7 +311,7 @@ fdescribe('Wall Model', () => {
             expect(firstBrick.state.text).toBe(brickState.text);
         });
 
-        fit('addBrickAfterBrickId()', () => {
+        it('addBrickAfterBrickId()', () => {
             const wm = wallModelFactory.create();
 
             wm.api.core2.addDefaultBrick();

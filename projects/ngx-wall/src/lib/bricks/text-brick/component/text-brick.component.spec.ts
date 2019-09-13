@@ -25,7 +25,7 @@ class TestScope {
 
     mockWallModel: any = {
         api: {
-            core: {},
+            core2: {},
             ui: {}
         }
     };
@@ -79,7 +79,7 @@ class TestScope {
 
     // mocking
     /*
-    * @param {string} apiString "core.removeBrick"
+    * @param {string} apiString "core2.removeBrick"
     * @param {string} apiString "ui.focusOnBrick"
     * */
     mock(apiString: string): jasmine.Spy {
@@ -203,7 +203,7 @@ describe('TextBrickComponent', () => {
                         id: '2'
                     };
 
-                    testScope.mock('core.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
+                    testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
                     testScope.mock('ui.focusOnBrickId');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
@@ -219,10 +219,10 @@ describe('TextBrickComponent', () => {
                     tick();
 
                     // test assertions
-                    const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
+                    const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
                     const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
 
-                    expect(testScope.mockWallModel.api.core.addBrickAfterBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
@@ -246,7 +246,7 @@ describe('TextBrickComponent', () => {
                         id: '2'
                     };
 
-                    testScope.mock('core.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
+                    testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
                     testScope.mock('ui.focusOnBrickId');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
@@ -262,10 +262,10 @@ describe('TextBrickComponent', () => {
                     tick();
 
                     // test assertions
-                    const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
+                    const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
                     const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
 
-                    expect(testScope.mockWallModel.api.core.addBrickAfterBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
@@ -285,7 +285,7 @@ describe('TextBrickComponent', () => {
                 }).then(() => {
                     const mockGetSelection = spyOn(window, 'getSelection');
 
-                    testScope.mock('core.addBrickBeforeBrickId');
+                    testScope.mock('core2.addBrickBeforeBrickId');
                     spyOn(testScope.nativeElement, 'scrollIntoView');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
@@ -300,9 +300,9 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     expect(testScope.nativeElement.scrollIntoView).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.addBrickBeforeBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.addBrickBeforeBrickId).toHaveBeenCalled();
 
-                    const addBrickArguments = testScope.getRecentArguments('core.addBrickBeforeBrickId');
+                    const addBrickArguments = testScope.getRecentArguments('core2.addBrickBeforeBrickId');
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
                     expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
                     expect(addBrickArguments[2]).toEqual({
@@ -323,7 +323,7 @@ describe('TextBrickComponent', () => {
                         id: '2'
                     };
 
-                    testScope.mock('core.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
+                    testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
                     testScope.mock('ui.focusOnBrickId');
 
                     let capturedState;
@@ -342,10 +342,10 @@ describe('TextBrickComponent', () => {
                     tick();
 
                     // test assertions
-                    const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
+                    const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
                     const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
 
-                    expect(testScope.mockWallModel.api.core.addBrickAfterBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
@@ -369,7 +369,7 @@ describe('TextBrickComponent', () => {
                     id: '2'
                 };
 
-                testScope.mock('core.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
+                testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
                 testScope.mock('ui.focusOnBrickId');
 
                 [
@@ -425,7 +425,7 @@ describe('TextBrickComponent', () => {
                             testScope.component.onKeyPress(keyEvent);
 
                             // test assertions
-                            const addBrickArguments = testScope.getRecentArguments('core.addBrickAfterBrickId');
+                            const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
 
                             expect(addBrickArguments[2]).toEqual({
                                 text: config.expectedNewText,
@@ -693,7 +693,7 @@ describe('TextBrickComponent', () => {
                 }).then(() => {
                     const previousTextBrickId = '2';
 
-                    testScope.mock('core.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
+                    testScope.mock('core2.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
                     testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
 
                     (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
@@ -702,7 +702,7 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(new KeyboardEvent('keydown', {code: 'Backspace'}));
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.getPreviousTextBrickId).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
@@ -735,9 +735,9 @@ describe('TextBrickComponent', () => {
                         }
                     };
 
-                    testScope.mock('core.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
-                    testScope.mock('core.getBrickSnapshot').and.returnValue(previousTextSupportingBrickSnapshot);
-                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId', 'core.updateBrickState']);
+                    testScope.mock('core2.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
+                    testScope.mock('core2.getBrickSnapshot').and.returnValue(previousTextSupportingBrickSnapshot);
+                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId', 'core2.updateBrickState']);
 
                     (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
 
@@ -747,16 +747,16 @@ describe('TextBrickComponent', () => {
                     tick();
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.core.getPreviousTextBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.brickSnapshot).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.core.updateBrickState).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.getPreviousTextBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.getBrickSnapshot).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.updateBrickState).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
                     // test assertions
                     const removeBrickCallArguments = testScope.getRecentArguments('ui.removeBrick');
                     const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.focusOnBrickId');
-                    const updateBrickStateCallArguments = testScope.getRecentArguments('core.updateBrickState');
+                    const updateBrickStateCallArguments = testScope.getRecentArguments('core2.updateBrickState');
 
                     expect(removeBrickCallArguments[0]).toBe(testScope.component.id);
                     expect(focusOnBrickIdCallArguments[0]).toBe(previousTextBrickId);
@@ -813,9 +813,9 @@ describe('TextBrickComponent', () => {
                         }
                     };
 
-                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
-                    testScope.mock('core.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
-                    testScope.mockMethods(['core.removeBrick']);
+                    testScope.mock('core2.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mock('core2.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
+                    testScope.mockMethods(['core2.removeBrick']);
 
                     let capturedState;
                     testScope.component.stateChanges.subscribe((updatedState) => capturedState = updatedState);
@@ -831,14 +831,14 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     testScope.whenRendering().then(() => {
-                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
-                        expect(testScope.mockWallModel.api.core.brickSnapshot).toHaveBeenCalled();
-                        expect(testScope.mockWallModel.api.core.removeBrick).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.getBrickSnapshot).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.removeBrick).toHaveBeenCalled();
 
                         // test assertions
-                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
-                        expect(testScope.getRecentArguments('core.getBrickSnapshot')[0]).toBe(nextTextBrickId);
-                        expect(testScope.getRecentArguments('core.removeBrick')[0])
+                        expect(testScope.getRecentArguments('core2.getNextTextBrickId')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('core2.getBrickSnapshot')[0]).toBe(nextTextBrickId);
+                        expect(testScope.getRecentArguments('core2.removeBrick')[0])
                             .toBe(nextTextSupportingBrickSnapshot.id);
 
                         expect(capturedState.text).toBe(newState.text + nextTextSupportingBrickSnapshot.state.text);
@@ -924,9 +924,9 @@ describe('TextBrickComponent', () => {
                                 }
                             };
 
-                            testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
-                            testScope.mock('core.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
-                            testScope.mockMethods(['core.removeBrick']);
+                            testScope.mock('core2.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                            testScope.mock('core2.getBrickSnapshot').and.returnValue(nextTextSupportingBrickSnapshot);
+                            testScope.mockMethods(['core2.removeBrick']);
 
                             // place caret at the end
                             (new PlaceCaretToPosition(
@@ -974,7 +974,7 @@ describe('TextBrickComponent', () => {
 
                 testScope.updateComponentState(newState).then(() => {
                     const nextTextBrickId = '2';
-                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mock('core2.getNextTextBrickId').and.returnValue(nextTextBrickId);
                     testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
 
                     // place caret at the start
@@ -985,12 +985,12 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     testScope.whenRendering().then(() => {
-                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.getNextTextBrickId).toHaveBeenCalled();
                         expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
                         expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
 
                         // test assertions
-                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('core2.getNextTextBrickId')[0]).toBe(testScope.component.id);
                         expect(testScope.getRecentArguments('ui.removeBrick')[0]).toBe(testScope.component.id);
                         expect(testScope.getRecentArguments('ui.focusOnBrickId')[0]).toBe(nextTextBrickId);
                         expect(testScope.getRecentArguments('ui.focusOnBrickId')[1]).toEqual({
@@ -1011,7 +1011,7 @@ describe('TextBrickComponent', () => {
 
                 testScope.updateComponentState(newState).then(() => {
                     const nextTextBrickId = null;
-                    testScope.mock('core.getNextTextBrickId').and.returnValue(nextTextBrickId);
+                    testScope.mock('core2.getNextTextBrickId').and.returnValue(nextTextBrickId);
                     testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
 
                     // place caret at the start
@@ -1022,12 +1022,12 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     testScope.whenRendering().then(() => {
-                        expect(testScope.mockWallModel.api.core.getNextTextBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.getNextTextBrickId).toHaveBeenCalled();
                         expect(testScope.mockWallModel.api.ui.removeBrick).not.toHaveBeenCalled();
                         expect(testScope.mockWallModel.api.ui.focusOnBrickId).not.toHaveBeenCalled();
 
                         // test assertions
-                        expect(testScope.getRecentArguments('core.getNextTextBrickId')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('core2.getNextTextBrickId')[0]).toBe(testScope.component.id);
                     });
                 });
             }));

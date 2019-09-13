@@ -37,11 +37,11 @@ class PlanStorage {
 
     plan$: Observable<IWallDefinition2> = this.planBehaviour$.asObservable();
 
-    constructor(private options?: IPlaneStorageOptions) {
+    constructor(readonly brickRegistry: BrickRegistry, private options?: IPlaneStorageOptions) {
     }
 
     query() {
-        return new PlanQuery(this.plan());
+        return new PlanQuery(this.plan(), this.brickRegistry);
     }
 
     transaction() {
@@ -154,7 +154,7 @@ class Transaction {
     }
 
     query() {
-        return new PlanQuery(this.plan);
+        return new PlanQuery(this.plan, this.planStorage.brickRegistry);
     }
 
     // SIMPLE LOW LEVEL API
@@ -238,7 +238,7 @@ class Transaction {
             return !brickIdsToMove.includes(brick.id);
         });
 
-        const targetBrickIdPosition = new PlanQuery(newPlan).brickPosition(targetBrickId);
+        const targetBrickIdPosition = new PlanQuery(newPlan, this.planStorage.brickRegistry).brickPosition(targetBrickId);
         const beforeTargetBrickIdPosition = targetBrickIdPosition;
 
         newPlan = [
@@ -275,7 +275,7 @@ class Transaction {
             return !brickIdsToMove.includes(brick.id);
         });
 
-        const targetBrickIdPosition = new PlanQuery(newPlan).brickPosition(targetBrickId);
+        const targetBrickIdPosition = new PlanQuery(newPlan, this.planStorage.brickRegistry).brickPosition(targetBrickId);
         const afterTargetBrickIdPosition = targetBrickIdPosition + 1;
 
         newPlan = [
@@ -410,7 +410,7 @@ class Transaction {
 }
 
 class PlanQuery {
-    constructor(readonly plan: IWallDefinition2) {
+    constructor(readonly plan: IWallDefinition2, private brickRegistry: BrickRegistry) {
     }
 
     brickIdBasedOnPosition(position) {
@@ -489,7 +489,7 @@ class PlanQuery {
         const nextBricks = this.plan.slice(this.brickPosition(brickId) + 1);
 
         const nextTextBrick = nextBricks.find((nextBrick) => {
-            return nextBrick.tag === DEFAULT_BRICK;
+            return this.brickRegistry.get(nextBrick.tag).supportText;
         });
 
         return nextTextBrick && nextTextBrick.id;
@@ -499,7 +499,7 @@ class PlanQuery {
         const previousBricks = this.plan.slice(0, this.brickPosition(brickId));
 
         const previousTextBrick = previousBricks.reverse().find((previousBrick) => {
-            return previousBrick.tag === DEFAULT_BRICK;
+            return this.brickRegistry.get(previousBrick.tag).supportText;
         });
 
         return previousTextBrick && previousTextBrick.id;
@@ -547,7 +547,7 @@ export class WallCoreApi2 {
     private planStorage: PlanStorage;
 
     constructor(private brickRegistry: BrickRegistry) {
-        this.planStorage = new PlanStorage({
+        this.planStorage = new PlanStorage(this.brickRegistry, {
             transactionHooks: [
                 new DestructorTransactionHook(this.brickRegistry)
             ]
