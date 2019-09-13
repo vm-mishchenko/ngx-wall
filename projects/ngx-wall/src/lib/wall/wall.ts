@@ -31,15 +31,3 @@ export {
 
 // FACTORY
 export {WallModelFactory} from './factory/wall-model.factory';
-
-// Core Plugin
-export {
-    AddBrickEvent,
-    BeforeChangeEvent,
-    MoveBrickEvent,
-    RemoveBrickEvent,
-    RemoveBricksEvent,
-    SetPlanEvent,
-    TurnBrickIntoEvent,
-    UpdateBrickStateEvent
-} from './plugins/core/public_api';
