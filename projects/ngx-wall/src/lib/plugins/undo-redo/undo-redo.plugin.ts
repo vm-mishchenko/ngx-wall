@@ -1,7 +1,8 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {BeforeChangeEvent, IWallDefinition, IWallModel, IWallPlugin, SetPlanEvent} from '../../wall/wall';
+import {IWallDefinition2} from '../../wall/model/interfaces/wall-definition.interface2';
+import {IWallModel, IWallPlugin} from '../../wall/wall';
 import {IUndoRedoApi} from './undo-redo-api.interface';
 import {UNDO_REDO_API_NAME} from './undo-redo.constant';
 
@@ -19,8 +20,8 @@ export class UndoRedoPlugin implements IWallPlugin {
 
     private processingUndo = false;
 
-    private undoPlanStack: IWallDefinition[] = [];
-    private redoPlanStack: IWallDefinition[] = [];
+    private undoPlanStack: IWallDefinition2[] = [];
+    private redoPlanStack: IWallDefinition2[] = [];
 
     constructor(private injector: Injector) {
         this.doc = this.injector.get(DOCUMENT);
@@ -37,11 +38,9 @@ export class UndoRedoPlugin implements IWallPlugin {
             clear: this.clear.bind(this)
         } as IUndoRedoApi);
 
-
-        // todo-refactoring: fix subscription
-        /*this.apiSubscription = this.wallModel.api.core.subscribe((e) => {
+        this.apiSubscription = this.wallModel.api.core2.events$.subscribe((e) => {
             this.wallModelEventHandler(e);
-        });*/
+        });
 
         this.onUndoKeyHandlerBound = this.onUndoKeyHandler.bind(this);
 
@@ -79,11 +78,9 @@ export class UndoRedoPlugin implements IWallPlugin {
 
     private wallModelEventHandler(e: any): void {
         if (!this.processingUndo) {
-            if (e instanceof BeforeChangeEvent && (e as BeforeChangeEvent).beforeEventType !== SetPlanEvent) {
-                this.undoPlanStack.push(this.wallModel.api.core.getPlan());
+            this.undoPlanStack.push(this.wallModel.api.core2.getPlan());
 
-                this.redoPlanStack = [];
-            }
+            this.redoPlanStack = [];
         }
     }
 
@@ -93,7 +90,7 @@ export class UndoRedoPlugin implements IWallPlugin {
         if (redoPlan) {
             this.processingUndo = true;
 
-            this.wallModel.api.core.setPlan(redoPlan);
+            this.wallModel.api.core2.setPlan(redoPlan);
 
             this.undoPlanStack.push(redoPlan);
 
@@ -107,7 +104,7 @@ export class UndoRedoPlugin implements IWallPlugin {
         if (previousPlan) {
             this.processingUndo = true;
 
-            this.wallModel.api.core.setPlan(previousPlan);
+            this.wallModel.api.core2.setPlan(previousPlan);
 
             this.redoPlanStack.push(previousPlan);
 

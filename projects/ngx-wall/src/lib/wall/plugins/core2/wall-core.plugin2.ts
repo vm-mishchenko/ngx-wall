@@ -70,6 +70,9 @@ export interface ITransactionChanges {
     // newly added brick ids
     added: string[];
 
+    // moved brick ids
+    moved: string[];
+
     // removed brick ids
     removed: IBrickSnapshot[];
 
@@ -102,6 +105,7 @@ class Transaction {
     get change(): ITransactionChanges {
         const initialChange: ITransactionChanges = {
             updated: [],
+            moved: [],
             removed: [],
             added: [],
             turned: [],
@@ -124,6 +128,10 @@ class Transaction {
                 updated: [
                     ...result.updated,
                     ...change.updated
+                ],
+                moved: [
+                    ...result.moved,
+                    ...change.moved
                 ]
             };
 
@@ -164,7 +172,8 @@ class Transaction {
             added: [brick.id],
             turned: [],
             removed: [],
-            updated: []
+            updated: [],
+            moved: [],
         });
 
         return brick.id;
@@ -184,7 +193,8 @@ class Transaction {
             added: [newBrick.id],
             turned: [],
             removed: [],
-            updated: []
+            updated: [],
+            moved: []
         });
 
         return newBrick.id;
@@ -205,7 +215,8 @@ class Transaction {
             added: [newBrick.id],
             turned: [],
             removed: [],
-            updated: []
+            updated: [],
+            moved: []
         });
 
         return newBrick.id;
@@ -237,6 +248,13 @@ class Transaction {
         ];
 
         this.plans.push(newPlan);
+        this.changes.push({
+            turned: [],
+            removed: [],
+            updated: [],
+            added: [],
+            moved: brickIdsToMove
+        });
 
         return this;
     }
@@ -267,6 +285,13 @@ class Transaction {
         ];
 
         this.plans.push(newPlan);
+        this.changes.push({
+            turned: [],
+            removed: [],
+            updated: [],
+            added: [],
+            moved: brickIdsToMove
+        });
 
         return this;
     }
@@ -298,7 +323,8 @@ class Transaction {
             }],
             removed: [],
             turned: [],
-            added: []
+            added: [],
+            moved: []
         });
 
         return this;
@@ -318,7 +344,8 @@ class Transaction {
             removed: [brickSnapshot],
             added: [],
             turned: [],
-            updated: []
+            updated: [],
+            moved: []
         });
 
         return this;
@@ -350,7 +377,8 @@ class Transaction {
             ],
             updated: [],
             added: [],
-            removed: []
+            removed: [],
+            moved: []
         });
 
         return this;
@@ -364,7 +392,8 @@ class Transaction {
             removed: removedBrickSnapshots,
             added: [],
             updated: [],
-            turned: []
+            turned: [],
+            moved: []
         });
 
         return this;

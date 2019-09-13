@@ -130,20 +130,6 @@ export class SelectionPlugin implements IWallPlugin {
                         }
                     }
 
-                    if (this.nearestBrickToDrop.type === TOW.dropTypes.vertical) {
-                        if (this.nearestBrickToDrop.side === TOW.dropSides.left) {
-                            this.wallModel.api.core.moveBrickToNewColumn(
-                                movedBrickIds, this.nearestBrickToDrop.spot.data.brickId, TOW.dropSides.left
-                            );
-                        }
-
-                        if (this.nearestBrickToDrop.side === TOW.dropSides.right) {
-                            this.wallModel.api.core.moveBrickToNewColumn(
-                                movedBrickIds, this.nearestBrickToDrop.spot.data.brickId, TOW.dropSides.right
-                            );
-                        }
-                    }
-
                     this.nearestBrickToDrop = null;
 
                     this.placeholderRenderer.clear();
@@ -190,16 +176,6 @@ export class SelectionPlugin implements IWallPlugin {
                                 side: null,
                                 type: null
                             };
-
-                            if (e.mousePosition.clientX < nearestSpot.position.x) {
-                                this.nearestBrickToDrop.type = TOW.dropTypes.vertical;
-                                this.nearestBrickToDrop.side = TOW.dropSides.left;
-                            }
-
-                            if (e.mousePosition.clientX > nearestSpot.position.x + nearestSpot.size.width) {
-                                this.nearestBrickToDrop.type = TOW.dropTypes.vertical;
-                                this.nearestBrickToDrop.side = TOW.dropSides.right;
-                            }
 
                             if (e.mousePosition.clientX > nearestSpot.position.x &&
                                 e.mousePosition.clientX < nearestSpot.position.x + nearestSpot.size.width) {
@@ -352,20 +328,6 @@ export class SelectionPlugin implements IWallPlugin {
             }
 
             placeholderIsHorizontal = true;
-        }
-
-        if (type === TOW.dropTypes.vertical) {
-            placeholderY = spot.position.y;
-            placeholderSize = spot.size.height;
-            placeholderIsHorizontal = false;
-
-            if (side === TOW.dropSides.left) {
-                placeholderX = spot.position.x;
-            }
-
-            if (side === TOW.dropSides.right) {
-                placeholderX = spot.position.x + spot.size.width;
-            }
         }
 
         this.placeholderRenderer.render(placeholderX, placeholderY, placeholderSize, placeholderIsHorizontal);

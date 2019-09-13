@@ -118,7 +118,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
             document.execCommand('insertHTML', false, textArr[0]);
         } else if (textArr.length > 1) {
             // todo: add interface for UI api
-            textArr.reverse().forEach((text) => this.wallModel.api.core.addBrickAfterBrickId(this.id, 'text', {text}));
+            textArr.reverse().forEach((text) => this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text', {text}));
         }
     }
 
@@ -278,12 +278,12 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     }
 
     concatWithNextTextSupportingBrick(e: Event) {
-        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
+        const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
 
         if (nextTextBrickId) {
             e.preventDefault();
 
-            const nextTextBrickSnapshot = this.wallModel.api.core.getBrickSnapshot(nextTextBrickId);
+            const nextTextBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(nextTextBrickId);
 
             const concatenationText = nextTextBrickSnapshot.state.text || '';
 
@@ -291,7 +291,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
             this.saveCurrentState();
 
-            this.wallModel.api.core.removeBrick(nextTextBrickId);
+            this.wallModel.api.core2.removeBrick(nextTextBrickId);
 
             setTimeout(() => {
                 this.placeCaretBaseOnConcatenatedText(concatenationText);
@@ -321,7 +321,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
     onDeleteAndFocusToNext(e: KeyboardEvent) {
         e.preventDefault();
 
-        const nextTextBrickId = this.wallModel.api.core.getNextTextBrickId(this.id);
+        const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
 
         if (nextTextBrickId) {
             this.wallUiApi.removeBrick(this.id);

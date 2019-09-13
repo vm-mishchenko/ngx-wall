@@ -95,12 +95,16 @@ export class WallViewModel implements IWallUiApi {
                 });
             }
 
-            /*if (event instanceof MoveBrickEvent) {
+            if (event.changes.moved.length) {
                 this.unSelectBricks();
-            }*/
+            }
 
             if (event.changes.removed.length && !this.wallModel.api.core2.query().length()) {
-                this.wallModel.api.core2.addDefaultBrick();
+                const {id} = this.wallModel.api.core2.addDefaultBrick();
+
+                setTimeout(() => {
+                    this.focusOnBrickId(id);
+                });
             }
         });
 
@@ -295,7 +299,11 @@ export class WallViewModel implements IWallUiApi {
             return;
         }
 
-        this.wallModel.api.core2.addDefaultBrick();
+        const {id} = this.wallModel.api.core2.addDefaultBrick();
+
+        setTimeout(() => {
+            this.focusOnBrickId(id);
+        });
     }
 
     // canvas interaction

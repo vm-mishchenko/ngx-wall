@@ -4,6 +4,7 @@ import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/t
 import {FormsModule} from '@angular/forms';
 import {By} from '@angular/platform-browser';
 import {StickyModalModule} from 'ngx-sticky-modal';
+import {ContenteditableModule} from '../../../modules/contenteditable/contenteditable.module';
 import {HelperComponentsModule} from '../../../modules/helper-components/helper-components';
 import {PlaceCaretToPosition} from '../../../modules/utils/node/place-caret-to-position';
 import {IWallModel} from '../../../wall/wall';
@@ -11,7 +12,6 @@ import {FOCUS_INITIATOR} from '../../base-text-brick/base-text-brick.constant';
 import {IBaseTextState} from '../../base-text-brick/base-text-state.interface';
 import {TEXT_BRICK_TAG} from '../text-brick.constant';
 import {TextBrickComponent} from './text-brick.component';
-import {ContenteditableModule} from '../../../modules/contenteditable/contenteditable.module';
 
 interface TestScopeOptions {
     initialState?: IBaseTextState;
