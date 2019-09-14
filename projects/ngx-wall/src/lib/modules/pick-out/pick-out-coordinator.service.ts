@@ -41,7 +41,8 @@ export class PickOutCoordinator {
     }
 
     pickOutChanged(range) {
-        const pickOutSpotModels = this.radar.filterSpots((spot: SpotModel) => spot.clientData.isPickOutItem);
+        const pickOutSpotModels = Array.from(this.radar.spots.values())
+            .filter((spot: SpotModel) => spot.clientData.isPickOutItem);
 
         pickOutSpotModels.forEach((spotModel) => {
             spotModel.updateInfo();

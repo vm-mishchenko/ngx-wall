@@ -86,7 +86,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
     // wait until child spot directive will be initialized
     ngAfterViewInit() {
         // show/hide drag-and-drop handler
-        const spot = this.radar.spot(this.viewBrick.brick.id);
+        const spot = this.radar.spots.get(this.viewBrick.brick.id);
 
         this.isShowDraggableHandler = combineLatest(
             spot.onIsMouseCross13Line(),

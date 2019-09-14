@@ -1,9 +1,8 @@
 import {map, takeUntil, tap} from 'rxjs/internal/operators';
 import {Subject} from 'rxjs/internal/Subject';
-import {SpotDirective} from './directive/spot.directive';
-import {ISpotPosition, ISpotSize} from './interfaces/distance-to-spot.interface';
-import {SpotId} from './interfaces/spot-id.type';
-import {RadarCoordinator} from './radar-coordinator.service';
+import {SpotDirective} from './spot.directive';
+import {ISpotPosition, ISpotSize, SpotId} from './radar.interfaces';
+import {Radar} from './radar.service';
 
 export class SpotModel {
     clientData: any;
@@ -15,7 +14,7 @@ export class SpotModel {
     private spotInstance: SpotDirective;
 
     constructor(private spotId: SpotId, instance: SpotDirective,
-                private radarCoordinartor: RadarCoordinator) {
+                private radar: Radar) {
         this.spotInstance = instance;
 
         this.updateInfo();
@@ -97,7 +96,7 @@ export class SpotModel {
     }
 
     onIsMouseTopLeftDistanceLessThan(distance: number) {
-        return this.radarCoordinartor.mouseMove$.pipe(
+        return this.radar.mouseMove$.pipe(
             takeUntil(this.destroy$),
             tap(() => {
                 this.updateInfo();
@@ -109,7 +108,7 @@ export class SpotModel {
     }
 
     onIsMouseCross13Line() {
-        return this.radarCoordinartor.mouseMove$.pipe(
+        return this.radar.mouseMove$.pipe(
             takeUntil(this.destroy$),
             tap(() => {
                 this.updateInfo();

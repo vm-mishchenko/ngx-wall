@@ -1,7 +1,6 @@
 import {Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {ISpotInfo, ISpotPosition} from '../interfaces/distance-to-spot.interface';
-import {SpotId} from '../interfaces/spot-id.type';
-import {RadarCoordinator} from '../radar-coordinator.service';
+import {ISpotInfo, ISpotPosition, SpotId} from './radar.interfaces';
+import {Radar} from './radar.service';
 
 @Directive({
     selector: '[spot]'
@@ -11,12 +10,12 @@ export class SpotDirective implements OnInit, OnDestroy {
     @Input() spotId: SpotId;
     @Input() spotData: any;
 
-    constructor(private radarCoordinator: RadarCoordinator,
+    constructor(private radar: Radar,
                 private el: ElementRef) {
     }
 
     ngOnInit() {
-        this.radarCoordinator.register(this.spotId, this);
+        this.radar.registerSpot(this.spotId, this);
     }
 
     /**
@@ -38,7 +37,7 @@ export class SpotDirective implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.radarCoordinator.unRegister(this.spotId);
+        this.radar.unRegisterSpot(this.spotId);
     }
 
     private position(): ISpotPosition {

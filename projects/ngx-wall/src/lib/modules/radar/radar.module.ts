@@ -1,15 +1,9 @@
 import {NgModule} from '@angular/core';
-import {SpotDirective} from './directive/spot.directive';
-import {RadarCoordinator} from './radar-coordinator.service';
-import {Radar} from './radar.service';
+import {SpotDirective} from './spot.directive';
 
 @NgModule({
     exports: [SpotDirective],
     declarations: [SpotDirective],
-    providers: [
-        Radar,
-        RadarCoordinator
-    ]
 })
 export class RadarModule {
 }

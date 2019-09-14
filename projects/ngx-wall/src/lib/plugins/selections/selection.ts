@@ -138,7 +138,8 @@ export class SelectionPlugin implements IWallPlugin {
 
             if (e instanceof WorkInProgressEvent) {
                 if (this.isEnableDropZoneHighlight) {
-                    const spots = this.radar.filterSpots((spot: SpotModel) => spot.clientData.isBeacon);
+                    const spots = Array.from(this.radar.spots.values())
+                        .filter((spot: SpotModel) => spot.clientData.isBeacon);
 
                     let nearestSpot: SpotModel;
 
