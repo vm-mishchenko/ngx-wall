@@ -10,7 +10,6 @@ export class WallModel implements IWallModel {
 
     // plugin api
     api = {
-        core: null,
         core2: null
     };
 

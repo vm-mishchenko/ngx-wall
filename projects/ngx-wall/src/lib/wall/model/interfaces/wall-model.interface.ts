@@ -6,7 +6,6 @@ export interface IWallModel {
 
     api: {
         [apiName: string]: any;
-        core: IWallCorePluginApi
         core2: WallCoreApi2
     };
 

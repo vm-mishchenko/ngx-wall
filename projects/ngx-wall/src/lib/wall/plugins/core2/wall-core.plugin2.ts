@@ -10,22 +10,6 @@ import {TransactionEvent} from './events';
 
 const DEFAULT_BRICK = 'text';
 
-// store data and method to modify it
-class Plan {
-    constructor(private bricks: any[] = []) {
-    }
-
-    add(id: string): Plan {
-        // immutable
-        return new Plan([]);
-    }
-
-    remove(): Plan {
-        // immutable
-        return new Plan([]);
-    }
-}
-
 interface IPlaneStorageOptions {
     transactionHooks: ITransactionHook[];
 }
