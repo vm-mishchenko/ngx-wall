@@ -41,7 +41,7 @@ export class PickOutCoordinator {
     }
 
     pickOutChanged(range) {
-        const pickOutSpotModels = this.radar.filterSpots((spot: SpotModel) => spot.data.isPickOutItem);
+        const pickOutSpotModels = this.radar.filterSpots((spot: SpotModel) => spot.clientData.isPickOutItem);
 
         pickOutSpotModels.forEach((spotModel) => {
             spotModel.updateInfo();
@@ -62,6 +62,6 @@ export class PickOutCoordinator {
                     (range.y + range.height) > pickOutItem.position.y &&
                     range.y < (pickOutItem.position.y + pickOutItem.size.height));
             })
-            .map((pickOutItem) => pickOutItem.data.brickId);
+            .map((pickOutItem) => pickOutItem.clientData.brickId);
     }
 }

@@ -1,23 +1,23 @@
 import {Injectable} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
+import {SpotId} from './interfaces/spot-id.type';
 import {RadarCoordinator} from './radar-coordinator.service';
 import {SpotModel} from './spot.model';
 
+/**
+ * Public API for Radar functionality.
+ */
 @Injectable()
 export class Radar {
-    private events: Subject<any> = new Subject();
-
     constructor(private radarCoordinator: RadarCoordinator) {
-        this.radarCoordinator.subscribe((event) => {
-            this.events.next(event);
-        });
     }
 
-    filterSpots(fn: (spot: SpotModel) => void): SpotModel[] {
-        return this.radarCoordinator.filterSpots(fn);
+    filterSpots(predicate: (spot: SpotModel) => boolean): SpotModel[] {
+        return Array.from(this.radarCoordinator.spots)
+            .map(([id, spot]) => spot)
+            .filter((spot) => predicate(spot));
     }
 
-    subscribe(fn: any): Subscription {
-        return this.events.subscribe(fn);
+    spot(spotId: SpotId) {
+        return this.radarCoordinator.spots.get(spotId);
     }
 }

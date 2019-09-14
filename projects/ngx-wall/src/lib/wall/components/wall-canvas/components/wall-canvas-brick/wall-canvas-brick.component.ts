@@ -1,4 +1,5 @@
 import {
+    AfterViewInit,
     ChangeDetectorRef,
     Component,
     ComponentFactoryResolver,
@@ -12,42 +13,48 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {LocationUpdatedEvent} from '../../../../../modules/radar/events/location-updated.event';
+import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
+import {map, takeUntil, tap} from 'rxjs/operators';
 import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
 import {IViewBrickDefinition} from '../../../wall/wall-view.model';
 import {WallCanvasComponent} from '../../wall-canvas.component';
+
+const MINIMAL_DISTANCE_TO_MOUSE = 100;
 
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html',
     styleUrls: ['./wall-canvas-brick.component.scss']
 })
-export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
+export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
     // todo add type
     @Input() viewBrick: IViewBrickDefinition;
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    selected = false;
+    isBrickSelected$: Observable<boolean> = this.wallCanvasComponent.selectedBricks$
+        .pipe(
+            map((selectedBricks) => {
+                return !Boolean(selectedBricks.indexOf(this.viewBrick.brick.id) === -1);
+            })
+        );
 
-    isMouseNear = false;
+    isShowDraggableHandler: Observable<boolean>;
 
-    spot: any;
+    spotData: {
+        brickId: string,
+        isPickOutItem: boolean,
+        isBeacon: boolean
+    };
 
-    isMediaInteractionEnabled = true;
+    isMediaInteractionEnabled$ = this.wallCanvasComponent.isMediaInteractionEnabled$;
 
     private componentReference: ComponentRef<any>;
 
-    private minimalDistanceToMouse = 100;
-
-    // subscriptions
     private stateChangesSubscription: Subscription;
-    private radarSubscription: Subscription;
-    private focusedBrickSubscription: Subscription;
-    private selectedBricksSubscription: Subscription;
-    private isMediaInteractionEnabledSubscription: Subscription;
+
+    private destroyed$ = new Subject<boolean>();
 
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
@@ -57,7 +64,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnInit() {
-        this.spot = {
+        this.spotData = {
             brickId: this.viewBrick.brick.id,
             isPickOutItem: true,
             isBeacon: true
@@ -65,39 +72,35 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
 
         this.componentReference = this.renderBrick();
 
-        // show/hide drag-and-drop handler
-        this.radarSubscription = this.radar.subscribe((e) => {
-            if (e instanceof LocationUpdatedEvent) {
-                // always hide when model is readonly state
-                if (this.wallCanvasComponent.wallModel.api.core2.isReadOnly) {
-                    this.isMouseNear = false;
-                } else {
-                    // show/hide based on distance to the handler
-                    const currentSpot = e.spots.find((spot) => spot.data.brickId === this.viewBrick.brick.id);
-
-                    if (currentSpot.isCross13Line) {
-                        this.isMouseNear = currentSpot.topLeftPointDistance < this.minimalDistanceToMouse;
-                    } else {
-                        this.isMouseNear = false;
-                    }
+        this.wallCanvasComponent.focusedBrick$
+            .pipe(
+                takeUntil(this.destroyed$)
+            )
+            .subscribe((focusedBrick) => {
+                if (focusedBrick.id === this.viewBrick.brick.id) {
+                    this.callInstanceApi('onWallFocus', focusedBrick.context);
                 }
+        });
+    }
 
+    // wait until child spot directive will be initialized
+    ngAfterViewInit() {
+        // show/hide drag-and-drop handler
+        const spot = this.radar.spot(this.viewBrick.brick.id);
+
+        this.isShowDraggableHandler = combineLatest(
+            spot.onIsMouseCross13Line(),
+            spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)
+        ).pipe(
+            map(([isCross13Line, isTopLeftDistanceLessThan]) => {
+                return isCross13Line &&
+                    isTopLeftDistanceLessThan &&
+                    !this.wallCanvasComponent.wallModel.api.core2.isReadOnly;
+            }),
+            tap(() => {
                 this.cdRef.detectChanges();
-            }
-        });
-
-        this.focusedBrickSubscription = this.wallCanvasComponent.focusedBrick$.subscribe((focusedBrick) => {
-            if (focusedBrick.id === this.viewBrick.brick.id) {
-                this.callInstanceApi('onWallFocus', focusedBrick.context);
-            }
-        });
-
-        this.selectedBricksSubscription = this.wallCanvasComponent.selectedBricks$.subscribe((selectedBricks) => {
-            this.selected = !Boolean(selectedBricks.indexOf(this.viewBrick.brick.id) === -1);
-        });
-
-        this.isMediaInteractionEnabledSubscription = this.wallCanvasComponent.isMediaInteractionEnabled$
-            .subscribe((isMediaInteractionEnabled) => this.isMediaInteractionEnabled = isMediaInteractionEnabled);
+            })
+        );
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -109,14 +112,11 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnDestroy() {
-        this.radarSubscription.unsubscribe();
-        this.focusedBrickSubscription.unsubscribe();
-        this.selectedBricksSubscription.unsubscribe();
-        this.isMediaInteractionEnabledSubscription.unsubscribe();
-
         if (this.stateChangesSubscription) {
             this.stateChangesSubscription.unsubscribe();
         }
+
+        this.destroyed$.next();
     }
 
     private callInstanceApi(methodName: string, data?: any) {
@@ -143,12 +143,5 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         return componentReference;
-    }
-
-    private initializeDrag() {
-
-    }
-
-    private stopDrag() {
     }
 }

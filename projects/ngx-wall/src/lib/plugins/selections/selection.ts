@@ -119,13 +119,13 @@ export class SelectionPlugin implements IWallPlugin {
                         if (this.nearestBrickToDrop.side === TOW.dropSides.top) {
                             this.wallModel.api.core2.moveBrickBeforeBrickId(
                                 movedBrickIds,
-                                this.nearestBrickToDrop.spot.data.brickId
+                                this.nearestBrickToDrop.spot.clientData.brickId
                             );
                         }
 
                         if (this.nearestBrickToDrop.side === TOW.dropSides.bottom) {
                             this.wallModel.api.core2.moveBrickAfterBrickId(
-                                movedBrickIds, this.nearestBrickToDrop.spot.data.brickId
+                                movedBrickIds, this.nearestBrickToDrop.spot.clientData.brickId
                             );
                         }
                     }
@@ -138,7 +138,7 @@ export class SelectionPlugin implements IWallPlugin {
 
             if (e instanceof WorkInProgressEvent) {
                 if (this.isEnableDropZoneHighlight) {
-                    const spots = this.radar.filterSpots((spot: SpotModel) => spot.data.isBeacon);
+                    const spots = this.radar.filterSpots((spot: SpotModel) => spot.clientData.isBeacon);
 
                     let nearestSpot: SpotModel;
 

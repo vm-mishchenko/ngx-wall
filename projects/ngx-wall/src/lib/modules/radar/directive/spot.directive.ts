@@ -1,5 +1,5 @@
 import {Directive, ElementRef, Input, OnDestroy, OnInit} from '@angular/core';
-import {ISpotInfo, ISpotPosition, ISpotSize} from '../interfaces/distance-to-spot.interface';
+import {ISpotInfo, ISpotPosition} from '../interfaces/distance-to-spot.interface';
 import {SpotId} from '../interfaces/spot-id.type';
 import {RadarCoordinator} from '../radar-coordinator.service';
 
@@ -7,48 +7,46 @@ import {RadarCoordinator} from '../radar-coordinator.service';
     selector: '[spot]'
 })
 export class SpotDirective implements OnInit, OnDestroy {
-    @Input() spot: any;
-
-    id: SpotId = String(Math.random());
+    // any data which client want to attach to the spot
+    @Input() spotId: SpotId;
+    @Input() spotData: any;
 
     constructor(private radarCoordinator: RadarCoordinator,
                 private el: ElementRef) {
     }
 
     ngOnInit() {
-        this.radarCoordinator.register(this.id, this);
+        this.radarCoordinator.register(this.spotId, this);
     }
 
+    /**
+     * Return info about the element to which current spot is attached.
+     * Called by
+     *  1. Radar Coordinator during the mouse move event
+     *  2. When client directly ask about spot information (through Radar Coordinator)
+     */
     getInfo(): ISpotInfo {
         return {
-            id: this.id,
-            data: this.getData(),
-            size: this.getSize(),
-            position: this.getPosition()
+            id: this.spotId,
+            data: this.spotData,
+            size: {
+                width: this.el.nativeElement.offsetWidth,
+                height: this.el.nativeElement.offsetHeight
+            },
+            position: this.position()
         };
     }
 
-    getData(): any {
-        return this.spot;
+    ngOnDestroy() {
+        this.radarCoordinator.unRegister(this.spotId);
     }
 
-    getSize(): ISpotSize {
-        return {
-            width: this.el.nativeElement.offsetWidth,
-            height: this.el.nativeElement.offsetHeight
-        };
-    }
-
-    getPosition(): ISpotPosition {
+    private position(): ISpotPosition {
         const offsets = this.el.nativeElement.getBoundingClientRect();
 
         return {
             x: offsets.left,
             y: offsets.top
         };
-    }
-
-    ngOnDestroy() {
-        this.radarCoordinator.unRegister(this.id);
     }
 }

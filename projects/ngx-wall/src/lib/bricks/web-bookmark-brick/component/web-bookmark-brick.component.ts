@@ -115,7 +115,7 @@ export class WebBookmarkBrickComponent implements OnInit {
                     logo,
                     title,
                     author
-                } = pageMetadata.data;
+                } = pageMetadata.clientData;
 
                 return {
                     image,

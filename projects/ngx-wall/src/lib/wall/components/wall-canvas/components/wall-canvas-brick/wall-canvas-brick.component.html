@@ -1,8 +1,8 @@
-<div [spot]="spot"
+<div spot [spotData]="spotData" [spotId]="spotData.brickId"
      data-id="{{viewBrick.brick.id}}"
      class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
-     [ngClass]="{'wall-canvas-brick__selected': selected,
-     		'wall-canvas-brick__draggable': isMouseNear}">
+     [ngClass]="{'wall-canvas-brick__selected': isBrickSelected$ | async,
+     		'wall-canvas-brick__draggable': isShowDraggableHandler | async}">
 
     <div class="wall-canvas-brick__draggable-handler" [tow-slave]="viewBrick.brick.id">
         <div class="wall-canvas-brick__draggable-box">
@@ -10,7 +10,7 @@
         </div>
     </div>
 
-    <div [ngClass]="{'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}">
+    <div [ngClass]="{'wall-canvas-brick__disabled-interaction': !(isMediaInteractionEnabled$ | async)}">
         <ng-container #brickContainer></ng-container>
     </div>
 </div>
