@@ -1,30 +1,54 @@
 import {Injectable} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
-import {PickOutCoordinator} from './pick-out-coordinator.service';
+import {Subject} from 'rxjs';
+import {Radar} from '../radar/radar.service';
+import {SpotModel} from '../radar/spot.model';
 
 @Injectable()
 export class PickOutService {
-    events: Subject<any> = new Subject();
+    pickOut$ = new Subject<string[]>();
+    startPickOut$ = new Subject();
+    endPickOut$ = new Subject();
 
-    constructor(private pickOutCoordinator: PickOutCoordinator) {
-        this.pickOutCoordinator.changes.subscribe((e) => {
-            this.events.next(e);
-        });
-    }
+    private isPickOutAllowed = true;
 
-    enablePickOut() {
-        this.pickOutCoordinator.enablePickOut();
+    constructor(private radar: Radar) {
     }
 
     disablePickOut() {
-        this.pickOutCoordinator.disablePickOut();
+        this.isPickOutAllowed = false;
     }
 
-    stopPickOut() {
-        this.pickOutCoordinator.stopPickOut();
+    enablePickOut() {
+        this.isPickOutAllowed = true;
     }
 
-    subscribe(fn): Subscription {
-        return this.events.subscribe(fn);
+    canPickOut(): boolean {
+        return this.isPickOutAllowed;
+    }
+
+    startPickOut() {
+        this.startPickOut$.next();
+    }
+
+    pickOutChanged(range) {
+        const pickOutSpotModels = Array.from(this.radar.spots.values())
+            .filter((spot: SpotModel) => spot.clientData.isPickOutItem);
+
+        this.pickOut$.next(this.getSelectedItemIds(range, pickOutSpotModels));
+    }
+
+    endPickOut() {
+        this.endPickOut$.next();
+    }
+
+    private getSelectedItemIds(range, pickOutsItem: SpotModel[]): string[] {
+        return pickOutsItem
+            .filter((pickOutItem) => {
+                return (range.x < (pickOutItem.position.x + pickOutItem.size.width) &&
+                    (range.x + range.width) > pickOutItem.position.x &&
+                    (range.y + range.height) > pickOutItem.position.y &&
+                    range.y < (pickOutItem.position.y + pickOutItem.size.height));
+            })
+            .map((pickOutItem) => pickOutItem.clientData.brickId);
     }
 }

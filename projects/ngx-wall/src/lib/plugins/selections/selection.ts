@@ -1,10 +1,8 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer/placeholder-renderer.service';
-import {EndPickOut} from '../../modules/pick-out/events/end-pick-out.event';
-import {PickOutItems} from '../../modules/pick-out/events/pick-out-items.event';
-import {StartPickOut} from '../../modules/pick-out/events/start-pick-out.event';
 import {PickOutService} from '../../modules/pick-out/pick-out.service';
 import {Radar} from '../../modules/radar/radar.service';
 import {SpotModel} from '../../modules/radar/spot.model';
@@ -50,6 +48,8 @@ export class SelectionPlugin implements IWallPlugin {
 
     private options: ISelectionOptions;
 
+    private destroyed$ = new Subject();
+
     constructor(private injector: Injector, options?: ISelectionOptions) {
         // extension point for client to prevent brick un-selections
         this.options = {
@@ -74,20 +74,27 @@ export class SelectionPlugin implements IWallPlugin {
         this.doc.addEventListener('keydown', this.onKeyDownHandlerBound);
 
         // listen to picked out items and select appropriate bricks
-        this.pickOutServiceSubscription = this.pickOutService.subscribe((e) => {
-            if (e instanceof StartPickOut) {
-                this.isMouseSelection = true;
+        this.pickOutService.startPickOut$
+            .pipe(
+                takeUntil(this.destroyed$)
+            ).subscribe(() => {
+            this.isMouseSelection = true;
 
-                this.wallModel.api.ui.disableMediaInteraction();
-            }
+            this.wallModel.api.ui.disableMediaInteraction();
+        });
 
-            if (e instanceof PickOutItems) {
-                this.wallModel.api.ui.selectBricks(e.ids);
-            }
+        this.pickOutService.endPickOut$
+            .pipe(
+                takeUntil(this.destroyed$)
+            ).subscribe(() => {
+            this.wallModel.api.ui.enableMediaInteraction();
+        });
 
-            if (e instanceof EndPickOut) {
-                this.wallModel.api.ui.enableMediaInteraction();
-            }
+        this.pickOutService.pickOut$
+            .pipe(
+                takeUntil(this.destroyed$)
+            ).subscribe((brickIds) => {
+            this.wallModel.api.ui.selectBricks(brickIds);
         });
 
         // listen for draggable operation and move bricks accordingly
@@ -283,6 +290,8 @@ export class SelectionPlugin implements IWallPlugin {
         this.wallModel = null;
         this.pickOutServiceSubscription.unsubscribe();
         this.towServiceSubscription.unsubscribe();
+
+        this.destroyed$.next();
     }
 
     private isMouseOverDraggableBox(clientX: number, clientY: number): boolean {
