@@ -8,6 +8,8 @@ export class TextRepresentation {
     }
 
     getText() {
-        return (this.brickSnapshot.state as IBaseTextState).text.replace(REG_EXP_SPACE, '');
+        const text = (this.brickSnapshot.state as IBaseTextState).text || '';
+
+        return text.replace(REG_EXP_SPACE, '');
     }
 }
