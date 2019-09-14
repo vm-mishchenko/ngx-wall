@@ -63,7 +63,12 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
                 this.wallModel.api.core2.turnBrickInto(this.id, newTag);
 
                 if (newTag === DIVIDER_BRICK_TAG) {
-                    this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text');
+                    const newBrick = this.wallModel.api.core2.addBrickAfterBrickId(this.id, 'text');
+
+                    // wait one tick for component rendering
+                    setTimeout(() => {
+                        this.wallUiApi.focusOnBrickId(newBrick.id);
+                    });
                 }
             }
         });
