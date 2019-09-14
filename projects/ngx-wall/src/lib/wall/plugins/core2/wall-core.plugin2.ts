@@ -1,4 +1,5 @@
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {shareReplay} from 'rxjs/operators';
 import {Guid} from '../../../modules/utils/guid';
 import {IBrickSnapshot} from '../../model/interfaces/brick-snapshot.interface';
 import {IWallDefinition2} from '../../model/interfaces/wall-definition.interface2';
@@ -30,12 +31,17 @@ interface IPlaneStorageOptions {
 }
 
 class PlanStorage {
-    // todo: share the obsevable
-    events$: Observable<any> = new Subject();
+    private eventsInternal$ = new Subject<any>();
+
+    events$ = this.eventsInternal$.asObservable().pipe(
+        shareReplay(1)
+    );
 
     private planBehaviour$: BehaviorSubject<IWallDefinition2> = new BehaviorSubject([]);
 
-    plan$: Observable<IWallDefinition2> = this.planBehaviour$.asObservable();
+    plan$: Observable<IWallDefinition2> = this.planBehaviour$.asObservable().pipe(
+        shareReplay(1)
+    );
 
     constructor(readonly brickRegistry: BrickRegistry, private options?: IPlaneStorageOptions) {
     }
@@ -56,8 +62,7 @@ class PlanStorage {
         }
 
         this.planBehaviour$.next(transaction.plan);
-
-        (this.events$ as Subject<any>).next(new TransactionEvent(transaction.change));
+        this.eventsInternal$.next(new TransactionEvent(transaction.change));
     }
 
     private plan() {
@@ -168,6 +173,7 @@ class Transaction {
         ];
 
         this.plans.push(newPlan);
+
         this.changes.push({
             added: [brick.id],
             turned: [],
@@ -535,13 +541,17 @@ class DestructorTransactionHook implements ITransactionHook {
 
 // high level methods
 export class WallCoreApi2 {
-    // todo: implement
-    isReadOnly$: Observable<boolean> = new BehaviorSubject(false);
+    private isReadOnlyInternal$ = new BehaviorSubject(false);
+
+    isReadOnly$ = this.isReadOnlyInternal$.pipe(
+        shareReplay(1)
+    );
+
     plan$: Observable<IWallDefinition2>;
     events$: Observable<TransactionEvent>;
 
     get isReadOnly() {
-        return (this.isReadOnly$ as BehaviorSubject<boolean>).getValue();
+        return this.isReadOnlyInternal$.getValue();
     }
 
     private planStorage: PlanStorage;
@@ -703,6 +713,14 @@ export class WallCoreApi2 {
 
     sortBrickIdsByLayoutOrder(brickIds: string[]) {
         return this.query().sortBrickIdsByLayoutOrder(brickIds);
+    }
+
+    enableReadOnly() {
+        this.isReadOnlyInternal$.next(true);
+    }
+
+    disableReadOnly() {
+        this.isReadOnlyInternal$.next(false);
     }
 }
 
