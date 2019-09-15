@@ -1,4 +1,4 @@
-import {Observable, Subject, Subscription} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {BrickRegistry} from '../registry/brick-registry.service';
 import {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 import {IWallModelConfig2} from './interfaces/wall-model-config.interface2';
@@ -29,11 +29,6 @@ export class WallModel implements IWallModel {
 
     destroy() {
         this.plugins.forEach((plugin) => this.destroyPlugin(plugin));
-    }
-
-    // proxy events from all plugins
-    subscribe(callback): Subscription {
-        return this.events$.subscribe(callback);
     }
 
     private dispatch(e: any): void {
