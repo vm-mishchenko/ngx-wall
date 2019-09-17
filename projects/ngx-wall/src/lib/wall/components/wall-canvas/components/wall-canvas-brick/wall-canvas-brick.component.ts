@@ -16,8 +16,9 @@ import {
 import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
 import {map, takeUntil, tap} from 'rxjs/operators';
 import {Radar} from '../../../../../modules/radar/radar.service';
+import {IWallUiApi} from '../../../wall/interfaces/ui-api.interface';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
-import {IViewBrickDefinition} from '../../../wall/wall-view.model';
+import {IViewBrickDefinition, VIEW_MODE} from '../../../wall/wall-view.model';
 import {WallCanvasComponent} from '../../wall-canvas.component';
 
 const MINIMAL_DISTANCE_TO_MOUSE = 100;
@@ -33,12 +34,26 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    isBrickSelected$: Observable<boolean> = this.wallCanvasComponent.selectedBricks$
+    uiApi: IWallUiApi = this.wallCanvasComponent.wallModel.api.ui;
+
+    isBrickSelected$: Observable<boolean> = combineLatest(
+        this.uiApi.mode.currentMode$,
+        this.uiApi.mode.navigation.selectedBricks.value$,
+    )
         .pipe(
-            map((selectedBricks) => {
-                return !Boolean(selectedBricks.indexOf(this.viewBrick.brick.id) === -1);
+            map(([currentMode, selectedBricks]) => {
+                return currentMode === VIEW_MODE.NAVIGATION && !Boolean(selectedBricks.indexOf(this.viewBrick.brick.id) === -1);
             })
         );
+
+    hasNavigationCursor$: Observable<boolean> = combineLatest(
+        this.uiApi.mode.currentMode$,
+        this.uiApi.mode.navigation.cursorPosition$
+    ).pipe(
+        map(([currentMode, cursorPosition]) => {
+            return currentMode === VIEW_MODE.NAVIGATION && cursorPosition === this.viewBrick.brick.id;
+        })
+    );
 
     isShowDraggableHandler: Observable<boolean>;
 
@@ -60,7 +75,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
                 private cdRef: ChangeDetectorRef,
-                private wallCanvasComponent: WallCanvasComponent) {
+                readonly wallCanvasComponent: WallCanvasComponent) {
     }
 
     ngOnInit() {
@@ -72,14 +87,15 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
         this.componentReference = this.renderBrick();
 
-        this.wallCanvasComponent.focusedBrick$
-            .pipe(
-                takeUntil(this.destroyed$)
-            )
-            .subscribe((focusedBrick) => {
-                if (focusedBrick.id === this.viewBrick.brick.id) {
-                    this.callInstanceApi('onWallFocus', focusedBrick.context);
-                }
+        combineLatest(
+            this.uiApi.mode.currentMode$,
+            this.uiApi.mode.edit.focusedBrick.value$
+        ).pipe(
+            takeUntil(this.destroyed$)
+        ).subscribe(([currentMode, focusedBrick]) => {
+            if (currentMode === VIEW_MODE.EDIT && focusedBrick.id === this.viewBrick.brick.id) {
+                this.callInstanceApi('onWallFocus', focusedBrick.context);
+            }
         });
     }
 

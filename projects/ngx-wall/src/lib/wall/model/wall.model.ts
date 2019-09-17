@@ -13,7 +13,8 @@ export class WallModel implements IWallModel {
         core2: null
     };
 
-    private events$: Observable<any> = new Subject();
+    events$: Observable<any> = new Subject();
+    apiRegistered$: Observable<string> = new Subject<string>();
 
     private plugins: Map<string, IWallPlugin> = new Map();
 
@@ -25,6 +26,7 @@ export class WallModel implements IWallModel {
     // register external API
     registerApi(apiName: string, api: object) {
         this.api[apiName] = api;
+        (this.apiRegistered$ as Subject<string>).next(apiName);
     }
 
     destroy() {

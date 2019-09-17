@@ -20,7 +20,7 @@ export class BottomKeyHandler {
                 }
             };
 
-            this.baseTextBrickComponent.wallUiApi.focusOnNextTextBrick(this.baseTextBrickComponent.id, focusContext);
+            this.baseTextBrickComponent.wallUiApi.mode.edit.focusOnNextTextBrick(this.baseTextBrickComponent.id, focusContext);
         }
     }
 }

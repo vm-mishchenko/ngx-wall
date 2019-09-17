@@ -76,7 +76,7 @@ export class EnterKeyHandler {
 
         // wait one tick for component rendering
         setTimeout(() => {
-            this.baseTextBrickComponent.wallUiApi.focusOnBrickId(addedBrick.id);
+            this.baseTextBrickComponent.wallUiApi.mode.edit.focusOnBrickId(addedBrick.id);
         });
     }
 }

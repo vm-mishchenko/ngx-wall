@@ -67,7 +67,7 @@ export class TextBrickComponent extends BaseTextBrickComponent implements OnInit
 
                     // wait one tick for component rendering
                     setTimeout(() => {
-                        this.wallUiApi.focusOnBrickId(newBrick.id);
+                        this.wallUiApi.mode.edit.focusOnBrickId(newBrick.id);
                     });
                 }
             }

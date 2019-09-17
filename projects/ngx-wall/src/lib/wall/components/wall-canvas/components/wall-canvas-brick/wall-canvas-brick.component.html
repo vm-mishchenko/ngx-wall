@@ -1,8 +1,11 @@
 <div spot [spotData]="spotData" [spotId]="spotData.brickId"
      data-id="{{viewBrick.brick.id}}"
      class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
-     [ngClass]="{'wall-canvas-brick__selected': isBrickSelected$ | async,
-     		'wall-canvas-brick__draggable': isShowDraggableHandler | async}">
+     [ngClass]="{
+        'wall-canvas-brick__selected': isBrickSelected$ | async,
+     	'wall-canvas-brick__draggable': isShowDraggableHandler | async,
+     	'wall-canvas-brick__navigation_cursor': hasNavigationCursor$ | async
+     	}">
 
     <div class="wall-canvas-brick__draggable-handler" [tow-slave]="viewBrick.brick.id">
         <div class="wall-canvas-brick__draggable-box">

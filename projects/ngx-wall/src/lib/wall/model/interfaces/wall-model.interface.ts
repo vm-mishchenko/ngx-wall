@@ -1,3 +1,4 @@
+import {Observable} from 'rxjs/internal/Observable';
 import {WallCoreApi2} from '../../plugins/core2/wall-core.plugin2';
 
 export interface IWallModel {
@@ -7,6 +8,9 @@ export interface IWallModel {
         [apiName: string]: any;
         core2: WallCoreApi2
     };
+
+    events$: Observable<any>;
+    apiRegistered$: Observable<string>;
 
     destroy();
 

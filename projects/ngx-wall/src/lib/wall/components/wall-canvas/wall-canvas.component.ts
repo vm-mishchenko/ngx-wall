@@ -1,8 +1,8 @@
 import {DOCUMENT} from '@angular/common';
 import {Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable} from 'rxjs';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {IFocusedBrick} from '../wall/interfaces/focused-brick.interface';
+import {IWallUiApi} from '../wall/interfaces/ui-api.interface';
 import {IViewBrickDefinition, IWallViewPlan} from '../wall/wall-view.model';
 
 @Component({
@@ -12,18 +12,13 @@ import {IViewBrickDefinition, IWallViewPlan} from '../wall/wall-view.model';
 })
 export class WallCanvasComponent implements OnChanges {
     @Input() wallModel: IWallModel;
+    @Input() wallViewModel: IWallUiApi;
     @Input() viewPlan: IWallViewPlan[] = [];
 
-    @Input() selectedBricks: string[] = null;
-    @Input() focusedBrick: IFocusedBrick = null;
     @Input() isMediaInteractionEnabled$: Observable<boolean>;
 
     @Output() canvasClick: EventEmitter<any> = new EventEmitter();
     @Output() onBrickStateChanged: EventEmitter<any> = new EventEmitter();
-
-    // public API for sub components
-    focusedBrick$: Subject<IFocusedBrick> = new Subject();
-    selectedBricks$: Subject<string[]> = new Subject();
 
     doc: any = null;
 
@@ -36,16 +31,6 @@ export class WallCanvasComponent implements OnChanges {
     onEditorClick(e: any) {
         if (e.target === this.expander.nativeElement) {
             this.canvasClick.emit();
-        }
-    }
-
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.focusedBrick && changes.focusedBrick.currentValue) {
-            this.focusedBrick$.next(changes.focusedBrick.currentValue);
-        }
-
-        if (changes.selectedBricks) {
-            this.selectedBricks$.next(changes.selectedBricks.currentValue || []);
         }
     }
 

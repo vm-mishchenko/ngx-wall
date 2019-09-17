@@ -1,7 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
+import {filter, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer/placeholder-renderer.service';
 import {PickOutService} from '../../modules/pick-out/pick-out.service';
 import {Radar} from '../../modules/radar/radar.service';
@@ -11,6 +11,8 @@ import {StopWorkingEvent} from '../../modules/tow/events/stop-working.event';
 import {WorkInProgressEvent} from '../../modules/tow/events/work-in-progress.event';
 import {TOW} from '../../modules/tow/tow.constant';
 import {TowService} from '../../modules/tow/tow.service';
+import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
+import {VIEW_MODE} from '../../wall/components/wall/wall-view.model';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 import {IWallPlugin} from '../../wall/model/interfaces/wall-plugin.interface';
 
@@ -26,7 +28,6 @@ export class SelectionPlugin implements IWallPlugin {
 
     isMouseSelection = false;
     onMouseDownBound: any;
-    onKeyDownHandlerBound: any;
 
     wallModel: IWallModel;
 
@@ -50,6 +51,15 @@ export class SelectionPlugin implements IWallPlugin {
 
     private destroyed$ = new Subject();
 
+    private uiApi: IWallUiApi;
+
+    keyDown$: Observable<KeyboardEvent>;
+    arrowUp$: Observable<any>;
+    arrowDown$: Observable<any>;
+    enter$: Observable<any>;
+    delete$: Observable<any>;
+    escape$: Observable<any>;
+
     constructor(private injector: Injector, options?: ISelectionOptions) {
         // extension point for client to prevent brick un-selections
         this.options = {
@@ -61,231 +71,259 @@ export class SelectionPlugin implements IWallPlugin {
     onWallInitialize(wallModel: IWallModel) {
         this.wallModel = wallModel;
 
-        this.doc = this.injector.get(DOCUMENT);
-        this.pickOutService = this.injector.get(PickOutService);
-        this.radar = this.injector.get(Radar);
-        this.placeholderRenderer = this.injector.get(PlaceholderRenderer);
-        this.towService = this.injector.get(TowService);
+        this.wallModel.apiRegistered$.pipe(
+            filter((apiName) => {
+                return apiName === 'ui';
+            }),
+            // first(),
+        ).subscribe(() => {
+            this.uiApi = wallModel.api.ui;
 
-        this.onMouseDownBound = this.onMouseDown.bind(this);
-        this.onKeyDownHandlerBound = this.onKeyDownHandler.bind(this);
+            this.doc = this.injector.get(DOCUMENT);
+            this.pickOutService = this.injector.get(PickOutService);
+            this.radar = this.injector.get(Radar);
+            this.placeholderRenderer = this.injector.get(PlaceholderRenderer);
+            this.towService = this.injector.get(TowService);
 
-        this.doc.addEventListener('mousedown', this.onMouseDownBound);
-        this.doc.addEventListener('keydown', this.onKeyDownHandlerBound);
+            this.onMouseDownBound = this.onMouseDown.bind(this);
 
-        // listen to picked out items and select appropriate bricks
-        this.pickOutService.startPickOut$
-            .pipe(
-                takeUntil(this.destroyed$)
-            ).subscribe(() => {
-            this.isMouseSelection = true;
+            this.keyDown$ = fromEvent<KeyboardEvent>(this.doc, 'keydown');
+            this.arrowDown$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'ArrowDown';
+                })
+            );
 
-            this.wallModel.api.ui.disableMediaInteraction();
-        });
+            this.arrowUp$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'ArrowUp';
+                })
+            );
 
-        this.pickOutService.endPickOut$
-            .pipe(
-                takeUntil(this.destroyed$)
-            ).subscribe(() => {
-            this.wallModel.api.ui.enableMediaInteraction();
-        });
+            this.enter$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'Enter';
+                })
+            );
 
-        this.pickOutService.pickOut$
-            .pipe(
-                takeUntil(this.destroyed$)
-            ).subscribe((brickIds) => {
-            this.wallModel.api.ui.selectBricks(brickIds);
-        });
+            this.delete$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'Delete';
+                })
+            );
 
-        // listen for draggable operation and move bricks accordingly
-        this.towServiceSubscription = this.towService.subscribe((e) => {
-            if (e instanceof StartWorkingEvent) {
-                if (this.wallModel.api.core2.getBrickSnapshot(e.slaveId)) {
-                    this.isEnableDropZoneHighlight = true;
-                } else {
-                    this.isEnableDropZoneHighlight = false;
-                }
+            this.escape$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'Escape';
+                })
+            );
 
-                this.nearestBrickToDrop = null;
-                this.placeholderRenderer.clear();
-            }
+            this.arrowUp$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(this.uiApi.mode.currentMode$),
+                filter(([event, currentMode]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION;
+                })
+            ).subscribe(([event, currentMode]) => {
+                event.preventDefault();
+                this.uiApi.mode.navigation.moveCursorToPreviousBrick();
+            });
 
-            if (e instanceof StopWorkingEvent && this.nearestBrickToDrop) {
-                if (this.isEnableDropZoneHighlight) {
-                    let movedBrickIds = [];
+            this.arrowDown$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(this.uiApi.mode.currentMode$),
+                filter(([event, currentMode]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION;
+                })
+            ).subscribe(([event, currentMode]) => {
+                event.preventDefault();
+                this.uiApi.mode.navigation.moveCursorToNextBrick();
+            });
 
-                    const selectedBrickIds = this.wallModel.api.ui.getSelectedBrickIds();
+            this.enter$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(this.uiApi.mode.currentMode$),
+                filter(([event, currentMode]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION;
+                })
+            ).subscribe(([event, currentMode]) => {
+                event.preventDefault();
+                this.uiApi.mode.navigation.primaryAction();
+            });
 
-                    if (selectedBrickIds.length > 1) {
-                        movedBrickIds = movedBrickIds.concat(selectedBrickIds);
+            this.delete$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(
+                    this.uiApi.mode.currentMode$,
+                    this.uiApi.mode.navigation.selectedBricks.value$
+                ),
+                filter(([event, currentMode, selectedBricks]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION && Boolean(selectedBricks.length);
+                })
+            ).subscribe(([event, currentMode, selectedBricks]) => {
+                event.preventDefault();
+
+                this.wallModel.api.core2.removeBricks(selectedBricks);
+            });
+
+            this.escape$.pipe(
+                takeUntil(this.destroyed$),
+            ).subscribe((event) => {
+                event.preventDefault();
+                this.uiApi.mode.switchMode();
+            });
+
+            this.doc.addEventListener('mousedown', this.onMouseDownBound);
+
+            // listen to picked out items and select appropriate bricks
+            this.pickOutService.startPickOut$
+                .pipe(
+                    takeUntil(this.destroyed$)
+                ).subscribe(() => {
+                this.isMouseSelection = true;
+                // switch to navigation
+                this.uiApi.mode.switchModeTo(VIEW_MODE.NAVIGATION);
+                this.wallModel.api.ui.disableMediaInteraction();
+            });
+
+            this.pickOutService.endPickOut$
+                .pipe(
+                    takeUntil(this.destroyed$)
+                ).subscribe(() => {
+                this.wallModel.api.ui.enableMediaInteraction();
+            });
+
+            this.pickOutService.pickOut$
+                .pipe(
+                    takeUntil(this.destroyed$)
+                ).subscribe((brickIds) => {
+                this.uiApi.mode.navigation.selectBricks(brickIds);
+                // this.wallModel.api.ui.selectBricks(brickIds);
+            });
+
+            // listen for draggable operation and move bricks accordingly
+            this.towServiceSubscription = this.towService.subscribe((e) => {
+                if (e instanceof StartWorkingEvent) {
+                    if (this.wallModel.api.core2.getBrickSnapshot(e.slaveId)) {
+                        this.isEnableDropZoneHighlight = true;
                     } else {
-                        movedBrickIds.push(e.slaveId);
-                    }
-
-                    if (this.nearestBrickToDrop.type === TOW.dropTypes.horizontal) {
-                        if (this.nearestBrickToDrop.side === TOW.dropSides.top) {
-                            this.wallModel.api.core2.moveBrickBeforeBrickId(
-                                movedBrickIds,
-                                this.nearestBrickToDrop.spot.clientData.brickId
-                            );
-                        }
-
-                        if (this.nearestBrickToDrop.side === TOW.dropSides.bottom) {
-                            this.wallModel.api.core2.moveBrickAfterBrickId(
-                                movedBrickIds, this.nearestBrickToDrop.spot.clientData.brickId
-                            );
-                        }
+                        this.isEnableDropZoneHighlight = false;
                     }
 
                     this.nearestBrickToDrop = null;
-
                     this.placeholderRenderer.clear();
                 }
-            }
 
-            if (e instanceof WorkInProgressEvent) {
-                if (this.isEnableDropZoneHighlight) {
-                    const spots = Array.from(this.radar.spots.values())
-                        .filter((spot: SpotModel) => spot.clientData.isBeacon);
+                if (e instanceof StopWorkingEvent && this.nearestBrickToDrop) {
+                    if (this.isEnableDropZoneHighlight) {
+                        let movedBrickIds = [];
 
-                    let nearestSpot: SpotModel;
+                        const selectedBrickIds = this.wallModel.api.ui.mode.navigation.getSelectedBrickIds();
 
-                    spots.forEach((spot) => {
-                        spot.updateInfo();
-
-                        if (!nearestSpot) {
-                            nearestSpot = spot;
+                        if (selectedBrickIds.length > 1) {
+                            movedBrickIds = movedBrickIds.concat(selectedBrickIds);
                         } else {
-                            const currentSpotMinimalDistance = spot.getMinimalDistanceToPoint(
-                                e.mousePosition.clientX,
-                                e.mousePosition.clientY
-                            );
-
-                            const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
-                                e.mousePosition.clientX,
-                                e.mousePosition.clientY
-                            );
-
-                            if (currentSpotMinimalDistance < nearestSpotMinimalDistance) {
-                                nearestSpot = spot;
-                            }
+                            movedBrickIds.push(e.slaveId);
                         }
-                    });
 
-                    if (nearestSpot) {
-                        const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
-                            e.mousePosition.clientX,
-                            e.mousePosition.clientY
-                        );
-
-                        if (nearestSpotMinimalDistance < 50) {
-                            this.nearestBrickToDrop = {
-                                spot: nearestSpot,
-                                side: null,
-                                type: null
-                            };
-
-                            if (e.mousePosition.clientX > nearestSpot.position.x &&
-                                e.mousePosition.clientX < nearestSpot.position.x + nearestSpot.size.width) {
-                                this.nearestBrickToDrop.type = TOW.dropTypes.horizontal;
-
-                                const centerYPosition = nearestSpot.position.y + (nearestSpot.size.height / 2);
-
-                                this.nearestBrickToDrop.side = e.mousePosition.clientY < centerYPosition ?
-                                    TOW.dropSides.top : TOW.dropSides.bottom;
+                        if (this.nearestBrickToDrop.type === TOW.dropTypes.horizontal) {
+                            if (this.nearestBrickToDrop.side === TOW.dropSides.top) {
+                                this.wallModel.api.core2.moveBrickBeforeBrickId(
+                                    movedBrickIds,
+                                    this.nearestBrickToDrop.spot.clientData.brickId
+                                );
                             }
 
-                            this.renderPlaceholder();
-                        } else {
-                            this.nearestBrickToDrop = null;
-
-                            this.placeholderRenderer.clear();
+                            if (this.nearestBrickToDrop.side === TOW.dropSides.bottom) {
+                                this.wallModel.api.core2.moveBrickAfterBrickId(
+                                    movedBrickIds, this.nearestBrickToDrop.spot.clientData.brickId
+                                );
+                            }
                         }
-                    } else {
+
                         this.nearestBrickToDrop = null;
 
                         this.placeholderRenderer.clear();
                     }
                 }
-            }
+
+                if (e instanceof WorkInProgressEvent) {
+                    if (this.isEnableDropZoneHighlight) {
+                        const spots = Array.from(this.radar.spots.values())
+                            .filter((spot: SpotModel) => spot.clientData.isBeacon);
+
+                        let nearestSpot: SpotModel;
+
+                        spots.forEach((spot) => {
+                            spot.updateInfo();
+
+                            if (!nearestSpot) {
+                                nearestSpot = spot;
+                            } else {
+                                const currentSpotMinimalDistance = spot.getMinimalDistanceToPoint(
+                                    e.mousePosition.clientX,
+                                    e.mousePosition.clientY
+                                );
+
+                                const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
+                                    e.mousePosition.clientX,
+                                    e.mousePosition.clientY
+                                );
+
+                                if (currentSpotMinimalDistance < nearestSpotMinimalDistance) {
+                                    nearestSpot = spot;
+                                }
+                            }
+                        });
+
+                        if (nearestSpot) {
+                            const nearestSpotMinimalDistance = nearestSpot.getMinimalDistanceToPoint(
+                                e.mousePosition.clientX,
+                                e.mousePosition.clientY
+                            );
+
+                            if (nearestSpotMinimalDistance < 50) {
+                                this.nearestBrickToDrop = {
+                                    spot: nearestSpot,
+                                    side: null,
+                                    type: null
+                                };
+
+                                if (e.mousePosition.clientX > nearestSpot.position.x &&
+                                    e.mousePosition.clientX < nearestSpot.position.x + nearestSpot.size.width) {
+                                    this.nearestBrickToDrop.type = TOW.dropTypes.horizontal;
+
+                                    const centerYPosition = nearestSpot.position.y + (nearestSpot.size.height / 2);
+
+                                    this.nearestBrickToDrop.side = e.mousePosition.clientY < centerYPosition ?
+                                        TOW.dropSides.top : TOW.dropSides.bottom;
+                                }
+
+                                this.renderPlaceholder();
+                            } else {
+                                this.nearestBrickToDrop = null;
+
+                                this.placeholderRenderer.clear();
+                            }
+                        } else {
+                            this.nearestBrickToDrop = null;
+
+                            this.placeholderRenderer.clear();
+                        }
+                    }
+                }
+            });
         });
     }
 
     onMouseDown(e: MouseEvent) {
         if (!this.isMouseOverDraggableBox(e.clientX, e.clientY) && this.options.shouldUnselectBrick(e)) {
-            this.wallModel.api.ui.unSelectBricks();
-        }
-    }
-
-    onKeyDownHandler(e: KeyboardEvent) {
-        const selectedBrickIds = this.wallModel.api.ui.getSelectedBrickIds();
-        const firstSelectedBrickId = selectedBrickIds[0];
-        const lastSelectedBrickId = selectedBrickIds[selectedBrickIds.length - 1];
-
-        if (e.key === 'Delete' && selectedBrickIds.length) {
-            e.preventDefault();
-
-            this.wallModel.api.ui.unSelectBricks();
-
-            this.wallModel.api.ui.removeBricks(selectedBrickIds);
-        }
-
-        if (e.key === 'Enter' && selectedBrickIds.length) {
-            e.preventDefault();
-
-            this.wallModel.api.ui.focusOnBrickId(firstSelectedBrickId);
-
-            this.wallModel.api.ui.unSelectBricks();
-        }
-
-        if (e.key === 'ArrowUp' && selectedBrickIds.length) {
-            e.preventDefault();
-
-            const previousBrickId = this.wallModel.api.core2.getPreviousBrickId(lastSelectedBrickId);
-
-            if (previousBrickId) {
-                if (e.shiftKey) {
-                    if (selectedBrickIds.length > 1 && this.isDownSelectionDirection()) {
-                        this.wallModel.api.ui.removeBrickFromSelection(lastSelectedBrickId);
-                    } else {
-                        this.wallModel.api.ui.addBrickToSelection(previousBrickId);
-                    }
-                } else {
-                    this.wallModel.api.ui.selectBrick(previousBrickId);
-                }
-            }
-        }
-
-        if (e.key === 'ArrowDown' && selectedBrickIds.length) {
-            e.preventDefault();
-
-            const nextBrickId = this.wallModel.api.core2.getNextBrickId(lastSelectedBrickId);
-
-            if (nextBrickId) {
-                if (e.shiftKey) {
-                    if (selectedBrickIds.length > 1 && !this.isDownSelectionDirection()) {
-                        this.wallModel.api.ui.removeBrickFromSelection(lastSelectedBrickId);
-                    } else {
-                        this.wallModel.api.ui.addBrickToSelection(nextBrickId);
-                    }
-                } else {
-                    this.wallModel.api.ui.selectBrick(nextBrickId);
-                }
-            }
-        }
-
-        if (e.key === 'Escape') {
-            e.preventDefault();
-
-            if (selectedBrickIds.length) {
-                this.wallModel.api.ui.unSelectBricks();
-            }
+            this.uiApi.mode.switchModeTo(VIEW_MODE.EDIT);
         }
     }
 
     onWallPluginDestroy() {
         this.doc.removeEventListener('mousedown', this.onMouseDownBound);
-        this.doc.removeEventListener('keydown', this.onKeyDownHandlerBound);
 
         this.wallModel = null;
         this.pickOutServiceSubscription.unsubscribe();
@@ -302,17 +340,6 @@ export class SelectionPlugin implements IWallPlugin {
         }
 
         return Boolean(currentElement);
-    }
-
-    private isDownSelectionDirection(): boolean {
-        const selectedBrickIds = this.wallModel.api.ui.getSelectedBrickIds();
-
-        const bricksCount = selectedBrickIds.length;
-
-        const lastBrickId = selectedBrickIds[bricksCount - 1];
-        const penultimateBrickId = selectedBrickIds[bricksCount - 2];
-
-        return this.wallModel.api.core2.isBrickAheadOf(penultimateBrickId, lastBrickId);
     }
 
     private renderPlaceholder() {

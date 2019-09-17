@@ -268,11 +268,12 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                     }
                 };
 
-                this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+                // this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+                this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId, focusContext);
 
                 // remove only after focus will be established
                 // that prevents flickering on mobile
-                this.wallUiApi.removeBrick(this.id);
+                this.wallModel.api.core2.removeBrick(this.id);
             });
         }
     }
@@ -304,7 +305,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
         const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
-        this.wallUiApi.removeBrick(this.id);
+        this.wallModel.api.core2.removeBrick(this.id);
 
         if (previousTextBrickId) {
             const focusContext: IFocusContext = {
@@ -314,7 +315,8 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 }
             };
 
-            this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+            // this.wallUiApi.focusOnBrickId(previousTextBrickId, focusContext);
+            this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId, focusContext);
         }
     }
 
@@ -324,7 +326,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
 
         if (nextTextBrickId) {
-            this.wallUiApi.removeBrick(this.id);
+            this.wallModel.api.core2.removeBrick(this.id);
 
             const focusContext: IFocusContext = {
                 initiator: FOCUS_INITIATOR,
@@ -333,7 +335,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
                 }
             };
 
-            this.wallUiApi.focusOnBrickId(nextTextBrickId, focusContext);
+            this.wallUiApi.mode.edit.focusOnBrickId(nextTextBrickId, focusContext);
         }
     }
 
