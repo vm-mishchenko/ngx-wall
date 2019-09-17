@@ -148,14 +148,14 @@ export class SelectionPlugin implements IWallPlugin {
                 })
             ).subscribe(([event, currentMode]) => {
                 event.preventDefault();
-                this.uiApi.mode.navigation.primaryAction();
+                this.uiApi.mode.navigation.callBrickPrimaryAction();
             });
 
             this.delete$.pipe(
                 takeUntil(this.destroyed$),
                 withLatestFrom(
                     this.uiApi.mode.currentMode$,
-                    this.uiApi.mode.navigation.selectedBricks.value$
+                    this.uiApi.mode.navigation.selectedBricksReact.value$
                 ),
                 filter(([event, currentMode, selectedBricks]) => {
                     return currentMode === VIEW_MODE.NAVIGATION && Boolean(selectedBricks.length);

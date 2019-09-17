@@ -14,7 +14,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {map, takeUntil, tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallUiApi} from '../../../wall/interfaces/ui-api.interface';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
@@ -38,7 +38,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
     isBrickSelected$: Observable<boolean> = combineLatest(
         this.uiApi.mode.currentMode$,
-        this.uiApi.mode.navigation.selectedBricks.value$,
+        this.uiApi.mode.navigation.selectedBricksReact.value$,
     )
         .pipe(
             map(([currentMode, selectedBricks]) => {
@@ -87,16 +87,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
         this.componentReference = this.renderBrick();
 
-        combineLatest(
-            this.uiApi.mode.currentMode$,
-            this.uiApi.mode.edit.focusedBrick.value$
-        ).pipe(
-            takeUntil(this.destroyed$)
-        ).subscribe(([currentMode, focusedBrick]) => {
-            if (currentMode === VIEW_MODE.EDIT && focusedBrick.id === this.viewBrick.brick.id) {
-                this.callInstanceApi('onWallFocus', focusedBrick.context);
-            }
-        });
+        this.wallCanvasComponent.wallViewModel
+            .registerBrickReference(this.viewBrick.brick.id, this.componentReference);
     }
 
     // wait until child spot directive will be initialized
@@ -132,7 +124,15 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
             this.stateChangesSubscription.unsubscribe();
         }
 
+        this.wallCanvasComponent.wallViewModel
+            .unRegisterBrickReference(this.viewBrick.brick.id);
+
         this.destroyed$.next();
+    }
+
+    /** User selects the brick. */
+    onBrickClick() {
+        this.wallCanvasComponent.wallViewModel.mode.edit.focusOnBrickId(this.viewBrick.brick.id);
     }
 
     private callInstanceApi(methodName: string, data?: any) {
@@ -144,9 +144,9 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
     private renderBrick() {
         const factory = this.resolver.resolveComponentFactory(this.viewBrick.component);
 
-        const componentReference = this.container.createComponent(factory, null, this.injector);
+        const componentRef = this.container.createComponent(factory, null, this.injector);
 
-        const componentInstance = componentReference.instance as IWallComponent;
+        const componentInstance = componentRef.instance as IWallComponent;
 
         componentInstance.id = this.viewBrick.brick.id;
         componentInstance.state = this.viewBrick.brick.data;
@@ -158,6 +158,6 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
             });
         }
 
-        return componentReference;
+        return componentRef;
     }
 }

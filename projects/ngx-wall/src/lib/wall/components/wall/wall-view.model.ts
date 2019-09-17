@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {ComponentRef, Injectable} from '@angular/core';
 import {BehaviorSubject, Observable, Subject, Subscription} from 'rxjs';
 import {filter, map} from 'rxjs/operators';
 import {PickOutService} from '../../../modules/pick-out/pick-out.service';
@@ -39,9 +39,13 @@ class ReactiveProperty<T> {
 export class NavigationMode {
     name = VIEW_MODE.NAVIGATION;
     private cursorPositionInternal$: BehaviorSubject<string> = new BehaviorSubject(null);
-    cursorPosition: string;
+
+    get cursorPosition() {
+        return this.cursorPositionInternal$.getValue();
+    }
+
     cursorPosition$ = this.cursorPositionInternal$.asObservable();
-    selectedBricks: ReactiveProperty<string[]> = new ReactiveProperty([]);
+    selectedBricksReact: ReactiveProperty<string[]> = new ReactiveProperty([]);
 
     constructor(private wallViewModel: WallViewModel) {
     }
@@ -55,7 +59,6 @@ export class NavigationMode {
         const previousBrickId = this.wallViewModel.wallModel.api.core2.getPreviousBrickId(currentCursor);
 
         if (previousBrickId) {
-            this.cursorPosition = previousBrickId;
             this.cursorPositionInternal$.next(previousBrickId);
         }
     }
@@ -65,58 +68,64 @@ export class NavigationMode {
         const nextBrickId = this.wallViewModel.wallModel.api.core2.getNextBrickId(currentCursor);
 
         if (nextBrickId) {
-            this.cursorPosition = nextBrickId;
             this.cursorPositionInternal$.next(nextBrickId);
         }
     }
 
-    primaryAction() {
-        this.wallViewModel.callBrickPrimaryAction(this.cursorPositionInternal$.getValue());
+    /** Performs primary action for the brick which cursor is pointed. */
+    callBrickPrimaryAction() {
+        this.wallViewModel.callBrickPrimaryAction(this.cursorPositionInternal$.getValue(), {
+            selectedBrickIds: this.selectedBricksReact.value
+        });
     }
 
     // SELECTION
     selectBrick(brickId: string): void {
-        this.selectedBricks.next([brickId]);
+        this.selectedBricksReact.next([brickId]);
     }
 
     selectBricks(brickIds: string[]) {
-        if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks.value)) {
-            this.selectedBricks.next(this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(brickIds));
+        if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricksReact.value)) {
+            this.selectedBricksReact.next(this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(brickIds));
         }
     }
 
     addBrickToSelection(brickId: string): void {
-        const selectedBrickIds = this.selectedBricks.value.slice(0);
+        const selectedBrickIds = this.selectedBricksReact.value.slice(0);
 
         selectedBrickIds.push(brickId);
 
-        this.selectedBricks.next(this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(selectedBrickIds));
+        this.selectedBricksReact.next(this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(selectedBrickIds));
     }
 
     removeBrickFromSelection(brickId: string): void {
-        const brickIdIndex = this.selectedBricks.value.indexOf(brickId);
+        const brickIdIndex = this.selectedBricksReact.value.indexOf(brickId);
 
-        this.selectedBricks.value.splice(brickIdIndex, 1);
+        this.selectedBricksReact.value.splice(brickIdIndex, 1);
 
-        this.selectedBricks.next(this.selectedBricks.value.slice(0));
+        this.selectedBricksReact.next(this.selectedBricksReact.value.slice(0));
     }
 
     unSelectBricks(): void {
-        this.selectedBricks.next([]);
+        this.selectedBricksReact.next([]);
     }
 
     /**
      * @public-api
      */
     getSelectedBrickIds(): string[] {
-        return this.selectedBricks.value;
+        return this.selectedBricksReact.value;
     }
 }
 
+/**
+ * Stores the state of the View Mode.
+ * Performs the brick supporting action based on the mode state.
+ */
 export class EditMode {
     name = VIEW_MODE.EDIT;
 
-    focusedBrick: ReactiveProperty<{
+    focusedBrickReact: ReactiveProperty<{
         id: string,
         context: any
     }> = new ReactiveProperty({
@@ -128,12 +137,12 @@ export class EditMode {
     }
 
     focusOnBrickId(brickId: string, focusContext?: IFocusContext) {
-        console.log('focusOnBrickId');
-
-        this.focusedBrick.next({
+        this.focusedBrickReact.next({
             id: brickId,
             context: focusContext,
         });
+
+        this.wallViewModel.focusOnBrick(brickId, focusContext);
     }
 
     focusOnNextTextBrick(brickId: string, focusContext?: IFocusContext) {
@@ -157,6 +166,10 @@ export class Mode {
     private currentModeInternal$: BehaviorSubject<VIEW_MODE> = new BehaviorSubject(VIEW_MODE.EDIT);
     currentMode$: Observable<VIEW_MODE> = this.currentModeInternal$.asObservable();
 
+    get currentMode() {
+        return this.currentModeInternal$.getValue();
+    }
+
     edit: EditMode = new EditMode(this.wallViewModel);
     navigation: NavigationMode = new NavigationMode(this.wallViewModel);
 
@@ -164,12 +177,10 @@ export class Mode {
     }
 
     switchMode() {
-        const currentMode = this.currentModeInternal$.getValue();
-
-        if (currentMode === VIEW_MODE.EDIT) {
-            this.switchModeTo(VIEW_MODE.NAVIGATION);
+        if (this.currentMode === VIEW_MODE.EDIT) {
+            this.switchToNavigationMode();
         } else {
-            this.switchModeTo(VIEW_MODE.EDIT);
+            this.switchToEditMode();
         }
     }
 
@@ -185,21 +196,25 @@ export class Mode {
         }
     }
 
-    private switchToEditMode() {
+    switchToEditMode(notFocus?: boolean) {
+        this.currentModeInternal$.next(VIEW_MODE.EDIT);
+
         const focusToBrick = this.navigation.cursorPosition ||
             this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
 
         this.navigation.unSelectBricks();
-        this.edit.focusOnBrickId(focusToBrick);
 
-        this.currentModeInternal$.next(VIEW_MODE.EDIT);
+        if (!notFocus) {
+            this.edit.focusOnBrickId(focusToBrick);
+        }
     }
 
-    private switchToNavigationMode() {
+    switchToNavigationMode() {
         (document.activeElement as HTMLElement).blur();
+        this.currentModeInternal$.next(VIEW_MODE.NAVIGATION);
 
         let cursorPosition;
-        const focusedBrick = this.edit.focusedBrick;
+        const focusedBrick = this.edit.focusedBrickReact;
 
         if (focusedBrick.value.id) {
             cursorPosition = focusedBrick.value.id;
@@ -210,8 +225,6 @@ export class Mode {
         if (cursorPosition) {
             this.navigation.setCursorTo(cursorPosition);
         }
-
-        this.currentModeInternal$.next(VIEW_MODE.NAVIGATION);
     }
 }
 
@@ -225,15 +238,11 @@ export class WallViewModel implements IWallUiApi {
     isMediaInteractionEnabled$: Observable<boolean> = new BehaviorSubject(true);
     viewPlan$: Observable<IWallViewPlan>;
     mode: Mode;
+    componentRefs = new Map();
 
     private wallModelSubscription: Subscription;
 
     constructor(private brickRegistry: BrickRegistry, private pickOutService: PickOutService) {
-    }
-
-    callBrickPrimaryAction(brickId: string) {
-        console.log(`primary action for ${brickId}`);
-        this.mode.switchMode();
     }
 
     // called by Wall component
@@ -325,6 +334,32 @@ export class WallViewModel implements IWallUiApi {
         });
     }
 
+    focusOnBrick(brickId: string, focusContext?: IFocusContext) {
+        if (this.mode.currentMode === VIEW_MODE.EDIT) {
+            const brickComponentRef = this.componentRefs.get(brickId);
+
+            if (brickComponentRef.instance.onWallFocus) {
+                brickComponentRef.instance.onWallFocus(focusContext);
+            }
+        }
+    }
+
+    callBrickPrimaryAction(brickId: string, options: any) {
+        if (this.mode.currentMode === VIEW_MODE.NAVIGATION) {
+            const brickComponentRef = this.componentRefs.get(brickId);
+            let notFocusOnBrick;
+
+            if (brickComponentRef.instance.onPrimaryAction) {
+                brickComponentRef.instance.onPrimaryAction(options);
+                notFocusOnBrick = true;
+            } else {
+                notFocusOnBrick = false;
+            }
+
+            this.mode.switchToEditMode(notFocusOnBrick);
+        }
+    }
+
     /**
      * @public-api
      */
@@ -365,5 +400,17 @@ export class WallViewModel implements IWallUiApi {
         this.wallModelSubscription = null;
 
         this.mode.navigation.unSelectBricks();
+    }
+
+    registerBrickReference(brickId: string, componentRef: ComponentRef<any>) {
+        if (this.componentRefs.has(brickId)) {
+            console.warn(`Register duplicate`);
+        }
+
+        this.componentRefs.set(brickId, componentRef);
+    }
+
+    unRegisterBrickReference(brickId: string) {
+        this.componentRefs.delete(brickId);
     }
 }

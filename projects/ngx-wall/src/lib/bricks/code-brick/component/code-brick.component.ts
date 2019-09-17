@@ -4,6 +4,7 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/mode/shell/shell';
 import 'codemirror/mode/xml/xml';
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
+import {IOnWallFocus} from '../../../wall/components/wall/interfaces/wall-component/on-wall-focus.interface';
 import {DEFAULT_THEME, SUPPORTED_MODES} from '../code-brick.constant';
 import {ModeListComponent} from '../mode-list/mode-list.component';
 
@@ -17,7 +18,7 @@ export interface ICodeBrickState {
     templateUrl: './code-brick.component.html',
     styleUrls: ['./code-brick.component.scss']
 })
-export class CodeBrickComponent implements OnInit {
+export class CodeBrickComponent implements OnInit, IOnWallFocus {
     scope: ICodeBrickState = {
         code: '',
         mode: SUPPORTED_MODES[0].value
@@ -68,6 +69,9 @@ export class CodeBrickComponent implements OnInit {
 
             this.processNewState();
         }
+    }
+
+    onWallFocus() {
     }
 
     processNewState() {

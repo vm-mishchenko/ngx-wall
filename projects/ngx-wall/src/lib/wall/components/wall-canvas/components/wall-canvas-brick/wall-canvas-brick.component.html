@@ -1,6 +1,7 @@
 <div spot [spotData]="spotData" [spotId]="spotData.brickId"
      data-id="{{viewBrick.brick.id}}"
      class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
+     (click)="onBrickClick()"
      [ngClass]="{
         'wall-canvas-brick__selected': isBrickSelected$ | async,
      	'wall-canvas-brick__draggable': isShowDraggableHandler | async,

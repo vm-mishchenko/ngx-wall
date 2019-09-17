@@ -1,18 +1,17 @@
 import {DOCUMENT} from '@angular/common';
-import {Component, ElementRef, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Inject, Input, Output, ViewChild} from '@angular/core';
 import {Observable} from 'rxjs';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {IWallUiApi} from '../wall/interfaces/ui-api.interface';
-import {IViewBrickDefinition, IWallViewPlan} from '../wall/wall-view.model';
+import {IViewBrickDefinition, IWallViewPlan, WallViewModel} from '../wall/wall-view.model';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html',
     styleUrls: ['./wall-canvas.component.scss']
 })
-export class WallCanvasComponent implements OnChanges {
+export class WallCanvasComponent {
     @Input() wallModel: IWallModel;
-    @Input() wallViewModel: IWallUiApi;
+    @Input() wallViewModel: WallViewModel;
     @Input() viewPlan: IWallViewPlan[] = [];
 
     @Input() isMediaInteractionEnabled$: Observable<boolean>;
