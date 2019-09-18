@@ -1,5 +1,6 @@
 import {Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
+import {IPrimaryActionOption} from '../../../wall/components/wall/wall-view.model';
 import {InputContextComponent} from '../input-context/input-context.component';
 import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
 
@@ -102,8 +103,9 @@ export class WebBookmarkBrickComponent implements OnInit {
         }
     }
 
-    onPrimaryAction() {
+    onPrimaryAction(options: IPrimaryActionOption) {
         console.log(`onPrimaryAction`);
+        console.log(options);
     }
 
     private save() {

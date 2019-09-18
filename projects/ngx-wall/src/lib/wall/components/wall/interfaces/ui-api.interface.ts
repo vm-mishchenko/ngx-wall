@@ -1,9 +1,6 @@
-import {Mode} from '../wall-view.model';
+import {MediaInteraction, Mode} from '../wall-view.model';
 
 export interface IWallUiApi {
     mode: Mode;
-
-    enableMediaInteraction(): void;
-
-    disableMediaInteraction(): void;
+    mediaInteraction: MediaInteraction;
 }

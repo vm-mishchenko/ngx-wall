@@ -38,7 +38,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
     isBrickSelected$: Observable<boolean> = combineLatest(
         this.uiApi.mode.currentMode$,
-        this.uiApi.mode.navigation.selectedBricksReact.value$,
+        this.uiApi.mode.navigation.selectedBricks$,
     )
         .pipe(
             map(([currentMode, selectedBricks]) => {
@@ -88,7 +88,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         this.componentReference = this.renderBrick();
 
         this.wallCanvasComponent.wallViewModel
-            .registerBrickReference(this.viewBrick.brick.id, this.componentReference);
+            .brickComponentsStorage
+            .register(this.viewBrick.brick.id, this.componentReference);
     }
 
     // wait until child spot directive will be initialized
@@ -125,7 +126,8 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         }
 
         this.wallCanvasComponent.wallViewModel
-            .unRegisterBrickReference(this.viewBrick.brick.id);
+            .brickComponentsStorage
+            .unRegister(this.viewBrick.brick.id);
 
         this.destroyed$.next();
     }

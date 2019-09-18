@@ -155,7 +155,7 @@ export class SelectionPlugin implements IWallPlugin {
                 takeUntil(this.destroyed$),
                 withLatestFrom(
                     this.uiApi.mode.currentMode$,
-                    this.uiApi.mode.navigation.selectedBricksReact.value$
+                    this.uiApi.mode.navigation.selectedBricks$
                 ),
                 filter(([event, currentMode, selectedBricks]) => {
                     return currentMode === VIEW_MODE.NAVIGATION && Boolean(selectedBricks.length);
@@ -183,14 +183,14 @@ export class SelectionPlugin implements IWallPlugin {
                 this.isMouseSelection = true;
                 // switch to navigation
                 this.uiApi.mode.switchModeTo(VIEW_MODE.NAVIGATION);
-                this.wallModel.api.ui.disableMediaInteraction();
+                this.wallModel.api.ui.mediaInteraction.disable();
             });
 
             this.pickOutService.endPickOut$
                 .pipe(
                     takeUntil(this.destroyed$)
                 ).subscribe(() => {
-                this.wallModel.api.ui.enableMediaInteraction();
+                this.wallModel.api.ui.mediaInteraction.enable();
             });
 
             this.pickOutService.pickOut$
