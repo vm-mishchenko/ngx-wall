@@ -27,7 +27,6 @@ export class SelectionPlugin implements IWallPlugin {
     doc: Document;
 
     isMouseSelection = false;
-    onMouseDownBound: any;
 
     wallModel: IWallModel;
 
@@ -53,12 +52,14 @@ export class SelectionPlugin implements IWallPlugin {
 
     private uiApi: IWallUiApi;
 
+    mouseDown$: Observable<MouseEvent>;
     keyDown$: Observable<KeyboardEvent>;
     arrowUp$: Observable<any>;
     arrowDown$: Observable<any>;
     enter$: Observable<any>;
     delete$: Observable<any>;
     escape$: Observable<any>;
+    x$: Observable<any>;
 
     constructor(private injector: Injector, options?: ISelectionOptions) {
         // extension point for client to prevent brick un-selections
@@ -85,9 +86,8 @@ export class SelectionPlugin implements IWallPlugin {
             this.placeholderRenderer = this.injector.get(PlaceholderRenderer);
             this.towService = this.injector.get(TowService);
 
-            this.onMouseDownBound = this.onMouseDown.bind(this);
-
             this.keyDown$ = fromEvent<KeyboardEvent>(this.doc, 'keydown');
+            this.mouseDown$ = fromEvent<MouseEvent>(this.doc, 'mousedown');
             this.arrowDown$ = this.keyDown$.pipe(
                 filter((event) => {
                     return event.key === 'ArrowDown';
@@ -115,6 +115,12 @@ export class SelectionPlugin implements IWallPlugin {
             this.escape$ = this.keyDown$.pipe(
                 filter((event) => {
                     return event.key === 'Escape';
+                })
+            );
+
+            this.x$ = this.keyDown$.pipe(
+                filter((event) => {
+                    return event.key === 'x';
                 })
             );
 
@@ -173,8 +179,6 @@ export class SelectionPlugin implements IWallPlugin {
                 this.uiApi.mode.switchMode();
             });
 
-            this.doc.addEventListener('mousedown', this.onMouseDownBound);
-
             // listen to picked out items and select appropriate bricks
             this.pickOutService.startPickOut$
                 .pipe(
@@ -199,6 +203,31 @@ export class SelectionPlugin implements IWallPlugin {
                 ).subscribe((brickIds) => {
                 this.uiApi.mode.navigation.selectBricks(brickIds);
                 // this.wallModel.api.ui.selectBricks(brickIds);
+            });
+
+            this.x$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(this.uiApi.mode.currentMode$),
+                filter(([event, currentMode]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION;
+                })
+            ).subscribe(([event, currentMode]) => {
+                event.preventDefault();
+                this.uiApi.mode.navigation.switchBrickSelection();
+            });
+
+            this.mouseDown$.pipe(
+                takeUntil(this.destroyed$),
+                withLatestFrom(this.uiApi.mode.currentMode$),
+                filter(([event, currentMode]) => {
+                    return currentMode === VIEW_MODE.NAVIGATION;
+                }),
+                filter(([event, currentMode]) => {
+                    return !this.isMouseOverDraggableBox(event.clientX, event.clientY) &&
+                        this.options.shouldUnselectBrick(event);
+                })
+            ).subscribe(() => {
+                this.uiApi.mode.switchToEditMode();
             });
 
             // listen for draggable operation and move bricks accordingly
@@ -316,15 +345,7 @@ export class SelectionPlugin implements IWallPlugin {
         });
     }
 
-    onMouseDown(e: MouseEvent) {
-        if (!this.isMouseOverDraggableBox(e.clientX, e.clientY) && this.options.shouldUnselectBrick(e)) {
-            this.uiApi.mode.switchToEditMode();
-        }
-    }
-
     onWallPluginDestroy() {
-        this.doc.removeEventListener('mousedown', this.onMouseDownBound);
-
         this.wallModel = null;
         this.pickOutServiceSubscription.unsubscribe();
         this.towServiceSubscription.unsubscribe();

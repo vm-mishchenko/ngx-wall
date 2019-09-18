@@ -55,6 +55,11 @@ class PlanStorage {
 }
 
 // todo: implement separate class for that interfaces
+export interface ITransactionRemovedChange {
+    brickSnapshot: IBrickSnapshot;
+    nearestBrickId: string | null;
+}
+
 export interface ITransactionChanges {
     // newly added brick ids
     added: string[];
@@ -63,7 +68,7 @@ export interface ITransactionChanges {
     moved: string[];
 
     // removed brick ids
-    removed: IBrickSnapshot[];
+    removed: ITransactionRemovedChange[];
 
     turned: Array<{
         brickId: string,
@@ -321,6 +326,7 @@ class Transaction {
     }
 
     removeBrick(brickId: string) {
+        const nearestBrickId = this.query().getNextTextBrickId(brickId) || this.query().getPreviousTextBrickId(brickId);
         const brickSnapshot = this.query().brickSnapshot(brickId);
 
         const newPlan = this.plan.filter((brick) => {
@@ -331,7 +337,10 @@ class Transaction {
 
         this.plans.push(newPlan);
         this.changes.push({
-            removed: [brickSnapshot],
+            removed: [{
+                brickSnapshot,
+                nearestBrickId,
+            }],
             added: [],
             turned: [],
             updated: [],
@@ -375,7 +384,12 @@ class Transaction {
     }
 
     clear() {
-        const removedBrickSnapshots = this.query().brickSnapshots();
+        const removedBrickSnapshots: ITransactionRemovedChange[] = this.query().brickSnapshots().map((removedBrickSnapshot) => {
+            return {
+                brickSnapshot: removedBrickSnapshot,
+                nearestBrickId: null
+            };
+        });
 
         this.plans.push([]);
         this.changes.push({
@@ -475,7 +489,7 @@ class PlanQuery {
         return previousBrick && previousBrick.id;
     }
 
-    getNextTextBrickId(brickId: string) {
+    getNextTextBrickId(brickId: string): string {
         const nextBricks = this.plan.slice(this.brickPosition(brickId) + 1);
 
         const nextTextBrick = nextBricks.find((nextBrick) => {
@@ -511,13 +525,13 @@ class DestructorTransactionHook implements ITransactionHook {
     }
 
     apply(transaction: Transaction) {
-        transaction.change.removed.forEach((removedBrickSnapshot) => {
-            const brickSpecification = this.brickRegistry.get(removedBrickSnapshot.tag);
+        transaction.change.removed.forEach((removedChange) => {
+            const brickSpecification = this.brickRegistry.get(removedChange.brickSnapshot.tag);
 
             // ignore promise, model does not care about any side effects
             // any async operations should be handled by async services and model clients
             if (brickSpecification.destructor) {
-                brickSpecification.destructor(removedBrickSnapshot);
+                brickSpecification.destructor(removedChange.brickSnapshot);
             }
         });
     }

@@ -4,6 +4,7 @@ import {filter, map, shareReplay} from 'rxjs/operators';
 import {PickOutService} from '../../../modules/pick-out/pick-out.service';
 import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {ITransactionRemovedChange} from '../../plugins/core2/wall-core.plugin2';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
@@ -43,6 +44,15 @@ export class NavigationMode {
     }
 
     constructor(private wallViewModel: WallViewModel) {
+    }
+
+    /** Switch brick selection for cursor. */
+    switchBrickSelection() {
+        if (this.selectedBricks.includes(this.cursorPosition)) {
+            this.removeBrickFromSelection(this.cursorPosition);
+        } else {
+            this.addBrickToSelection(this.cursorPosition);
+        }
     }
 
     setCursorTo(brickId: string) {
@@ -103,7 +113,7 @@ export class NavigationMode {
         this.selectedBricksInternal$.next(this.selectedBricks.slice(0));
     }
 
-    unSelectBricks(): void {
+    unSelectAllBricks(): void {
         this.selectedBricksInternal$.next([]);
     }
 
@@ -192,8 +202,13 @@ export class Mode {
     }
 
     switchToEditMode(focusToBrick: boolean = true) {
+        if (this.currentMode === VIEW_MODE.EDIT) {
+            console.warn(`${VIEW_MODE.EDIT} mode is already active.`);
+            return;
+        }
+
         this.currentModeInternal$.next(VIEW_MODE.EDIT);
-        this.navigation.unSelectBricks();
+        this.navigation.unSelectAllBricks();
 
         if (focusToBrick) {
             const focusToBrickId = this.navigation.cursorPosition ||
@@ -204,6 +219,7 @@ export class Mode {
     }
 
     switchToNavigationMode() {
+        this.navigation.unSelectAllBricks();
         (document.activeElement as HTMLElement).blur();
         this.currentModeInternal$.next(VIEW_MODE.NAVIGATION);
 
@@ -328,7 +344,7 @@ export class WallViewModel {
             }
 
             if (event.changes.moved.length) {
-                this.mode.navigation.unSelectBricks();
+                this.mode.navigation.unSelectAllBricks();
             }
         });
 
@@ -337,17 +353,28 @@ export class WallViewModel {
             filter((event) => {
                 return Boolean(event.changes.removed.length);
             })
-        ).subscribe(() => {
+        ).subscribe((event) => {
             this.mode.switchToEditMode(false);
+
+            let brickIdToFocus;
 
             if (!this.wallModel.api.core2.query().length()) {
                 const {id} = this.wallModel.api.core2.addDefaultBrick();
 
-                // wait until view re-rendered
-                setTimeout(() => {
-                    this.mode.edit.focusOnBrickId(id);
-                });
+                brickIdToFocus = id;
+            } else {
+                const removedChangeWithNearestBrickId: ITransactionRemovedChange = event.changes.removed.reverse()
+                    .find((removedChange) => {
+                        return Boolean(removedChange.nearestBrickId);
+                    });
+
+                brickIdToFocus = removedChangeWithNearestBrickId.nearestBrickId;
             }
+
+            // wait until view re-rendered
+            setTimeout(() => {
+                this.mode.edit.focusOnBrickId(brickIdToFocus);
+            });
         });
 
         this.viewPlan$ = this.wallModel.api.core2.plan$.pipe(
@@ -427,6 +454,6 @@ export class WallViewModel {
 
         this.wallModelSubscription = null;
 
-        this.mode.navigation.unSelectBricks();
+        this.mode.navigation.unSelectAllBricks();
     }
 }
