@@ -161,6 +161,13 @@ export class EditMode {
             this.focusOnBrickId(previousTextBrickId, focusContext);
         }
     }
+
+    setFocusedBrickId(brickId: string) {
+        this.focusedBrickInternal$.next({
+            id: brickId,
+            context: null
+        });
+    }
 }
 
 export class Mode {
@@ -184,28 +191,15 @@ export class Mode {
         }
     }
 
-    switchModeTo(mode: VIEW_MODE) {
-        const currentMode = this.currentModeInternal$.getValue();
-
-        if (mode === VIEW_MODE.EDIT && currentMode !== VIEW_MODE.EDIT) {
-            this.switchToEditMode();
-        }
-
-        if (mode === VIEW_MODE.NAVIGATION && currentMode !== VIEW_MODE.NAVIGATION) {
-            this.switchToNavigationMode();
-        }
-    }
-
-    switchToEditMode(notFocus?: boolean) {
+    switchToEditMode(focusToBrick: boolean = true) {
         this.currentModeInternal$.next(VIEW_MODE.EDIT);
-
-        const focusToBrick = this.navigation.cursorPosition ||
-            this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
-
         this.navigation.unSelectBricks();
 
-        if (!notFocus) {
-            this.edit.focusOnBrickId(focusToBrick);
+        if (focusToBrick) {
+            const focusToBrickId = this.navigation.cursorPosition ||
+                this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
+
+            this.edit.focusOnBrickId(focusToBrickId);
         }
     }
 
@@ -344,7 +338,7 @@ export class WallViewModel {
                 return Boolean(event.changes.removed.length);
             })
         ).subscribe(() => {
-            this.mode.switchToEditMode(true);
+            this.mode.switchToEditMode(false);
 
             if (!this.wallModel.api.core2.query().length()) {
                 const {id} = this.wallModel.api.core2.addDefaultBrick();
@@ -397,7 +391,15 @@ export class WallViewModel {
         const brickComponent = this.brickComponentsStorage.get(brickId);
 
         brickComponent.onPrimaryAction(options);
-        this.mode.switchToEditMode(brickComponent.isSupportApi('onPrimaryAction'));
+
+        const isSetFocusSwitchingToEditMode = !brickComponent.isSupportApi('onPrimaryAction');
+
+        this.mode.switchToEditMode(isSetFocusSwitchingToEditMode);
+
+        // set focus silently (do not call brick component onWallFocus callback)
+        if (!isSetFocusSwitchingToEditMode) {
+            this.mode.edit.setFocusedBrickId(brickId);
+        }
     }
 
     onCanvasClick() {

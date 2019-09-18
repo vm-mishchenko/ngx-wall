@@ -182,7 +182,7 @@ export class SelectionPlugin implements IWallPlugin {
                 ).subscribe(() => {
                 this.isMouseSelection = true;
                 // switch to navigation
-                this.uiApi.mode.switchModeTo(VIEW_MODE.NAVIGATION);
+                this.uiApi.mode.switchToNavigationMode();
                 this.wallModel.api.ui.mediaInteraction.disable();
             });
 
@@ -318,7 +318,7 @@ export class SelectionPlugin implements IWallPlugin {
 
     onMouseDown(e: MouseEvent) {
         if (!this.isMouseOverDraggableBox(e.clientX, e.clientY) && this.options.shouldUnselectBrick(e)) {
-            this.uiApi.mode.switchModeTo(VIEW_MODE.EDIT);
+            this.uiApi.mode.switchToEditMode();
         }
     }
 
