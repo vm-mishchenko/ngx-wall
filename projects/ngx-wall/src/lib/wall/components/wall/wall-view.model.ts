@@ -128,7 +128,7 @@ export interface IFocusedBrick {
 export class EditMode {
     name = VIEW_MODE.EDIT;
 
-    private focusedBrickInternal$: BehaviorSubject<IFocusedBrick> = new BehaviorSubject(null);
+    private focusedBrickInternal$: BehaviorSubject<IFocusedBrick | null> = new BehaviorSubject(null);
 
     get focusedBrick() {
         return this.focusedBrickInternal$.getValue();
@@ -216,7 +216,7 @@ export class Mode {
         let cursorPosition;
         const focusedBrick = this.edit.focusedBrick;
 
-        if (focusedBrick.id) {
+        if (focusedBrick && focusedBrick.id) {
             cursorPosition = focusedBrick.id;
         } else {
             cursorPosition = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
@@ -344,12 +344,15 @@ export class WallViewModel {
                 return Boolean(event.changes.removed.length);
             })
         ).subscribe(() => {
-            this.mode.switchModeTo(VIEW_MODE.EDIT);
+            this.mode.switchToEditMode(true);
 
             if (!this.wallModel.api.core2.query().length()) {
                 const {id} = this.wallModel.api.core2.addDefaultBrick();
 
-                this.mode.edit.focusOnBrickId(id);
+                // wait until view re-rendered
+                setTimeout(() => {
+                    this.mode.edit.focusOnBrickId(id);
+                });
             }
         });
 

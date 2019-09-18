@@ -14,7 +14,11 @@
         </div>
     </div>
 
-    <div [ngClass]="{'wall-canvas-brick__disabled-interaction': !(isMediaInteractionEnabled$ | async)}">
+    <div
+        [ngClass]="{
+        'wall-canvas-brick__disabled-interaction':
+            !(wallCanvasComponent.wallViewModel.mediaInteraction.isMediaInteractionEnabled$ | async)
+        }">
         <ng-container #brickContainer></ng-container>
     </div>
 </div>

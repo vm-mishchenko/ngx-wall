@@ -1,8 +1,1 @@
-<wall-canvas (canvasClick)="onCanvasClick()"
-             (onBrickStateChanged)="onBrickStateChanged($event)"
-
-             [wallModel]="wallViewModel.wallModel"
-             [wallViewModel]="wallViewModel"
-             [isMediaInteractionEnabled$]="wallViewModel.mediaInteraction.isMediaInteractionEnabled$"
-             [viewPlan]="wallViewModel.viewPlan$ | async">
-</wall-canvas>
+<wall-canvas [wallViewModel]="wallViewModel"></wall-canvas>

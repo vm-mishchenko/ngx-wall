@@ -34,7 +34,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
     @ViewChild('brickContainer', {read: ViewContainerRef}) container: ViewContainerRef;
 
-    uiApi: IWallUiApi = this.wallCanvasComponent.wallModel.api.ui;
+    uiApi: IWallUiApi = this.wallCanvasComponent.wallViewModel.wallModel.api.ui;
 
     isBrickSelected$: Observable<boolean> = combineLatest(
         this.uiApi.mode.currentMode$,
@@ -62,8 +62,6 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         isPickOutItem: boolean,
         isBeacon: boolean
     };
-
-    isMediaInteractionEnabled$ = this.wallCanvasComponent.isMediaInteractionEnabled$;
 
     private componentReference: ComponentRef<any>;
 
@@ -104,7 +102,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
             map(([isCross13Line, isTopLeftDistanceLessThan]) => {
                 return isCross13Line &&
                     isTopLeftDistanceLessThan &&
-                    !this.wallCanvasComponent.wallModel.api.core2.isReadOnly;
+                    !this.wallCanvasComponent.wallViewModel.wallModel.api.core2.isReadOnly;
             }),
             tap(() => {
                 this.cdRef.detectChanges();
@@ -152,7 +150,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
         componentInstance.id = this.viewBrick.brick.id;
         componentInstance.state = this.viewBrick.brick.data;
-        componentInstance.wallModel = this.wallCanvasComponent.wallModel;
+        componentInstance.wallModel = this.wallCanvasComponent.wallViewModel.wallModel;
 
         if (componentInstance.stateChanges) {
             this.stateChangesSubscription = componentInstance.stateChanges.subscribe((newState) => {
