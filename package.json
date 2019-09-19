@@ -23,7 +23,7 @@
         "version": "git add -A src",
         "postversion": "git push && git push --tags",
         "bump-project": "npm version patch",
-        "bump-wall": "cd ./projects/ngx-wall && npm version patch && git add . && git commit -m 'update lib version' && cd ../..",
+        "bump-wall": "cd ./projects/ngx-wall && npm version patch && git add . && git commit -m 'update lib version'",
         "bump-all": "npm run bump-wall && npm run bump-project",
         "prepublishOnly": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "release": "npm run bump-all && npm publish 'dist/ngx-wall'"
