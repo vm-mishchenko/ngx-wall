@@ -1,7 +1,8 @@
 import {Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
-import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
+import {IPrimaryActionOption} from '../../../wall/components/wall/wall-view.model';
 import {InputContextComponent} from '../input-context/input-context.component';
+import {IWebBookmarkBrickState} from '../web-bookmark-brick-state.interface';
 
 @Component({
     selector: 'web-bookmark-brick',
@@ -102,6 +103,11 @@ export class WebBookmarkBrickComponent implements OnInit {
         }
     }
 
+    onPrimaryAction(options: IPrimaryActionOption) {
+        console.log(`onPrimaryAction`);
+        console.log(options);
+    }
+
     private save() {
         this.stateChanges.emit(this.scope);
     }
@@ -115,7 +121,7 @@ export class WebBookmarkBrickComponent implements OnInit {
                     logo,
                     title,
                     author
-                } = pageMetadata.data;
+                } = pageMetadata.clientData;
 
                 return {
                     image,

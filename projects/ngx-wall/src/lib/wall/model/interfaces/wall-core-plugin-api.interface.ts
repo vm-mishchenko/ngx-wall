@@ -1,21 +1,21 @@
 import {Observable, Subscription} from 'rxjs';
-import {IWallDefinition} from './wall-definition.interface';
 import {IBrickSnapshot} from './brick-snapshot.interface';
+import {IWallDefinition2} from './wall-definition.interface2';
 
 export interface IWallCorePluginApi {
     // STATE
     isReadOnly$: Observable<boolean>;
 
+    isReadOnly: boolean;
+
     // COMMAND METHODS
-    setPlan(plan: IWallDefinition);
+    setPlan(plan: IWallDefinition2);
 
     addBrickAfterBrickId(brickId: string, tag: string, state?: object): IBrickSnapshot;
 
     addBrickBeforeBrickId(brickId: string, tag: string, state?: object): IBrickSnapshot;
 
     getBrickResourcePaths(brickId: string): string[];
-
-    isReadOnly(): boolean;
 
     enableReadOnly();
 
@@ -31,11 +31,7 @@ export interface IWallCorePluginApi {
 
     getPreviousBrickId(brickId: string): string;
 
-    getPlan(): IWallDefinition;
-
-    getRowCount(): number;
-
-    getColumnCount(rowIndex: number): number;
+    getPlan(): IWallDefinition2;
 
     updateBrickState(brickId, brickState): void;
 
@@ -49,21 +45,15 @@ export interface IWallCorePluginApi {
 
     moveBrickBeforeBrickId(targetBrickIds: string[], beforeBrickId: string): void;
 
-    moveBrickToNewColumn(targetBrickIds: string[], beforeBrickId: string, side: string): void;
-
     removeBrick(brickId: string): void;
 
     removeBricks(brickIds): void;
 
-    clear(): Promise<void>;
+    clear(): void;
 
     getBricksCount(): number;
 
     isBrickAheadOf(firstBrickId: string, secondBrickId: string): boolean;
-
-    subscribe(fn: (event: any) => any): Subscription;
-
-    traverse(fn: (row: any) => any): void; // todo - traverse quite strange method?
 
     filterBricks(predictor: (wallBrick: IBrickSnapshot) => boolean): IBrickSnapshot[];
 

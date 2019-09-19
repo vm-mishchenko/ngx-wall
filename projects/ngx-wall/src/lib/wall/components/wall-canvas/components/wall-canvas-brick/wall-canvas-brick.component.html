@@ -1,16 +1,24 @@
-<div [spot]="spot"
-     data-id="{{brick.id}}"
+<div spot [spotData]="spotData" [spotId]="spotData.brickId"
+     data-id="{{viewBrick.brick.id}}"
      class="wall-canvas-brick__wrapper wall-canvas-brick__draggable"
-     [ngClass]="{'wall-canvas-brick__selected': selected,
-     		'wall-canvas-brick__draggable': isMouseNear}">
+     (click)="onBrickClick()"
+     [ngClass]="{
+        'wall-canvas-brick__selected': isBrickSelected$ | async,
+     	'wall-canvas-brick__draggable': isShowDraggableHandler$ | async,
+     	'wall-canvas-brick__navigation_cursor': hasNavigationCursor$ | async
+     	}">
 
-    <div class="wall-canvas-brick__draggable-handler" [tow-slave]="brick.id">
+    <div class="wall-canvas-brick__draggable-handler" [tow-slave]="viewBrick.brick.id">
         <div class="wall-canvas-brick__draggable-box">
             <mat-icon>drag_handle</mat-icon>
         </div>
     </div>
 
-    <div [ngClass]="{'wall-canvas-brick__disabled-interaction': !isMediaInteractionEnabled}">
+    <div
+        [ngClass]="{
+        'wall-canvas-brick__disabled-interaction':
+            !(wallCanvasComponent.wallViewModel.mediaInteraction.isMediaInteractionEnabled$ | async)
+        }">
         <ng-container #brickContainer></ng-container>
     </div>
 </div>

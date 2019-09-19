@@ -1,6 +1,6 @@
 {
     "name": "ngx-wall",
-    "version": "1.1.17",
+    "version": "1.1.39",
     "repository": {
         "url": "https://github.com/vm-mishchenko/ngx-wall.git",
         "type": "git"
@@ -13,14 +13,23 @@
         "build-for-origin": "run-p build:watch copy:scss:watch",
         "copy:scss": "cpx \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
         "copy:scss:watch": "cpx -w \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
-        "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
         "test": "ng test ngx-wall",
         "test:once": "ng test ngx-wall --watch=false --code-coverage",
         "test:cli": "ng test ngx-wall --watch=false  --code-coverage --no-progress --browsers=ChromeNoSandbox",
         "lint": "ng lint ngx-wall",
         "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "version": "git add -A src",
+        "postversion": "git push && git push --tags",
+        "bump-project": "npm version patch",
+        "bump-wall": "cd ./projects/ngx-wall && npm version patch && git add . && git commit -m 'update lib version'",
+        "bump-all": "npm run bump-wall && npm run bump-project",
+        "release-phase-1": "npm run test:once",
+        "release-phase-2": "npm run build:prod && npm run copy:scss",
+        "release-phase-3": "npm run bump-all",
+        "release-phase-4": "cd ./dist/ngx-wall && npm publish",
+        "release": "npm run release-phase-1 && npm run release-phase-2 && npm run release-phase-3 && npm run release-phase-4"
     },
     "private": true,
     "dependencies": {
@@ -67,7 +76,7 @@
         "ts-node": "~8.0.3",
         "tsickle": "0.34.0",
         "tslib": "^1.7.1",
-        "tslint": "~5.9.1",
+        "tslint": "~5.11.0",
         "typescript": "~3.1.6"
     }
 }

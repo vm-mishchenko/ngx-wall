@@ -1,25 +1,24 @@
 import {CommonModule} from '@angular/common';
 import {Component, DebugElement, EventEmitter, Input, NgModule, OnInit, Output, SimpleChanges} from '@angular/core';
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {MatIconModule} from '@angular/material';
 import {By} from '@angular/platform-browser';
 import {TextBrickModule} from '../../../bricks/text-brick/text-brick';
 import {TEXT_BRICK_TAG} from '../../../bricks/text-brick/text-brick.constant';
-import {RadarModule} from '../../../modules/radar/radar';
-import {TowModule} from '../../../modules/tow/tow';
-import {WallCanvasBrickComponent, WallCanvasComponent, WallCanvasRowComponent} from '../wall-canvas/wall-canvas';
-import {WallComponent} from './wall.component';
-import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {WallModelFactory} from '../../factory/wall-model.factory';
-import {IOnWallStateChange} from './interfaces/wall-component/on-wall-state-change.interface';
-import {IOnWallFocus} from './interfaces/wall-component/on-wall-focus.interface';
-import {IWallComponent} from './interfaces/wall-component/wall-component.interface';
-import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
-import {BrickRegistry} from '../../registry/brick-registry.service';
-import {SelectedBrickEvent} from './events/selected-brick.event';
-import {IWallUiApi} from './interfaces/ui-api.interface';
 import {PlaceholderRendererModule} from '../../../modules/components/placeholder-renderer/placeholder-renderer.module';
 import {PickOutModule} from '../../../modules/pick-out/pick-out.module';
-import {MatIconModule} from '@angular/material';
+import {RadarModule} from '../../../modules/radar/radar';
+import {TowModule} from '../../../modules/tow/tow';
+import {WallModelFactory} from '../../factory/wall-model.factory';
+import {IWallModel} from '../../model/interfaces/wall-model.interface';
+import {BrickRegistry} from '../../registry/brick-registry.service';
+import {WallCanvasBrickComponent, WallCanvasComponent} from '../wall-canvas/wall-canvas';
+import {IWallUiApi} from './interfaces/ui-api.interface';
+import {IOnWallFocus} from './interfaces/wall-component/on-wall-focus.interface';
+import {IOnWallStateChange} from './interfaces/wall-component/on-wall-state-change.interface';
+import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
+import {IWallComponent} from './interfaces/wall-component/wall-component.interface';
+import {WallComponent} from './wall.component';
 
 class TestScope {
     rootNativeElement: HTMLElement;
@@ -162,7 +161,6 @@ describe('WallComponent', () => {
             declarations: [
                 WallComponent,
                 WallCanvasComponent,
-                WallCanvasRowComponent,
                 WallCanvasBrickComponent,
             ]
         }).compileComponents();
@@ -190,7 +188,7 @@ describe('WallComponent', () => {
 
     describe('[Interaction with brick]', () => {
         it('should pass id to component', () => {
-            testScope.wallModel.api.core.addBrickAtStart('fixture', {});
+            testScope.wallModel.api.core2.addBrickAtStart('fixture', {});
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -203,7 +201,7 @@ describe('WallComponent', () => {
                 foo: 'foo'
             };
 
-            testScope.wallModel.api.core.addBrickAtStart('fixture', fixtureState);
+            testScope.wallModel.api.core2.addBrickAtStart('fixture', fixtureState);
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -212,7 +210,7 @@ describe('WallComponent', () => {
         });
 
         it('should call onWallStateChange callback when state is changed by model', () => {
-            const brickSnapshot = testScope.wallModel.api.core.addBrickAtStart('fixture');
+            const brickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('fixture');
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -223,7 +221,7 @@ describe('WallComponent', () => {
             const newFixtureState = {
                 foo: 'foo'
             };
-            testScope.wallModel.api.core.updateBrickState(brickSnapshot.id, newFixtureState);
+            testScope.wallModel.api.core2.updateBrickState(brickSnapshot.id, newFixtureState);
 
             // bind internal wall component state to the DOM
             testScope.fixture.detectChanges();
@@ -238,7 +236,7 @@ describe('WallComponent', () => {
         });
 
         it('should pass wallModel to component', () => {
-            testScope.wallModel.api.core.addBrickAtStart('fixture', {});
+            testScope.wallModel.api.core2.addBrickAtStart('fixture', {});
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -247,12 +245,12 @@ describe('WallComponent', () => {
         });
 
         it('should listen changes from @Output stateChanges component property', () => {
-            const fixtureBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('fixture', {});
+            const fixtureBrickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('fixture', {});
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
 
-            spyOn(testScope.wallModel.api.core, 'updateBrickState');
+            spyOn(testScope.wallModel.api.core2, 'updateBrickState');
 
             const newFixtureState = {foo: 'foo'};
 
@@ -260,9 +258,9 @@ describe('WallComponent', () => {
             fixtureComponent.stateChanges.emit(newFixtureState);
 
             // test assertions
-            expect(testScope.wallModel.api.core.updateBrickState).toHaveBeenCalled();
+            expect(testScope.wallModel.api.core2.updateBrickState).toHaveBeenCalled();
 
-            const updateBrickStateArgs = (testScope.wallModel.api.core.updateBrickState as jasmine.Spy)
+            const updateBrickStateArgs = (testScope.wallModel.api.core2.updateBrickState as jasmine.Spy)
                 .calls.mostRecent().args;
 
             expect(updateBrickStateArgs[0]).toEqual(fixtureBrickSnapshot.id);
@@ -270,7 +268,7 @@ describe('WallComponent', () => {
         });
 
         it('should call onWallFocus callback', () => {
-            const fixtureBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('fixture');
+            const fixtureBrickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('fixture');
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -278,7 +276,7 @@ describe('WallComponent', () => {
             spyOn(fixtureComponent, 'onWallFocus');
 
             // test action
-            testScope.uiApi.focusOnBrickId(fixtureBrickSnapshot.id);
+            testScope.uiApi.mode.edit.focusOnBrickId(fixtureBrickSnapshot.id);
             testScope.fixture.detectChanges();
 
             // test assertion
@@ -286,7 +284,7 @@ describe('WallComponent', () => {
         });
 
         it('should pass onWallFocus context', () => {
-            const fixtureBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('fixture', {});
+            const fixtureBrickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('fixture', {});
             testScope.fixture.detectChanges();
 
             const fixtureComponent = testScope.getDebugElementByCss('fixture-brick').componentInstance;
@@ -295,7 +293,7 @@ describe('WallComponent', () => {
 
             // test action
             const focusContext = {initiator: '', details: 'foo'};
-            testScope.uiApi.focusOnBrickId(fixtureBrickSnapshot.id, focusContext);
+            testScope.uiApi.mode.edit.focusOnBrickId(fixtureBrickSnapshot.id, focusContext);
             testScope.fixture.detectChanges();
 
             // test assertion
@@ -321,108 +319,56 @@ describe('WallComponent', () => {
     });
 
     describe('[UI Api]', () => {
-        it('should remove brick', async(() => {
-            testScope.wallModel.api.core.addBrickAtStart(TEXT_BRICK_TAG, {test: 'foo'});
-            testScope.wallModel.api.core.addBrickAtStart(TEXT_BRICK_TAG, {test: 'bar'});
-
-            testScope.render().then(() => {
-                expect(testScope.getElementsByTagName('text-brick').length).toBe(2);
-
-                const brickId = testScope.wallModel.api.core.getBrickIds()[0];
-
-                testScope.uiApi.removeBrick(brickId);
-
-                testScope.render().then(() => {
-                    expect(testScope.getElementsByTagName('text-brick').length).toBe(1);
-                });
-            });
-        }));
-
-        it('should remove bricks', async(() => {
-            testScope.wallModel.api.core.addDefaultBrick();
-            testScope.wallModel.api.core.addDefaultBrick();
-            testScope.wallModel.api.core.addDefaultBrick();
-
-            testScope.render().then(() => {
-                expect(testScope.getElementsByTagName('text-brick').length).toBe(3);
-
-                const brickIds = testScope.wallModel.api.core.getBrickIds();
-
-                testScope.uiApi.removeBricks([brickIds[0], brickIds[1]]);
-
-                testScope.render().then(() => {
-                    expect(testScope.getElementsByTagName('text-brick').length).toBe(1);
-                });
-            });
-        }));
-
-        it('should focus on only empty text brick when user tries to delete it', async(() => {
-            testScope.wallModel.api.core.addDefaultBrick();
-
-            testScope.render().then(() => {
-                const textBrickDebugElement = testScope.getDebugElementByCss('text-brick');
-
-                spyOn(textBrickDebugElement.componentInstance, 'onWallFocus');
-
-                testScope.uiApi.removeBrick(testScope.wallModel.api.core.getBrickIds()[0]);
-
-                testScope.fixture.detectChanges();
-
-                expect(textBrickDebugElement.componentInstance.onWallFocus).toHaveBeenCalled();
-            });
-        }));
-
         describe('selectBrick()', () => {
             it('should select brick', () => {
-                const textBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('text');
 
                 // test action
-                testScope.uiApi.selectBrick(textBrickSnapshot.id);
+                testScope.uiApi.mode.navigation.selectBrick(textBrickSnapshot.id);
 
                 // test assertions
-                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+                const selectedBricks = testScope.uiApi.mode.navigation.getSelectedBrickIds();
 
                 expect(selectedBricks.length).toBe(1);
                 expect(selectedBricks[0]).toBe(textBrickSnapshot.id);
             });
 
             it('should trigger SelectedBrick event after brick selection', () => {
-                const textBrickSnapshot = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot = testScope.wallModel.api.core2.addBrickAtStart('text');
 
-                let event;
-                testScope.uiApi.subscribe((e) => event = e);
+                let selectedBrickIds;
+                testScope.uiApi.mode.navigation.selectedBricks$.subscribe((e) => selectedBrickIds = e);
 
                 // test action
-                testScope.uiApi.selectBrick(textBrickSnapshot.id);
+                testScope.uiApi.mode.navigation.selectBrick(textBrickSnapshot.id);
 
-                expect(event).toBeDefined();
-                expect(event instanceof SelectedBrickEvent).toBeTruthy();
-                expect(event.selectedBrickIds).toEqual([textBrickSnapshot.id]);
+                expect(selectedBrickIds).toBeDefined();
+                expect(selectedBrickIds).toEqual([textBrickSnapshot.id]);
             });
 
             it('should select new brick and discard previous', () => {
-                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
-                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAtStart('text');
+                const textBrickSnapshot1 = testScope.wallModel.api.core2.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core2.addBrickAtStart('text');
 
-                testScope.uiApi.selectBrick(textBrickSnapshot1.id);
-                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
-                expect(testScope.uiApi.getSelectedBrickIds()[0]).toBe(textBrickSnapshot1.id);
+                testScope.uiApi.mode.navigation.selectBrick(textBrickSnapshot1.id);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds().length).toBe(1);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds()[0]).toBe(textBrickSnapshot1.id);
 
                 // test action
-                testScope.uiApi.selectBrick(textBrickSnapshot2.id);
-                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
-                expect(testScope.uiApi.getSelectedBrickIds()[0]).toBe(textBrickSnapshot2.id);
+                testScope.uiApi.mode.navigation.selectBrick(textBrickSnapshot2.id);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds().length).toBe(1);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds()[0]).toBe(textBrickSnapshot2.id);
             });
 
             it('should select few bricks', () => {
-                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
-                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
+                const textBrickSnapshot1 = testScope.wallModel.api.core2.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core2.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
 
                 // test action
-                testScope.uiApi.selectBricks([textBrickSnapshot1.id, textBrickSnapshot2.id]);
+                testScope.uiApi.mode.navigation.selectBricks([textBrickSnapshot1.id, textBrickSnapshot2.id]);
 
                 // test assertions
-                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+                const selectedBricks = testScope.uiApi.mode.navigation.getSelectedBrickIds();
 
                 expect(selectedBricks.length).toBe(2);
                 expect(selectedBricks[0]).toBe(textBrickSnapshot1.id);
@@ -430,14 +376,14 @@ describe('WallComponent', () => {
             });
 
             it('should sort selected bricks based their layout position', () => {
-                const textBrickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
-                const textBrickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
+                const textBrickSnapshot1 = testScope.wallModel.api.core2.addBrickAtStart('text');
+                const textBrickSnapshot2 = testScope.wallModel.api.core2.addBrickAfterBrickId(textBrickSnapshot1.id, 'text');
 
                 // test action
-                testScope.uiApi.selectBricks([textBrickSnapshot2.id, textBrickSnapshot1.id]);
+                testScope.uiApi.mode.navigation.selectBricks([textBrickSnapshot2.id, textBrickSnapshot1.id]);
 
                 // test assertions
-                const selectedBricks = testScope.uiApi.getSelectedBrickIds();
+                const selectedBricks = testScope.uiApi.mode.navigation.getSelectedBrickIds();
 
                 expect(selectedBricks.length).toBe(2);
                 expect(selectedBricks[0]).toBe(textBrickSnapshot1.id);
@@ -445,62 +391,58 @@ describe('WallComponent', () => {
             });
 
             it('should trigger SelectedBrickEvent event after brick selections', () => {
-                testScope.wallModel.api.core.addDefaultBrick();
-                testScope.wallModel.api.core.addDefaultBrick();
+                testScope.wallModel.api.core2.addDefaultBrick();
+                testScope.wallModel.api.core2.addDefaultBrick();
 
-                let event;
-                testScope.uiApi.subscribe((e) => event = e);
+                let selectedBrickIds;
+                testScope.uiApi.mode.navigation.selectedBricks$.subscribe((e) => selectedBrickIds = e);
 
-                const brickIds = testScope.wallModel.api.core.getBrickIds();
+                const brickIds = testScope.wallModel.api.core2.getBrickIds();
 
                 // test action
-                testScope.uiApi.selectBricks(brickIds);
+                testScope.uiApi.mode.navigation.selectBricks(brickIds);
 
-                expect(event).toBeDefined();
-                expect(event instanceof SelectedBrickEvent).toBeTruthy();
-                expect(event.selectedBrickIds).toEqual(brickIds);
+                expect(selectedBrickIds).toEqual(brickIds);
             });
         });
 
         describe('unSelectBricks()', () => {
             it('should unselect all brick ids', () => {
-                testScope.wallModel.api.core.addDefaultBrick();
+                testScope.wallModel.api.core2.addDefaultBrick();
 
                 // test action
-                testScope.uiApi.selectBricks(testScope.wallModel.api.core.getBrickIds());
+                testScope.uiApi.mode.navigation.selectBricks(testScope.wallModel.api.core2.getBrickIds());
 
-                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds().length).toBe(1);
 
                 // test assertions
-                testScope.uiApi.unSelectBricks();
+                testScope.uiApi.mode.navigation.unSelectAllBricks();
 
-                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(0);
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds().length).toBe(0);
             });
 
             it('should trigger SelectedBrickEvent event after brick unselection', () => {
-                testScope.wallModel.api.core.addDefaultBrick();
+                testScope.wallModel.api.core2.addDefaultBrick();
 
                 // test action
-                testScope.uiApi.selectBricks(testScope.wallModel.api.core.getBrickIds());
-                expect(testScope.uiApi.getSelectedBrickIds().length).toBe(1);
+                testScope.uiApi.mode.navigation.selectBricks(testScope.wallModel.api.core2.getBrickIds());
+                expect(testScope.uiApi.mode.navigation.getSelectedBrickIds().length).toBe(1);
 
-                let event;
-                testScope.uiApi.subscribe((e) => event = e);
-
-                // test assertions
-                testScope.uiApi.unSelectBricks();
+                let selectedBrickIds;
+                testScope.uiApi.mode.navigation.selectedBricks$.subscribe((e) => selectedBrickIds = e);
 
                 // test assertions
-                expect(event).toBeDefined();
-                expect(event instanceof SelectedBrickEvent).toBeTruthy();
-                expect(event.selectedBrickIds).toEqual([]);
+                testScope.uiApi.mode.navigation.unSelectAllBricks();
+
+                // test assertions
+                expect(selectedBrickIds).toEqual([]);
             });
         });
 
         describe('focusOnPreviousTextBrick()', () => {
             it('should call onWallFocus callback', async(() => {
-                const brickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
-                const brickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
+                const brickSnapshot1 = testScope.wallModel.api.core2.addBrickAtStart('text');
+                const brickSnapshot2 = testScope.wallModel.api.core2.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
 
                 testScope.render().then(() => {
                     const textBrickDebugElement = testScope.getDebugElementByCss('text-brick');
@@ -508,7 +450,7 @@ describe('WallComponent', () => {
                     spyOn(textBrickDebugElement.componentInstance, 'onWallFocus');
 
                     // test action
-                    testScope.uiApi.focusOnPreviousTextBrick(brickSnapshot2.id);
+                    testScope.uiApi.mode.edit.focusOnPreviousTextBrick(brickSnapshot2.id);
                     testScope.fixture.detectChanges();
 
                     // test assertion
@@ -517,8 +459,8 @@ describe('WallComponent', () => {
             }));
 
             it('should pass focus context', async(() => {
-                const brickSnapshot1 = testScope.wallModel.api.core.addBrickAtStart('text');
-                const brickSnapshot2 = testScope.wallModel.api.core.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
+                const brickSnapshot1 = testScope.wallModel.api.core2.addBrickAtStart('text');
+                const brickSnapshot2 = testScope.wallModel.api.core2.addBrickAfterBrickId(brickSnapshot1.id, 'fixture');
 
                 testScope.render().then(() => {
                     const textBrickDebugElement = testScope.getDebugElementByCss('text-brick');
@@ -530,7 +472,7 @@ describe('WallComponent', () => {
                         initiator: 'unit-test',
                         details: 'foo'
                     };
-                    testScope.uiApi.focusOnPreviousTextBrick(brickSnapshot2.id, focusContext);
+                    testScope.uiApi.mode.edit.focusOnPreviousTextBrick(brickSnapshot2.id, focusContext);
                     testScope.fixture.detectChanges();
 
                     // test assertion
@@ -547,7 +489,7 @@ describe('WallComponent', () => {
 
     describe('[Model events reaction]', () => {
         it('should render default brick', () => {
-            testScope.wallModel.api.core.addDefaultBrick();
+            testScope.wallModel.api.core2.addDefaultBrick();
 
             testScope.fixture.detectChanges();
 
@@ -559,7 +501,7 @@ describe('WallComponent', () => {
                 text: 'initial'
             };
 
-            testScope.wallModel.api.core.addBrickAtStart(TEXT_BRICK_TAG, textBrickState);
+            testScope.wallModel.api.core2.addBrickAtStart(TEXT_BRICK_TAG, textBrickState);
 
             testScope.render().then(() => {
                 const textBrickElement = testScope.getElementsByTagName('text-brick')[0];

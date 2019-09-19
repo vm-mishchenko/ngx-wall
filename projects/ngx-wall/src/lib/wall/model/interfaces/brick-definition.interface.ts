@@ -3,10 +3,10 @@ export interface IBrickDefinition {
     tag: string;
 
     // user specific data
-    data: {};
+    // todo: make more strict type
+    data: any;
 
     meta: {
         comments?: any[]
     };
 }
-

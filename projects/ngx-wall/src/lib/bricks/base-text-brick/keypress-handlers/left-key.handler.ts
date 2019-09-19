@@ -17,6 +17,6 @@ export class LeftKeyHandler {
         };
 
         this.baseTextBrickComponent.wallUiApi
-            .focusOnPreviousTextBrick(this.baseTextBrickComponent.id, focusContext);
+            .mode.edit.focusOnPreviousTextBrick(this.baseTextBrickComponent.id, focusContext);
     }
 }

@@ -1,26 +1,29 @@
-import {SpotDirective} from './directive/spot.directive';
-import {ISpotPosition, ISpotSize} from './interfaces/distance-to-spot.interface';
-import {SpotId} from './interfaces/spot-id.type';
+import {Subject} from 'rxjs';
+import {map, takeUntil, tap} from 'rxjs/operators';
+import {ISpotPosition, ISpotSize, SpotId} from './radar.interfaces';
+import {Radar} from './radar.service';
+import {SpotDirective} from './spot.directive';
 
 export class SpotModel {
-    id: SpotId;
-    data: any;
+    clientData: any;
     position: ISpotPosition;
     size: ISpotSize;
 
-    private instance: SpotDirective;
+    private destroy$ = new Subject<any>();
 
-    constructor(instance: SpotDirective) {
-        this.id = instance.id;
-        this.instance = instance;
+    private spotInstance: SpotDirective;
+
+    constructor(private spotId: SpotId, instance: SpotDirective,
+                private radar: Radar) {
+        this.spotInstance = instance;
 
         this.updateInfo();
     }
 
     updateInfo() {
-        const {position, size, data} = this.instance.getInfo();
+        const {position, size, data} = this.spotInstance.getInfo();
 
-        this.data = data;
+        this.clientData = data;
         this.size = size;
         this.position = position;
     }
@@ -90,5 +93,33 @@ export class SpotModel {
         } else {
             return false;
         }
+    }
+
+    onIsMouseTopLeftDistanceLessThan(distance: number) {
+        return this.radar.mouseMove$.pipe(
+            takeUntil(this.destroy$),
+            tap(() => {
+                this.updateInfo();
+            }),
+            map((event) => {
+                return this.getDistanceToTopLeftPoint(event.clientX, event.clientY) < distance;
+            })
+        );
+    }
+
+    onIsMouseCross13Line() {
+        return this.radar.mouseMove$.pipe(
+            takeUntil(this.destroy$),
+            tap(() => {
+                this.updateInfo();
+            }),
+            map((event) => {
+                return this.isCross13Line(event.clientY);
+            })
+        );
+    }
+
+    onDestroy() {
+        this.destroy$.next(true);
     }
 }

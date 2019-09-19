@@ -4,8 +4,8 @@
             col-lg-8 offset-lg-2
             col-xl-8 offset-xl-2">
 
-            <button (click)="wallModel.api.core.enableReadOnly()">Enable Read only</button>
-            <button (click)="wallModel.api.core.disableReadOnly()">Disable Read only</button>
+            <button (click)="wallModel.api.core2.enableReadOnly()">Enable Read only</button>
+            <button (click)="wallModel.api.core2.disableReadOnly()">Disable Read only</button>
 
             <div #container>
                 <wall [model]="wallModel"
@@ -13,7 +13,7 @@
                 <br>
                 <hr>
                 <br>
-                <pre>{{plan | json}}</pre>
+                <pre>{{wallModel.api.core2.plan$ | async | json}}</pre>
             </div>
         </div>
     </div>

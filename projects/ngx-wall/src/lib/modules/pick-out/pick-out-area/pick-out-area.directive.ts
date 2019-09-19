@@ -14,8 +14,8 @@ import {
     OnDestroy,
     OnInit
 } from '@angular/core';
-import {PickOutCoordinator} from '../pick-out-coordinator.service';
 import {MOUSE_LEFT_KEY_CODE} from '../pick-out.constant';
+import {PickOutService} from '../pick-out.service';
 import {IPickOutAreaConfig} from './pick-out-area-config.interface';
 import {PickOutAreaComponent} from './pick-out-area.component';
 import {PickOutAreaModel} from './pick-out-area.model';
@@ -45,7 +45,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     previousClientY: number;
 
     constructor(@Inject(DOCUMENT) doc,
-                private pickOutCoordinator: PickOutCoordinator,
+                private pickOutService: PickOutService,
                 private componentFactoryResolver: ComponentFactoryResolver,
                 private appRef: ApplicationRef,
                 private zone: NgZone,
@@ -67,7 +67,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     triggerPickOutChanged() {
-        this.pickOutCoordinator.pickOutChanged({
+        this.pickOutService.pickOutChanged({
             x: this.pickOutAreaModel.clientX,
             y: this.pickOutAreaModel.clientY,
             width: this.pickOutAreaModel.width,
@@ -77,7 +77,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
 
     @HostListener('mousedown', ['$event'])
     mouseDown(event: MouseEvent) {
-        if (!this.pickOutCoordinator.canPickOut()) {
+        if (!this.pickOutService.canPickOut()) {
             return;
         }
 
@@ -98,7 +98,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     onMouseMove(event: any) {
-        if (!this.pickOutCoordinator.canPickOut()) {
+        if (!this.pickOutService.canPickOut()) {
             return;
         }
 
@@ -119,7 +119,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     onMouseUp() {
-        if (!this.pickOutCoordinator.canPickOut()) {
+        if (!this.pickOutService.canPickOut()) {
             return;
         }
 
@@ -169,7 +169,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
     }
 
     onStartPicKOut() {
-        this.pickOutCoordinator.startPickOut();
+        this.pickOutService.startPickOut();
 
         this.doc.activeElement.blur();
 
@@ -182,7 +182,7 @@ export class PickOutAreaDirective implements OnInit, OnDestroy {
         if (this.pickOutAreaModel && this.pickOutAreaModel.isPickOutProcessInitialized) {
             this.removeRangeComponent();
 
-            this.pickOutCoordinator.endPickOut();
+            this.pickOutService.endPickOut();
         }
 
         this.pickOutAreaModel = null;
