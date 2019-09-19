@@ -29,7 +29,7 @@
         "release-phase-2": "npm run build:prod && npm run copy:scss",
         "release-phase-3": "npm run bump-all",
         "release-phase-4": "cd ./dist/ngx-wall && npm publish",
-        "release": "npm run release-phase-1 && npm run release-phase-2 && npm run release-phase-3 && npm run release-phase-4"
+        "release": "npm run release-phase-2 && npm run release-phase-3 && npm run release-phase-4"
     },
     "private": true,
     "dependencies": {
