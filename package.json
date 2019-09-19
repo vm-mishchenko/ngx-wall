@@ -22,7 +22,7 @@
         "e2e": "ng e2e",
         "version": "git add -A src",
         "postversion": "git push && git push --tags",
-        "bump": "npm version patch --forse",
+        "bump": "npm version patch --force",
         "bump-wall": "cd ./projects/ngx-wall && npm version patch",
         "bump-all": "npm run bump-wall && npm run bump",
         "prepublishOnly": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
