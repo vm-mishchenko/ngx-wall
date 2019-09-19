@@ -25,8 +25,11 @@
         "bump-project": "npm version patch",
         "bump-wall": "cd ./projects/ngx-wall && npm version patch && git add . && git commit -m 'update lib version'",
         "bump-all": "npm run bump-wall && npm run bump-project",
-        "prepublishOnly": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
-        "release": "npm run bump-all && npm publish 'dist/ngx-wall'"
+        "release-phase-1": "npm run test:once",
+        "release-phase-2": "npm run build:prod && npm run copy:scss",
+        "release-phase-3": "npm run bump-all",
+        "release-phase-4": "cd ./dist/ngx-wall && npm publish",
+        "release": "npm run release-phase-1 && npm run release-phase-2 && npm run release-phase-3 && npm run release-phase-4"
     },
     "private": true,
     "dependencies": {
