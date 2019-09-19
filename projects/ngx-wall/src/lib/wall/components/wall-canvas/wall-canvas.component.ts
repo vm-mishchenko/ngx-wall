@@ -1,11 +1,10 @@
-import {ChangeDetectionStrategy, Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {IViewBrickDefinition, WallViewModel} from '../wall/wall-view.model';
 
 @Component({
     selector: 'wall-canvas',
     templateUrl: './wall-canvas-component.component.html',
     styleUrls: ['./wall-canvas.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WallCanvasComponent {
     @Input() wallViewModel: WallViewModel;

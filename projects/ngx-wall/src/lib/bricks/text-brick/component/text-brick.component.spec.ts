@@ -80,14 +80,25 @@ class TestScope {
     // mocking
     /*
     * @param {string} apiString "core2.removeBrick"
-    * @param {string} apiString "ui.focusOnBrick"
     * */
     mock(apiString: string): jasmine.Spy {
-        const [api, method] = apiString.split('.');
+        // I wish I had a time to fix that shame
+        const paths = apiString.split('.');
+        const method = paths.splice(-1)[0];
 
-        this.mockWallModel.api[api][method] = jasmine.createSpy(method);
+        let currentObject = this.mockWallModel.api;
 
-        return this.mockWallModel.api[api][method];
+        paths.forEach((path, i) => {
+            if (!currentObject[path]) {
+                currentObject[path] = {};
+            }
+
+            currentObject = currentObject[path];
+        });
+
+        currentObject[method] = jasmine.createSpy(method);
+
+        return currentObject[method];
     }
 
     mockMethods(apis: string[]) {
@@ -95,10 +106,21 @@ class TestScope {
     }
 
     getRecentArguments(apiString): any[] {
-        const [api, method] = apiString.split('.');
+        // I wish I had a time to fix that shame
+        const paths = apiString.split('.');
+        const method = paths.splice(-1)[0];
 
-        return (this.mockWallModel.api[api][method] as any)
-            .calls.mostRecent().args;
+        let currentObject = this.mockWallModel.api;
+
+        paths.forEach((path, i) => {
+            if (!currentObject[path]) {
+                currentObject[path] = {};
+            }
+
+            currentObject = currentObject[path];
+        });
+
+        return (currentObject[method] as any).calls.mostRecent().args;
     }
 
     private createComponent(): Promise<any> {
@@ -204,7 +226,7 @@ describe('TextBrickComponent', () => {
                     };
 
                     testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
-                    testScope.mock('ui.focusOnBrickId');
+                    testScope.mock('ui.mode.edit.focusOnBrickId');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
 
@@ -220,10 +242,10 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
-                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.mode.edit.focusOnBrickId');
 
                     expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
                     expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
@@ -247,7 +269,7 @@ describe('TextBrickComponent', () => {
                     };
 
                     testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
-                    testScope.mock('ui.focusOnBrickId');
+                    testScope.mock('ui.mode.edit.focusOnBrickId');
 
                     const keyEvent = new KeyboardEvent('keydown', {code: 'Enter'});
 
@@ -263,10 +285,10 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
-                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.mode.edit.focusOnBrickId');
 
                     expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
                     expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
@@ -324,7 +346,7 @@ describe('TextBrickComponent', () => {
                     };
 
                     testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
-                    testScope.mock('ui.focusOnBrickId');
+                    testScope.mock('ui.mode.edit.focusOnBrickId');
 
                     let capturedState;
                     testScope.component.stateChanges.subscribe((updatedState) => capturedState = updatedState);
@@ -343,10 +365,10 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     const addBrickArguments = testScope.getRecentArguments('core2.addBrickAfterBrickId');
-                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const focusOnBrickIdArguments = testScope.getRecentArguments('ui.mode.edit.focusOnBrickId');
 
                     expect(testScope.mockWallModel.api.core2.addBrickAfterBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                     expect(addBrickArguments[0]).toBe(testScope.component.id);
                     expect(addBrickArguments[1]).toBe(TEXT_BRICK_TAG);
@@ -370,7 +392,7 @@ describe('TextBrickComponent', () => {
                 };
 
                 testScope.mock('core2.addBrickAfterBrickId').and.returnValue(mockNewAddedBrickSnapshot);
-                testScope.mock('ui.focusOnBrickId');
+                testScope.mock('ui.mode.edit.focusOnBrickId');
 
                 [
                     {
@@ -443,7 +465,12 @@ describe('TextBrickComponent', () => {
             it('should focus on previous text Brick', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
 
-                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
 
                 testScope.updateComponentState({
                     text: 'initial',
@@ -460,10 +487,10 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    const callArguments = (testScope.mockWallModel.api.ui.focusOnPreviousTextBrick as any)
+                    const callArguments = (testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick as any)
                         .calls.mostRecent().args;
 
-                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick).toHaveBeenCalled();
                     expect(/* initiator component id = */callArguments[0]).toBe(testScope.component.id);
                     expect(callArguments[1]).toEqual({
                         initiator: FOCUS_INITIATOR,
@@ -478,7 +505,13 @@ describe('TextBrickComponent', () => {
             it('should not focus on previous text Brick when cursor is not on first line', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
 
-                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
 
                 const newState = {
                     text: 'Long initial text, Long initial text, Long initial text, Long initial text',
@@ -500,7 +533,7 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).not.toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick).not.toHaveBeenCalled();
                 });
             }));
         });
@@ -509,7 +542,12 @@ describe('TextBrickComponent', () => {
             it('should focus on next text Brick', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
 
-                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
 
                 testScope.updateComponentState({
                     text: 'initial',
@@ -526,10 +564,10 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    const callArguments = (testScope.mockWallModel.api.ui.focusOnNextTextBrick as any)
+                    const callArguments = (testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick as any)
                         .calls.mostRecent().args;
 
-                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick).toHaveBeenCalled();
                     expect(/*initiator component id*/callArguments[0]).toBe(testScope.component.id);
                     expect(callArguments[1]).toEqual({
                         initiator: FOCUS_INITIATOR,
@@ -544,7 +582,12 @@ describe('TextBrickComponent', () => {
             it('should not focus on next text Brick when cursor is not on last line', async(() => {
                 const mockGetSelection = spyOn(window, 'getSelection');
 
-                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
 
                 const newState = {
                     text: 'Long initial text, Long initial text, Long initial text, Long initial text',
@@ -566,14 +609,19 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).not.toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick).not.toHaveBeenCalled();
                 });
             }));
         });
 
         describe('[Left key]', () => {
             it('should navigate to previous text brick', async(() => {
-                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
 
                 testScope.updateComponentState({
                     text: 'initial',
@@ -588,10 +636,10 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    const callArguments = (testScope.mockWallModel.api.ui.focusOnPreviousTextBrick as any)
+                    const callArguments = (testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick as any)
                         .calls.mostRecent().args;
 
-                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick).toHaveBeenCalled();
 
                     expect(callArguments[0]).toBe(testScope.component.id);
                     expect(callArguments[1]).toEqual({
@@ -604,7 +652,12 @@ describe('TextBrickComponent', () => {
             }));
 
             it('should not navigate to previous text brick when cursor is not at the beginning', async(() => {
-                testScope.mockWallModel.api.ui.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick = jasmine.createSpy('focusOnPreviousTextBrick');
 
                 testScope.updateComponentState({
                     text: 'initial',
@@ -619,14 +672,19 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.ui.focusOnPreviousTextBrick).not.toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnPreviousTextBrick).not.toHaveBeenCalled();
                 });
             }));
         });
 
         describe('[Right key]', () => {
             it('should navigate to next text brick', async(() => {
-                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
 
                 const newState = {
                     text: 'initial',
@@ -646,10 +704,10 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    const callArguments = (testScope.mockWallModel.api.ui.focusOnNextTextBrick as any)
+                    const callArguments = (testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick as any)
                         .calls.mostRecent().args;
 
-                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick).toHaveBeenCalled();
 
                     expect(callArguments[0]).toBe(testScope.component.id);
                     expect(callArguments[1]).toEqual({
@@ -662,7 +720,12 @@ describe('TextBrickComponent', () => {
             }));
 
             it('should not navigate to next text brick when cursor is not at the end', async(() => {
-                testScope.mockWallModel.api.ui.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
+                // todo: fix that shame
+                testScope.mockWallModel.api.ui['mode'] = {
+                    edit: {}
+                };
+
+                testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick = jasmine.createSpy('focusOnNextTextBrick');
 
                 testScope.updateComponentState({
                     text: 'initial',
@@ -680,7 +743,7 @@ describe('TextBrickComponent', () => {
                     testScope.component.onKeyPress(keyEvent);
 
                     // test assertions
-                    expect(testScope.mockWallModel.api.ui.focusOnNextTextBrick).not.toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnNextTextBrick).not.toHaveBeenCalled();
                 });
             }));
         });
@@ -694,7 +757,8 @@ describe('TextBrickComponent', () => {
                     const previousTextBrickId = '2';
 
                     testScope.mock('core2.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
-                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
+                    testScope.mock('core2.removeBrick');
+                    testScope.mockMethods(['ui.mode.edit.focusOnBrickId']);
 
                     (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
 
@@ -703,12 +767,12 @@ describe('TextBrickComponent', () => {
 
                     // test assertions
                     expect(testScope.mockWallModel.api.core2.getPreviousTextBrickId).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.removeBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                     // test assertions
-                    const removeBrickCallArguments = testScope.getRecentArguments('ui.removeBrick');
-                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const removeBrickCallArguments = testScope.getRecentArguments('core2.removeBrick');
+                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.mode.edit.focusOnBrickId');
 
                     expect(removeBrickCallArguments[0]).toBe(testScope.component.id);
                     expect(focusOnBrickIdCallArguments[0]).toBe(previousTextBrickId);
@@ -737,7 +801,7 @@ describe('TextBrickComponent', () => {
 
                     testScope.mock('core2.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
                     testScope.mock('core2.getBrickSnapshot').and.returnValue(previousTextSupportingBrickSnapshot);
-                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId', 'core2.updateBrickState']);
+                    testScope.mockMethods(['core2.removeBrick', 'ui.mode.edit.focusOnBrickId', 'core2.updateBrickState']);
 
                     (new PlaceCaretToPosition(testScope.nativeElement, /*cursor position*/0)).place();
 
@@ -750,12 +814,12 @@ describe('TextBrickComponent', () => {
                     expect(testScope.mockWallModel.api.core2.getPreviousTextBrickId).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.core2.getBrickSnapshot).toHaveBeenCalled();
                     expect(testScope.mockWallModel.api.core2.updateBrickState).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
-                    expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.core2.removeBrick).toHaveBeenCalled();
+                    expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                     // test assertions
-                    const removeBrickCallArguments = testScope.getRecentArguments('ui.removeBrick');
-                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.focusOnBrickId');
+                    const removeBrickCallArguments = testScope.getRecentArguments('core2.removeBrick');
+                    const focusOnBrickIdCallArguments = testScope.getRecentArguments('ui.mode.edit.focusOnBrickId');
                     const updateBrickStateCallArguments = testScope.getRecentArguments('core2.updateBrickState');
 
                     expect(removeBrickCallArguments[0]).toBe(testScope.component.id);
@@ -975,7 +1039,7 @@ describe('TextBrickComponent', () => {
                 testScope.updateComponentState(newState).then(() => {
                     const nextTextBrickId = '2';
                     testScope.mock('core2.getNextTextBrickId').and.returnValue(nextTextBrickId);
-                    testScope.mockMethods(['ui.removeBrick', 'ui.focusOnBrickId']);
+                    testScope.mockMethods(['core2.removeBrick', 'ui.mode.edit.focusOnBrickId']);
 
                     // place caret at the start
                     (new PlaceCaretToPosition(testScope.nativeElement, 0)).place();
@@ -986,14 +1050,14 @@ describe('TextBrickComponent', () => {
                     // test assertions
                     testScope.whenRendering().then(() => {
                         expect(testScope.mockWallModel.api.core2.getNextTextBrickId).toHaveBeenCalled();
-                        expect(testScope.mockWallModel.api.ui.removeBrick).toHaveBeenCalled();
-                        expect(testScope.mockWallModel.api.ui.focusOnBrickId).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.core2.removeBrick).toHaveBeenCalled();
+                        expect(testScope.mockWallModel.api.ui.mode.edit.focusOnBrickId).toHaveBeenCalled();
 
                         // test assertions
                         expect(testScope.getRecentArguments('core2.getNextTextBrickId')[0]).toBe(testScope.component.id);
-                        expect(testScope.getRecentArguments('ui.removeBrick')[0]).toBe(testScope.component.id);
-                        expect(testScope.getRecentArguments('ui.focusOnBrickId')[0]).toBe(nextTextBrickId);
-                        expect(testScope.getRecentArguments('ui.focusOnBrickId')[1]).toEqual({
+                        expect(testScope.getRecentArguments('core2.removeBrick')[0]).toBe(testScope.component.id);
+                        expect(testScope.getRecentArguments('ui.mode.edit.focusOnBrickId')[0]).toBe(nextTextBrickId);
+                        expect(testScope.getRecentArguments('ui.mode.edit.focusOnBrickId')[1]).toEqual({
                             initiator: FOCUS_INITIATOR,
                             details: {
                                 deletePreviousText: true
