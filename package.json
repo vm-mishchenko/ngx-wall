@@ -24,6 +24,7 @@
         "postversion": "git push && git push --tags",
         "bump": "npm version patch --forse",
         "bump-wall": "cd ./projects/ngx-wall && npm version patch",
+        "bump-all": "npm run bump-wall && npm run bump",
         "prepublishOnly": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "release": "npm run bump && npm publish 'dist/ngx-wall'"
     },
