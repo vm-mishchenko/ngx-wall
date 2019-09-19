@@ -15,6 +15,7 @@ export {BrickRegistry, IBrickSpecification} from './registry/public_api';
 // MODEL
 export {
     IWallDefinition,
+    IWallDefinition2,
     IBrickDefinition,
     IBrickSnapshot,
     IColumnLayoutDefinition,
@@ -31,3 +32,7 @@ export {
 
 // FACTORY
 export {WallModelFactory} from './factory/wall-model.factory';
+
+
+// CORE PLUGIN
+export {TransactionEvent} from './plugins/core2/events';

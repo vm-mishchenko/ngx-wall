@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs/internal/Observable';
+import {Observable} from 'rxjs';
 import {WallCoreApi2} from '../../plugins/core2/wall-core.plugin2';
 
 export interface IWallModel {

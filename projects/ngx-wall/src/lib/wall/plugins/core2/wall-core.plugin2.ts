@@ -8,7 +8,7 @@ import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IBrickDefinition} from '../../wall';
 import {TransactionEvent} from './events';
 
-const DEFAULT_BRICK = 'text';
+export const DEFAULT_BRICK = 'text';
 
 interface IPlaneStorageOptions {
     transactionHooks: ITransactionHook[];
@@ -548,7 +548,7 @@ export class WallCoreApi2 {
     plan$: Observable<IWallDefinition2>;
     events$: Observable<TransactionEvent>;
 
-    get isReadOnly() {
+    get isReadOnly(): boolean {
         return this.isReadOnlyInternal$.getValue();
     }
 
@@ -719,6 +719,18 @@ export class WallCoreApi2 {
 
     disableReadOnly() {
         this.isReadOnlyInternal$.next(false);
+    }
+
+    getBrickResourcePaths(brickId) {
+        const brickSnapshot = this.query().brickSnapshot(brickId);
+
+        const brickSpecification = this.brickRegistry.get(brickSnapshot.tag);
+
+        if (!brickSpecification.getBrickResourcePaths) {
+            return [];
+        }
+
+        return brickSpecification.getBrickResourcePaths(brickSnapshot);
     }
 }
 

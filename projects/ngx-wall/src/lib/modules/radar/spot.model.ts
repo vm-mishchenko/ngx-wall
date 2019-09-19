@@ -1,8 +1,8 @@
-import {map, takeUntil, tap} from 'rxjs/internal/operators';
-import {Subject} from 'rxjs/internal/Subject';
-import {SpotDirective} from './spot.directive';
+import {Subject} from 'rxjs';
+import {map, takeUntil, tap} from 'rxjs/operators';
 import {ISpotPosition, ISpotSize, SpotId} from './radar.interfaces';
 import {Radar} from './radar.service';
+import {SpotDirective} from './spot.directive';
 
 export class SpotModel {
     clientData: any;

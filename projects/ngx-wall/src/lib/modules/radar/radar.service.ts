@@ -1,10 +1,9 @@
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {Observable} from 'rxjs/internal/Observable';
-import {fromEvent} from 'rxjs/internal/observable/fromEvent';
-import {shareReplay, throttleTime} from 'rxjs/internal/operators';
-import {SpotDirective} from './spot.directive';
+import {fromEvent, Observable} from 'rxjs';
+import {shareReplay, throttleTime} from 'rxjs/operators';
 import {SpotId} from './radar.interfaces';
+import {SpotDirective} from './spot.directive';
 import {SpotModel} from './spot.model';
 
 const THROTTLE_MOUSE_MOVE_TIME = 30;

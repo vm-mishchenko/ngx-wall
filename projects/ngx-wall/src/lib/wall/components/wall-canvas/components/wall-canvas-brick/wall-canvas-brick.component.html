@@ -4,7 +4,7 @@
      (click)="onBrickClick()"
      [ngClass]="{
         'wall-canvas-brick__selected': isBrickSelected$ | async,
-     	'wall-canvas-brick__draggable': isShowDraggableHandler | async,
+     	'wall-canvas-brick__draggable': isShowDraggableHandler$ | async,
      	'wall-canvas-brick__navigation_cursor': hasNavigationCursor$ | async
      	}">
 

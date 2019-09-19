@@ -55,7 +55,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         })
     );
 
-    isShowDraggableHandler: Observable<boolean>;
+    isShowDraggableHandler$: Observable<boolean>;
 
     spotData: {
         brickId: string,
@@ -95,7 +95,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         // show/hide drag-and-drop handler
         const spot = this.radar.spots.get(this.viewBrick.brick.id);
 
-        this.isShowDraggableHandler = combineLatest(
+        this.isShowDraggableHandler$ = combineLatest(
             spot.onIsMouseCross13Line(),
             spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)
         ).pipe(
