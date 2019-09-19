@@ -1,10 +1,6 @@
 {
     "name": "ngx-wall",
     "version": "1.1.29",
-    "repository": {
-        "url": "https://github.com/vm-mishchenko/ngx-wall.git",
-        "type": "git"
-    },
     "peerDependencies": {
         "@angular/forms": "^7.1.2",
         "@angular/common": "^7.1.2",
@@ -14,10 +10,5 @@
         "codemirror": "5.42.0",
         "rxjs": "^6.3.3",
         "ngx-sticky-modal": "^0.0.3"
-    },
-    "scripts": {
-        "bump": "npm version patch",
-        "version": "git add -A src",
-        "postversion": "git push && git push --tags"
     }
 }
