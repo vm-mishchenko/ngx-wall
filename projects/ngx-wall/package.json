@@ -1,6 +1,6 @@
 {
     "name": "ngx-wall",
-    "version": "1.1.24",
+    "version": "1.1.26",
     "peerDependencies": {
         "@angular/forms": "^7.1.2",
         "@angular/common": "^7.1.2",
@@ -10,5 +10,9 @@
         "codemirror": "5.42.0",
         "rxjs": "^6.3.3",
         "ngx-sticky-modal": "^0.0.3"
+    },
+    "scripts": {
+        "version": "git add -A src",
+        "postversion": "git push && git push --tags"
     }
 }
