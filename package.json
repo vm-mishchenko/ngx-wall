@@ -13,14 +13,15 @@
         "build-for-origin": "run-p build:watch copy:scss:watch",
         "copy:scss": "cpx \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
         "copy:scss:watch": "cpx -w \"projects/ngx-wall/src/lib/resources/**/*\" \"dist/ngx-wall\"",
-        "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss",
         "gh": "ng build --stats-json --prod --base-href /ngx-wall/",
         "test": "ng test ngx-wall",
         "test:once": "ng test ngx-wall --watch=false --code-coverage",
         "test:cli": "ng test ngx-wall --watch=false  --code-coverage --no-progress --browsers=ChromeNoSandbox",
         "lint": "ng lint ngx-wall",
         "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-        "e2e": "ng e2e"
+        "e2e": "ng e2e",
+        "bump": "npm version patch",
+        "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss"
     },
     "private": true,
     "dependencies": {
