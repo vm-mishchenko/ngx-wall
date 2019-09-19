@@ -153,7 +153,7 @@ class TestScope {
     }
 }
 
-fdescribe('TextBrickComponent', () => {
+describe('TextBrickComponent', () => {
     let testScope: TestScope;
 
     beforeEach(async(() => {
