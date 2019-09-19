@@ -20,6 +20,9 @@
         "lint": "ng lint ngx-wall",
         "coveralls": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
         "e2e": "ng e2e",
+        "preversion": "npm run lint",
+        "version": "git add -A src",
+        "postversion": "git push && git push --tags",
         "bump": "npm version patch",
         "release": "npm run test:once && ng build ngx-wall --prod && npm run copy:scss"
     },
