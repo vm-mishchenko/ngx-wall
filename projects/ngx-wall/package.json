@@ -16,6 +16,7 @@
         "ngx-sticky-modal": "^0.0.3"
     },
     "scripts": {
+        "bump": "npm version patch",
         "version": "git add -A src",
         "postversion": "git push && git push --tags"
     }
