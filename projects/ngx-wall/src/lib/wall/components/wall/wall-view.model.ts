@@ -91,7 +91,9 @@ export class NavigationMode {
 
     selectBricks(brickIds: string[]) {
         if (JSON.stringify(brickIds) !== JSON.stringify(this.selectedBricks)) {
-            this.selectedBricksInternal$.next(this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(brickIds));
+            const sortedBrickIds = this.wallViewModel.wallModel.api.core2.sortBrickIdsByLayoutOrder(brickIds);
+            this.selectedBricksInternal$.next(sortedBrickIds);
+            this.cursorPositionInternal$.next(sortedBrickIds[0]);
         }
     }
 
