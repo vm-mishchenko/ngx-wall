@@ -4,7 +4,7 @@ import {filter, map, shareReplay} from 'rxjs/operators';
 import {PickOutService} from '../../../modules/pick-out/pick-out.service';
 import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {ITransactionMetadataItem} from '../../plugins/core2/wall-core.plugin2';
+import {DEFAULT_BRICK, ITransactionMetadataItem} from '../../plugins/core2/wall-core.plugin2';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
@@ -386,6 +386,32 @@ export class WallViewModel {
             setTimeout(() => {
                 this.mode.edit.focusOnBrickId(brickIdToFocus);
             });
+        });
+
+        // default behaviour after brick were moved from the model
+        // client could disable it adding appropriate metadata to the transaction
+        this.wallModel.api.core2.events$.pipe(
+            filter((event) => {
+                return !event.transaction.metadata.has(disableViewTransactionProcessing.key);
+            }),
+            filter((event) => {
+                return Boolean(event.transaction.change.moved.length);
+            }),
+        ).subscribe((event) => {
+            this.mode.switchToEditMode(false);
+
+            const movedTextBrick = event.transaction.change.moved.filter((movedBrickId) => {
+                return this.wallModel.api.core2.query().tagByBrickId(movedBrickId) === DEFAULT_BRICK;
+            });
+
+            if (movedTextBrick.length) {
+                const sortedMovedTextBrick = this.wallModel.api.core2.query().sortBrickIdsByLayoutOrder(movedTextBrick);
+
+                // wait until view re-rendered
+                setTimeout(() => {
+                    this.mode.edit.focusOnBrickId(sortedMovedTextBrick[0]);
+                });
+            }
         });
 
         this.viewPlan$ = this.wallModel.api.core2.plan$.pipe(
