@@ -749,7 +749,7 @@ describe('TextBrickComponent', () => {
         });
 
         describe('[Backspace key]', () => {
-            fit('should delete current brick and focus on previous text brick', async(() => {
+            it('should delete current brick and focus on previous text brick', async(() => {
                 testScope.updateComponentState({
                     text: '',
                     tabs: 0
