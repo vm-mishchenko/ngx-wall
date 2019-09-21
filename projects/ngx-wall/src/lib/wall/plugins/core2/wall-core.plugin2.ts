@@ -427,8 +427,12 @@ class PlanQuery {
         });
     }
 
-    brickSnapshot(brickId: string): IBrickSnapshot {
+    brickSnapshot(brickId: string): IBrickSnapshot | undefined {
         const requestedBrick = this.plan.filter((brick) => brick.id === brickId)[0];
+
+        if (!requestedBrick) {
+            return undefined;
+        }
 
         // convert data key to state
         // super stupid but what can I do now
