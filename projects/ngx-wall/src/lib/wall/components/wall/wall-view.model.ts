@@ -351,7 +351,7 @@ export class WallViewModel {
         // brick was removed
         this.wallModel.api.core2.events$.pipe(
             filter((event) => {
-                return Boolean(event.changes.removed.length);
+                return Boolean(event.changes.removed.length > 1);
             })
         ).subscribe((event) => {
             this.mode.switchToEditMode(false);
