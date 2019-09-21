@@ -749,7 +749,7 @@ describe('TextBrickComponent', () => {
         });
 
         describe('[Backspace key]', () => {
-            it('should delete current brick and focus on previous text brick', async(() => {
+            fit('should delete current brick and focus on previous text brick', async(() => {
                 testScope.updateComponentState({
                     text: '',
                     tabs: 0
@@ -757,6 +757,7 @@ describe('TextBrickComponent', () => {
                     const previousTextBrickId = '2';
 
                     testScope.mock('core2.getPreviousTextBrickId').and.returnValue(previousTextBrickId);
+                    testScope.mock('core2.getNextBrickId').and.returnValue(undefined);
                     testScope.mock('core2.removeBrick');
                     testScope.mockMethods(['ui.mode.edit.focusOnBrickId']);
 
