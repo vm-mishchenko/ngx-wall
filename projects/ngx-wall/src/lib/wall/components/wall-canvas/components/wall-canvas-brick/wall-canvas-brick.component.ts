@@ -1,6 +1,6 @@
 import {
     AfterViewInit,
-    ChangeDetectorRef,
+    ChangeDetectionStrategy,
     Component,
     ComponentFactoryResolver,
     ComponentRef,
@@ -14,7 +14,7 @@ import {
     ViewContainerRef
 } from '@angular/core';
 import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {distinctUntilChanged, map, withLatestFrom} from 'rxjs/operators';
 import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallUiApi} from '../../../wall/interfaces/ui-api.interface';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
@@ -26,7 +26,8 @@ const MINIMAL_DISTANCE_TO_MOUSE = 100;
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html',
-    styleUrls: ['./wall-canvas-brick.component.scss']
+    styleUrls: ['./wall-canvas-brick.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
     // todo add type
@@ -72,7 +73,6 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
     constructor(private injector: Injector,
                 private resolver: ComponentFactoryResolver,
                 private radar: Radar,
-                private cdRef: ChangeDetectorRef,
                 readonly wallCanvasComponent: WallCanvasComponent) {
     }
 
@@ -95,18 +95,14 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         // show/hide drag-and-drop handler
         const spot = this.radar.spots.get(this.viewBrick.brick.id);
 
-        this.isShowDraggableHandler$ = combineLatest(
-            spot.onIsMouseCross13Line(),
-            spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)
-        ).pipe(
+        this.isShowDraggableHandler$ = spot.onIsMouseCross13Line().pipe(
+            withLatestFrom(spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)),
             map(([isCross13Line, isTopLeftDistanceLessThan]) => {
                 return isCross13Line &&
                     isTopLeftDistanceLessThan &&
                     !this.wallCanvasComponent.wallViewModel.wallModel.api.core2.isReadOnly;
             }),
-            tap(() => {
-                this.cdRef.detectChanges();
-            })
+            distinctUntilChanged()
         );
     }
 

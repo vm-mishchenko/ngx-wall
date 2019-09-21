@@ -1,6 +1,6 @@
 import {DOCUMENT} from '@angular/common';
 import {Inject, Injectable, NgZone} from '@angular/core';
-import {fromEvent, Observable} from 'rxjs';
+import {fromEvent, Observable, Subject} from 'rxjs';
 import {shareReplay, throttleTime} from 'rxjs/operators';
 import {SpotId} from './radar.interfaces';
 import {SpotDirective} from './spot.directive';
@@ -18,15 +18,18 @@ export class Radar {
 
     constructor(@Inject(DOCUMENT) doc,
                 private zone: NgZone) {
-        this.mouseMove$ = fromEvent(doc, 'mousemove');
+        this.mouseMove$ = new Subject<MouseEvent>().pipe(
+            shareReplay(1)
+        );
 
         // run outside Angular Zone in order to decrease performance hit
         this.zone.runOutsideAngular(() => {
-            this.mouseMove$
-                .pipe(
-                    throttleTime(THROTTLE_MOUSE_MOVE_TIME),
-                    shareReplay(1)
-                );
+            fromEvent<MouseEvent>(doc, 'mousemove').pipe(
+                throttleTime(THROTTLE_MOUSE_MOVE_TIME),
+                shareReplay(1)
+            ).subscribe((event) => {
+                (this.mouseMove$ as Subject<MouseEvent>).next(event);
+            });
         });
     }
 
