@@ -1,6 +1,5 @@
 import {
     AfterViewInit,
-    ChangeDetectionStrategy,
     Component,
     ComponentFactoryResolver,
     ComponentRef,
@@ -13,8 +12,8 @@ import {
     ViewChild,
     ViewContainerRef
 } from '@angular/core';
-import {combineLatest, Observable, Subject, Subscription} from 'rxjs';
-import {distinctUntilChanged, map, withLatestFrom} from 'rxjs/operators';
+import {BehaviorSubject, combineLatest, Observable, Subject, Subscription} from 'rxjs';
+import {distinctUntilChanged, map, takeUntil} from 'rxjs/operators';
 import {Radar} from '../../../../../modules/radar/radar.service';
 import {IWallUiApi} from '../../../wall/interfaces/ui-api.interface';
 import {IWallComponent} from '../../../wall/interfaces/wall-component/wall-component.interface';
@@ -26,8 +25,7 @@ const MINIMAL_DISTANCE_TO_MOUSE = 100;
 @Component({
     selector: 'wall-canvas-brick',
     templateUrl: './wall-canvas-brick.component.html',
-    styleUrls: ['./wall-canvas-brick.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls: ['./wall-canvas-brick.component.scss']
 })
 export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
     // todo add type
@@ -56,7 +54,10 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         })
     );
 
-    isShowDraggableHandler$: Observable<boolean>;
+    private isShowDraggableHandlerInternal$ = new BehaviorSubject(false);
+    isShowDraggableHandler$ = this.isShowDraggableHandlerInternal$.asObservable().pipe(
+        distinctUntilChanged()
+    );
 
     spotData: {
         brickId: string,
@@ -95,15 +96,20 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
         // show/hide drag-and-drop handler
         const spot = this.radar.spots.get(this.viewBrick.brick.id);
 
-        this.isShowDraggableHandler$ = spot.onIsMouseCross13Line().pipe(
-            withLatestFrom(spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)),
+        combineLatest(
+            spot.onIsMouseCross13Line(),
+            spot.onIsMouseTopLeftDistanceLessThan(MINIMAL_DISTANCE_TO_MOUSE)
+        ).pipe(
+            takeUntil(this.destroyed$),
             map(([isCross13Line, isTopLeftDistanceLessThan]) => {
                 return isCross13Line &&
                     isTopLeftDistanceLessThan &&
                     !this.wallCanvasComponent.wallViewModel.wallModel.api.core2.isReadOnly;
             }),
             distinctUntilChanged()
-        );
+        ).subscribe((isShowDraggableHandler) => {
+            this.isShowDraggableHandlerInternal$.next(isShowDraggableHandler);
+        });
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -128,7 +134,7 @@ export class WallCanvasBrickComponent implements OnInit, OnDestroy, OnChanges, A
 
     /** User selects the brick. */
     onBrickClick() {
-        this.wallCanvasComponent.wallViewModel.mode.edit.focusOnBrickId(this.viewBrick.brick.id);
+        this.wallCanvasComponent.wallViewModel.mode.edit.setFocusedBrickId(this.viewBrick.brick.id);
     }
 
     private callInstanceApi(methodName: string, data?: any) {

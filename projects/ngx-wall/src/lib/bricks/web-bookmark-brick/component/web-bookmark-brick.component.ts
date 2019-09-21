@@ -72,6 +72,8 @@ export class WebBookmarkBrickComponent implements OnInit {
     }
 
     showPanel() {
+        console.log(`showPanel`);
+
         if (!this.loading) {
             this.ngxStickyModalService.open({
                 component: InputContextComponent,
@@ -95,17 +97,14 @@ export class WebBookmarkBrickComponent implements OnInit {
         }
     }
 
-    onWallFocus(): void {
-        if (!this.scope.src) {
+    onPrimaryAction(options: IPrimaryActionOption) {
+        if (this.scope.src) {
+            window.open(this.scope.src, '_blank');
+        } else {
             setTimeout(() => {
                 this.showPanel();
             }, 0);
         }
-    }
-
-    onPrimaryAction(options: IPrimaryActionOption) {
-        console.log(`onPrimaryAction`);
-        console.log(options);
     }
 
     private save() {
@@ -114,14 +113,15 @@ export class WebBookmarkBrickComponent implements OnInit {
 
     private getWebPageMetaInfo(url: string): Promise<any> {
         return fetch(`https://api.microlink.io/?url=${url}`).then((page) => {
-            return page.json().then((pageMetadata) => {
+            return page.json()
+                .then((pageMetadata) => {
                 const {
                     image,
                     description,
                     logo,
                     title,
                     author
-                } = pageMetadata.clientData;
+                } = pageMetadata.data;
 
                 return {
                     image,
@@ -130,7 +130,9 @@ export class WebBookmarkBrickComponent implements OnInit {
                     title,
                     author
                 };
-            });
+                }).catch((e) => {
+                    console.log(e);
+                });
         });
     }
 
