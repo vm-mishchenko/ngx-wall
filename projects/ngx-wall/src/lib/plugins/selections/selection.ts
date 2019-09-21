@@ -210,7 +210,6 @@ export class SelectionPlugin implements IWallPlugin {
                     takeUntil(this.destroyed$)
                 ).subscribe((brickIds) => {
                 this.uiApi.mode.navigation.selectBricks(brickIds);
-                // this.wallModel.api.ui.selectBricks(brickIds);
             });
 
             this.x$.pipe(

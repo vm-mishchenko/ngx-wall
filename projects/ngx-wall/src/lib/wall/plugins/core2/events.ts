@@ -1,6 +1,6 @@
-import {ITransactionChanges} from './wall-core.plugin2';
+import {Transaction} from './wall-core.plugin2';
 
 export class TransactionEvent {
-    constructor(public changes: ITransactionChanges) {
+    constructor(public transaction: Transaction) {
     }
 }

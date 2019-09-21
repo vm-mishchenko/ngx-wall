@@ -46,7 +46,7 @@ class PlanStorage {
         }
 
         this.planBehaviour$.next(transaction.plan);
-        this.eventsInternal$.next(new TransactionEvent(transaction.change));
+        this.eventsInternal$.next(new TransactionEvent(transaction));
     }
 
     private plan() {
@@ -88,8 +88,20 @@ interface ITransactionHook {
     apply(transaction: Transaction);
 }
 
-class Transaction {
+export interface ITransactionMetadataItem {
+    key: string;
+    value: any;
+}
+
+export class Transaction {
+    // any attached data to current transaction
+    // warn: that's currently open property for changes,
+    // closed it if there are any other devs except me
+    metadata: Map<string, any> = new Map();
+
+    // all changes that were done for current transaction
     private changes: ITransactionChanges[] = [];
+
     // todo: implement separate class for plan
     private plans: IWallDefinition2[] = [];
 
@@ -618,16 +630,27 @@ export class WallCoreApi2 {
         this.planStorage.transaction().updateBrick(brickId, data).apply();
     }
 
-    removeBrick(brickId: string) {
-        this.planStorage.transaction().removeBrick(brickId).apply();
+    removeBrick(brickId: string, transactionMetadataItem?: ITransactionMetadataItem) {
+        const tr = this.planStorage.transaction();
+        tr.removeBrick(brickId);
+
+        if (transactionMetadataItem) {
+            tr.metadata.set(transactionMetadataItem.key, transactionMetadataItem.value);
+        }
+
+        tr.apply();
     }
 
-    removeBricks(brickIds: string[]) {
+    removeBricks(brickIds: string[], transactionMetadataItem?: ITransactionMetadataItem) {
         const tr = this.planStorage.transaction();
 
         brickIds.forEach((brickId) => {
             tr.removeBrick(brickId);
         });
+
+        if (transactionMetadataItem) {
+            tr.metadata.set(transactionMetadataItem.key, transactionMetadataItem.value);
+        }
 
         tr.apply();
     }

@@ -4,11 +4,10 @@ import {filter, map, shareReplay} from 'rxjs/operators';
 import {PickOutService} from '../../../modules/pick-out/pick-out.service';
 import {IBrickDefinition} from '../../model/interfaces/brick-definition.interface';
 import {IWallModel} from '../../model/interfaces/wall-model.interface';
-import {ITransactionRemovedChange} from '../../plugins/core2/wall-core.plugin2';
+import {ITransactionMetadataItem} from '../../plugins/core2/wall-core.plugin2';
 import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
-
 
 export const WALL_VIEW_API = 'ui';
 
@@ -205,6 +204,7 @@ export class Mode {
 
     switchToEditMode(focusToBrick: boolean = true) {
         if (this.currentMode === VIEW_MODE.EDIT) {
+            // todo: replace it and other warn in form of assert?
             console.warn(`${VIEW_MODE.EDIT} mode is already active.`);
             return;
         }
@@ -311,6 +311,11 @@ export interface IPrimaryActionOption {
     selectedBrickIds: string[];
 }
 
+export const disableViewTransactionProcessing: ITransactionMetadataItem = {
+    key: 'disableTransactionProcessing',
+    value: true
+};
+
 @Injectable()
 export class WallViewModel {
     wallModel: IWallModel = null;
@@ -336,25 +341,29 @@ export class WallViewModel {
         this.wallModelSubscription = this.wallModel.api.core2.events$.subscribe((event) => {
             // todo: event changes should have more friendly API,
             // replace from array to some custom class
-            if (event.changes.turned && event.changes.turned.length) {
+            if (event.transaction.change.turned && event.transaction.change.turned.length) {
                 // wait till component will be rendered
                 // todo: ideally we have to wait (using observable) rendering process
                 // and focus on brick
                 setTimeout(() => {
-                    this.mode.edit.focusOnBrickId(event.changes.turned[0].brickId);
+                    this.mode.edit.focusOnBrickId(event.transaction.change.turned[0].brickId);
                 });
             }
 
-            if (event.changes.moved.length) {
+            if (event.transaction.change.moved.length) {
                 this.mode.navigation.unSelectAllBricks();
             }
         });
 
-        // brick was removed
+        // default behaviour after brick were removed from the model
+        // client could disable it adding appropriate metadata to the transaction
         this.wallModel.api.core2.events$.pipe(
             filter((event) => {
-                return Boolean(event.changes.removed.length > 1);
-            })
+                return !event.transaction.metadata.has(disableViewTransactionProcessing.key);
+            }),
+            filter((event) => {
+                return Boolean(event.transaction.change.removed.length);
+            }),
         ).subscribe((event) => {
             this.mode.switchToEditMode(false);
 
@@ -365,7 +374,7 @@ export class WallViewModel {
 
                 brickIdToFocus = id;
             } else {
-                const removedChangeWithNearestBrickId: ITransactionRemovedChange = event.changes.removed.reverse()
+                const removedChangeWithNearestBrickId = event.transaction.change.removed.reverse()
                     .find((removedChange) => {
                         return Boolean(removedChange.nearestBrickId);
                     });
