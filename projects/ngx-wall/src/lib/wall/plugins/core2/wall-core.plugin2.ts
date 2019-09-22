@@ -61,6 +61,9 @@ export interface ITransactionRemovedChange {
 }
 
 export interface ITransactionChanges {
+    // completely new plan was set
+    planSetTo: IWallDefinition2[];
+
     // newly added brick ids
     added: string[];
 
@@ -110,6 +113,7 @@ export class Transaction {
 
     get change(): ITransactionChanges {
         const initialChange: ITransactionChanges = {
+            planSetTo: [],
             updated: [],
             moved: [],
             removed: [],
@@ -119,6 +123,10 @@ export class Transaction {
 
         return this.changes.reduce((result, change) => {
             result = {
+                planSetTo: [
+                    ...result.planSetTo,
+                    ...change.planSetTo
+                ],
                 removed: [
                     ...result.removed,
                     ...change.removed
@@ -152,6 +160,15 @@ export class Transaction {
 
     setPlan(plan: IWallDefinition2) {
         this.plans.push(plan);
+        this.changes.push({
+            planSetTo: [plan],
+            added: [],
+            turned: [],
+            removed: [],
+            updated: [],
+            moved: [],
+        });
+
         return this;
     }
 
@@ -181,6 +198,7 @@ export class Transaction {
             removed: [],
             updated: [],
             moved: [],
+            planSetTo: [],
         });
 
         return brick.id;
@@ -197,6 +215,7 @@ export class Transaction {
         ]);
 
         this.changes.push({
+            planSetTo: [],
             added: [newBrick.id],
             turned: [],
             removed: [],
@@ -219,6 +238,7 @@ export class Transaction {
         ]);
 
         this.changes.push({
+            planSetTo: [],
             added: [newBrick.id],
             turned: [],
             removed: [],
@@ -256,6 +276,7 @@ export class Transaction {
 
         this.plans.push(newPlan);
         this.changes.push({
+            planSetTo: [],
             turned: [],
             removed: [],
             updated: [],
@@ -293,6 +314,7 @@ export class Transaction {
 
         this.plans.push(newPlan);
         this.changes.push({
+            planSetTo: [],
             turned: [],
             removed: [],
             updated: [],
@@ -323,6 +345,7 @@ export class Transaction {
 
         this.plans.push(newPlan);
         this.changes.push({
+            planSetTo: [],
             updated: [{
                 brickId,
                 newData,
@@ -349,6 +372,7 @@ export class Transaction {
 
         this.plans.push(newPlan);
         this.changes.push({
+            planSetTo: [],
             removed: [{
                 brickSnapshot,
                 nearestBrickId,
@@ -389,7 +413,8 @@ export class Transaction {
             updated: [],
             added: [],
             removed: [],
-            moved: []
+            moved: [],
+            planSetTo: [],
         });
 
         return this;
@@ -409,7 +434,8 @@ export class Transaction {
             added: [],
             updated: [],
             turned: [],
-            moved: []
+            moved: [],
+            planSetTo: [],
         });
 
         return this;
