@@ -1,5 +1,7 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
+
+import * as Mousetrap from 'mousetrap';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {filter, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer/placeholder-renderer.service';
@@ -12,12 +14,22 @@ import {WorkInProgressEvent} from '../../modules/tow/events/work-in-progress.eve
 import {TOW} from '../../modules/tow/tow.constant';
 import {TowService} from '../../modules/tow/tow.service';
 import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
-import {VIEW_MODE} from '../../wall/components/wall/wall-view.model';
+import {VIEW_MODE, WALL_VIEW_API} from '../../wall/components/wall/wall-view.model';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 import {IWallPlugin} from '../../wall/model/interfaces/wall-plugin.interface';
 
 export interface ISelectionOptions {
     shouldUnselectBrick: (e: MouseEvent) => boolean;
+}
+
+function observeKey(key) {
+    const subject = new Subject<KeyboardEvent>();
+
+    Mousetrap.bind(key, (e) => {
+        subject.next(e);
+    });
+
+    return subject.asObservable();
 }
 
 export class SelectionPlugin implements IWallPlugin {
@@ -74,7 +86,7 @@ export class SelectionPlugin implements IWallPlugin {
 
         this.wallModel.apiRegistered$.pipe(
             filter((apiName) => {
-                return apiName === 'ui';
+                return apiName === WALL_VIEW_API;
             }),
             // first(),
         ).subscribe(() => {
@@ -132,7 +144,12 @@ export class SelectionPlugin implements IWallPlugin {
                 })
             ).subscribe(([event, currentMode]) => {
                 event.preventDefault();
-                this.uiApi.mode.navigation.moveCursorToPreviousBrick();
+
+                if (event.ctrlKey) {
+                    this.uiApi.mode.navigation.moveBricksAbove();
+                } else {
+                    this.uiApi.mode.navigation.moveCursorToPreviousBrick();
+                }
             });
 
             this.arrowDown$.pipe(
@@ -143,7 +160,12 @@ export class SelectionPlugin implements IWallPlugin {
                 })
             ).subscribe(([event, currentMode]) => {
                 event.preventDefault();
-                this.uiApi.mode.navigation.moveCursorToNextBrick();
+
+                if (event.ctrlKey) {
+                    this.uiApi.mode.navigation.moveBricksBelow();
+                } else {
+                    this.uiApi.mode.navigation.moveCursorToNextBrick();
+                }
             });
 
             this.enter$.pipe(

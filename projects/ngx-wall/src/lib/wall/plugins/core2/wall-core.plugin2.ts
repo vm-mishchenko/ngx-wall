@@ -415,6 +415,11 @@ export class Transaction {
         return this;
     }
 
+    // ADDITIONAL SUGAR API
+    addMetadata(metadataItem: ITransactionMetadataItem) {
+        this.metadata.set(metadataItem.key, metadataItem.value);
+    }
+
     private createNewBrick(tag: string, data: any): IBrickDefinition {
         return {
             id: new Guid().get(),
@@ -659,15 +664,48 @@ export class WallCoreApi2 {
         this.planStorage.transaction().turnBrickInto(brickId, newTag, data).apply();
     }
 
-    moveBrickAfterBrickId(brickIdsToMove: string[], afterBrickId: string) {
-        this.planStorage.transaction().moveBrickAfter(brickIdsToMove, afterBrickId).apply();
+    moveBrickAfterBrickId(brickIdsToMove: string[], afterBrickId: string, transactionMetadataItem?: ITransactionMetadataItem) {
+        const tr = this.planStorage.transaction();
+        tr.moveBrickAfter(brickIdsToMove, afterBrickId);
+
+        if (transactionMetadataItem) {
+            tr.addMetadata(transactionMetadataItem);
+        }
+
+        tr.apply();
     }
 
-    moveBrickBeforeBrickId(brickIdsToMove: string[], afterBrickId: string) {
-        const beforeBrickPosition = this.query().brickPosition(afterBrickId);
+    moveBrickBeforeBrickId(brickIdsToMove: string[], afterBrickId: string, transactionMetadataItem?: ITransactionMetadataItem) {
+        const tr = this.planStorage.transaction();
+        tr.moveBrickBefore(brickIdsToMove, afterBrickId);
 
-        this.planStorage.transaction()
-            .moveBrickBefore(brickIdsToMove, afterBrickId).apply();
+        if (transactionMetadataItem) {
+            tr.addMetadata(transactionMetadataItem);
+        }
+
+        tr.apply();
+    }
+
+    moveBricksAbove(brickIds: string[], transactionMetadataItem?: ITransactionMetadataItem) {
+        const sortedBrickIds = this.planStorage.query().sortBrickIdsByLayoutOrder(brickIds);
+        const previousBrickId = this.planStorage.query().getPreviousBrickId(sortedBrickIds[0]);
+
+        if (!previousBrickId) {
+            return;
+        }
+
+        return this.moveBrickBeforeBrickId(brickIds, previousBrickId, transactionMetadataItem);
+    }
+
+    moveBricksBelow(brickIds: string[], transactionMetadataItem?: ITransactionMetadataItem) {
+        const sortedBrickIds = this.planStorage.query().sortBrickIdsByLayoutOrder(brickIds);
+        const nextBrickId = this.planStorage.query().getNextBrickId(sortedBrickIds[sortedBrickIds.length - 1]);
+
+        if (!nextBrickId) {
+            return;
+        }
+
+        return this.moveBrickAfterBrickId(brickIds, nextBrickId, transactionMetadataItem);
     }
 
     clear() {

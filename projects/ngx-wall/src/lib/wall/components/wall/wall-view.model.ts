@@ -32,7 +32,6 @@ export class NavigationMode {
     }
     cursorPosition$ = this.cursorPositionInternal$.asObservable();
 
-
     private selectedBricksInternal$: BehaviorSubject<string[]> = new BehaviorSubject([]);
     selectedBricks$ = this.selectedBricksInternal$.asObservable().pipe(
         shareReplay(1)
@@ -109,20 +108,40 @@ export class NavigationMode {
     removeBrickFromSelection(brickId: string): void {
         const brickIdIndex = this.selectedBricks.indexOf(brickId);
 
-        this.selectedBricks.splice(brickIdIndex, 1);
-
-        this.selectedBricksInternal$.next(this.selectedBricks.slice(0));
+        this.selectedBricksInternal$.next(
+            [
+                ...this.selectedBricks.slice(0, brickIdIndex),
+                ...this.selectedBricks.slice(brickIdIndex + 1)
+            ]
+        );
     }
 
     unSelectAllBricks(): void {
         this.selectedBricksInternal$.next([]);
     }
 
-    /**
-     * @public-api
-     */
     getSelectedBrickIds(): string[] {
         return this.selectedBricks;
+    }
+
+    moveBricksBelow() {
+        if (this.wallViewModel.mode.currentMode !== VIEW_MODE.NAVIGATION) {
+            console.warn(`Can move brick below only in ${VIEW_MODE.NAVIGATION} mode.`);
+            return;
+        }
+
+        const movedBricks = this.selectedBricks.length ? this.selectedBricks : [this.cursorPosition];
+        this.wallViewModel.wallModel.api.core2.moveBricksBelow(movedBricks, disableViewTransactionProcessing);
+    }
+
+    moveBricksAbove() {
+        if (this.wallViewModel.mode.currentMode !== VIEW_MODE.NAVIGATION) {
+            console.warn(`Can move brick above only in ${VIEW_MODE.NAVIGATION} mode.`);
+            return;
+        }
+
+        const movedBricks = this.selectedBricks.length ? this.selectedBricks : [this.cursorPosition];
+        this.wallViewModel.wallModel.api.core2.moveBricksAbove(movedBricks, disableViewTransactionProcessing);
     }
 }
 
@@ -349,13 +368,9 @@ export class WallViewModel {
                     this.mode.edit.focusOnBrickId(event.transaction.change.turned[0].brickId);
                 });
             }
-
-            if (event.transaction.change.moved.length) {
-                this.mode.navigation.unSelectAllBricks();
-            }
         });
 
-        // default behaviour after brick were removed from the model
+        // default behaviour after brick were REMOVED from the model
         // client could disable it adding appropriate metadata to the transaction
         this.wallModel.api.core2.events$.pipe(
             filter((event) => {
@@ -388,7 +403,7 @@ export class WallViewModel {
             });
         });
 
-        // default behaviour after brick were moved from the model
+        // default behaviour after brick were MOVED from the model
         // client could disable it adding appropriate metadata to the transaction
         this.wallModel.api.core2.events$.pipe(
             filter((event) => {
