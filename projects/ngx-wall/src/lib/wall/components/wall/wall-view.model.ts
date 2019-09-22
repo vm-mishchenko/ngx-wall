@@ -23,13 +23,21 @@ export enum VIEW_MODE {
     NAVIGATION = 'NAVIGATION',
 }
 
+/** May contains stale data pointing to the bricks which are not exists anymore in the plan!
+ * Ideally that class should be deleted after mode switches to EDIT. That would automatically
+ * erase any stale data.
+ * todo: need to refactoring mode so they would always contains appropriate data!
+ */
 export class NavigationMode {
+    // todo: why do we need it
     name = VIEW_MODE.NAVIGATION;
 
     private cursorPositionInternal$: BehaviorSubject<string> = new BehaviorSubject(null);
+
     get cursorPosition() {
         return this.cursorPositionInternal$.getValue();
     }
+
     cursorPosition$ = this.cursorPositionInternal$.asObservable();
 
     private selectedBricksInternal$: BehaviorSubject<string[]> = new BehaviorSubject([]);
@@ -151,9 +159,10 @@ export interface IFocusedBrick {
     context?: IFocusContext;
 }
 
-/**
- * Stores the state of the View Mode.
- * Performs the brick supporting action based on the mode state.
+/** May contains stale data pointing to the bricks which are not exists anymore in the plan!
+ * Ideally that class should be deleted after mode switches to NAVIGATION. That would automatically
+ * erase any stale data.
+ * todo: need to refactoring mode so they would always contains appropriate data!
  */
 export class EditMode {
     name = VIEW_MODE.EDIT;
@@ -173,7 +182,7 @@ export class EditMode {
             context: focusContext,
         });
 
-        this.wallViewModel.focusOnBrick(brickId, focusContext);
+        this.wallViewModel.callBrickFocusOnAction(brickId, focusContext);
     }
 
     focusOnNextTextBrick(brickId: string, focusContext?: IFocusContext) {
@@ -229,25 +238,34 @@ export class Mode {
         }
 
         this.currentModeInternal$.next(VIEW_MODE.EDIT);
-        this.navigation.unSelectAllBricks();
 
         if (focusToBrick) {
-            const focusToBrickId = this.navigation.cursorPosition ||
-                this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
+            let focusToBrickId;
 
-            this.edit.focusOnBrickId(focusToBrickId);
+            if (this.wallViewModel.wallModel.api.core2.query().hasBrick(this.navigation.cursorPosition)) {
+                focusToBrickId = this.navigation.cursorPosition;
+            } else {
+                focusToBrickId = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
+            }
+
+            if (focusToBrickId) {
+                this.edit.focusOnBrickId(focusToBrickId);
+            }
         }
     }
 
     switchToNavigationMode() {
-        this.navigation.unSelectAllBricks();
         (document.activeElement as HTMLElement).blur();
         this.currentModeInternal$.next(VIEW_MODE.NAVIGATION);
 
+        // reset selected bricks
+        this.navigation.unSelectAllBricks();
+
+        // try to set cursor position
         let cursorPosition;
         const focusedBrick = this.edit.focusedBrick;
 
-        if (focusedBrick && focusedBrick.id) {
+        if (focusedBrick && focusedBrick.id && this.wallViewModel.wallModel.api.core2.query().hasBrick(focusedBrick.id)) {
             cursorPosition = focusedBrick.id;
         } else {
             cursorPosition = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
@@ -452,7 +470,7 @@ export class WallViewModel {
         });
     }
 
-    focusOnBrick(brickId: string, focusContext?: IFocusContext) {
+    callBrickFocusOnAction(brickId: string, focusContext?: IFocusContext) {
         if (this.mode.currentMode !== VIEW_MODE.EDIT) {
             console.warn(`Can focus to "${brickId}" only on ${VIEW_MODE.EDIT} mode.`);
             return;

@@ -18,15 +18,6 @@ export class WallComponent implements OnChanges, OnDestroy {
     constructor(public wallViewModel: WallViewModel) {
     }
 
-    // click on empty space
-    onCanvasClick() {
-        this.wallViewModel.onCanvasClick();
-    }
-
-    onBrickStateChanged(event) {
-        this.wallViewModel.onBrickStateChanged(event.brickId, event.brickState);
-    }
-
     ngOnChanges(changes: SimpleChanges) {
         if (changes.model) {
             if (!changes.model.firstChange) {

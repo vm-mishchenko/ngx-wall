@@ -565,6 +565,10 @@ class PlanQuery {
     lastBrick() {
         return this.plan[this.plan.length - 1];
     }
+
+    hasBrick(brickId: string) {
+        return Boolean(this.plan.filter((brick) => brick.id === brickId)[0]);
+    }
 }
 
 class DestructorTransactionHook implements ITransactionHook {
