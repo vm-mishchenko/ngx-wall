@@ -9,6 +9,14 @@ import {BrickRegistry} from '../../registry/brick-registry.service';
 import {IWallUiApi} from './interfaces/ui-api.interface';
 import {IFocusContext} from './interfaces/wall-component/wall-component-focus-context.interface';
 
+/*
+* Related to mode stale data.
+* I could not remove mode (edit/navigation) completely when they are inactive.
+* It would be hard to manage wall-canvas subscription in that case.
+* One way to leave the public api but it the state should be fulfilled somewhere deeper as I
+* implemented in cinatabase.
+*/
+
 export const WALL_VIEW_API = 'ui';
 
 export type IWallViewPlan = IViewBrickDefinition[];
@@ -482,6 +490,11 @@ export class WallViewModel {
     callBrickPrimaryAction(brickId: string, options: IPrimaryActionOption) {
         if (this.mode.currentMode !== VIEW_MODE.NAVIGATION) {
             console.warn(`Can execute primary action for "${brickId}" only in ${VIEW_MODE.NAVIGATION} mode.`);
+            return;
+        }
+
+        if (!this.wallModel.api.core2.query().hasBrick(brickId)) {
+            console.warn(`Cannot execute primary action for "${brickId}" brick. It does not exists on wall.`);
             return;
         }
 

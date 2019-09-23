@@ -56,7 +56,6 @@ export class SelectionPlugin implements IWallPlugin {
     private isEnableDropZoneHighlight = false;
 
     private towServiceSubscription: Subscription;
-    private pickOutServiceSubscription: Subscription;
 
     private options: ISelectionOptions;
 
@@ -376,8 +375,9 @@ export class SelectionPlugin implements IWallPlugin {
 
     onWallPluginDestroy() {
         this.wallModel = null;
-        this.pickOutServiceSubscription.unsubscribe();
         this.towServiceSubscription.unsubscribe();
+
+        console.log(`selection onWallPluginDestroy`);
 
         this.destroyed$.next();
     }
