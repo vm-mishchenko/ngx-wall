@@ -17,26 +17,6 @@
     "lib": [
       "es2018",
       "dom"
-    ],
-    "paths": {
-      "@angular/*": [
-        "./node_modules/@angular/*"
-      ],
-      "rxjs": [
-        "./node_modules/rxjs"
-      ],
-      "tslib": [
-        "./node_modules/tslib"
-      ],
-      "rxjs/*": [
-        "./node_modules/rxjs/*"
-      ],
-      "ngx-input-projection": [
-        "dist/ngx-input-projection"
-      ],
-      "ngx-input-projection/*": [
-        "dist/ngx-input-projection/*"
-      ]
-    }
+    ]
   }
 }

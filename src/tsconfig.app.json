@@ -4,23 +4,14 @@
     "outDir": "../out-tsc/app",
     "module": "es2015",
     "types": [],
-      "paths": {
-          "ngx-wall": [
-              "projects/ngx-wall/src/public_api.ts"
-          ],
-          "ngx-sticky-modal": [
-              "../ngx-sticky-modal/projects/ngx-sticky-modal/src/public_api.ts"
-          ],
-          "@angular/*": [
-              "./node_modules/@angular/*"
-          ],
-          "rxjs": [
-              "./node_modules/rxjs"
-          ],
-          "rxjs/*": [
-              "./node_modules/rxjs/*"
-          ]
-      }
+    "paths": {
+      "ngx-wall": [
+        "projects/ngx-wall/src/public-api.ts"
+      ],
+      "ngx-input-projection": [
+        "projects/ngx-input-projection/src/public-api.ts"
+      ]
+    }
   },
   "exclude": [
     "src/test.ts",

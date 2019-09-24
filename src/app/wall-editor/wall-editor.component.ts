@@ -3,14 +3,14 @@ import {
     CopyPlugin,
     IWallConfiguration,
     IWallDefinition,
+    IWallDefinition2,
     IWallModel,
+    IWallModelConfig2,
     SelectionPlugin,
     UndoRedoPlugin,
     WALL,
     WallModelFactory
 } from 'ngx-wall';
-import {IWallDefinition2} from '../../../projects/ngx-wall/src/lib/wall/model/interfaces/wall-definition.interface2';
-import {IWallModelConfig2} from '../../../projects/ngx-wall/src/lib/wall/model/interfaces/wall-model-config.interface2';
 
 @Component({
     selector: 'app-wall-editor',

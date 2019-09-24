@@ -1,6 +1,7 @@
 export {WallPluginInitializedEvent} from './events/wall-plugin-initialized.event';
 export {IBrickSnapshot} from './interfaces/brick-snapshot.interface';
 export {IWallModelConfig} from './interfaces/wall-model-config.interface';
+export {IWallModelConfig2} from './interfaces/wall-model-config.interface2';
 export {IWallModel} from './interfaces/wall-model.interface';
 
 // Model core plugin

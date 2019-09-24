@@ -27,7 +27,8 @@ export {
     IWallModelConfig,
     IWallPlugin,
     IWallRow,
-    WallPluginInitializedEvent
+    WallPluginInitializedEvent,
+    IWallModelConfig2
 } from './model/public_api';
 
 // FACTORY

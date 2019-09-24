@@ -1,7 +1,6 @@
 import {DOCUMENT} from '@angular/common';
 import {Injector} from '@angular/core';
 
-import * as Mousetrap from 'mousetrap';
 import {fromEvent, Observable, Subject, Subscription} from 'rxjs';
 import {filter, takeUntil, withLatestFrom} from 'rxjs/operators';
 import {PlaceholderRenderer} from '../../modules/components/placeholder-renderer/placeholder-renderer.service';
@@ -20,16 +19,6 @@ import {IWallPlugin} from '../../wall/model/interfaces/wall-plugin.interface';
 
 export interface ISelectionOptions {
     shouldUnselectBrick: (e: MouseEvent) => boolean;
-}
-
-function observeKey(key) {
-    const subject = new Subject<KeyboardEvent>();
-
-    Mousetrap.bind(key, (e) => {
-        subject.next(e);
-    });
-
-    return subject.asObservable();
 }
 
 export class SelectionPlugin implements IWallPlugin {
