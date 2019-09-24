@@ -1,10 +1,33 @@
-import { NgModule } from '@angular/core';
-import { NgxInputProjectionComponent } from './ngx-input-projection.component';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
+import {
+  CdkInputProjectionDef, CdkItem,
+  CdkPanelItem, ItemRenderer,
+  MainOutlet,
+  NgxInputProjectionComponent
+} from './ngx-input-projection.component';
 
 @NgModule({
-  declarations: [NgxInputProjectionComponent],
   imports: [
+    CommonModule,
   ],
-  exports: [NgxInputProjectionComponent]
+  declarations: [
+    NgxInputProjectionComponent,
+    CdkInputProjectionDef,
+    MainOutlet,
+    CdkPanelItem,
+    CdkItem,
+    ItemRenderer,
+  ],
+  exports: [
+    NgxInputProjectionComponent,
+    CdkInputProjectionDef,
+    MainOutlet,
+    CdkPanelItem,
+    CdkItem,
+  ],
+  entryComponents: [
+    ItemRenderer,
+  ]
 })
 export class NgxInputProjectionModule { }

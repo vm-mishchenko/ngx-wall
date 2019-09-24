@@ -1,1 +1,10 @@
-<lib-ngx-input-projection></lib-ngx-input-projection>
+<lib-ngx-input-projection>
+    <!-- Register cdkPanelItem by "age" name. -->
+    <ng-container cdkInputProjectionDef="age">
+        <h1 cdk-item *cdkPanelItem="let item"> Item here {{item}} </h1>
+    </ng-container>
+
+    <ng-container cdkInputProjectionDef="age">
+        <h2 cdk-item *cdkPanelItem="let item"> Item here {{item}} </h2>
+    </ng-container>
+</lib-ngx-input-projection>
