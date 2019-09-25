@@ -1,8 +1,11 @@
 import {CommonModule} from '@angular/common';
 import {NgModule} from '@angular/core';
 import {
-  CdkInputProjectionDef, CdkItem,
-  CdkPanelItem, ItemRenderer,
+  CdkInputProjectionDef,
+  CdkItem,
+  CdkPanelItem,
+  ItemRenderer,
+  ListRenderer,
   MainOutlet,
   NgxInputProjectionComponent
 } from './ngx-input-projection.component';
@@ -17,6 +20,7 @@ import {
     MainOutlet,
     CdkPanelItem,
     CdkItem,
+    ListRenderer,
     ItemRenderer,
   ],
   exports: [
@@ -27,7 +31,7 @@ import {
     CdkItem,
   ],
   entryComponents: [
-    ItemRenderer,
+    ListRenderer,
   ]
 })
 export class NgxInputProjectionModule { }

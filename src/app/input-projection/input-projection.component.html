@@ -1,10 +1,13 @@
-<lib-ngx-input-projection>
-    <!-- Register cdkPanelItem by "age" name. -->
-    <ng-container cdkInputProjectionDef="age">
-        <h1 cdk-item *cdkPanelItem="let item"> Item here {{item}} </h1>
+<input type="text" [formControl]="input" (keyup)="onKeydown($event)">
+
+<lib-ngx-input-projection [keyStream$]="keyStream$">
+    <!-- Register cdkPanelItem. -->
+    <ng-container cdkInputProjectionDef="age" [stream]="list1$">
+        <h1 cdk-item *cdkPanelItem="let item">{{item.name}} </h1>
     </ng-container>
 
-    <ng-container cdkInputProjectionDef="age">
-        <h2 cdk-item *cdkPanelItem="let item"> Item here {{item}} </h2>
+    <!-- Register another cdkPanelItem. -->
+    <ng-container cdkInputProjectionDef="age" [stream]="list2$">
+        <h2 cdk-item *cdkPanelItem="let item">{{item.name}} </h2>
     </ng-container>
 </lib-ngx-input-projection>

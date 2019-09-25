@@ -1,5 +1,8 @@
+import {ActiveDescendantKeyManager, Highlightable} from '@angular/cdk/a11y';
+import {ENTER} from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
+  AfterViewInit,
   Component,
   ComponentFactoryResolver,
   ContentChild,
@@ -7,12 +10,16 @@ import {
   Directive,
   ElementRef,
   Input,
-  OnInit,
+  OnDestroy,
+  Output,
   QueryList,
   TemplateRef,
   ViewChild,
+  ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import {combineLatest, Observable, Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Directive({
   selector: '[cdkPanelItem]'
@@ -29,6 +36,7 @@ export class CdkPanelItem {
 export class CdkInputProjectionDef {
   /** Unique name for this item. */
   @Input('cdkInputProjectionDef') name: string;
+  @Input() stream: Observable<any>;
   @ContentChild(CdkPanelItem) item: CdkPanelItem;
 }
 
@@ -51,19 +59,57 @@ export class MainOutlet {
 @Component({
   selector: 'item-renderer',
   template: `
-      <ng-container *ngFor="let item of data">
-          <div (click)="onItemClick(item)">
-              <ng-container *ngTemplateOutlet="template; context: {$implicit: item};"></ng-container>
-          </div>
-      </ng-container>
-  `
+      <div [class.active]="_isActive">
+          <ng-container *ngTemplateOutlet="template; context: context;"></ng-container>
+      </div>
+  `,
+  styles: [`
+      .active {
+          background: silver;
+      }
+  `]
 })
-export class ItemRenderer {
-  @Input() data: any[];
+export class ItemRenderer implements Highlightable {
+  @Input() context: any;
   @Input() template: TemplateRef<any>;
+  _isActive = false;
 
   onItemClick(item) {
     console.log(`clicked on ${item} item.`);
+  }
+
+  setActiveStyles() {
+    this._isActive = true;
+  }
+
+  setInactiveStyles() {
+    this._isActive = false;
+  }
+}
+
+@Component({
+  selector: 'list-renderer',
+  template: `
+      <ng-container *ngFor="let item of (stream | async); trackBy: itemTrack">
+          <item-renderer [template]="template" [context]="{$implicit: item}"></item-renderer>
+      </ng-container>
+  `
+})
+export class ListRenderer implements AfterViewInit {
+  @Input() stream: Observable<any[]>;
+  @Input() template: TemplateRef<any>;
+  @Output() itemsRendererQueryList: Observable<QueryList<ItemRenderer>> = new Subject<QueryList<ItemRenderer>>();
+
+  @ViewChildren(ItemRenderer, {}) items: QueryList<ItemRenderer>;
+
+  itemTrack(index, item) {
+    return item.id;
+  }
+
+  ngAfterViewInit() {
+    this.items.changes.subscribe((changes) => {
+      (this.itemsRendererQueryList as Subject<QueryList<ItemRenderer>>).next(changes);
+    });
   }
 }
 
@@ -72,26 +118,60 @@ export class ItemRenderer {
   template: `
       <ng-container mainOutlet></ng-container>`,
 })
-export class NgxInputProjectionComponent implements OnInit, AfterContentInit {
+export class NgxInputProjectionComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+  @Input() keyStream$: Observable<KeyboardEvent>;
+
   @ViewChild(MainOutlet) _mainOutlet: MainOutlet;
   @ContentChildren(CdkPanelItem) _allItems: QueryList<CdkPanelItem>;
   @ContentChildren(CdkInputProjectionDef) _contentColumnDefs: QueryList<CdkInputProjectionDef>;
+  @ViewChildren(ItemRenderer, {}) items: QueryList<ItemRenderer>;
+
+  private destroyed$ = new Subject<boolean>();
+
+  private keyManager: ActiveDescendantKeyManager<ItemRenderer>;
 
   constructor(private resolver: ComponentFactoryResolver) {
   }
 
-  ngOnInit() {
+  ngAfterContentInit() {
+    const factory = this.resolver.resolveComponentFactory(ListRenderer);
 
+    // render all panels and gather item-renderer output streams
+    const itemsRendererQueries$ = this._contentColumnDefs.map((_contentColumnDef) => {
+      const itemRenderer = this._mainOutlet.viewContainer.createComponent(factory);
+      itemRenderer.instance.template = _contentColumnDef.item.template;
+      itemRenderer.instance.stream = _contentColumnDef.stream;
+
+      return itemRenderer.instance.itemsRendererQueryList;
+    });
+
+    combineLatest(itemsRendererQueries$).pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((itemsRendererQueries) => {
+      const flattenItemRenderer = itemsRendererQueries.map((query) => query.toArray())
+        .reduce((result, arr) => {
+          result = result.concat(arr);
+          return result;
+        }, []);
+
+      this.items.reset(flattenItemRenderer);
+      this.items.notifyOnChanges();
+    });
   }
 
-  ngAfterContentInit() {
-    const factory = this.resolver.resolveComponentFactory(ItemRenderer);
+  ngAfterViewInit() {
+    this.keyManager = new ActiveDescendantKeyManager(this.items).withWrap();
 
-    this._contentColumnDefs.forEach((_contentColumnDef) => {
-      const itemRenderer = this._mainOutlet.viewContainer.createComponent(factory);
-
-      itemRenderer.instance.template = _contentColumnDef.item.template;
-      itemRenderer.instance.data = [1, 2, 3];
+    this.keyStream$.subscribe((event) => {
+      if (event.keyCode === ENTER) {
+        console.log(this.keyManager.activeItem.context.$implicit);
+      } else {
+        this.keyManager.onKeydown(event);
+      }
     });
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next(true);
   }
 }
