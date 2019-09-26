@@ -1,4 +1,4 @@
-import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
@@ -21,6 +21,10 @@ export class InputProjection implements OnInit {
 
   onKeydown(event) {
     this.keyStream$.next(event);
+  }
+
+  onValue(value) {
+    console.log(value);
   }
 
   transform1(input$: Observable<string>): Observable<any[]> {

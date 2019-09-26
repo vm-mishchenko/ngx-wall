@@ -1,6 +1,6 @@
 <input type="text" [formControl]="input" (keyup)="onKeydown($event)">
 
-<lib-ngx-input-projection [keyStream$]="keyStream$">
+<lib-ngx-input-projection [keyStream$]="keyStream$" (value)="onValue($event)">
     <!-- Register cdkPanelItem. -->
     <ng-container cdkInputProjectionDef="age" [stream]="list1$">
         <h1 cdk-item *cdkPanelItem="let item">{{item.name}} </h1>

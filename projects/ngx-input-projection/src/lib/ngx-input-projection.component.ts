@@ -9,6 +9,7 @@ import {
   ContentChildren,
   Directive,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   Output,
@@ -59,7 +60,7 @@ export class MainOutlet {
 @Component({
   selector: 'item-renderer',
   template: `
-      <div [class.active]="_isActive">
+      <div [class.active]="isActive">
           <ng-container *ngTemplateOutlet="template; context: context;"></ng-container>
       </div>
   `,
@@ -72,18 +73,18 @@ export class MainOutlet {
 export class ItemRenderer implements Highlightable {
   @Input() context: any;
   @Input() template: TemplateRef<any>;
-  _isActive = false;
+  isActive = false;
 
   onItemClick(item) {
     console.log(`clicked on ${item} item.`);
   }
 
   setActiveStyles() {
-    this._isActive = true;
+    this.isActive = true;
   }
 
   setInactiveStyles() {
-    this._isActive = false;
+    this.isActive = false;
   }
 }
 
@@ -100,13 +101,15 @@ export class ListRenderer implements AfterViewInit {
   @Input() template: TemplateRef<any>;
   @Output() itemsRendererQueryList: Observable<QueryList<ItemRenderer>> = new Subject<QueryList<ItemRenderer>>();
 
-  @ViewChildren(ItemRenderer, {}) items: QueryList<ItemRenderer>;
+  @ViewChildren(ItemRenderer) items: QueryList<ItemRenderer>;
 
   itemTrack(index, item) {
     return item.id;
   }
 
   ngAfterViewInit() {
+    (this.itemsRendererQueryList as Subject<QueryList<ItemRenderer>>).next(this.items);
+
     this.items.changes.subscribe((changes) => {
       (this.itemsRendererQueryList as Subject<QueryList<ItemRenderer>>).next(changes);
     });
@@ -120,13 +123,17 @@ export class ListRenderer implements AfterViewInit {
 })
 export class NgxInputProjectionComponent implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input() keyStream$: Observable<KeyboardEvent>;
+  @Output() value: EventEmitter<unknown> = new EventEmitter<unknown>();
 
   @ViewChild(MainOutlet) _mainOutlet: MainOutlet;
   @ContentChildren(CdkPanelItem) _allItems: QueryList<CdkPanelItem>;
   @ContentChildren(CdkInputProjectionDef) _contentColumnDefs: QueryList<CdkInputProjectionDef>;
-  @ViewChildren(ItemRenderer, {}) items: QueryList<ItemRenderer>;
+
+  private items: QueryList<ItemRenderer> = new QueryList();
 
   private destroyed$ = new Subject<boolean>();
+
+  private itemsRendererQueries$: Observable<QueryList<ItemRenderer>>[];
 
   private keyManager: ActiveDescendantKeyManager<ItemRenderer>;
 
@@ -137,7 +144,9 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
     const factory = this.resolver.resolveComponentFactory(ListRenderer);
 
     // render all panels and gather item-renderer output streams
-    const itemsRendererQueries$ = this._contentColumnDefs.map((_contentColumnDef) => {
+    this.itemsRendererQueries$ = this._contentColumnDefs.map((_contentColumnDef) => {
+      console.log(this._mainOutlet);
+
       const itemRenderer = this._mainOutlet.viewContainer.createComponent(factory);
       itemRenderer.instance.template = _contentColumnDef.item.template;
       itemRenderer.instance.stream = _contentColumnDef.stream;
@@ -145,7 +154,7 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
       return itemRenderer.instance.itemsRendererQueryList;
     });
 
-    combineLatest(itemsRendererQueries$).pipe(
+    combineLatest(this.itemsRendererQueries$).pipe(
       takeUntil(this.destroyed$)
     ).subscribe((itemsRendererQueries) => {
       const flattenItemRenderer = itemsRendererQueries.map((query) => query.toArray())
@@ -164,7 +173,7 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
 
     this.keyStream$.subscribe((event) => {
       if (event.keyCode === ENTER) {
-        console.log(this.keyManager.activeItem.context.$implicit);
+        this.value.emit(this.keyManager.activeItem.context.$implicit);
       } else {
         this.keyManager.onKeydown(event);
       }
