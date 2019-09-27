@@ -8,9 +8,9 @@ import {
   ContentChild,
   ContentChildren,
   Directive,
-  ElementRef,
   EventEmitter,
   forwardRef,
+  HostListener,
   Inject,
   Input,
   OnDestroy,
@@ -29,8 +29,7 @@ import {takeUntil} from 'rxjs/operators';
   selector: '[cdkPanelItem]'
 })
 export class CdkPanelItem {
-  constructor(public container: ViewContainerRef,
-              public template: TemplateRef<any>) {
+  constructor(public template: TemplateRef<any>) {
   }
 }
 
@@ -38,8 +37,7 @@ export class CdkPanelItem {
   selector: '[cdkPanelItemTitle]'
 })
 export class CdkPanelItemTitle {
-  constructor(public container: ViewContainerRef,
-              public template: TemplateRef<any>) {
+  constructor(public template: TemplateRef<any>) {
   }
 }
 
@@ -48,25 +46,14 @@ export class CdkPanelItemTitle {
 })
 export class CdkInputProjectionDef {
   /** Unique name for this item. */
-  @Input('cdkInputProjectionDef') name: string;
   @Input() stream: Observable<any>;
   @ContentChild(CdkPanelItem) body: CdkPanelItem;
   @ContentChild(CdkPanelItemTitle) title: CdkPanelItemTitle;
 }
 
-@Directive({
-  selector: '[cdk-item]'
-})
-export class CdkItem {
-  constructor(cdkInputProjectionDef: CdkInputProjectionDef, elementRef: ElementRef) {
-    const itemClassName = `cdk-item-${cdkInputProjectionDef.name}`;
-    elementRef.nativeElement.classList.add(itemClassName);
-  }
-}
-
 @Directive({selector: '[mainOutlet]'})
 export class MainOutlet {
-  constructor(public viewContainer: ViewContainerRef, public elementRef: ElementRef) {
+  constructor(public viewContainer: ViewContainerRef) {
   }
 }
 
@@ -76,10 +63,7 @@ export class MainOutlet {
       <div matRipple [class.active]="isActive">
           <ng-container *ngTemplateOutlet="template; context: context;"></ng-container>
       </div>
-  `,
-  host: {
-    '(click)': '_handleClick()',
-  }
+  `
 })
 export class ItemRenderer implements Highlightable {
   @Input() context: any;
@@ -88,10 +72,15 @@ export class ItemRenderer implements Highlightable {
   /** Reference to the directive instance of the ripple. */
   @ViewChild(MatRipple) rippleInstance: MatRipple;
 
-  constructor(@Inject(forwardRef(() => NgxInputProjectionComponent)) private ngxInputProjectionComponent: NgxInputProjectionComponent) {
+  constructor(@Inject(forwardRef(() => InputProjectionComponent)) private ngxInputProjectionComponent: InputProjectionComponent) {
   }
 
   isActive = false;
+
+  @HostListener('click')
+  handleClick() {
+    this.ngxInputProjectionComponent.clicked(this, this.context);
+  }
 
   setActiveStyles() {
     this.isActive = true;
@@ -111,10 +100,6 @@ export class ItemRenderer implements Highlightable {
     setTimeout(() => {
       rippleRef.fadeOut();
     }, 500);
-  }
-
-  _handleClick() {
-    this.ngxInputProjectionComponent.clicked(this, this.context);
   }
 }
 
@@ -138,9 +123,6 @@ export class ListRenderer implements AfterViewInit {
 
   @ViewChildren(ItemRenderer) items: QueryList<ItemRenderer>;
 
-  constructor() {
-  }
-
   itemTrack(index, item) {
     return item.id;
   }
@@ -155,11 +137,11 @@ export class ListRenderer implements AfterViewInit {
 }
 
 @Component({
-  selector: 'lib-ngx-input-projection',
+  selector: 'input-projection',
   template: `
       <ng-container mainOutlet></ng-container>`,
 })
-export class NgxInputProjectionComponent implements AfterContentInit, AfterViewInit, OnDestroy {
+export class InputProjectionComponent implements AfterContentInit, AfterViewInit, OnDestroy {
   @Input() keyStream$: Observable<KeyboardEvent>;
   @Output() value: EventEmitter<unknown> = new EventEmitter<unknown>();
 

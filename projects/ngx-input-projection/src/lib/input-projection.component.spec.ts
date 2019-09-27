@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NgxInputProjectionComponent } from './ngx-input-projection.component';
+import { InputProjectionComponent } from './input-projection.component';
 
 describe('NgxInputProjectionComponent', () => {
-  let component: NgxInputProjectionComponent;
-  let fixture: ComponentFixture<NgxInputProjectionComponent>;
+  let component: InputProjectionComponent;
+  let fixture: ComponentFixture<InputProjectionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ NgxInputProjectionComponent ]
+      declarations: [ InputProjectionComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NgxInputProjectionComponent);
+    fixture = TestBed.createComponent(InputProjectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

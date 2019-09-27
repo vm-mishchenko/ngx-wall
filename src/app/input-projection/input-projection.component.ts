@@ -4,7 +4,6 @@ import {Observable, of, Subject} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 
 @Component({
-  selector: 'input-projection',
   templateUrl: 'input-projection.component.html',
   styles: [`
       ::ng-deep .active {
