@@ -4,8 +4,13 @@ import {Observable, of, Subject} from 'rxjs';
 import {startWith, switchMap} from 'rxjs/operators';
 
 @Component({
-    selector: 'input-projection',
-    templateUrl: 'input-projection.component.html'
+  selector: 'input-projection',
+  templateUrl: 'input-projection.component.html',
+  styles: [`
+      ::ng-deep .active {
+          background-color: #ececec;
+      }
+  `],
 })
 export class InputProjection implements OnInit {
   input = new FormControl();
@@ -13,13 +18,10 @@ export class InputProjection implements OnInit {
   list2$ = this.transform2(this.input.valueChanges);
   keyStream$ = new Subject();
 
-  constructor() {
+  ngOnInit() {
   }
 
-  ngOnInit() {
-    }
-
-  onKeydown(event) {
+  onKeydown(event: KeyboardEvent) {
     this.keyStream$.next(event);
   }
 

@@ -1,5 +1,5 @@
 import {ActiveDescendantKeyManager, Highlightable} from '@angular/cdk/a11y';
-import {ENTER} from '@angular/cdk/keycodes';
+import {DOWN_ARROW, ENTER, UP_ARROW} from '@angular/cdk/keycodes';
 import {
   AfterContentInit,
   AfterViewInit,
@@ -10,6 +10,8 @@ import {
   Directive,
   ElementRef,
   EventEmitter,
+  forwardRef,
+  Inject,
   Input,
   OnDestroy,
   Output,
@@ -19,6 +21,7 @@ import {
   ViewChildren,
   ViewContainerRef
 } from '@angular/core';
+import {MatRipple} from '@angular/material';
 import {combineLatest, Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 
@@ -32,13 +35,23 @@ export class CdkPanelItem {
 }
 
 @Directive({
+  selector: '[cdkPanelItemTitle]'
+})
+export class CdkPanelItemTitle {
+  constructor(public container: ViewContainerRef,
+              public template: TemplateRef<any>) {
+  }
+}
+
+@Directive({
   selector: '[cdkInputProjectionDef]'
 })
 export class CdkInputProjectionDef {
   /** Unique name for this item. */
   @Input('cdkInputProjectionDef') name: string;
   @Input() stream: Observable<any>;
-  @ContentChild(CdkPanelItem) item: CdkPanelItem;
+  @ContentChild(CdkPanelItem) body: CdkPanelItem;
+  @ContentChild(CdkPanelItemTitle) title: CdkPanelItemTitle;
 }
 
 @Directive({
@@ -60,24 +73,25 @@ export class MainOutlet {
 @Component({
   selector: 'item-renderer',
   template: `
-      <div [class.active]="isActive">
+      <div matRipple [class.active]="isActive">
           <ng-container *ngTemplateOutlet="template; context: context;"></ng-container>
       </div>
   `,
-  styles: [`
-      .active {
-          background: silver;
-      }
-  `]
+  host: {
+    '(click)': '_handleClick()',
+  }
 })
 export class ItemRenderer implements Highlightable {
   @Input() context: any;
   @Input() template: TemplateRef<any>;
-  isActive = false;
 
-  onItemClick(item) {
-    console.log(`clicked on ${item} item.`);
+  /** Reference to the directive instance of the ripple. */
+  @ViewChild(MatRipple) rippleInstance: MatRipple;
+
+  constructor(@Inject(forwardRef(() => NgxInputProjectionComponent)) private ngxInputProjectionComponent: NgxInputProjectionComponent) {
   }
+
+  isActive = false;
 
   setActiveStyles() {
     this.isActive = true;
@@ -86,22 +100,46 @@ export class ItemRenderer implements Highlightable {
   setInactiveStyles() {
     this.isActive = false;
   }
+
+  ripple() {
+    const rippleRef = this.rippleInstance.launch({
+      persistent: true,
+      centered: false
+    });
+
+    // Fade out the ripple later.
+    setTimeout(() => {
+      rippleRef.fadeOut();
+    }, 500);
+  }
+
+  _handleClick() {
+    this.ngxInputProjectionComponent.clicked(this, this.context);
+  }
 }
 
 @Component({
   selector: 'list-renderer',
   template: `
-      <ng-container *ngFor="let item of (stream | async); trackBy: itemTrack">
-          <item-renderer [template]="template" [context]="{$implicit: item}"></item-renderer>
-      </ng-container>
+      <div *ngIf="(stream | async)?.length">
+          <ng-container *ngTemplateOutlet="title;"></ng-container>
+      </div>
+      <div>
+          <item-renderer *ngFor="let item of (stream | async); trackBy: itemTrack"
+                         [template]="body" [context]="{$implicit: item}"></item-renderer>
+      </div>
   `
 })
 export class ListRenderer implements AfterViewInit {
   @Input() stream: Observable<any[]>;
-  @Input() template: TemplateRef<any>;
+  @Input() body: TemplateRef<any>;
+  @Input() title: TemplateRef<any>;
   @Output() itemsRendererQueryList: Observable<QueryList<ItemRenderer>> = new Subject<QueryList<ItemRenderer>>();
 
   @ViewChildren(ItemRenderer) items: QueryList<ItemRenderer>;
+
+  constructor() {
+  }
 
   itemTrack(index, item) {
     return item.id;
@@ -126,7 +164,6 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
   @Output() value: EventEmitter<unknown> = new EventEmitter<unknown>();
 
   @ViewChild(MainOutlet) _mainOutlet: MainOutlet;
-  @ContentChildren(CdkPanelItem) _allItems: QueryList<CdkPanelItem>;
   @ContentChildren(CdkInputProjectionDef) _contentColumnDefs: QueryList<CdkInputProjectionDef>;
 
   private items: QueryList<ItemRenderer> = new QueryList();
@@ -145,13 +182,12 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
 
     // render all panels and gather item-renderer output streams
     this.itemsRendererQueries$ = this._contentColumnDefs.map((_contentColumnDef) => {
-      console.log(this._mainOutlet);
+      const listRenderer = this._mainOutlet.viewContainer.createComponent(factory);
+      listRenderer.instance.title = _contentColumnDef.title.template;
+      listRenderer.instance.body = _contentColumnDef.body.template;
+      listRenderer.instance.stream = _contentColumnDef.stream;
 
-      const itemRenderer = this._mainOutlet.viewContainer.createComponent(factory);
-      itemRenderer.instance.template = _contentColumnDef.item.template;
-      itemRenderer.instance.stream = _contentColumnDef.stream;
-
-      return itemRenderer.instance.itemsRendererQueryList;
+      return listRenderer.instance.itemsRendererQueryList;
     });
 
     combineLatest(this.itemsRendererQueries$).pipe(
@@ -172,7 +208,12 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
     this.keyManager = new ActiveDescendantKeyManager(this.items).withWrap();
 
     this.keyStream$.subscribe((event) => {
+      if (event.keyCode === DOWN_ARROW || event.keyCode === UP_ARROW) {
+        event.preventDefault();
+      }
+
       if (event.keyCode === ENTER) {
+        this.keyManager.activeItem.ripple();
         this.value.emit(this.keyManager.activeItem.context.$implicit);
       } else {
         this.keyManager.onKeydown(event);
@@ -182,5 +223,20 @@ export class NgxInputProjectionComponent implements AfterContentInit, AfterViewI
 
   ngOnDestroy() {
     this.destroyed$.next(true);
+  }
+
+  clicked(clickedItem: ItemRenderer, context) {
+    this.setActiveItem(clickedItem);
+    this.value.emit(context.$implicit);
+  }
+
+  private setActiveItem(newActiveItem: ItemRenderer) {
+    const index = this.items.toArray().findIndex((currentItem) => {
+      return currentItem === newActiveItem;
+    });
+
+    if (index !== -1) {
+      this.keyManager.setActiveItem(index);
+    }
   }
 }

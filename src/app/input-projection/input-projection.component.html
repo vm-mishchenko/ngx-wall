@@ -1,13 +1,15 @@
-<input type="text" [formControl]="input" (keyup)="onKeydown($event)">
+<input type="text" [formControl]="input" (keydown)="onKeydown($event)">
 
 <lib-ngx-input-projection [keyStream$]="keyStream$" (value)="onValue($event)">
     <!-- Register cdkPanelItem. -->
     <ng-container cdkInputProjectionDef="age" [stream]="list1$">
-        <h1 cdk-item *cdkPanelItem="let item">{{item.name}} </h1>
+        <h2 cdk-item *cdkPanelItemTitle>First list</h2>
+        <span cdk-item *cdkPanelItem="let item">{{item.name}}</span>
     </ng-container>
 
     <!-- Register another cdkPanelItem. -->
     <ng-container cdkInputProjectionDef="age" [stream]="list2$">
-        <h2 cdk-item *cdkPanelItem="let item">{{item.name}} </h2>
+        <h2 cdk-item *cdkPanelItemTitle>Second list</h2>
+        <span cdk-item *cdkPanelItem="let item">{{item.name}}</span>
     </ng-container>
 </lib-ngx-input-projection>
