@@ -22,6 +22,9 @@ install:
 script:
   # Use Chromium instead of Chrome.
   - export CHROME_BIN=chromium-browser
+  - export LIB=ngx-wall
+  - xvfb-run -a npm run test:cli
+  - export LIB=ngx-input-projection
   - xvfb-run -a npm run test:cli
 
 after_success:
