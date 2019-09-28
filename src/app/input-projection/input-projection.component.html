@@ -1,15 +1,18 @@
 <input type="text" [formControl]="input" (keydown)="onKeydown($event)">
 
-<input-projection [keyStream$]="keyStream$" (value)="onValue($event)">
-    <!-- Register cdkPanelItem. -->
-    <ng-container cdkInputProjectionDef [stream]="list1$">
-        <h2 *cdkPanelItemTitle>First list</h2>
-        <span *cdkPanelItem="let item">{{item.name}}</span>
-    </ng-container>
+<div class="limited-height">
+    <input-projection [keyStream$]="keyStream$" (value)="onValue($event)">
+        <!-- Register cdkPanelItem. -->
+        <ng-container cdkInputProjectionDef [stream]="list1$">
+            <h2 *cdkPanelItemTitle>First list</h2>
+            <div class="list-item" *cdkPanelItem="let item">{{item.name}}</div>
+        </ng-container>
 
-    <!-- Register another cdkPanelItem. -->
-    <ng-container cdkInputProjectionDef [stream]="list2$">
-        <h2 *cdkPanelItemTitle>Second list</h2>
-        <span *cdkPanelItem="let item">{{item.name}}</span>
-    </ng-container>
-</input-projection>
+        <!-- Register another cdkPanelItem. -->
+        <ng-container cdkInputProjectionDef [stream]="list2$">
+            <h2 *cdkPanelItemTitle>Second list</h2>
+            <div class="list-item" *cdkPanelItem="let item">{{item.name}}</div>
+        </ng-container>
+    </input-projection>
+</div>
+

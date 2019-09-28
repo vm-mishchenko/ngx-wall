@@ -1,0 +1,12 @@
+::ng-deep .active {
+  background-color: #ececec;
+}
+
+.limited-height {
+  height: 200px;
+  overflow-y: scroll;
+}
+
+.list-item {
+  padding: 10px;
+}

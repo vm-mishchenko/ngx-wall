@@ -5,11 +5,7 @@ import {startWith, switchMap} from 'rxjs/operators';
 
 @Component({
   templateUrl: 'input-projection.component.html',
-  styles: [`
-      ::ng-deep .active {
-          background-color: #ececec;
-      }
-  `],
+  styleUrls: ['./input-projection.component.scss']
 })
 export class InputProjection implements OnInit {
   input = new FormControl();
@@ -41,14 +37,6 @@ export class InputProjection implements OnInit {
       {
         'id': '5b9029346f48c8407c64d0d5',
         'name': 'Darlene Franklin'
-      },
-      {
-        'id': '5b9029341eff315fa87f9e21',
-        'name': 'Alfreda Love'
-      },
-      {
-        'id': '5b9029342e8917c6ccdb9865',
-        'name': 'Marcy Ratliff'
       }
     ];
 
@@ -86,6 +74,30 @@ export class InputProjection implements OnInit {
       {
         'id': '5b9029348999f59215020349',
         'name': 'June Eaton'
+      },
+      {
+        'id': '5b9029348999f59215020343',
+        'name': 'June Eaton 2'
+      },
+      {
+        'id': '5b9029348999f59215020344',
+        'name': 'June Eaton 3'
+      },
+      {
+        'id': '5b9029348999f59215020341',
+        'name': 'June Eaton 4'
+      },
+      {
+        'id': '5b9029348999f59215020340',
+        'name': 'June Eaton 5'
+      },
+      {
+        'id': '5b9029341eff315fa87f9e21',
+        'name': 'Alfreda Love'
+      },
+      {
+        'id': '5b9029342e8917c6ccdb9865',
+        'name': 'Marcy Ratliff'
       }
     ];
 
