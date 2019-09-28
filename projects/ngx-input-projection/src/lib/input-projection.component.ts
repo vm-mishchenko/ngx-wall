@@ -113,6 +113,10 @@ export class ItemRenderer implements Highlightable {
     }
 }
 
+export interface IInputPanelItem {
+    id: string;
+}
+
 @Component({
     selector: 'list-renderer',
     template: `
@@ -126,7 +130,7 @@ export class ItemRenderer implements Highlightable {
     `
 })
 export class ListRenderer implements AfterViewInit {
-    @Input() stream: Observable<any[]>;
+    @Input() stream: Observable<IInputPanelItem[]>;
     @Input() body: TemplateRef<any>;
     @Input() title: TemplateRef<any>;
     @Output() itemsRendererQueryList: Observable<QueryList<ItemRenderer>> = new Subject<QueryList<ItemRenderer>>();
