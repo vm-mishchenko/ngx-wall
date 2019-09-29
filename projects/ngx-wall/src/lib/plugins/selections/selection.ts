@@ -366,8 +366,6 @@ export class SelectionPlugin implements IWallPlugin {
         this.wallModel = null;
         this.towServiceSubscription.unsubscribe();
 
-        console.log(`selection onWallPluginDestroy`);
-
         this.destroyed$.next();
     }
 

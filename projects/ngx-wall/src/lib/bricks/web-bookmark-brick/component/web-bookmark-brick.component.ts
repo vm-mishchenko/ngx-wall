@@ -72,8 +72,6 @@ export class WebBookmarkBrickComponent implements OnInit {
     }
 
     showPanel() {
-        console.log(`showPanel`);
-
         if (!this.loading) {
             this.ngxStickyModalService.open({
                 component: InputContextComponent,
