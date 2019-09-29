@@ -4,7 +4,6 @@
   "peerDependencies": {
     "@angular/common": "^7.1.2",
     "@angular/core": "^7.1.2",
-    "@angular/cdk/a11y": "^7.1.2",
     "@angular/material": "^7.3.6",
     "rxjs": "^6.3.3"
   }
