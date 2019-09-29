@@ -1,6 +1,6 @@
 {
     "name": "ngx-wall",
-    "version": "1.1.45",
+    "version": "1.1.46",
     "peerDependencies": {
         "@angular/forms": "^7.1.2",
         "@angular/common": "^7.1.2",
