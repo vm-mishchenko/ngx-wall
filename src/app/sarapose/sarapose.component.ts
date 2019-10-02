@@ -1,12 +1,16 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
-import {Schema} from 'prosemirror-model';
+import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
 import {EditorState, TextSelection} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {foo} from 'saropose';
+
+/*
+* 1. save/restore text
+*/
 
 const customSchema = new Schema({
   nodes,
@@ -23,9 +27,9 @@ const customSchema = new Schema({
 
 @Component({
   templateUrl: './sarapose.component.html',
-  encapsulation: ViewEncapsulation.None,
+  // encapsulation: ViewEncapsulation.None,
   styles: [`
-      highlight {
+      ::ng-deep highlight {
           background-color: yellow;
       }
   `]
@@ -36,6 +40,8 @@ export class SaraposeComponent implements OnInit {
   state: any;
   view: any;
 
+  htmlRepresentation: any;
+
   constructor() {
     console.log(foo);
 
@@ -43,24 +49,45 @@ export class SaraposeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.state = EditorState.create({
-      schema: customSchema,
-      plugins: [
-        keymap(baseKeymap)
-      ]
-    });
+    const previousState = JSON.parse(localStorage.getItem('state'));
+
+    if (previousState) {
+      this.htmlRepresentation = previousState.innerHTML;
+
+      const domNode = document.createElement('div');
+      domNode.innerHTML = previousState.innerHTML;
+      const doc = DOMParser.fromSchema(customSchema).parse(domNode);
+
+      this.state = EditorState.create({
+        doc,
+        schema: customSchema,
+        plugins: [
+          keymap(baseKeymap)
+        ]
+      });
+    } else {
+      this.state = EditorState.create({
+        schema: customSchema,
+        plugins: [
+          keymap(baseKeymap)
+        ]
+      });
+    }
 
     this.view = new EditorView(this.container.nativeElement, {
       state: this.state,
-      /*dispatchTransaction: (transaction) => {
-        /!*console.log('Document size went from', transaction.before.content.size,
-          'to', transaction.doc.content.size);*!/
-
-        // console.log(transaction.selection);
-
+      dispatchTransaction: (transaction) => {
         const newState = this.view.state.apply(transaction);
         this.view.updateState(newState);
-      }*/
+
+        const serializer = DOMSerializer.fromSchema(customSchema);
+        const paragraph = this.view.state.doc.content.child(0);
+        const paragraphNode = serializer.serializeNode(paragraph);
+        localStorage.setItem('state', JSON.stringify({
+          innerHTML: paragraphNode.innerHTML
+        }));
+        this.htmlRepresentation = paragraphNode.innerHTML;
+      }
     });
   }
 
