@@ -5,6 +5,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {InputProjection} from './input-projection/input-projection.component';
 import {InputProjectionModule} from './input-projection/input-projection.module';
+import {SaraposeComponent} from './sarapose/sarapose.component';
+import {SaraposeModule} from './sarapose/sarapose.module';
 import {WallEditorComponent} from './wall-editor/wall-editor.component';
 import {WallEditorModule} from './wall-editor/wall-editor.module';
 
@@ -16,6 +18,10 @@ const routes: Routes = [
     {
         path: 'ngx-input-projection',
         component: InputProjection
+    },
+    {
+        path: 'sarapose',
+        component: SaraposeComponent
     },
     {
         path: '**',
@@ -34,6 +40,7 @@ const routes: Routes = [
         // application libraries
         WallEditorModule,
         InputProjectionModule,
+        SaraposeModule,
         RouterModule.forRoot(routes, {useHash: true})
     ],
     providers: [],

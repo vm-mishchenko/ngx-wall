@@ -193,6 +193,41 @@
           }
         }
       }
+    },
+    "saropose": {
+      "root": "projects/saropose",
+      "sourceRoot": "projects/saropose/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/saropose/tsconfig.lib.json",
+            "project": "projects/saropose/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/saropose/src/test.ts",
+            "tsConfig": "projects/saropose/tsconfig.spec.json",
+            "karmaConfig": "projects/saropose/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/saropose/tsconfig.lib.json",
+              "projects/saropose/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "wall"

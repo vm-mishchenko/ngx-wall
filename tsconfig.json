@@ -17,6 +17,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "saropose": [
+        "dist/saropose"
+      ],
+      "saropose/*": [
+        "dist/saropose/*"
+      ]
+    }
   }
 }

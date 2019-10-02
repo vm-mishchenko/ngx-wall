@@ -50,7 +50,13 @@
         "zone.js": "^0.8.26",
         "codemirror": "5.42.0",
         "ngx-sticky-modal": "^0.0.4",
-        "bootstrap": "^4.3.1"
+        "bootstrap": "^4.3.1",
+        "prosemirror-schema-basic": "^1.0.1",
+        "prosemirror-state": "^1.2.4",
+        "prosemirror-view": "^1.11.4",
+        "prosemirror-keymap": "^1.0.1",
+        "prosemirror-commands": "^1.0.8",
+        "prosemirror-model": "^1.7.2"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "^0.13.0",

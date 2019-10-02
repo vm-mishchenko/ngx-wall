@@ -10,6 +10,9 @@
       ],
       "ngx-input-projection": [
         "projects/ngx-input-projection/src/public-api.ts"
+      ],
+      "saropose": [
+        "projects/saropose/src/public-api.ts"
       ]
     }
   },
