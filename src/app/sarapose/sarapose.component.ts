@@ -5,7 +5,6 @@ import {DOMParser, DOMSerializer, Fragment, Schema} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
 import {EditorState, TextSelection} from 'prosemirror-state';
-import {canSplit} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
 /*
@@ -26,6 +25,8 @@ const customSchema = new Schema({
   },
 });
 
+const serializer = DOMSerializer.fromSchema(customSchema);
+
 @Component({
   templateUrl: './sarapose.component.html',
   // encapsulation: ViewEncapsulation.None,
@@ -36,6 +37,7 @@ const customSchema = new Schema({
 
       ::ng-deep .ProseMirror p {
           padding: 10px;
+          font-size: 18px;
       }
 
       pre {
@@ -77,85 +79,19 @@ export class SaraposeComponent implements OnInit {
       plugins: [
         keymap({
           'Enter': (state, dispatch, view) => {
-            const ref = state.selection;
-            const $from = ref.$from;
-            const $to = ref.$to;
+            const rightHTMLBeforeCut = this.getCursorRightHtml();
 
-            const tr = state.tr;
-            // tr.split($from.pos);
+            const tr = view.state.tr;
+            const $from = view.state.selection.$from;
 
-            // dispatch(tr.scrollIntoView());
+            const absoluteCursorPosition = $from.pos;
+            // The (absolute) position at the end of the node at the given level.
+            const absolutePositionAtTheEndOfTheNode = $from.end();
 
-            // return true;
-          }
-        }),
-        keymap({
-          'Enter': (state, dispatch, view) => {
-            const ref = state.selection;
-            const $from = ref.$from;
-            const $to = ref.$to;
+            tr.delete(absoluteCursorPosition, absolutePositionAtTheEndOfTheNode);
 
-            if (dispatch) {
-              // check whether cursor stay at the end?
-              // $to.parentOffset - left cursor position, marks does not count.
-              const atEnd = $to.parentOffset === $to.parent.content.size;
+            this.view.dispatch(tr);
 
-              // start transaction
-              const tr = state.tr;
-
-              // delete any selected text
-              if (state.selection instanceof TextSelection) {
-                tr.deleteSelection();
-              }
-
-              // take parent
-              // const deflt = $from.parent;
-              let defaultType;
-
-              if ($from.depth === 0) {
-                defaultType = null;
-              } else {
-                // from doc: The index pointing after this position into the ancestor at the given level.
-                const indexAfter = $from.indexAfter(-1);
-
-                // take the node which -1 depth from current
-                const ancestorNodeOneStepBehind = $from.node(-1);
-
-
-                // from doc: Instances of this class represent a match state of a node type's content expression,
-                // and can be used to find out whether further content matches here, and whether a given position is a valid end of the node.
-                const contentMatch = ancestorNodeOneStepBehind.contentMatchAt(indexAfter);
-
-                defaultType = contentMatch.defaultType;
-              }
-
-              let types;
-              if (atEnd && defaultType) {
-                types = [{type: defaultType}];
-              } else {
-                types = null;
-              }
-
-              // doc, pos, depth, typesAfter
-              let can = canSplit(tr.doc, tr.mapping.map($from.pos), 1, types);
-
-              if (!types && !can && canSplit(tr.doc, tr.mapping.map($from.pos), 1, defaultType && [{type: defaultType}])) {
-                types = [{type: defaultType}];
-                can = true;
-              }
-
-              if (can) {
-                console.log(`split`);
-                tr.split(tr.mapping.map($from.pos), 1, types);
-                if (!atEnd && !$from.parentOffset && $from.parent.type !== defaultType &&
-                  $from.node(-1).canReplace($from.index(-1), $from.indexAfter(-1), Fragment.from(defaultType.create(), $from.parent))) {
-                  tr.setNodeMarkup(tr.mapping.map($from.before()), defaultType);
-                }
-              }
-              dispatch(tr.scrollIntoView());
-            }
-
-            // meaning that it handle the key pressing
             return true;
           }
         }),
@@ -166,59 +102,73 @@ export class SaraposeComponent implements OnInit {
     this.view = new EditorView(this.container.nativeElement, {
       state: this.state,
       dispatchTransaction: (transaction) => {
-
-        /*currentParent.descendants((node, pos, parent) => {
-            console.log(pos);
-            console.log(node);
-            return true;
-          });*/
-
         const newState = this.view.state.apply(transaction);
         this.view.updateState(newState);
 
-        // experiments
-        const {from, to} = this.view.state.selection;
-        const pos$ = this.view.state.selection.$from;
-        const before = pos$.node(pos$.depth).copy(Fragment.empty);
-        const currentParent = pos$.parent;
-
-        const currentNode = pos$.parent.maybeChild(pos$.index());
-
-        if (currentNode) {
-          const currentNodeClone = currentNode.copy(Fragment.empty);
-          let leftCurrentNodeClone;
-
-          if (pos$.textOffset === 0) {
-            this.ui.activeTextNodeLeftPart = '';
-          } else {
-            if (currentNodeClone.nodeSize === pos$.textOffset) {
-              leftCurrentNodeClone = currentNodeClone;
-            } else {
-              leftCurrentNodeClone = currentNodeClone.cut(0, pos$.textOffset);
-            }
-
-            this.ui.activeTextNodeLeftPart = leftCurrentNodeClone.text;
-          }
-        }
-
-        /*const result = Fragment.empty;
-        currentParent.nodesBetween(0, pos$.parentOffset, (node, pos, parent) => {
-          console.log(pos);
-          console.log(node);
-          return true;
-        });*/
-
         // save current state
-        const serializer = DOMSerializer.fromSchema(customSchema);
         const paragraph = this.view.state.doc.content.child(0);
         const paragraphNode = serializer.serializeNode(paragraph);
         localStorage.setItem('state', JSON.stringify({
           innerHTML: paragraphNode.innerHTML
         }));
         this.htmlRepresentation = paragraphNode.innerHTML;
+
+        // experiments
+        this.ui.rightHTMLString = this.getCursorRightHtml();
+        this.ui.leftHTMLString = this.getCursorLeftHtml();
       }
     });
   }
+
+  // QUERIES
+
+  getCursorRightHtml() {
+    const $from = this.view.state.selection.$from;
+    const currentParent = $from.parent;
+
+    const rightNodes = [];
+    currentParent.nodesBetween($from.parentOffset, currentParent.content.size, (node, pos, parent, nodeInBetweenIndex) => {
+      if (nodeInBetweenIndex === $from.index()) {
+        const rightPartOfTheNode = node.cut($from.textOffset, node.nodeSize);
+
+        rightNodes.push(rightPartOfTheNode);
+      } else {
+        rightNodes.push(node);
+      }
+
+      return true;
+    });
+
+    const rightFragment = Fragment.from(rightNodes);
+    const htmlString = this.fragmentToHTMLString(rightFragment);
+
+    return htmlString;
+  }
+
+  getCursorLeftHtml() {
+    const $from = this.view.state.selection.$from;
+    const currentParent = $from.parent;
+
+    const nodes = [];
+    currentParent.nodesBetween(0, $from.parentOffset, (node, pos, parent, nodeInBetweenIndex) => {
+      if (nodeInBetweenIndex === $from.index()) {
+        const rightPartOfTheNode = node.cut(0, $from.textOffset);
+
+        nodes.push(rightPartOfTheNode);
+      } else {
+        nodes.push(node);
+      }
+
+      return true;
+    });
+
+    const fragment = Fragment.from(nodes);
+    const htmlString = this.fragmentToHTMLString(fragment);
+
+    return htmlString;
+  }
+
+  // COMMANDS
 
   manuallyChangeState() {
     const tr = this.view.state.tr;
@@ -331,5 +281,14 @@ export class SaraposeComponent implements OnInit {
 
     tr.addMark(from, to, this.view.state.doc.type.schema.marks.highlight.create());
     this.view.dispatch(tr);
+  }
+
+  // helpers
+
+  private fragmentToHTMLString(fragment: Fragment): string {
+    const documentFragment = serializer.serializeFragment(fragment);
+    const wrap = document.createElement('DIV');
+    wrap.appendChild(documentFragment);
+    return wrap.innerHTML;
   }
 }

@@ -2,7 +2,8 @@
 
 <p><b>html representation</b> {{htmlRepresentation}}</p>
 
-<p><b>left part of current text node:</b> {{ui?.activeTextNodeLeftPart}}</p>
+<p><b>left part of current text node:</b> {{ui?.leftHTMLString}}</p>
+<p><b>right part of current text node:</b> {{ui?.rightHTMLString}}</p>
 <p><b>current node text:</b> {{view.state.selection.$from.parent.maybeChild(view.state.selection.$from.index())}}</p>
 <p><b>clear text right to
     cursor:</b> {{view.state.selection.$from.parent.textBetween(view.state.selection.$from.parentOffset, view.state.selection.$from.parent.content.size)}}
