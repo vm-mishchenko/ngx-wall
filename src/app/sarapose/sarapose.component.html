@@ -1,8 +1,42 @@
 <div #container></div>
 
-<div>
-    {{htmlRepresentation}}
-</div>
+<p><b>html representation</b> {{htmlRepresentation}}</p>
+
+<p><b>left part of current text node:</b> {{ui?.activeTextNodeLeftPart}}</p>
+<p><b>current node text:</b> {{view.state.selection.$from.parent.maybeChild(view.state.selection.$from.index())}}</p>
+<p><b>clear text right to
+    cursor:</b> {{view.state.selection.$from.parent.textBetween(view.state.selection.$from.parentOffset, view.state.selection.$from.parent.content.size)}}
+</p>
+<p><b>clear text left to
+    cursor:</b> {{view.state.selection.$from.parent.textBetween(0, view.state.selection.$from.parentOffset)}}</p>
+<p><b>paragraph text length:</b> {{view.state.selection.$from.parent.content.size}}</p>
+<p><b>text offset in current text node:</b> {{view.state.selection.$from.textOffset}}</p>
+<p><b>is text node has strong
+    mark:</b> {{!!(view.state.schema.marks.strong.isInSet(view.state.selection.$from.marks()))}}</p>
+<p><b>marks for cursor node:</b>
+    <span *ngFor="let mark of view.state.selection.$from.marks()">{{mark.type.name}}, </span>
+</p>
+<p><b>text node count:</b> {{view.state.selection.$from.parent.childCount}}</p>
+<p><b>text node index where cursor currently stay</b>: {{view.state.selection.$from.index()}}</p>
+
+<pre>
+    from: {{view.state.selection.from}}
+    to: {{view.state.selection.to}}
+</pre>
+
+<pre>
+    $from
+    position: {{view.state.selection.$from.pos | json}}
+    depth: {{view.state.selection.$from.depth | json}}
+    parent offset: {{view.state.selection.$from.parentOffset | json}}
+</pre>
+
+<pre>
+    $to
+    position: {{view.state.selection.$to.pos | json}}
+    depth: {{view.state.selection.$to.depth | json}}
+    parent offset: {{view.state.selection.$to.parentOffset | json}}
+</pre>
 
 <div>
     <button (click)="manuallyChangeState()">change state</button>
