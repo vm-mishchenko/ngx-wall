@@ -20,7 +20,7 @@ const customSchema = new Schema({
   marks: {
     ...marks,
     highlight: {
-      // parseDOM: [{tag: "i"}, {tag: "em"}, {style: "font-style=italic"}],
+      parseDOM: [{tag: 'highlight'}],
       toDOM: function toDOM() {
         return ['highlight', 0];
       }
@@ -374,5 +374,24 @@ export class SaraposeComponent implements OnInit {
     }
 
     return true;
+  }
+
+  private isTransactionFocusInsideEndOfMark(transaction, mark): boolean {
+    if (!this.isFocusTransaction(transaction)) {
+      return false;
+    }
+
+    const nodeAfter = transaction.curSelection.$head.nodeAfter;
+    const nodeBefore = transaction.curSelection.$head.nodeBefore;
+
+    if (!nodeBefore) {
+      return false;
+    }
+
+    return mark.isInSet(nodeBefore.marks) && (!nodeAfter || !mark.isInSet(nodeAfter.marks));
+  }
+
+  private isFocusTransaction(transaction) {
+    return !Boolean(transaction.docChanged && transaction.steps.length);
   }
 }
