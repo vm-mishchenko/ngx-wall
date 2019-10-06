@@ -5,12 +5,15 @@ import {DOMParser, DOMSerializer, Fragment, Schema} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
 import {EditorState, TextSelection} from 'prosemirror-state';
+import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 
-/*
-* 1. save/restore text
-* 2. split text into two sub paragraph
-*/
+/**
+ * Types of features in terms of Origin
+ * 1. "/" symbol - show context modal with brick selection
+ * 2. `test` - add 'code' mark to the specific text
+ * 3. ~text~ - add 'highlight' mark to the specific text
+ */
 
 const customSchema = new Schema({
   nodes,
@@ -32,7 +35,7 @@ const serializer = DOMSerializer.fromSchema(customSchema);
   // encapsulation: ViewEncapsulation.None,
   styles: [`
       ::ng-deep highlight {
-          background-color: yellow;
+          background-color: red;
       }
 
       ::ng-deep .ProseMirror p {
@@ -102,6 +105,12 @@ export class SaraposeComponent implements OnInit {
     this.view = new EditorView(this.container.nativeElement, {
       state: this.state,
       dispatchTransaction: (transaction) => {
+        // highlight node with pattern: this's nice
+
+        if (this.highlight(transaction)) {
+          return;
+        }
+
         const newState = this.view.state.apply(transaction);
         this.view.updateState(newState);
 
@@ -113,7 +122,7 @@ export class SaraposeComponent implements OnInit {
         }));
         this.htmlRepresentation = paragraphNode.innerHTML;
 
-        // experiments
+        // query params
         this.ui.rightHTMLString = this.getCursorRightHtml();
         this.ui.leftHTMLString = this.getCursorLeftHtml();
       }
@@ -121,6 +130,10 @@ export class SaraposeComponent implements OnInit {
   }
 
   // QUERIES
+
+  isLastTextNode() {
+    return !Boolean(this.view.state.selection.$from.nodeAfter);
+  }
 
   getCursorRightHtml() {
     const $from = this.view.state.selection.$from;
@@ -169,6 +182,45 @@ export class SaraposeComponent implements OnInit {
   }
 
   // COMMANDS
+
+  highlight(transaction) {
+    if (!this.isTransactionAddSymbol(transaction, '`')) {
+      return false;
+    }
+
+    const leftNode = this.view.state.selection.$from.nodeBefore;
+
+    if (!leftNode || leftNode.marks.length || !leftNode.nodeSize) {
+      return;
+    }
+
+    const leftOpenCharacterIndex = leftNode.text.indexOf('`');
+
+    if (leftOpenCharacterIndex === -1) {
+      return false;
+    }
+
+    const cursorPosition = this.view.state.selection.$from.pos;
+
+    const startPos = cursorPosition - leftNode.nodeSize + leftOpenCharacterIndex;
+
+    if (startPos + 1 === cursorPosition) {
+      return false;
+    }
+
+    // all conditions are valid - highlight the text
+    const tr = this.view.state.tr;
+    tr.delete(startPos, startPos + 1);
+
+    const highlightMark = this.view.state.doc.type.schema.marks.highlight.create();
+    tr.addMark(startPos, tr.selection.$cursor.pos, highlightMark);
+
+    tr.insert(tr.selection.$cursor.pos, this.view.state.config.schema.text(' '));
+
+    this.view.dispatch(tr);
+
+    return true;
+  }
 
   manuallyChangeState() {
     const tr = this.view.state.tr;
@@ -268,6 +320,15 @@ export class SaraposeComponent implements OnInit {
     this.view.dispatch(tr);
   }
 
+  convertToHighlight(startPos: number, endPos: number) {
+    const tr = this.view.state.tr;
+    const highlightMark = this.view.state.doc.type.schema.marks.highlight.create();
+
+    tr.addMark(startPos, endPos, highlightMark);
+
+    this.view.dispatch(tr);
+  }
+
   addHighlightMarkToSelectedText() {
     if (this.view.state.selection.empty) {
       console.log(`Selection is empty`);
@@ -284,11 +345,34 @@ export class SaraposeComponent implements OnInit {
   }
 
   // helpers
-
   private fragmentToHTMLString(fragment: Fragment): string {
     const documentFragment = serializer.serializeFragment(fragment);
     const wrap = document.createElement('DIV');
     wrap.appendChild(documentFragment);
     return wrap.innerHTML;
+  }
+
+  private isTransactionAddSymbol(transaction, symbol): boolean {
+    if (transaction.steps.length !== 1) {
+      return false;
+    }
+
+    const step = transaction.steps[0];
+
+    if (!(step instanceof ReplaceStep)) {
+      return false;
+    }
+
+    if (step.slice.content.childCount !== 1) {
+      return false;
+    }
+
+    const {text} = step.slice.content.firstChild;
+
+    if (text[text.length - 1] !== symbol) {
+      return false;
+    }
+
+    return true;
   }
 }
