@@ -32,6 +32,7 @@ const customSchema = new Schema({
   marks: {
     ...marks,
     highlight: {
+      inclusive: false,
       parseDOM: [{tag: 'highlight'}],
       toDOM: function toDOM() {
         return ['highlight', 0];
@@ -226,8 +227,6 @@ export class SaraposeComponent implements OnInit {
 
     const highlightMark = this.view.state.doc.type.schema.marks.highlight.create();
     tr.addMark(startPos, tr.selection.$cursor.pos, highlightMark);
-
-    tr.insert(tr.selection.$cursor.pos, this.view.state.config.schema.text(' '));
 
     this.view.dispatch(tr);
 
