@@ -13,6 +13,18 @@ import {EditorView} from 'prosemirror-view';
  * 1. "/" symbol - show context modal with brick selection
  * 2. `test` - add 'code' mark to the specific text
  * 3. ~text~ - add 'highlight' mark to the specific text
+ * 4. Select text using keyboard/mouse - show the context menu.
+ * On web:
+ *  - selection by keyboard:
+ *    * show menu by "Alt+Enter" key combination
+ *      ** convert to highlight
+ *      ** convert to code
+ *      ** convert to bold
+ *      ** convert to italic
+ *      ** add link
+ *    * apply operation (e.g. mark as code, highlight) by specific keyboard hot-key
+ *  - selection by mouse: show menu automatically after small timeout
+ * On mobile: do nothing for now
  */
 
 const customSchema = new Schema({
