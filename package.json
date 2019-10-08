@@ -49,7 +49,6 @@
         "rxjs": "^6.3.3",
         "zone.js": "^0.8.26",
         "codemirror": "5.42.0",
-        "ngx-sticky-modal": "^0.0.4",
         "bootstrap": "^4.3.1",
         "prosemirror-schema-basic": "^1.0.1",
         "prosemirror-state": "^1.2.4",

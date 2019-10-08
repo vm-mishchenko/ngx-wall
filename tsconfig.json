@@ -24,6 +24,24 @@
       ],
       "saropose/*": [
         "dist/saropose/*"
+      ],
+      "ngx-sticky-modal": [
+        "dist/ngx-sticky-modal"
+      ],
+      "ngx-sticky-modal/*": [
+        "dist/ngx-sticky-modal/*"
+      ],
+      "ngx-wall": [
+        "dist/ngx-wall"
+      ],
+      "ngx-wall/*": [
+        "dist/ngx-wall/*"
+      ],
+      "ngx-input-projection": [
+        "dist/ngx-input-projection"
+      ],
+      "ngx-input-projection/*": [
+        "dist/ngx-input-projection/*"
       ]
     }
   }

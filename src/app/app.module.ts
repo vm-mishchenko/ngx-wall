@@ -7,6 +7,8 @@ import {InputProjection} from './input-projection/input-projection.component';
 import {InputProjectionModule} from './input-projection/input-projection.module';
 import {SaraposeComponent} from './sarapose/sarapose.component';
 import {SaraposeModule} from './sarapose/sarapose.module';
+import {StickyModalComponent} from './sticky-modal/sticky-modal.component';
+import {StickyModalModule} from './sticky-modal/sticky-modal.module';
 import {WallEditorComponent} from './wall-editor/wall-editor.component';
 import {WallEditorModule} from './wall-editor/wall-editor.module';
 
@@ -18,6 +20,10 @@ const routes: Routes = [
     {
         path: 'ngx-input-projection',
         component: InputProjection
+    },
+    {
+        path: 'ngx-sticky-modal',
+        component: StickyModalComponent
     },
     {
         path: 'sarapose',
@@ -41,6 +47,7 @@ const routes: Routes = [
         WallEditorModule,
         InputProjectionModule,
         SaraposeModule,
+        StickyModalModule,
         RouterModule.forRoot(routes, {useHash: true})
     ],
     providers: [],

@@ -1,0 +1,37 @@
+<button #btn (click)="showModal()">Show Modal</button>
+
+<p>
+    Origin X position
+    <select [(ngModel)]="model.originX">
+        <option value="start">start</option>
+        <option value="center">center</option>
+        <option value="end">end</option>
+    </select>
+</p>
+
+<p>
+    Origin Y position
+    <select [(ngModel)]="model.originY">
+        <option value="top">top</option>
+        <option value="center">center</option>
+        <option value="bottom">bottom</option>
+    </select>
+</p>
+
+<p>
+    Overlay X position
+    <select [(ngModel)]="model.overlayX">
+        <option value="start">start</option>
+        <option value="center">center</option>
+        <option value="end">end</option>
+    </select>
+</p>
+
+<p>
+    Overlay Y position
+    <select [(ngModel)]="model.overlayY">
+        <option value="top">top</option>
+        <option value="center">center</option>
+        <option value="bottom">bottom</option>
+    </select>
+</p>
