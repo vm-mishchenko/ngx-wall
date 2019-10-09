@@ -19,12 +19,6 @@
       "dom"
     ],
     "paths": {
-      "saropose": [
-        "dist/saropose"
-      ],
-      "saropose/*": [
-        "dist/saropose/*"
-      ],
       "ngx-sticky-modal": [
         "dist/ngx-sticky-modal"
       ],
