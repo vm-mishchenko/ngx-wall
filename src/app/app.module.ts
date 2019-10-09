@@ -5,6 +5,8 @@ import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {InputProjection} from './input-projection/input-projection.component';
 import {InputProjectionModule} from './input-projection/input-projection.module';
+import {RichInputComponent} from './rich-input/rich-input.component';
+import {RichInputModuleExample} from './rich-input/rich-input.module';
 import {SaraposeComponent} from './sarapose/sarapose.component';
 import {SaraposeModule} from './sarapose/sarapose.module';
 import {StickyModalComponent} from './sticky-modal/sticky-modal.component';
@@ -24,6 +26,10 @@ const routes: Routes = [
     {
         path: 'ngx-sticky-modal',
         component: StickyModalComponent
+    },
+    {
+        path: 'ngx-rich-input',
+        component: RichInputComponent
     },
     {
         path: 'sarapose',
@@ -48,6 +54,7 @@ const routes: Routes = [
         InputProjectionModule,
         SaraposeModule,
         StickyModalModule,
+        RichInputModuleExample,
         RouterModule.forRoot(routes, {useHash: true})
     ],
     providers: [],
