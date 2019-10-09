@@ -36,6 +36,12 @@
       ],
       "ngx-input-projection/*": [
         "dist/ngx-input-projection/*"
+      ],
+      "ngx-rich-input": [
+        "dist/ngx-rich-input"
+      ],
+      "ngx-rich-input/*": [
+        "dist/ngx-rich-input/*"
       ]
     }
   }

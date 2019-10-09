@@ -228,6 +228,41 @@
           }
         }
       }
+    },
+    "ngx-rich-input": {
+      "root": "projects/ngx-rich-input",
+      "sourceRoot": "projects/ngx-rich-input/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-rich-input/tsconfig.lib.json",
+            "project": "projects/ngx-rich-input/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-rich-input/src/test.ts",
+            "tsConfig": "projects/ngx-rich-input/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-rich-input/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-rich-input/tsconfig.lib.json",
+              "projects/ngx-rich-input/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }
   },
   "defaultProject": "wall"
