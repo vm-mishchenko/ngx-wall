@@ -1,0 +1,16 @@
+::ng-deep {
+  .ProseMirror {
+    padding: 15px;
+    font-size: 24px;
+
+    snippet {
+      padding: 3px;
+      background: #ff457c;
+    }
+
+    highlight {
+      padding: 3px;
+      background: #85ffcf;
+    }
+  }
+}
