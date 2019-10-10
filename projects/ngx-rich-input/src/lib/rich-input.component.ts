@@ -1,4 +1,5 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
@@ -7,21 +8,38 @@ import {marks, nodes} from 'prosemirror-schema-basic';
 import {EditorState} from 'prosemirror-state';
 import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
+import {Observable, Subject} from 'rxjs';
+import {SelectionMenuComponent} from './components/selection-menu/selection-menu.component';
+
+export interface IMark {
+  name: string;
+  wrapSymbol: string;
+  tag: string;
+}
+
+export interface IRichInputConfig {
+  marks: IMark[];
+}
 
 @Component({
   selector: 'rich-input',
   template: `
-      <div #container></div>`,
+      <div #container></div>
+      <button (click)="openSelectedTextMenu()">Open menu</button>
+  `,
   styles: []
 })
 export class RichInputComponent implements OnInit {
   @ViewChild('container') container: ElementRef;
 
-  @Input() config;
+  @Input() config: IRichInputConfig;
+
+  textSelection$: Observable<boolean> = new Subject();
 
   private view: EditorView;
 
-  constructor() {
+  constructor(private ngxStickyModalService: StickyModalService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -63,6 +81,10 @@ export class RichInputComponent implements OnInit {
           return;
         }
 
+        if (!transaction.curSelection.empty) {
+          // text selected
+        }
+
         const newState = this.view.state.apply(transaction);
 
         this.view.updateState(newState);
@@ -93,6 +115,28 @@ export class RichInputComponent implements OnInit {
     this.view.dispatch(tr);
 
     return true;
+  }
+
+  openSelectedTextMenu() {
+    this.ngxStickyModalService.open({
+      component: SelectionMenuComponent,
+      positionStrategy: {
+        name: StickyPositionStrategy.flexibleConnected,
+        options: {
+          relativeTo: this.container.nativeElement
+        }
+      },
+      position: {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top'
+      },
+      overlayConfig: {
+        hasBackdrop: true
+      },
+      componentFactoryResolver: this.componentFactoryResolver
+    });
   }
 
   private canConvertToTheMark(transaction, symbol: string) {
