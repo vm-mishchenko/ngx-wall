@@ -2,23 +2,153 @@ import {Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChil
 import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
-import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
+import {DOMParser, DOMSerializer, Schema, Slice} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
-import {EditorState} from 'prosemirror-state';
+import {EditorState, Transaction} from 'prosemirror-state';
 import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {SelectionMenuComponent} from './components/selection-menu/selection-menu.component';
 
 export interface IMark {
   name: string;
-  wrapSymbol: string;
   tag: string;
+  wrapSymbol?: string;
+  hotKey?: string;
+  attrs?: IAttr;
+
+  // overview component
+  // show or not overview component automatically
+  // action when cursor stays inside mark
+
+  // show dialog after special symbol or hot key combination
+
+  // hot key for selected text or cursor position - show summary from different plugins
+  // translation, word meaning, open in google images
+}
+
+export interface IAttrMap {
+  [key: string]: string;
+}
+
+export interface IAttr {
+  // defines whether mark has a default value
+  defaultAttrs: () => IAttrMap;
+  // defines component for editing attributes
+  editAttrsComp?: any;
+  // show edit Attributes component
+  hotKey?: string;
 }
 
 export interface IRichInputConfig {
   marks: IMark[];
+}
+
+class RichInputModel {
+  readonly richInputEditor: RichInputEditor;
+
+  constructor(private container: HTMLElement, private config: IRichInputConfig) {
+    const richInputMarks = this.config.marks.map((mark) => {
+      return new RichInputMark(mark);
+    });
+
+    this.richInputEditor = new RichInputEditor({
+      container,
+      marks: this.config.marks,
+      preTransactionHooks: [
+        this.convertToMark.bind(this)
+      ]
+    });
+  }
+
+  convertToMark(transaction, view) {
+    // some should confirm that current transaction is valid for converting
+    // some should create converting transaction
+    // show the attribute modal if necessary
+    //
+  }
+}
+
+class RichInputMark {
+  constructor(private mark: IMark) {
+  }
+}
+
+/**
+ * Contains core state, provides low level API and defines overall data flow.
+ */
+class RichInputEditor {
+  view: EditorView;
+
+  constructor(private options) {
+    const customSchema = new Schema({
+      nodes,
+      marks: {
+        ...marks,
+
+        // register user custom marks
+        ...this.options.marks.reduce((result, markConfig) => {
+          result[markConfig.name] = {
+            inclusive: false,
+            parseDOM: [{tag: markConfig.tag}],
+            toDOM: function toDOM() {
+              return [markConfig.tag, 0];
+            }
+          };
+
+          return result;
+        }, {})
+      },
+    });
+
+    const serializer = DOMSerializer.fromSchema(customSchema);
+
+    const domNode = document.createElement('div');
+    domNode.innerHTML = 'Some initial text';
+
+    // register user custom hotkeys
+    const customKeyMapConfig = this.options.marks.filter((markConfig) => {
+      return markConfig.hotKey;
+    }).reduce((result, markConfig) => {
+      result[markConfig.hotKey] = (state, dispatch) => {
+        const tr = this.view.state.tr;
+        const {from, to} = state.selection;
+
+        const mark = state.doc.type.schema.marks[markConfig.name].create();
+        tr.addMark(from, to, mark);
+
+        dispatch(tr);
+
+        return true;
+      };
+
+      return result;
+    }, {});
+
+    const state = EditorState.create({
+      doc: DOMParser.fromSchema(customSchema).parse(domNode),
+      schema: customSchema,
+      plugins: [
+        keymap(customKeyMapConfig),
+        keymap(baseKeymap),
+      ]
+    });
+
+    this.view = new EditorView(this.options.container, {
+      state,
+      dispatchTransaction: (transaction) => {
+        this.options.preTransactionHooks.some((preTransactionHook) => {
+          return preTransactionHook(transaction, this.view);
+        });
+
+        console.log(`apply transaction`);
+
+        const newState = this.view.state.apply(transaction);
+        this.view.updateState(newState);
+      }
+    });
+  }
 }
 
 @Component({
@@ -34,16 +164,20 @@ export class RichInputComponent implements OnInit {
 
   @Input() config: IRichInputConfig;
 
-  textSelection$: Observable<boolean> = new Subject();
-
   private view: EditorView;
+  private dispatchTransaction$ = new Subject<Transaction>();
 
   constructor(private ngxStickyModalService: StickyModalService,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
-    const customSchema = new Schema({
+    const richInputModel = new RichInputModel(
+      this.container.nativeElement,
+      this.config
+    );
+
+    /*const customSchema = new Schema({
       nodes,
       marks: {
         ...marks,
@@ -64,13 +198,32 @@ export class RichInputComponent implements OnInit {
     const serializer = DOMSerializer.fromSchema(customSchema);
 
     const domNode = document.createElement('div');
-    domNode.innerHTML = '';
+    domNode.innerHTML = 'Some initial text';
+
+    const customKeyMapConfig = this.config.marks.filter((markConfig) => {
+      return markConfig.hotKey;
+    }).reduce((result, markConfig) => {
+      result[markConfig.hotKey] = (state, dispatch) => {
+        const tr = this.view.state.tr;
+        const {from, to} = state.selection;
+
+        const mark = state.doc.type.schema.marks[markConfig.name].create();
+        tr.addMark(from, to, mark);
+
+        dispatch(tr);
+
+        return true;
+      };
+
+      return result;
+    }, {});
 
     const state = EditorState.create({
       doc: DOMParser.fromSchema(customSchema).parse(domNode),
       schema: customSchema,
       plugins: [
-        keymap(baseKeymap)
+        keymap(customKeyMapConfig),
+        keymap(baseKeymap),
       ]
     });
 
@@ -81,15 +234,20 @@ export class RichInputComponent implements OnInit {
           return;
         }
 
-        if (!transaction.curSelection.empty) {
-          // text selected
-        }
-
+        this.dispatchTransaction$.next(transaction);
         const newState = this.view.state.apply(transaction);
-
         this.view.updateState(newState);
       }
     });
+
+    this.dispatchTransaction$.pipe(
+      filter((transaction) => {
+        return !transaction.curSelection.empty;
+      }),
+      debounceTime(500)
+    ).subscribe(() => {
+      console.log(`selected`);
+    });*/
   }
 
   convertToMark(transaction) {
@@ -139,7 +297,7 @@ export class RichInputComponent implements OnInit {
     });
   }
 
-  private canConvertToTheMark(transaction, symbol: string) {
+  private canConvertToTheMark(transaction: Transaction, symbol: string) {
     return this.doesReplaceStepModifyOneTextNode(transaction) &&
       this.isAddSymbol(transaction, symbol) &&
       !this.doesBeforeNodeHaveMarks() &&
@@ -177,7 +335,7 @@ export class RichInputComponent implements OnInit {
   /**
    * Check whether transaction has only ReplaceStep which modifies one text node.
    */
-  private doesReplaceStepModifyOneTextNode(transaction) {
+  private doesReplaceStepModifyOneTextNode(transaction: Transaction) {
     if (transaction.steps.length !== 1) {
       return false;
     }
@@ -192,7 +350,7 @@ export class RichInputComponent implements OnInit {
     return step.slice.content.childCount === 1;
   }
 
-  private isAddSymbol(transaction, symbol): boolean {
+  private isAddSymbol(transaction: Transaction, symbol: string): boolean {
     const step = transaction.steps[0];
 
     const {text} = step.slice.content.firstChild;

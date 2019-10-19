@@ -1,4 +1,11 @@
 import {Component, OnInit} from '@angular/core';
+import {IRichInputConfig} from '../../../projects/ngx-rich-input/src/lib/rich-input.component';
+
+@Component({
+  template: 'edit'
+})
+class RichInputEditAttrsComponent {
+}
 
 @Component({
   template: `
@@ -7,7 +14,7 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: [`./rich-input.component.scss`]
 })
 export class RichInputComponent implements OnInit {
-  config = {
+  config: IRichInputConfig = {
     marks: [
       {
         name: 'snippet',
@@ -18,6 +25,13 @@ export class RichInputComponent implements OnInit {
         name: 'highlight',
         wrapSymbol: '~',
         tag: 'highlight',
+        hotKey: 'Ctrl-h',
+        attrs: {
+          defaultAttrs() {
+            return {};
+          },
+          editAttrsComp: RichInputEditAttrsComponent
+        }
       }
     ]
   };
