@@ -1,8 +1,8 @@
 import {Component, ComponentFactoryResolver, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
+import {StickyModalService, StickyPositionStrategy, StickyModalRef} from 'ngx-sticky-modal';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
-import {DOMParser, DOMSerializer, Schema, Slice} from 'prosemirror-model';
+import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
 import {EditorState, Transaction} from 'prosemirror-state';
@@ -10,6 +10,7 @@ import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 import {Subject} from 'rxjs';
 import {SelectionMenuComponent} from './components/selection-menu/selection-menu.component';
+import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 
 export interface IMark {
   name: string;
@@ -45,28 +46,115 @@ export interface IRichInputConfig {
   marks: IMark[];
 }
 
+/**
+ * Root points. Initialize plugins and main editor.
+ */
 class RichInputModel {
   readonly richInputEditor: RichInputEditor;
 
-  constructor(private container: HTMLElement, private config: IRichInputConfig) {
+  constructor(private container: HTMLElement, private config: IRichInputConfig,
+              private ngxStickyModalService: StickyModalService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
     const richInputMarks = this.config.marks.map((mark) => {
       return new RichInputMark(mark);
     });
 
+    const marksMenuPlugin = new MarksMenuPlugin(this.container, this.ngxStickyModalService, this.componentFactoryResolver);
+
     this.richInputEditor = new RichInputEditor({
       container,
-      marks: this.config.marks,
-      preTransactionHooks: [
-        this.convertToMark.bind(this)
-      ]
+      plugins: [
+        marksMenuPlugin
+      ],
+      marks: this.config.marks
+    });
+  }
+}
+
+class MarksMenuPlugin {
+  private destroyed$ = new Subject();
+
+  private transactions$: Subject<Transaction> = new Subject();
+
+  private noSelectedTextTr$ = this.transactions$.pipe(
+    filter((transaction) => {
+      return transaction.curSelection.empty;
+    }),
+    takeUntil(this.destroyed$)
+  );
+
+  private textSelectedTr$ = this.transactions$.pipe(
+    debounceTime(1000),
+    filter((transaction) => {
+      return !transaction.curSelection.empty;
+    }),
+    takeUntil(this.destroyed$)
+  );
+
+  private menu: StickyModalRef;
+
+  constructor(private container: HTMLElement,
+              private ngxStickyModalService: StickyModalService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
+  }
+
+  preTransactionHook(transaction: Transaction) {
+    this.transactions$.next(transaction);
+  }
+
+  initialize(view: EditorView) {
+    this.textSelectedTr$.subscribe((transaction) => {
+      this.showMenu();
+    });
+
+    this.noSelectedTextTr$.subscribe(() => {
+      this.hideMenu();
     });
   }
 
-  convertToMark(transaction, view) {
-    // some should confirm that current transaction is valid for converting
-    // some should create converting transaction
-    // show the attribute modal if necessary
-    //
+  registerHotkey() {
+    return {
+      'Ctrl-k': (state, dispatch) => {
+        // this.showMenu();
+        // listen which item will be chosen
+        // call other plugin method to add selected mark
+      }
+    };
+  }
+
+  hideMenu() {
+    if (!this.menu) {
+      return false;
+    }
+
+    this.menu.close();
+    this.menu = null;
+  }
+
+  showMenu() {
+    if (this.menu) {
+      return false;
+    }
+
+    this.menu = this.ngxStickyModalService.open({
+      component: SelectionMenuComponent,
+      positionStrategy: {
+        name: StickyPositionStrategy.flexibleConnected,
+        options: {
+          relativeTo: this.container
+        }
+      },
+      position: {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'top'
+      },
+      overlayConfig: {
+        hasBackdrop: true
+      },
+      componentFactoryResolver: this.componentFactoryResolver
+    });
   }
 }
 
@@ -81,7 +169,7 @@ class RichInputMark {
 class RichInputEditor {
   view: EditorView;
 
-  constructor(private options) {
+  constructor(private options: any) {
     const customSchema = new Schema({
       nodes,
       marks: {
@@ -126,10 +214,26 @@ class RichInputEditor {
       return result;
     }, {});
 
+    // register plugin hotkeys
+    const pluginHotKeys = this.options.plugins.filter((plugin) => {
+      return plugin.registerHotkey;
+    }).reduce((result, plugin) => {
+      result = {
+        ...result,
+        ...plugin.registerHotkey()
+      };
+
+      return result;
+    }, {});
+
+    console.log(`Register plugin hotkeys:`);
+    console.log(pluginHotKeys);
+
     const state = EditorState.create({
       doc: DOMParser.fromSchema(customSchema).parse(domNode),
       schema: customSchema,
       plugins: [
+        keymap(pluginHotKeys),
         keymap(customKeyMapConfig),
         keymap(baseKeymap),
       ]
@@ -138,15 +242,28 @@ class RichInputEditor {
     this.view = new EditorView(this.options.container, {
       state,
       dispatchTransaction: (transaction) => {
-        this.options.preTransactionHooks.some((preTransactionHook) => {
-          return preTransactionHook(transaction, this.view);
+        const pluginCancelTransaction = this.options.plugins.filter((plugin) => {
+          return plugin.preTransactionHook;
+        }).some((plugin) => {
+          return plugin.preTransactionHook(transaction);
         });
 
-        console.log(`apply transaction`);
+        if (pluginCancelTransaction) {
+          console.log(`plugin cancel transaction`);
+          return;
+        }
 
+        console.log(`transaction applied`);
         const newState = this.view.state.apply(transaction);
         this.view.updateState(newState);
       }
+    });
+
+    // pass view to all plugins how is interested in it
+    this.options.plugins.filter((plugin) => {
+      return plugin.initialize;
+    }).forEach((plugin) => {
+      plugin.initialize(this.view);
     });
   }
 }
@@ -174,7 +291,9 @@ export class RichInputComponent implements OnInit {
   ngOnInit() {
     const richInputModel = new RichInputModel(
       this.container.nativeElement,
-      this.config
+      this.config,
+      this.ngxStickyModalService,
+      this.componentFactoryResolver
     );
 
     /*const customSchema = new Schema({

@@ -18,13 +18,13 @@ export class RichInputComponent implements OnInit {
     marks: [
       {
         name: 'snippet',
-        wrapSymbol: '`',
         tag: 'snippet',
+        wrapSymbol: '`',
       },
       {
         name: 'highlight',
-        wrapSymbol: '~',
         tag: 'highlight',
+        wrapSymbol: '~',
         hotKey: 'Ctrl-h',
         attrs: {
           defaultAttrs() {
@@ -40,6 +40,5 @@ export class RichInputComponent implements OnInit {
   }
 
   ngOnInit() {
-
   }
 }
