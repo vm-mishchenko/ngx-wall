@@ -6,7 +6,7 @@ import {history} from 'prosemirror-history';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 
 import {marks, nodes} from 'prosemirror-schema-basic';
-import {EditorState, Transaction} from 'prosemirror-state';
+import {EditorState, TextSelection, Transaction} from 'prosemirror-state';
 import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 import {Subject} from 'rxjs';
@@ -80,6 +80,9 @@ class RichInputModel {
               private ngxStickyModalService: StickyModalService,
               private componentFactoryResolver: ComponentFactoryResolver) {
     // plugin creation
+    const markPlugin = new MarkPlugin();
+    this.plugins.set(markPlugin.name, markPlugin);
+
     const marksMenuPlugin = new MarksMenuPlugin();
     this.plugins.set(marksMenuPlugin.name, marksMenuPlugin);
 
@@ -125,6 +128,21 @@ class RichInputModel {
     }).forEach((plugin) => {
       plugin.onDestroy();
     });
+  }
+}
+
+class MarkPlugin {
+  name = 'mark';
+
+  private richInputModel: RichInputModel;
+
+  onInitialize(richInputModel: RichInputModel) {
+    this.richInputModel = richInputModel;
+  }
+
+  createMark(markName: string, from: number, to: number) {
+    this.richInputModel.richInputEditor.clearTextSelection();
+    this.richInputModel.richInputEditor.createMark(markName, from, to);
   }
 }
 
@@ -197,20 +215,26 @@ class MarksMenuPlugin implements IPlugin {
       return false;
     }
 
+    const markPlugin = (this.richInputModel.plugins.get('mark') as MarkPlugin);
     const modalPlugin = (this.richInputModel.plugins.get('modal') as ModalPlugin);
+
+    const {from, to} = this.richInputModel.richInputEditor.view.state.selection;
 
     const config = {
       marks: this.richInputModel.config.marks.map((mark) => {
         return {
           title: mark.name,
-          click: () => {
-            alert(`Mark selected`);
+          click: (markConfig: any) => {
+            console.log(`hideMenu`);
+            this.hideMenu();
+            markPlugin.createMark(markConfig.title, from, to);
+            this.richInputModel.richInputEditor.focus();
           }
         };
       })
     };
 
-    modalPlugin.show(SelectionTextContextMenuComponent, config);
+    this.menu = modalPlugin.show(SelectionTextContextMenuComponent, config);
   }
 
   private hideMenu() {
@@ -337,6 +361,25 @@ class RichInputEditor {
         this.view.updateState(newState);
       }
     });
+  }
+
+  focus() {
+    this.view.focus();
+  }
+
+  createMark(markName: string, from: number, to: number) {
+    const tr = this.view.state.tr;
+    const mark = this.view.state.doc.type.schema.marks[markName].create();
+    tr.addMark(from, to, mark);
+
+    this.view.dispatch(tr);
+  }
+
+  clearTextSelection() {
+    let tr = this.view.state.tr;
+    tr = tr.setSelection(new TextSelection(this.view.state.selection.$head));
+
+    this.view.dispatch(tr);
   }
 }
 
