@@ -47,13 +47,23 @@ export interface IRichInputConfig {
   marks: IMark[];
 }
 
-class RichInputModelAPI {
-  constructor() {
-  }
+interface IPlugin {
+  name: string;
+
+  keymap?: {
+    [key: string]: () => any
+  };
+
+  onInitialize?(richInputModel: RichInputModel);
+
+  transactionHook?(transaction: Transaction): boolean;
+
+  onDestroy?();
 }
 
 /**
- * Root points. Initialize plugins and main editor.
+ * Root model.
+ * Handle plugin configurations: take client specific and initialize core plugins.
  */
 class RichInputModel {
   readonly richInputEditor: RichInputEditor;
@@ -93,10 +103,6 @@ class RichInputModel {
       container,
       keymap: pluginKeymap,
       transactionHook: pluginTransactionHook,
-      plugins: [
-        marksMenuPlugin,
-        // modalPlugin
-      ],
       marks: this.config.marks
     });
 
@@ -106,7 +112,6 @@ class RichInputModel {
     }).map((plugin) => {
       return plugin.onInitialize(this);
     });
-
   }
 
   onDestroy() {
@@ -118,47 +123,12 @@ class RichInputModel {
   }
 }
 
-interface IPlugin {
-  name: string;
-
-  keymap?: {
-    [key: string]: () => any
-  };
-
-  onInitialize?(richInputModel: RichInputModel);
-
-  transactionHook?(transaction: Transaction): boolean;
-
-  onDestroy?();
-}
-
 /**
  * Knows when to show menu with all registered marks.
  * Listen for selected mark.
  */
 class MarksMenuPlugin implements IPlugin {
   name: 'marks-menu';
-
-  private destroyed$ = new Subject();
-
-  private transactions$: Subject<Transaction> = new Subject();
-
-  private noSelectedTextTr$ = this.transactions$.pipe(
-    filter((transaction) => {
-      return transaction.curSelection.empty;
-    }),
-    takeUntil(this.destroyed$)
-  );
-
-  private textSelectedTr$ = this.transactions$.pipe(
-    debounceTime(1000),
-    filter((transaction) => {
-      return !transaction.curSelection.empty;
-    }),
-    takeUntil(this.destroyed$)
-  );
-
-  private menu: StickyModalRef;
 
   keymap = {
     'Ctrl-k': () => {
@@ -168,14 +138,33 @@ class MarksMenuPlugin implements IPlugin {
     }
   };
 
-  transactionHook(transaction: Transaction) {
-    this.transactions$.next(transaction);
+  // indicates whether menu is show or not
+  private menu: StickyModalRef;
 
-    return false;
-  }
+  // stream of prosemirror transactions
+  private transactions$: Subject<Transaction> = new Subject();
+
+  private destroyed$ = new Subject();
+
+  // stream of transactions where there are no selected text
+  private noSelectedTextTr$ = this.transactions$.pipe(
+    filter((transaction) => {
+      return transaction.curSelection.empty;
+    }),
+    takeUntil(this.destroyed$)
+  );
+
+  // stream of transactions where there are selected text
+  private textSelectedTr$ = this.transactions$.pipe(
+    debounceTime(1000),
+    filter((transaction) => {
+      return !transaction.curSelection.empty;
+    }),
+    takeUntil(this.destroyed$)
+  );
 
   onInitialize(richInputModel: RichInputModel) {
-    this.textSelectedTr$.subscribe((transaction) => {
+    this.textSelectedTr$.subscribe(() => {
       this.showMenu();
     });
 
@@ -184,7 +173,17 @@ class MarksMenuPlugin implements IPlugin {
     });
   }
 
-  hideMenu() {
+  transactionHook(transaction: Transaction) {
+    this.transactions$.next(transaction);
+
+    return false;
+  }
+
+  onDestroy() {
+    this.destroyed$.next(true);
+  }
+
+  private hideMenu() {
     if (!this.menu) {
       return false;
     }
@@ -193,7 +192,7 @@ class MarksMenuPlugin implements IPlugin {
     this.menu = null;
   }
 
-  showMenu() {
+  private showMenu() {
     if (this.menu) {
       return false;
     }
@@ -217,10 +216,6 @@ class MarksMenuPlugin implements IPlugin {
       },
       componentFactoryResolver: this.componentFactoryResolver
     });*/
-  }
-
-  onDestroy() {
-    this.destroyed$.next(true);
   }
 }
 
