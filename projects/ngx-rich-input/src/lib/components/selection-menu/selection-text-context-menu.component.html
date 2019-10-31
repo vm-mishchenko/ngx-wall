@@ -1,0 +1,6 @@
+<button
+  *ngFor="let mark of config.marks"
+  mat-button
+  (click)="mark.click()">
+  {{mark.title}}
+</button>

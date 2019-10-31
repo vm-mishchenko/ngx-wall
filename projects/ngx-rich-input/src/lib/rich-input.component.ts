@@ -1,4 +1,4 @@
-import {Component, ComponentFactoryResolver, ComponentRef, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {baseKeymap} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
@@ -10,7 +10,7 @@ import {EditorState, Transaction} from 'prosemirror-state';
 import {ReplaceStep} from 'prosemirror-transform';
 import {EditorView} from 'prosemirror-view';
 import {Subject} from 'rxjs';
-import {SelectionMenuComponent} from './components/selection-menu/selection-menu.component';
+import {SelectionTextContextMenuComponent} from './components/selection-menu/selection-text-context-menu.component';
 import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 
 export interface IMark {
@@ -61,6 +61,11 @@ interface IPlugin {
   onDestroy?();
 }
 
+/*
+* 1. create mark by hot key
+* 2. show menu with all registered marks
+* */
+
 /**
  * Root model.
  * Handle plugin configurations: take client specific and initialize core plugins.
@@ -71,7 +76,7 @@ class RichInputModel {
   plugins: Map<string, IPlugin> = new Map();
 
   constructor(private container: HTMLElement,
-              private config: IRichInputConfig,
+              readonly config: IRichInputConfig,
               private ngxStickyModalService: StickyModalService,
               private componentFactoryResolver: ComponentFactoryResolver) {
     // plugin creation
@@ -96,7 +101,7 @@ class RichInputModel {
     const pluginTransactionHook = Array.from(this.plugins.values()).filter((plugin) => {
       return Boolean(plugin.transactionHook);
     }).map((plugin) => {
-      return plugin.transactionHook;
+      return plugin.transactionHook.bind(plugin);
     });
 
     this.richInputEditor = new RichInputEditor({
@@ -109,7 +114,7 @@ class RichInputModel {
     // initialize plugins when all configurations is set and ready to work
     Array.from(this.plugins.values()).filter((plugin) => {
       return Boolean(plugin.onInitialize);
-    }).map((plugin) => {
+    }).forEach((plugin) => {
       return plugin.onInitialize(this);
     });
   }
@@ -128,7 +133,7 @@ class RichInputModel {
  * Listen for selected mark.
  */
 class MarksMenuPlugin implements IPlugin {
-  name: 'marks-menu';
+  name = 'marks-menu';
 
   keymap = {
     'Ctrl-k': () => {
@@ -163,7 +168,11 @@ class MarksMenuPlugin implements IPlugin {
     takeUntil(this.destroyed$)
   );
 
+  private richInputModel: RichInputModel;
+
   onInitialize(richInputModel: RichInputModel) {
+    this.richInputModel = richInputModel;
+
     this.textSelectedTr$.subscribe(() => {
       this.showMenu();
     });
@@ -183,6 +192,27 @@ class MarksMenuPlugin implements IPlugin {
     this.destroyed$.next(true);
   }
 
+  private showMenu() {
+    if (this.menu) {
+      return false;
+    }
+
+    const modalPlugin = (this.richInputModel.plugins.get('modal') as ModalPlugin);
+
+    const config = {
+      marks: this.richInputModel.config.marks.map((mark) => {
+        return {
+          title: mark.name,
+          click: () => {
+            alert(`Mark selected`);
+          }
+        };
+      })
+    };
+
+    modalPlugin.show(SelectionTextContextMenuComponent, config);
+  }
+
   private hideMenu() {
     if (!this.menu) {
       return false;
@@ -191,45 +221,23 @@ class MarksMenuPlugin implements IPlugin {
     this.menu.close();
     this.menu = null;
   }
-
-  private showMenu() {
-    if (this.menu) {
-      return false;
-    }
-
-    /*this.menu = this.ngxStickyModalService.open({
-      component: SelectionMenuComponent,
-      positionStrategy: {
-        name: StickyPositionStrategy.flexibleConnected,
-        options: {
-          relativeTo: this.container
-        }
-      },
-      position: {
-        originX: 'start',
-        originY: 'top',
-        overlayX: 'center',
-        overlayY: 'top'
-      },
-      overlayConfig: {
-        hasBackdrop: true
-      },
-      componentFactoryResolver: this.componentFactoryResolver
-    });*/
-  }
 }
 
+/**
+ * Sharable functionality for showing the component inside the modal.
+ */
 class ModalPlugin {
-  name: 'modal';
+  name = 'modal';
 
   constructor(private container: HTMLElement,
               private ngxStickyModalService: StickyModalService,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
-  show(component: ComponentRef<any>) {
+  show(component: any, data: any = {}) {
     return this.ngxStickyModalService.open({
       component: component,
+      data,
       positionStrategy: {
         name: StickyPositionStrategy.flexibleConnected,
         options: {
@@ -465,7 +473,7 @@ export class RichInputComponent implements OnInit, OnDestroy {
 
   openSelectedTextMenu() {
     this.ngxStickyModalService.open({
-      component: SelectionMenuComponent,
+      component: SelectionTextContextMenuComponent,
       positionStrategy: {
         name: StickyPositionStrategy.flexibleConnected,
         options: {

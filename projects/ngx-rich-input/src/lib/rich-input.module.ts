@@ -1,21 +1,26 @@
 import {NgModule} from '@angular/core';
 import {StickyModalModule} from 'ngx-sticky-modal';
-import {SelectionMenuComponent} from './components/selection-menu/selection-menu.component';
+import {SelectionTextContextMenuComponent} from './components/selection-menu/selection-text-context-menu.component';
 import {RichInputComponent} from './rich-input.component';
+import {CommonModule} from '@angular/common';
+import {MatButtonModule} from '@angular/material';
 
 @NgModule({
   imports: [
-    StickyModalModule
+    CommonModule,
+    StickyModalModule,
+    MatButtonModule
   ],
   declarations: [
     RichInputComponent,
-    SelectionMenuComponent,
+    SelectionTextContextMenuComponent,
   ],
   entryComponents: [
-    SelectionMenuComponent
+    SelectionTextContextMenuComponent
   ],
   exports: [
     RichInputComponent
   ]
 })
-export class RichInputModule { }
+export class RichInputModule {
+}
