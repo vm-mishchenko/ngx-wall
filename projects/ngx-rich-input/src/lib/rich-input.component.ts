@@ -15,10 +15,13 @@ import {debounceTime, filter, takeUntil} from 'rxjs/operators';
 
 export interface IMark {
   name: string;
-  tag: string;
+  // html tag for the mark, in case if it's not specified name will be used
+  tag?: string;
   wrapSymbol?: string;
   hotKey?: string;
   attrs?: IAttr;
+  inclusive: boolean;
+
 
   // overview component
   // show or not overview component automatically
@@ -35,12 +38,17 @@ export interface IAttrMap {
 }
 
 export interface IAttr {
-  // defines whether mark has a default value
-  defaultAttrs: () => IAttrMap;
+  attrs: any;
+
+  // default mark attributes.
+  // We assume that method returns complete list of all attributes values.
+  defaultAttrs?: () => IAttrMap;
+
   // defines component for editing attributes
   editAttrsComp?: any;
-  // show edit Attributes component
-  hotKey?: string;
+
+  parseDOM: any[];
+  toDOM: (node: any) => any[];
 }
 
 export interface IRichInputConfig {
@@ -110,11 +118,32 @@ class RichInputModel {
       return plugin.transactionHook.bind(plugin);
     });
 
+    const clientCustomMarks = this.config.marks.reduce((result, markConfig) => {
+      if (markConfig.attrs) {
+        result[markConfig.name] = {
+          attrs: markConfig.attrs.attrs,
+          inclusive: markConfig.inclusive,
+          parseDOM: markConfig.attrs.parseDOM,
+          toDOM: markConfig.attrs.toDOM
+        };
+      } else {
+        result[markConfig.name] = {
+          inclusive: markConfig.inclusive,
+          parseDOM: [{tag: markConfig.tag || markConfig.name}],
+          toDOM: function toDOM() {
+            return [markConfig.tag || markConfig.name, 0];
+          }
+        };
+      }
+
+      return result;
+    }, {});
+
     this.richInputEditor = new RichInputEditor({
       container,
       keymap: pluginKeymap,
       transactionHook: pluginTransactionHook,
-      marks: this.config.marks
+      marks: clientCustomMarks
     });
 
     // initialize plugins when all configurations is set and ready to work
@@ -147,8 +176,23 @@ class MarkPlugin {
   }
 
   createMark(markName: string, from: number, to: number) {
-    this.richInputModel.richInputEditor.clearTextSelection();
-    this.richInputModel.richInputEditor.createMark(markName, from, to);
+    const markConfig = this.richInputModel.config.marks.find((mark) => {
+      return mark.name === markName;
+    });
+
+    // mark does not any attribute, we could easily create it right a way
+    console.log(`createMark`);
+    if (!markConfig.attrs) {
+      this.richInputModel.richInputEditor.clearTextSelection();
+      this.richInputModel.richInputEditor.createMark(markName, from, to);
+    } else {
+      if (markConfig.attrs.defaultAttrs) {
+        const defaultAttrs = markConfig.attrs.defaultAttrs();
+
+        this.richInputModel.richInputEditor.clearTextSelection();
+        this.richInputModel.richInputEditor.createMark(markConfig.name, from, to, defaultAttrs);
+      }
+    }
   }
 }
 
@@ -397,23 +441,15 @@ class RichInputEditor {
   view: EditorView;
 
   constructor(private options: any) {
+    console.log(this.options.marks);
+
     const customSchema = new Schema({
       nodes,
       marks: {
         ...marks,
 
         // register user custom marks
-        ...this.options.marks.reduce((result, markConfig) => {
-          result[markConfig.name] = {
-            inclusive: false,
-            parseDOM: [{tag: markConfig.tag}],
-            toDOM: function toDOM() {
-              return [markConfig.tag, 0];
-            }
-          };
-
-          return result;
-        }, {})
+        ...this.options.marks
       },
     });
 
@@ -422,32 +458,12 @@ class RichInputEditor {
     const domNode = document.createElement('div');
     domNode.innerHTML = 'Some initial text';
 
-    // register user custom hotkeys
-    const customKeyMapConfig = this.options.marks.filter((markConfig) => {
-      return markConfig.hotKey;
-    }).reduce((result, markConfig) => {
-      result[markConfig.hotKey] = (state, dispatch) => {
-        const tr = this.view.state.tr;
-        const {from, to} = state.selection;
-
-        const mark = state.doc.type.schema.marks[markConfig.name].create();
-        tr.addMark(from, to, mark);
-
-        dispatch(tr);
-
-        return true;
-      };
-
-      return result;
-    }, {});
-
     const state = EditorState.create({
       doc: DOMParser.fromSchema(customSchema).parse(domNode),
       schema: customSchema,
       plugins: [
         history(),
         keymap(options.keymap || {}),
-        keymap(customKeyMapConfig),
         keymap(baseKeymap),
       ]
     });
@@ -475,9 +491,9 @@ class RichInputEditor {
     this.view.focus();
   }
 
-  createMark(markName: string, from: number, to: number) {
+  createMark(markName: string, from: number, to: number, attrs: any = {}) {
     const tr = this.view.state.tr;
-    const mark = this.view.state.doc.type.schema.marks[markName].create();
+    const mark = this.view.state.doc.type.schema.marks[markName].create(attrs);
     tr.addMark(from, to, mark);
 
     this.view.dispatch(tr);

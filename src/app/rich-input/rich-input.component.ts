@@ -18,19 +18,38 @@ export class RichInputComponent implements OnInit {
     marks: [
       {
         name: 'snippet',
-        tag: 'snippet',
         wrapSymbol: '`',
+        inclusive: true,
       },
       {
         name: 'highlight',
-        tag: 'highlight',
         wrapSymbol: '~',
         hotKey: 'Ctrl-h',
+        inclusive: true
+      },
+      {
+        name: 'link',
+        tag: 'a',
+        inclusive: true,
         attrs: {
+          attrs: {href: {}},
           defaultAttrs() {
-            return {};
+            return {
+              href: 'http://google.com'
+            };
           },
-          editAttrsComp: RichInputEditAttrsComponent
+          editAttrsComp: RichInputEditAttrsComponent,
+          parseDOM: [{
+            tag: 'a',
+            getAttrs: function (dom) {
+              return {
+                href: dom.href
+              };
+            }
+          }],
+          toDOM: function toDOM(node) {
+            return ['a', {href: node.attrs.href}, 0];
+          }
         }
       }
     ]
