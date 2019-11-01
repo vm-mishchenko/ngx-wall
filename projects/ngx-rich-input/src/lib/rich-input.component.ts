@@ -169,10 +169,12 @@ class RichInputModel {
 class MarkPlugin {
   name = 'mark';
 
+  private modalPlugin: ModalPlugin;
   private richInputModel: RichInputModel;
 
   onInitialize(richInputModel: RichInputModel) {
     this.richInputModel = richInputModel;
+    this.modalPlugin = (this.richInputModel.plugins.get('modal') as ModalPlugin);
   }
 
   createMark(markName: string, from: number, to: number) {
@@ -181,16 +183,22 @@ class MarkPlugin {
     });
 
     // mark does not any attribute, we could easily create it right a way
-    console.log(`createMark`);
     if (!markConfig.attrs) {
       this.richInputModel.richInputEditor.clearTextSelection();
       this.richInputModel.richInputEditor.createMark(markName, from, to);
     } else {
+      // mark has default attributes
       if (markConfig.attrs.defaultAttrs) {
         const defaultAttrs = markConfig.attrs.defaultAttrs();
 
         this.richInputModel.richInputEditor.clearTextSelection();
         this.richInputModel.richInputEditor.createMark(markConfig.name, from, to, defaultAttrs);
+      } else {
+        // mark does not have default attributes
+        this.modalPlugin.show(markConfig.attrs.editAttrsComp).result.then((attrs) => {
+          this.richInputModel.richInputEditor.clearTextSelection();
+          this.richInputModel.richInputEditor.createMark(markConfig.name, from, to, attrs);
+        });
       }
     }
   }
@@ -377,8 +385,6 @@ class MarksMenuPlugin implements IPlugin {
         return {
           title: mark.name,
           click: (markConfig: any) => {
-            console.log(`hideMenu`);
-            this.hideMenu();
             markPlugin.createMark(markConfig.title, from, to);
             this.richInputModel.richInputEditor.focus();
           }
@@ -405,13 +411,22 @@ class MarksMenuPlugin implements IPlugin {
 class ModalPlugin {
   name = 'modal';
 
+  // currently shown modal
+  modal: StickyModalRef;
+
   constructor(private container: HTMLElement,
               private ngxStickyModalService: StickyModalService,
               private componentFactoryResolver: ComponentFactoryResolver) {
   }
 
   show(component: any, data: any = {}) {
-    return this.ngxStickyModalService.open({
+    // plugin guarantees that there will be only one modal on the screen
+    if (this.modal) {
+      this.modal.close();
+      this.modal = null;
+    }
+
+    this.modal = this.ngxStickyModalService.open({
       component: component,
       data,
       positionStrategy: {
@@ -431,6 +446,8 @@ class ModalPlugin {
       },
       componentFactoryResolver: this.componentFactoryResolver
     });
+
+    return this.modal;
   }
 }
 

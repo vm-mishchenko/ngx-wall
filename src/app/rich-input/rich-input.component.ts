@@ -1,10 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {IRichInputConfig} from '../../../projects/ngx-rich-input/src/lib/rich-input.component';
+import {IRichInputConfig} from 'ngx-rich-input';
+import {StickyModalRef} from 'ngx-sticky-modal';
 
 @Component({
-  template: 'edit'
+  template: '<button (click)="send()">Send</button>'
 })
-class RichInputEditAttrsComponent {
+export class RichInputEditAttrsComponent {
+  constructor(private stickyModalRef: StickyModalRef) {
+  }
+
+  send() {
+    this.stickyModalRef.close({
+      href: 'http://google.com'
+    });
+  }
 }
 
 @Component({
@@ -25,7 +34,26 @@ export class RichInputComponent implements OnInit {
         name: 'highlight',
         wrapSymbol: '~',
         hotKey: 'Ctrl-h',
-        inclusive: true
+        inclusive: true,
+        attrs: {
+          attrs: {color: {}},
+          defaultAttrs() {
+            return {
+              color: 'red'
+            };
+          },
+          parseDOM: [{
+            tag: 'highlight',
+            getAttrs: function (dom) {
+              return {
+                color: dom.color
+              };
+            }
+          }],
+          toDOM: function toDOM(node) {
+            return ['highlight', {color: node.attrs.color}, 0];
+          }
+        }
       },
       {
         name: 'link',
@@ -33,11 +61,6 @@ export class RichInputComponent implements OnInit {
         inclusive: true,
         attrs: {
           attrs: {href: {}},
-          defaultAttrs() {
-            return {
-              href: 'http://google.com'
-            };
-          },
           editAttrsComp: RichInputEditAttrsComponent,
           parseDOM: [{
             tag: 'a',
