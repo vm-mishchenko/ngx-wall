@@ -64,7 +64,7 @@ interface IPlugin {
 /*
 * 1. create mark by hot key
 * 2. show menu with all registered marks
-* */
+*/
 
 /**
  * Root model.
@@ -82,6 +82,9 @@ class RichInputModel {
     // plugin creation
     const markPlugin = new MarkPlugin();
     this.plugins.set(markPlugin.name, markPlugin);
+
+    const markSymbolWrapperPlugin = new MarkSymbolWrapperPlugin();
+    this.plugins.set(markSymbolWrapperPlugin.name, markSymbolWrapperPlugin);
 
     const marksMenuPlugin = new MarksMenuPlugin();
     this.plugins.set(marksMenuPlugin.name, marksMenuPlugin);
@@ -131,6 +134,9 @@ class RichInputModel {
   }
 }
 
+/**
+ * Knows how to create mark, based on client provided config.
+ */
 class MarkPlugin {
   name = 'mark';
 
@@ -143,6 +149,108 @@ class MarkPlugin {
   createMark(markName: string, from: number, to: number) {
     this.richInputModel.richInputEditor.clearTextSelection();
     this.richInputModel.richInputEditor.createMark(markName, from, to);
+  }
+}
+
+/**
+ * Creates marks if the text wrapped by symbols specified by the client.
+ */
+class MarkSymbolWrapperPlugin {
+  name = 'mark-symbol-wrapper';
+
+  private richInputModel: RichInputModel;
+
+  private markPlugin: MarkPlugin;
+
+  onInitialize(richInputModel: RichInputModel) {
+    this.richInputModel = richInputModel;
+    this.markPlugin = this.richInputModel.plugins.get('mark') as MarkPlugin;
+  }
+
+  transactionHook(transaction: Transaction) {
+    const convertToMark = this.richInputModel.config.marks.filter((markConfig) => {
+      return this.canConvertToTheMark(transaction, markConfig.wrapSymbol);
+    })[0];
+
+    if (!convertToMark) {
+      return false;
+    }
+
+    const leftNode = this.richInputModel.richInputEditor.view.state.selection.$from.nodeBefore;
+    const cursorPosition = this.richInputModel.richInputEditor.view.state.selection.$from.pos;
+    const leftOpenCharacterIndex = leftNode.text.indexOf(convertToMark.wrapSymbol);
+    const startPos = cursorPosition - leftNode.nodeSize + leftOpenCharacterIndex;
+
+    const tr = this.richInputModel.richInputEditor.view.state.tr;
+    tr.delete(startPos, startPos + 1);
+    this.richInputModel.richInputEditor.view.dispatch(tr);
+
+    // create mark
+    this.markPlugin.createMark(convertToMark.name, startPos, tr.selection.$cursor.pos);
+
+    // cancel current transaction
+    return true;
+  }
+
+  private canConvertToTheMark(transaction: Transaction, symbol: string) {
+    return this.doesReplaceStepModifyOneTextNode(transaction) &&
+      this.isAddSymbol(transaction, symbol) &&
+      !this.doesBeforeNodeHaveMarks() &&
+      this.doesBeforeNodeHaveSymbol(symbol) &&
+      this.distanceToSymbolForBeforeNode(symbol);
+  }
+
+  private distanceToSymbolForBeforeNode(symbol: string): number {
+    const leftNode = this.richInputModel.richInputEditor.view.state.selection.$from.nodeBefore;
+    const cursorPosition = this.richInputModel.richInputEditor.view.state.selection.$from.pos;
+    const leftOpenCharacterIndex = leftNode.text.indexOf(symbol);
+    const startPos = cursorPosition - leftNode.nodeSize + leftOpenCharacterIndex;
+
+    return cursorPosition - startPos + 1;
+  }
+
+  private doesBeforeNodeHaveSymbol(symbol: string) {
+    const leftNode = this.richInputModel.richInputEditor.view.state.selection.$from.nodeBefore;
+
+    if (!leftNode) {
+      return false;
+    }
+
+    const leftOpenCharacterIndex = leftNode.text.indexOf(symbol);
+
+    return leftNode.nodeSize && leftOpenCharacterIndex !== -1;
+  }
+
+  private doesBeforeNodeHaveMarks() {
+    const leftNode = this.richInputModel.richInputEditor.view.state.selection.$from.nodeBefore;
+
+    return leftNode && leftNode.marks.length;
+  }
+
+  /**
+   * Check whether transaction has only ReplaceStep which modifies one text node.
+   */
+  private doesReplaceStepModifyOneTextNode(transaction: Transaction) {
+    if (transaction.steps.length !== 1) {
+      return false;
+    }
+
+    const step = transaction.steps[0];
+
+    if (!(step instanceof ReplaceStep)) {
+      return false;
+    }
+
+    //
+    return step.slice.content.childCount === 1;
+  }
+
+  private isAddSymbol(transaction: Transaction, symbol: string): boolean {
+    const step = transaction.steps[0];
+
+    const {text} = step.slice.content.firstChild;
+
+    return text && text[text.length - 1] === symbol;
   }
 }
 
