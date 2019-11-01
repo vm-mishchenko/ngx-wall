@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {IRichInputConfig} from 'ngx-rich-input';
-import {StickyModalRef} from 'ngx-sticky-modal';
+import {STICKY_MODAL_DATA, StickyModalRef} from 'ngx-sticky-modal';
 
 @Component({
   template: '<button (click)="send()">Send</button>'
 })
-export class RichInputEditAttrsComponent {
+export class LinkEditAttrsComponent {
   constructor(private stickyModalRef: StickyModalRef) {
   }
 
@@ -13,6 +13,14 @@ export class RichInputEditAttrsComponent {
     this.stickyModalRef.close({
       href: 'http://google.com'
     });
+  }
+}
+
+@Component({
+  template: 'Overview {{config.href}}'
+})
+export class LinkOverviewComponent {
+  constructor(@Inject(STICKY_MODAL_DATA) public config: any) {
   }
 }
 
@@ -59,9 +67,10 @@ export class RichInputComponent implements OnInit {
         name: 'link',
         tag: 'a',
         inclusive: true,
+        overviewComp: LinkOverviewComponent,
         attrs: {
           attrs: {href: {}},
-          editAttrsComp: RichInputEditAttrsComponent,
+          editAttrsComp: LinkEditAttrsComponent,
           parseDOM: [{
             tag: 'a',
             getAttrs: function (dom) {

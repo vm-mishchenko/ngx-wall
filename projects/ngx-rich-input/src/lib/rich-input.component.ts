@@ -21,7 +21,7 @@ export interface IMark {
   hotKey?: string;
   attrs?: IAttr;
   inclusive: boolean;
-
+  overviewComp?: any;
 
   // overview component
   // show or not overview component automatically
@@ -90,6 +90,9 @@ class RichInputModel {
     // plugin creation
     const markPlugin = new MarkPlugin();
     this.plugins.set(markPlugin.name, markPlugin);
+
+    const markOverviewPlugin = new MarkOverviewPlugin();
+    this.plugins.set(markOverviewPlugin.name, markOverviewPlugin);
 
     const markSymbolWrapperPlugin = new MarkSymbolWrapperPlugin();
     this.plugins.set(markSymbolWrapperPlugin.name, markSymbolWrapperPlugin);
@@ -160,6 +163,78 @@ class RichInputModel {
     }).forEach((plugin) => {
       plugin.onDestroy();
     });
+  }
+}
+
+class MarkOverviewPlugin {
+  name = 'mark-overview';
+
+  // mark type for which the overview component is shown
+  private shownOverviewForMarkName: string;
+  private overviewCompModal: any;
+  private modalPlugin: ModalPlugin;
+  private richInputModel: RichInputModel;
+
+  onInitialize(richInputModel: RichInputModel) {
+    this.richInputModel = richInputModel;
+    this.modalPlugin = (this.richInputModel.plugins.get('modal') as ModalPlugin);
+  }
+
+  transactionHook(transaction: Transaction) {
+    // hide active overview if there is a text selection
+    if (!transaction.curSelection.empty) {
+      this.hideActiveOverview();
+      return false;
+    }
+
+    const marksInCursorPosition = transaction.curSelection.$anchor.marks();
+
+    // hide active overview if there are no marks in current cursor position
+    if (!Boolean(marksInCursorPosition.length)) {
+      this.hideActiveOverview();
+      return false;
+    }
+
+    // find marks with component overview in config
+    const markNames = marksInCursorPosition.map((mark) => {
+      return mark.type.name;
+    });
+
+    // there are might be several possible mark overview to show
+    // choose the first one for simplicity for now
+    const possibleMarkConfigToShow = this.richInputModel.config.marks.filter((markConfig) => {
+      return markConfig.overviewComp;
+    }).filter((markConfig) => {
+      return markNames.includes(markConfig.name);
+    })[0];
+
+    // hide active overview if we cannot show any mark overview
+    if (!possibleMarkConfigToShow) {
+      this.hideActiveOverview();
+      return false;
+    }
+
+    // chose the mark instance in cursor position to show
+    const chosenMarkInCursorPosition = marksInCursorPosition.find((markInCursorPosition) => {
+      return markInCursorPosition.type.name === possibleMarkConfigToShow.name;
+    });
+
+    // do nothing if we already show the overview
+    if (this.shownOverviewForMarkName && this.shownOverviewForMarkName === possibleMarkConfigToShow.name) {
+      return false;
+    }
+
+    // finally show the overview
+    this.shownOverviewForMarkName = possibleMarkConfigToShow.name;
+    this.overviewCompModal = this.modalPlugin.show(possibleMarkConfigToShow.overviewComp, chosenMarkInCursorPosition.attrs);
+  }
+
+  private hideActiveOverview() {
+    if (this.shownOverviewForMarkName) {
+      this.shownOverviewForMarkName = null;
+      this.overviewCompModal.close();
+      this.overviewCompModal = null;
+    }
   }
 }
 

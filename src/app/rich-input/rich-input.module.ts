@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RichInputModule} from '../../../projects/ngx-rich-input/src/lib/rich-input.module';
-import {RichInputComponent, RichInputEditAttrsComponent} from './rich-input.component';
+import {LinkEditAttrsComponent, LinkOverviewComponent, RichInputComponent} from './rich-input.component';
 import {StickyModalModule} from 'ngx-sticky-modal';
 
 @NgModule({
@@ -10,10 +10,12 @@ import {StickyModalModule} from 'ngx-sticky-modal';
   ],
   declarations: [
     RichInputComponent,
-    RichInputEditAttrsComponent,
+    LinkEditAttrsComponent,
+    LinkOverviewComponent,
   ],
   entryComponents: [
-    RichInputEditAttrsComponent,
+    LinkEditAttrsComponent,
+    LinkOverviewComponent,
   ]
 })
 export class RichInputModuleExample {
