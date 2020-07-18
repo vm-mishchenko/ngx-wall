@@ -62,9 +62,9 @@ export class WallEditorComponent implements OnInit {
             'tag': 'text',
             'meta': {},
             'data': {
-                'text': 'Hi, World!'
+                'text': ''
             }
-        }
+        },
     ];
 
     wallModel: IWallModel;

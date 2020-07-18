@@ -129,46 +129,49 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     // general handler of all key events
     onKeyPress(e: KeyboardEvent) {
-        if (this.noMetaKeyIsPressed(e)) {
-            if (e.code === TOP_KEY) {
-                this.topKeyPressed(e);
-            }
+        console.log(`onKeyPress base text editor`);
+        if (this.isAnyMetaKeyPressed(e)) {
+            return;
+        }
 
-            if (e.code === BOTTOM_KEY) {
-                this.bottomKeyPressed(e);
-            }
+        if (e.code === TOP_KEY) {
+            this.topKeyPressed(e);
+        }
 
-            if (e.code === LEFT_KEY && this.isCaretAtStart()) {
-                this.leftKeyPressed(e);
-            }
+        if (e.code === BOTTOM_KEY) {
+            this.bottomKeyPressed(e);
+        }
 
-            if (e.code === RIGHT_KEY && this.isCaretAtEnd()) {
-                this.rightKeyPressed(e);
-            }
+        if (e.code === LEFT_KEY && this.isCaretAtStart()) {
+            this.leftKeyPressed(e);
+        }
 
-            if (e.code === ENTER_KEY || e.keyCode === ENTER_KEY_CODE_ANDROID || e.code === NUMPUB_ENTER_KEY) {
-                this.enterKeyPressed(e);
-            }
+        if (e.code === RIGHT_KEY && this.isCaretAtEnd()) {
+            this.rightKeyPressed(e);
+        }
 
-            if (e.keyCode === ESCAPE_KEY) {
-                this.escapeKeyPressed(e);
-            }
+        if (e.code === ENTER_KEY || e.keyCode === ENTER_KEY_CODE_ANDROID || e.code === NUMPUB_ENTER_KEY) {
+            this.enterKeyPressed(e);
+        }
 
-            if ((e.code === BACK_SPACE_KEY || e.keyCode === BACK_SPACE_KEY_CODE_ANDROID) && !this.isTextSelected()) {
-                this.backSpaceKeyPressed(e);
-            }
+        if (e.keyCode === ESCAPE_KEY) {
+            this.escapeKeyPressed(e);
+        }
 
-            if (e.code === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
-                this.concatWithNextTextSupportingBrick(e);
-            }
+        if ((e.code === BACK_SPACE_KEY || e.keyCode === BACK_SPACE_KEY_CODE_ANDROID) && !this.isTextSelected()) {
+            this.backSpaceKeyPressed(e);
+        }
 
-            if (e.code === TAB_KEY && this.isCaretAtStart()) {
-                this.onTabPressed(e);
-            }
+        if (e.code === DELETE_KEY && this.scope.text.length && this.isCaretAtEnd() && !this.isTextSelected()) {
+            this.concatWithNextTextSupportingBrick(e);
+        }
 
-            if (e.code === DELETE_KEY && this.scope.text === '') {
-                this.onDeleteAndFocusToNext(e);
-            }
+        if (e.code === TAB_KEY && this.isCaretAtStart()) {
+            this.onTabPressed(e);
+        }
+
+        if (e.code === DELETE_KEY && this.scope.text === '') {
+            this.onDeleteAndFocusToNext(e);
         }
     }
 
@@ -357,33 +360,39 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     // key handler end
     onWallFocus(context?: IFocusContext): void {
-        if (this.editor.nativeElement !== document.activeElement) {
-            // focus by API call
-            this.editor.nativeElement.focus();
+        console.log(`onWallFocus`);
 
-            if (context && context.initiator === FOCUS_INITIATOR) {
-                if (context.details.deletePreviousText) {
-                    this.placeCaretAtEnd();
-                }
+        if (this.editor.nativeElement === document.activeElement) {
+            return;
+        }
 
-                if (context.details.concatText) {
-                    this.placeCaretBaseOnConcatenatedText(context.details.concatenationText);
-                }
+        // focus by API call
+        this.editor.nativeElement.focus();
 
-                if (context.details.leftKey) {
-                    this.placeCaretAtEnd();
-                }
+        if (!context || context.initiator !== FOCUS_INITIATOR) {
+            return;
+        }
 
-                if (context.details.rightKey) {
-                    this.placeCaretAtStart();
-                }
+        if (context.details.deletePreviousText) {
+            this.placeCaretAtEnd();
+        }
 
-                if (context.details.bottomKey || context.details.topKey) {
-                    const line = context.details.bottomKey ? LineType.first : LineType.last;
+        if (context.details.concatText) {
+            this.placeCaretBaseOnConcatenatedText(context.details.concatenationText);
+        }
 
-                    this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
-                }
-            }
+        if (context.details.leftKey) {
+            this.placeCaretAtEnd();
+        }
+
+        if (context.details.rightKey) {
+            this.placeCaretAtStart();
+        }
+
+        if (context.details.bottomKey || context.details.topKey) {
+            const line = context.details.bottomKey ? LineType.first : LineType.last;
+
+            this.placeCaretAtLeftCoordinate(context.details.caretLeftCoordinate, line);
         }
     }
 
@@ -497,7 +506,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         return (new StringWithoutEmptyNodes(text)).get();
     }
 
-    private noMetaKeyIsPressed(e): boolean {
-        return !((e.shiftKey || e.altKey || e.ctrlKey || e.metaKey));
+    private isAnyMetaKeyPressed(e: KeyboardEvent): boolean {
+        return e.shiftKey || e.altKey || e.ctrlKey || e.metaKey;
     }
 }

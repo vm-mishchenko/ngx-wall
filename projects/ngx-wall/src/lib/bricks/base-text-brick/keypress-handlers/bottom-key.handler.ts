@@ -7,6 +7,7 @@ export class BottomKeyHandler {
     }
 
     execute(e: KeyboardEvent) {
+        console.log(`bottom`);
         if (this.baseTextBrickComponent.isCaretAtLastLine()) {
             e.preventDefault();
 
