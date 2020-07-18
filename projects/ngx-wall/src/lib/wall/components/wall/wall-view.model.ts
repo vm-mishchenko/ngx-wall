@@ -200,8 +200,6 @@ export class EditMode {
 
     // called when mode is activated
     onActivate(brickId?: string) {
-        console.log(`edit active focus to" ${brickId}`);
-
         if (brickId) {
             this.focusOnBrickId(brickId);
         }
