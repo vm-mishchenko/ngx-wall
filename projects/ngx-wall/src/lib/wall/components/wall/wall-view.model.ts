@@ -60,6 +60,20 @@ export class NavigationMode {
     constructor(private wallViewModel: WallViewModel) {
     }
 
+    // called when mode is activated
+    onActivated(brickIdToFocus?: string) {
+        this.unSelectAllBricks();
+
+        if (brickIdToFocus) {
+            this.setCursorTo(brickIdToFocus);
+        }
+    }
+
+    // called when mode is de-activated
+    onDeActivated() {
+        this.unSelectAllBricks();
+    }
+
     /** Switch brick selection for cursor. */
     switchBrickSelection() {
         if (this.selectedBricks.includes(this.cursorPosition)) {
@@ -184,6 +198,20 @@ export class EditMode {
     constructor(private wallViewModel: WallViewModel) {
     }
 
+    // called when mode is activated
+    onActivate(brickId?: string) {
+        console.log(`edit active focus to" ${brickId}`);
+
+        if (brickId) {
+            this.focusOnBrickId(brickId);
+        }
+    }
+
+    // called when mode is de-activated (switched to navigation mode)
+    onDeActivate() {
+        // do nothing for now
+    }
+
     focusOnBrickId(brickId: string, focusContext?: IFocusContext) {
         this.focusedBrickInternal$.next({
             id: brickId,
@@ -220,6 +248,7 @@ export class EditMode {
 export class Mode {
     private currentModeInternal$: BehaviorSubject<VIEW_MODE> = new BehaviorSubject(VIEW_MODE.EDIT);
     currentMode$: Observable<VIEW_MODE> = this.currentModeInternal$.asObservable();
+
     get currentMode() {
         return this.currentModeInternal$.getValue();
     }
@@ -247,41 +276,42 @@ export class Mode {
 
         this.currentModeInternal$.next(VIEW_MODE.EDIT);
 
-        if (focusToBrick) {
-            let focusToBrickId;
+        let focusToBrickId;
 
+        if (focusToBrick) {
             if (this.wallViewModel.wallModel.api.core2.query().hasBrick(this.navigation.cursorPosition)) {
                 focusToBrickId = this.navigation.cursorPosition;
             } else {
                 focusToBrickId = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
             }
-
-            if (focusToBrickId) {
-                this.edit.focusOnBrickId(focusToBrickId);
-            }
         }
+
+        // De-activate navigation mode
+        this.navigation.onDeActivated();
+
+        // De-activate edit mode
+        this.edit.onActivate(focusToBrickId);
     }
 
     switchToNavigationMode() {
         (document.activeElement as HTMLElement).blur();
         this.currentModeInternal$.next(VIEW_MODE.NAVIGATION);
 
-        // reset selected bricks
-        this.navigation.unSelectAllBricks();
-
         // try to set cursor position
-        let cursorPosition;
+        let brickIdToFocus: string;
         const focusedBrick = this.edit.focusedBrick;
 
         if (focusedBrick && focusedBrick.id && this.wallViewModel.wallModel.api.core2.query().hasBrick(focusedBrick.id)) {
-            cursorPosition = focusedBrick.id;
+            brickIdToFocus = focusedBrick.id;
         } else {
-            cursorPosition = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
+            brickIdToFocus = this.wallViewModel.wallModel.api.core2.query().brickIdBasedOnPosition(0);
         }
 
-        if (cursorPosition) {
-            this.navigation.setCursorTo(cursorPosition);
-        }
+        // De-activate edit mode
+        this.edit.onDeActivate();
+
+        // Activate navigation mode
+        this.navigation.onActivated(brickIdToFocus);
     }
 }
 
@@ -298,6 +328,7 @@ export class MediaInteraction {
     }
 }
 
+// Defines what would be exposed as an public API
 class WallViewApi implements IWallUiApi {
     mediaInteraction = this.wallViewModel.mediaInteraction;
     mode = this.wallViewModel.mode;

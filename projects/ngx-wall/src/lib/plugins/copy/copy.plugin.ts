@@ -25,12 +25,12 @@ export class CopyPlugin implements IWallPlugin {
     }
 
     onCopy(e: ClipboardEvent) {
-        const selectedTextRepresentation = this.getSelectedTextRepresentation();
+        const textRepresentationOfSelectedBricks = this.getTextRepresentationOfSelectedBricks();
 
-        if (selectedTextRepresentation.length) {
+        if (textRepresentationOfSelectedBricks.length) {
             e.preventDefault();
 
-            this.addToClipboard(e, selectedTextRepresentation);
+            this.addToClipboard(e, textRepresentationOfSelectedBricks);
         }
     }
 
@@ -42,7 +42,7 @@ export class CopyPlugin implements IWallPlugin {
         e.clipboardData.setData('text/plain', str);
     }
 
-    private getSelectedTextRepresentation(): string {
+    private getTextRepresentationOfSelectedBricks(): string {
         const selectedBrickIds = this.wallModel.api.ui.mode.navigation.getSelectedBrickIds();
 
         return selectedBrickIds
