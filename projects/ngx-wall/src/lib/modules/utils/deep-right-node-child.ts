@@ -5,7 +5,15 @@ export class DeepRightNodeChild {
         let currentNode: Node = root;
 
         while (currentNode.childNodes.length) {
-            currentNode = currentNode.childNodes[currentNode.childNodes.length - 1];
+            const childNodeArray = Array.from(currentNode.childNodes);
+            const lastNode = currentNode.childNodes[currentNode.childNodes.length - 1];
+
+            // remove last BR element, which cause trouble in Firefox
+            if (lastNode.nodeName === 'BR') {
+                childNodeArray.splice(-1);
+            }
+
+            currentNode = childNodeArray[childNodeArray.length - 1];
         }
 
         this.child = currentNode;

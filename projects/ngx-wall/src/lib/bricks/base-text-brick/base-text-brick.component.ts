@@ -129,7 +129,6 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
 
     // general handler of all key events
     onKeyPress(e: KeyboardEvent) {
-        console.log(`onKeyPress base text editor`);
         if (this.isAnyMetaKeyPressed(e)) {
             return;
         }
@@ -488,6 +487,7 @@ export abstract class BaseTextBrickComponent implements OnInit, OnDestroy, IOnWa
         // todo: find the way to set caret based on coordinate number
         if (line === LineType.last) {
             this.placeCaretAtEnd();
+            // this.placeCaretAtStart();
         } else {
             this.placeCaretAtStart();
         }
