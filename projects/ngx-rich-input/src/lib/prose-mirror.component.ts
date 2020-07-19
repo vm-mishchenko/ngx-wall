@@ -99,10 +99,8 @@ export class ProseMirrorComponent {
 
 
   ngOnInit() {
-    console.log(`ngOnInit`);
-
     const domNode = document.createElement('div');
-    domNode.innerHTML = 'Simple <highlight>cusom</highlight> simple <a href="http://google.com">Link</a>'; // innerHTML;
+    domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple'; // innerHTML;
     // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
@@ -133,6 +131,9 @@ export class ProseMirrorComponent {
       },
       selection: {
         isTextSelected: this.isTextSelected(this.view.state),
+        isCursorBetweenNodes: this.isCursorBetweenNodes(this.view.state),
+        isCursorAtTheStart: this.isCursorAtTheStart(this.view.state),
+        isCursorAtTheEnd: this.isCursorAtTheEnd(this.view.state),
         selectedText: this.getSelectedText(this.view.state),
         selectedHTML: this.getSelectedHTML(this.view.state),
         rightText: this.getTextCursorToEnd(this.view.state),
@@ -252,12 +253,42 @@ export class ProseMirrorComponent {
   }
 
   getCurrentNode(state) {
-    const $cursor = state.selection.$cursor;
-    // need further investigation, what to show in case
-
+    // For all these cases Node is not determined
     // 1. <node>|<node>
     // 2. |<node>...
     // 3. ...<node>|
+
+    if (this.isTextSelected(state) || this.isCursorBetweenNodes(state)) {
+      return;
+    }
+
+    const $cursor = state.selection.$cursor;
+
+    return $cursor.parent.child($cursor.index());
+  }
+
+  isCursorBetweenNodes(state) {
+    if (this.isTextSelected(state)) {
+      return;
+    }
+
+    return state.selection.$cursor.textOffset === 0;
+  }
+
+  isCursorAtTheStart(state) {
+    if (this.isTextSelected(state)) {
+      return;
+    }
+
+    return state.selection.$cursor.pos === 0;
+  }
+
+  isCursorAtTheEnd(state) {
+    if (this.isTextSelected(state)) {
+      return;
+    }
+
+    return state.selection.$cursor.pos === state.selection.$cursor.parent.content.size;
   }
 
   // experimental functions
