@@ -4,27 +4,80 @@
   <div class="left" *ngFor="let doc of [view.state.doc]" style="flex-basis: 50%;">
     <h2>Static information</h2>
     <div class="property">
+      <b>HTML representation</b>: {{stateProperties.representation.html}}
+    </div>
+
+    <div class="property">
+      <b>Text representation</b>: {{stateProperties.representation.text}}
+    </div>
+
+    <div class="property">
       <b>Number of nodes</b>: {{doc.content.content.length}}
     </div>
+
     <div class="property">
-      <b>Doc size (size of entire node):</b> {{doc.nodeSize}}
-      <p><i>Minimum is 2 - one for entrance block node and for leaving</i></p>
+      <b>Doc index size (size of entire node):</b> {{doc.nodeSize}}
     </div>
 
     <div class="property">
-      <b>Paragraph content size:</b> {{doc.content.size}}
+      <b>Content index size:</b> {{doc.content.size}}
+    </div>
+
+    <h2>Selection</h2>
+
+    <div class="property">
+      <b>Is text selected:</b> {{stateProperties.selection.isTextSelected}}
     </div>
 
     <div class="property">
-      <b>Doc as string:</b> {{view.state.doc.toString()}}
+      <b>Cursor anchor position:</b> {{view.state.selection.$anchor.pos}}
+    </div>
+
+    <div class="property">
+      <b>Cursor head position:</b> {{view.state.selection.$head.pos}}
+    </div>
+
+    <div class="property">
+      <b>Cursor lower position:</b> {{view.state.selection.$from.pos}}
+    </div>
+
+    <div class="property">
+      <b>Cursor upper position:</b> {{view.state.selection.$to.pos}}
+    </div>
+
+    <div class="property">
+      <b>Left text:</b> {{stateProperties.selection.leftText}}
+    </div>
+
+    <div class="property">
+      <b>Left HTML:</b> {{stateProperties.selection.leftHTML}}
+    </div>
+
+    <div class="property">
+      <b>Right text:</b> {{stateProperties.selection.rightText}}
+    </div>
+
+    <div class="property">
+      <b>Right HTML:</b> {{stateProperties.selection.rightHTML}}
+    </div>
+
+    <div class="property">
+      <b>Current node:</b> {{stateProperties.selection.currentNode | json }}
+    </div>
+
+
+    <div class="property">
+      <b>Selected Text:</b> {{stateProperties.selection.selectedText}}
+    </div>
+
+    <div class="property">
+      <b>Selected HTML:</b> {{stateProperties.selection.selectedHTML}}
     </div>
 
     <button (click)="appendTextAtTheBeginning()">Append text at the beginning</button>
   </div>
 
   <div class="right" style="font-size: 0.8rem; line-height: 1.1;">
-    <pre>{{docContentInfo | json}}</pre>
+    <pre>{{stateProperties.representation.contentJson | json}}</pre>
   </div>
 </div>
-
-
