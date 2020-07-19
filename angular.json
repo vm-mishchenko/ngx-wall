@@ -25,6 +25,7 @@
             "styles": [
               "./node_modules/codemirror/lib/codemirror.css",
               "./node_modules/codemirror/theme/neo.css",
+              "./node_modules/prosemirror-view/style/prosemirror.css",
               "src/styles.scss"
             ],
             "scripts": []

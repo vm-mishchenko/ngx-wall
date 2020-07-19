@@ -1,0 +1,30 @@
+<div id="container" #container></div>
+
+<div style="display: flex">
+  <div class="left" *ngFor="let doc of [view.state.doc]" style="flex-basis: 50%;">
+    <h2>Static information</h2>
+    <div class="property">
+      <b>Number of nodes</b>: {{doc.content.content.length}}
+    </div>
+    <div class="property">
+      <b>Doc size (size of entire node):</b> {{doc.nodeSize}}
+      <p><i>Minimum is 2 - one for entrance block node and for leaving</i></p>
+    </div>
+
+    <div class="property">
+      <b>Paragraph content size:</b> {{doc.content.size}}
+    </div>
+
+    <div class="property">
+      <b>Doc as string:</b> {{view.state.doc.toString()}}
+    </div>
+
+    <button (click)="appendTextAtTheBeginning()">Append text at the beginning</button>
+  </div>
+
+  <div class="right" style="font-size: 0.8rem; line-height: 1.1;">
+    <pre>{{docContentInfo | json}}</pre>
+  </div>
+</div>
+
+
