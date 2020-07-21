@@ -1,8 +1,114 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 
-import {EditorState} from 'prosemirror-state';
+import {EditorState, Plugin, Selection, TextSelection} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
+
+const statePlugin = new Plugin({
+  state: {
+    init: () => {
+      return 0;
+    },
+
+    apply: (tr, value, oldState, newState) => {
+      return 1;
+    },
+
+    // how I save the state of the plugin = state.toJSON({<arbitrary field name>:<plugin instance>})
+    toJSON: () => {
+      return {
+        count: 0
+      };
+    }
+  }
+});
+
+const filterTransactionPlugin = new Plugin({
+  filterTransaction: (transaction, editorState): boolean => {
+    // true - allows transaction
+    return true;
+  },
+
+  // designed to be able to observe any state change and react to it, once
+  appendTransaction(transactions, oldState, newState) {
+    if (/*condition*/ false) {
+      const newTransaction = newState.tr;
+
+      return newTransaction
+        .setMeta('originator', 'filterTransactionPlugin')
+        .insertText('Inserted', 0, 10);
+    }
+  }
+});
+
+function keyHandlerPluginFactory(keyCode) {
+  return new Plugin({
+    props: {
+      handleKeyDown: (editorView, event) => {
+        if (event.code === keyCode) {
+          console.log(`Intercept event with ${keyCode} pressed!`);
+          return true;
+        }
+
+        // default implementation should handle that event
+        return false;
+      },
+    },
+  });
+}
+
+class SelectionSizeTooltip {
+  tooltip: any;
+
+  constructor(view) {
+    this.tooltip = document.createElement('div');
+    this.tooltip.className = 'tooltip';
+    view.dom.parentNode.appendChild(this.tooltip);
+
+    this.update(view, null);
+  }
+
+  // called on each state update
+  update(view, prevState) {
+    const state = view.state;
+    // Don't do anything if the document/selection didn't change
+    if (prevState && prevState.doc.eq(state.doc) &&
+      prevState.selection.eq(state.selection)) {
+      return;
+    }
+
+    // Hide the tooltip if the selection is empty
+    if (state.selection.empty) {
+      this.tooltip.style.display = 'none';
+      return;
+    }
+
+    // Otherwise, reposition it and update its content
+    this.tooltip.style.display = '';
+    const {from, to} = state.selection;
+    // These are in screen coordinates
+    const start = view.coordsAtPos(from), end = view.coordsAtPos(to);
+    // The box in which the tooltip is positioned, to use as base
+    const box = this.tooltip.offsetParent.getBoundingClientRect();
+    // Find a center-ish x position from the selection endpoints (when
+    // crossing lines, end may be more to the left)
+    const left = Math.max((start.left + end.left) / 2, start.left + 3);
+    this.tooltip.style.left = (left - box.left) + 'px';
+    this.tooltip.style.bottom = (box.bottom - start.top) + 'px';
+    this.tooltip.textContent = to - from;
+  }
+
+  destroy() {
+    this.tooltip.remove();
+  }
+}
+
+const tooltipPlugin = new Plugin({
+  // allows to define object with the hooks whenever state will be updated
+  view(editorView) {
+    return new SelectionSizeTooltip(editorView);
+  }
+});
 
 const nodes = {
   doc: {
@@ -13,6 +119,7 @@ const nodes = {
     inline: true
   }
 };
+
 const marks = {
   highlight: {
     inclusive: false,
@@ -97,7 +204,6 @@ export class ProseMirrorComponent {
   view: any;
   stateProperties: any = {};
 
-
   ngOnInit() {
     const domNode = document.createElement('div');
     domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
@@ -106,15 +212,33 @@ export class ProseMirrorComponent {
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
     const state = EditorState.create({
       doc,
-      schema: customSchema
+      schema: customSchema,
+      plugins: [
+        statePlugin,
+        // filterTransactionPlugin,
+        // keyHandlerPluginFactory('ControlLeft'),
+        // tooltipPlugin
+      ]
     });
 
     this.view = new EditorView(this.container.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
+        if (transaction.docChanged) {
+          console.log(`doc is changed`);
+        }
+
+        if (transaction.getMeta('pointer')) {
+          console.log(`Transaction caused by mouse or touch input`);
+        }
+
         const newState = this.view.state.apply(transaction);
 
+        // The updateState method is just a shorthand to updating the "state" prop.
         this.view.updateState(newState);
+
+        console.log(transaction);
+
         this.updateStateProperties();
       },
     });
@@ -248,8 +372,8 @@ export class ProseMirrorComponent {
   }
 
   isTextSelected(state) {
-    // if $cursor = null text is selected
-    return !Boolean(state.selection.$cursor);
+    // another way to test it - if ($cursor = null) text is selected
+    return !state.selection.empty;
   }
 
   getCurrentNode(state) {
@@ -293,7 +417,27 @@ export class ProseMirrorComponent {
 
   // experimental functions
   appendTextAtTheBeginning() {
-    console.log(`appendTextAtTheBeginning`);
+    this.view.dispatch(
+      this.view.state.tr.insertText('Manually inserted text. ')
+    );
+  }
+
+  setCursorAtTheStart() {
+    this.view.dispatch(
+      this.view.state.tr.setSelection(Selection.atStart(this.view.state.doc))
+    );
+  }
+
+  setCursorAtTheEnd() {
+    this.view.dispatch(
+      this.view.state.tr.setSelection(Selection.atEnd(this.view.state.doc))
+    );
+  }
+
+  setCursorAtPosition(position: number) {
+    this.view.dispatch(
+      this.view.state.tr.setSelection(TextSelection.create(this.view.state.doc, /* anchor= */position, /* head? */position))
+    );
   }
 }
 

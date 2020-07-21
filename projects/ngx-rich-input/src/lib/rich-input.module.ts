@@ -10,7 +10,7 @@ import {ProseMirrorComponent} from './prose-mirror.component';
   imports: [
     CommonModule,
     StickyModalModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   declarations: [
     RichInputComponent,

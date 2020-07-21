@@ -26,7 +26,7 @@ export class LinkOverviewComponent {
 
 @Component({
   template: `
-      <!--      <rich-input [config]="config"></rich-input>-->
+      <rich-input [config]="config"></rich-input>
       <prose-mirror></prose-mirror>
   `,
   styleUrls: [`./rich-input.component.scss`]

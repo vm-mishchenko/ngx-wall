@@ -533,8 +533,6 @@ class RichInputEditor {
   view: EditorView;
 
   constructor(private options: any) {
-    console.log(this.options.marks);
-
     const customSchema = new Schema({
       nodes,
       marks: {
