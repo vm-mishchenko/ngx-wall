@@ -89,23 +89,9 @@ function getCurrentNode(selection) {
   return $cursor.parent.child($cursor.index());
 }
 
-// Selection is empty already
-function matcher(selection) {
-  const textContent = selection.$cursor.parent.textContent;
-
-  if (!textContent.match(/^\/[a-z0-9A-Z]*$/g)) {
-    return;
-  }
-
-  return {
-    text: textContent,
-    cursorPosition: selection.$cursor.pos
-  };
-}
-
 function suggestionPluginFactory({
                                    onChange = (context) => {
-                                     console.log(`onChange`);
+                                     console.log(`onChange with text: ${context.match.text}`);
                                      return false;
                                    },
                                    onExit = (context) => {
@@ -126,7 +112,7 @@ function suggestionPluginFactory({
 
     props: {
       handleKeyDown(view, event) {
-        const escapeCode = ['Escape', 'Space'];
+        const escapeCode = ['Escape'];
         const {active} = this.getState(view.state);
 
         if (!active) {
@@ -172,13 +158,13 @@ function suggestionPluginFactory({
 
           // Trigger the hooks when necessary
           if (stopped) {
-            onExit({view, text: prevValue.match.text});
+            onExit({view, match: prevValue.match});
           }
           if (changed) {
-            onChange({view, text: nextValue.match.text});
+            onChange({view, match: nextValue.match});
           }
           if (started) {
-            onEnter({view, text: nextValue.match.text});
+            onEnter({view, match: nextValue.match});
           }
         },
       };
@@ -315,6 +301,21 @@ function suggestionPluginFactory({
         }
       }
     },
+
+    // designed to be able to observe any state change and react to it, once
+    appendTransaction(transactions, oldState, newState) {
+      if (transactions.length !== 1) {
+        return;
+      }
+
+      const transaction = transactions[0];
+
+      if (transaction.getMeta('suggestion-stage') !== 'exit') {
+        return false;
+      }
+
+      return newState.tr.setStoredMarks([]);
+    }
   });
 }
 
@@ -540,7 +541,7 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = 'Simple '; // innerHTML;
+    domNode.innerHTML = ''; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
     const state = EditorState.create({
