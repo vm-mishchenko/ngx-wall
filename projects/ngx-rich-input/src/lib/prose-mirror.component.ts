@@ -1,8 +1,325 @@
 import {Component, ElementRef, ViewChild} from '@angular/core';
 
-import {EditorState, Plugin, Selection, TextSelection} from 'prosemirror-state';
+import {EditorState, Plugin, PluginKey, Selection, TextSelection} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
+import {ReplaceStep} from 'prosemirror-transform';
+
+const debug = false;
+
+function addHighlightMarkToSelectedText(view) {
+  if (!isTextSelected(view.state.selection)) {
+    console.warn('Text is not selected');
+    return;
+  }
+
+  const tr = view.state.tr;
+  const {from, to} = view.state.selection;
+  const highlightMark = view.state.doc.type.schema.marks.highlight.create();
+
+  tr.addMark(from, to, highlightMark);
+
+  view.dispatch(tr);
+}
+
+function addSuggestionMarkToPreviousCharacter(view) {
+  if (isTextSelected(view.state.selection)) {
+    console.warn('Text is selected');
+    return;
+  }
+
+  const tr = view.state.tr;
+  const {$cursor} = view.state.selection;
+  const suggestionMark = view.state.doc.type.schema.marks.suggestion.create();
+
+  tr.addMark($cursor.pos - 1, $cursor.pos, suggestionMark)
+    .setMeta('suggestion-stage', 'enter');
+
+  view.dispatch(tr);
+}
+
+function removeAllSuggestionMarks(view) {
+  console.log(`removeAllSuggestionMarks`);
+  const tr = view.state.tr;
+
+  tr.removeMark(0, view.state.doc.content.size, view.state.doc.type.schema.marks.suggestion)
+    .setMeta('suggestion-stage', 'exit');
+
+  view.dispatch(tr);
+}
+
+function getTextBeginningToCursor(selection) {
+  if (isTextSelected(selection)) {
+    console.warn('Cannot get getTextBeginningToCursor - Text is selected.');
+    return;
+  }
+
+  return getTextFromAndTo(selection.$cursor.parent, 0, selection.$cursor.pos);
+}
+
+function getTextFromAndTo(doc, from, to) {
+  return doc.textBetween(from, to);
+}
+
+function isTextSelected(selection) {
+  // another way to test it - if ($cursor = null) text is selected
+  return !selection.empty;
+}
+
+function isCursorBetweenNodes(selection) {
+  if (isTextSelected(selection)) {
+    return;
+  }
+
+  return selection.$cursor.textOffset === 0;
+}
+
+function getCurrentNode(selection) {
+  // For all these cases Node is not determined
+  // 1. <node>|<node>
+  // 2. |<node>...
+  // 3. ...<node>|
+
+  if (isTextSelected(selection) || isCursorBetweenNodes(selection)) {
+    return;
+  }
+
+  const $cursor = selection.$cursor;
+
+  return $cursor.parent.child($cursor.index());
+}
+
+// Selection is empty already
+function matcher(selection) {
+  const textContent = selection.$cursor.parent.textContent;
+
+  if (!textContent.match(/^\/[a-z0-9A-Z]*$/g)) {
+    return;
+  }
+
+  return {
+    text: textContent,
+    cursorPosition: selection.$cursor.pos
+  };
+}
+
+function suggestionPluginFactory({
+                                   onChange = (context) => {
+                                     console.log(`onChange`);
+                                     return false;
+                                   },
+                                   onExit = (context) => {
+                                     console.log(`onExit`);
+                                     removeAllSuggestionMarks(context.view);
+
+                                     return false;
+                                   },
+                                   onEnter = (context) => {
+                                     console.log(`onEnter`);
+                                     addSuggestionMarkToPreviousCharacter(context.view);
+
+                                     return false;
+                                   },
+                                 }) {
+  return new Plugin({
+    key: new PluginKey('suggestions'),
+
+    props: {
+      handleKeyDown(view, event) {
+        const escapeCode = ['Escape', 'Space'];
+        const {active} = this.getState(view.state);
+
+        if (!active) {
+          // default implementation should handle that event
+          console.log(`handleKeyDown: Ignored`);
+          return false;
+        }
+
+        // de-activate suggestion
+        // event.code - ignore layout
+        if (escapeCode.includes(event.code)) {
+          const tr = view.state.tr.setMeta(this.key, {
+            active: false,
+            match: {}
+          });
+
+          view.dispatch(tr);
+
+          // default implementation should handle that event
+          return false;
+        }
+
+        return false;
+      },
+    },
+
+    // called on each transaction
+    // designed to somehow react on current Editor state (show/hide dialog, tooltip, etc...)
+    view(editorView) {
+      return {
+        /**
+         * For each transaction check, whether state is active which is sign to show the dialog
+         * */
+        update: (view, prevState) => {
+          const prevValue = this.key.getState(prevState);
+          const nextValue = this.key.getState(view.state);
+
+          // See how the state changed
+          const moved = prevValue.active && nextValue.active && prevValue.match.cursorPosition !== nextValue.match.cursorPosition;
+          const started = !prevValue.active && nextValue.active;
+          const stopped = prevValue.active && !nextValue.active;
+          const changed = !started && !stopped && prevValue.match.text !== nextValue.match.text;
+
+          // Trigger the hooks when necessary
+          if (stopped) {
+            onExit({view, text: prevValue.match.text});
+          }
+          if (changed) {
+            onChange({view, text: nextValue.match.text});
+          }
+          if (started) {
+            onEnter({view, text: nextValue.match.text});
+          }
+        },
+      };
+    },
+
+    state: {
+      init() {
+        return {
+          active: false,
+          match: {}
+        };
+      },
+
+      /**
+       * Calculate new plugin state basic on the current transaction. Check whether it's suitable moment to show the dialog.
+       * plugin "view" callback will be called next, which is actually responsible to show dialog or somehow else react to
+       * the plugin state
+       * */
+      apply(tr, prevValue, oldState, newState) {
+        const meta = tr.getMeta(this.key);
+        if (meta) {
+          return meta;
+        }
+
+        const {selection} = tr;
+        const nextValue = {...prevValue};
+
+        if (isTextSelected(selection)) {
+          console.log(`Ignore: text is selected`);
+          return {active: false, match: {}};
+        }
+
+        if (prevValue.active === false) {
+          if ((tr.getMeta('suggestion-stage') === 'exit')) {
+            console.log(`Ignore: Exit phase`);
+            return {active: false, match: {}};
+          }
+
+          if (!tr.docChanged) {
+            // ignore if doc was not changed
+            console.log(`Ignore: doc is not changed`);
+            return {active: false, match: {}};
+          }
+
+          const text = getTextBeginningToCursor(tr.curSelection);
+
+          if (text.length === 0) {
+            console.log(`Ignore: text is empty`);
+            return {active: false, match: {}};
+          }
+
+          if (text[text.length - 1] !== '/') {
+            console.log(`Ignore: "/" character was no added`);
+            return {active: false, match: {}};
+          }
+
+          if (text[text.length - 2] && text[text.length - 2] !== ' ') {
+            console.log(`Ignore: there is symbol before "/" character.`);
+            return {active: false, match: {}};
+          }
+
+          // check that current transaction actually added "/" symbol
+          if (tr.steps.length !== 1) {
+            console.log(`Ignore: Expect only one transaction step present`);
+            return {active: false, match: {}};
+          }
+
+          if (!(tr.steps[0] instanceof ReplaceStep)) {
+            console.log(`Ignore: Unexpected transaction step`);
+            return {active: false, match: {}};
+          }
+
+          const replaceStepContent = tr.steps[0].slice.content.textBetween(0, tr.steps[0].slice.content.size);
+          if (replaceStepContent !== '/') {
+            console.log(`Ignore: transaction step contains unexpected content:${replaceStepContent}`);
+            return {active: false, match: {}};
+          }
+
+          // finally initialize plugin state
+          return {
+            active: true,
+            match: {
+              text: '',
+              cursorPosition: tr.curSelection.$cursor.pos
+            }
+          };
+        } else {
+          // plugin is already active
+
+          if (tr.getMeta('suggestion-stage') === 'enter') {
+            console.log(`Ignore: Enter phase`);
+            return prevValue;
+          }
+
+          // handle copy-paste case
+          if (isCursorBetweenNodes(tr.curSelection)) {
+            if (!tr.curSelection.$cursor.nodeBefore) {
+              console.log(`Ignore: Extra strange behaviour.`);
+              return {active: false, match: {}};
+            }
+
+            const markSuggestion = tr.curSelection.$cursor.nodeBefore.marks.find((mark) => {
+              return mark.type === newState.doc.type.schema.marks.suggestion;
+            });
+
+            // node before does not have suggestion mark
+            // it means that user type "/" and them copy-paste some text
+            // that text is copied to the new text node, rather than into suggestion node
+            // as result we need to abort suggestion process
+            if (!markSuggestion) {
+              console.log(`Ignore: node before cursor is not suggestion. Might happen during copy-paste functionality.`);
+              return {active: false, match: {}};
+            }
+          }
+
+          // check whether text after "/" does not have any spaces
+          // if it has than abort suggestion
+          const text = getTextBeginningToCursor(tr.curSelection);
+          // match all after "/" except space
+          const match = text.match(/.*\/([^ ]*)$/);
+
+          if (!match) {
+            console.log(`Ignore: cannot find appropriate text in: ${text}`);
+            return {active: false, match: {}};
+          }
+
+          return {
+            active: true,
+            match: {
+              text: match[1],
+              cursorPosition: tr.curSelection.$cursor.pos
+            }
+          };
+        }
+      }
+    },
+  });
+}
+
+
+const suggestionPlugin = suggestionPluginFactory({});
 
 const statePlugin = new Plugin({
   state: {
@@ -10,6 +327,9 @@ const statePlugin = new Plugin({
       return 0;
     },
 
+    // Apply the given transaction to this state field, producing a new field value.
+    // Note that the newState argument is again a partially constructed state
+    // does not yet contain the state from plugins coming after this one.
     apply: (tr, value, oldState, newState) => {
       return 1;
     },
@@ -121,6 +441,13 @@ const nodes = {
 };
 
 const marks = {
+  suggestion: {
+    inclusive: true,
+    parseDOM: [{tag: 'suggestion'}],
+    toDOM() {
+      return ['suggestion', 0];
+    }
+  },
   highlight: {
     inclusive: false,
     parseDOM: [{tag: 'highlight'}],
@@ -193,6 +520,11 @@ const serializer = DOMSerializer.fromSchema(customSchema);
           border: 1px solid silver;
       }
 
+      ::ng-deep suggestion {
+          padding: 2px;
+          color: cornflowerblue;
+      }
+
       .property {
           margin-bottom: 5px;
       }
@@ -206,15 +538,17 @@ export class ProseMirrorComponent {
 
   ngOnInit() {
     const domNode = document.createElement('div');
-    domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
-    // domNode.innerHTML = 'Simple'; // innerHTML;
-    // Read-only, represent document as hierarchy of nodes
+    // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
+    // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
+    domNode.innerHTML = 'Simple '; // innerHTML;
+    // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
     const state = EditorState.create({
       doc,
       schema: customSchema,
       plugins: [
-        statePlugin,
+        suggestionPlugin,
+        // statePlugin,
         // filterTransactionPlugin,
         // keyHandlerPluginFactory('ControlLeft'),
         // tooltipPlugin
@@ -225,11 +559,15 @@ export class ProseMirrorComponent {
       state,
       dispatchTransaction: (transaction) => {
         if (transaction.docChanged) {
-          console.log(`doc is changed`);
+          debug && console.log(`doc was changed`);
+        }
+
+        if (transaction.selectionSet) {
+          debug && console.log(`selection was explicitly updated by this transaction.`);
         }
 
         if (transaction.getMeta('pointer')) {
-          console.log(`Transaction caused by mouse or touch input`);
+          debug && console.log(`Transaction caused by mouse or touch input`);
         }
 
         const newState = this.view.state.apply(transaction);
@@ -237,7 +575,7 @@ export class ProseMirrorComponent {
         // The updateState method is just a shorthand to updating the "state" prop.
         this.view.updateState(newState);
 
-        console.log(transaction);
+        debug && console.log(transaction);
 
         this.updateStateProperties();
       },
@@ -254,18 +592,18 @@ export class ProseMirrorComponent {
         contentJson: this.getContentJSON(this.view.state.doc)
       },
       selection: {
-        isTextSelected: this.isTextSelected(this.view.state),
-        isCursorBetweenNodes: this.isCursorBetweenNodes(this.view.state),
+        isTextSelected: isTextSelected(this.view.state.selection),
+        isCursorBetweenNodes: isCursorBetweenNodes(this.view.state.selection),
         isCursorAtTheStart: this.isCursorAtTheStart(this.view.state),
         isCursorAtTheEnd: this.isCursorAtTheEnd(this.view.state),
         selectedText: this.getSelectedText(this.view.state),
         selectedHTML: this.getSelectedHTML(this.view.state),
         rightText: this.getTextCursorToEnd(this.view.state),
         rightHTML: this.getHTMLCursorToEnd(this.view.state),
-        leftText: this.getTextBeginningToCursor(this.view.state),
+        leftText: getTextBeginningToCursor(this.view.state.selection),
         leftHTML: this.getHTMLBeginningToCursor(this.view.state),
         text: this.getSelectionAsText(this.view.state),
-        currentNode: this.getCurrentNode(this.view.state)
+        currentNode: getCurrentNode(this.view.state.selection)
       }
     };
   }
@@ -315,15 +653,6 @@ export class ProseMirrorComponent {
     // console.log(content.openEnd);
   }
 
-  getTextBeginningToCursor(state) {
-    const $from = state.selection.$from;
-
-    // Create a copy of this node with only the content between the given positions.
-    const doc = $from.parent.cut(0, $from.pos);
-
-    return this.getTextRepresentation(doc);
-  }
-
   getHTMLBeginningToCursor(state) {
     const $from = state.selection.$from;
 
@@ -371,36 +700,8 @@ export class ProseMirrorComponent {
     return this.getHTMLRepresentation(doc);
   }
 
-  isTextSelected(state) {
-    // another way to test it - if ($cursor = null) text is selected
-    return !state.selection.empty;
-  }
-
-  getCurrentNode(state) {
-    // For all these cases Node is not determined
-    // 1. <node>|<node>
-    // 2. |<node>...
-    // 3. ...<node>|
-
-    if (this.isTextSelected(state) || this.isCursorBetweenNodes(state)) {
-      return;
-    }
-
-    const $cursor = state.selection.$cursor;
-
-    return $cursor.parent.child($cursor.index());
-  }
-
-  isCursorBetweenNodes(state) {
-    if (this.isTextSelected(state)) {
-      return;
-    }
-
-    return state.selection.$cursor.textOffset === 0;
-  }
-
   isCursorAtTheStart(state) {
-    if (this.isTextSelected(state)) {
+    if (isTextSelected(state.selection)) {
       return;
     }
 
@@ -408,7 +709,7 @@ export class ProseMirrorComponent {
   }
 
   isCursorAtTheEnd(state) {
-    if (this.isTextSelected(state)) {
+    if (isTextSelected(state.selection)) {
       return;
     }
 
@@ -439,5 +740,8 @@ export class ProseMirrorComponent {
       this.view.state.tr.setSelection(TextSelection.create(this.view.state.doc, /* anchor= */position, /* head? */position))
     );
   }
-}
 
+  addHighlightMarkToSelectedText(view) {
+    addHighlightMarkToSelectedText(view);
+  }
+}
