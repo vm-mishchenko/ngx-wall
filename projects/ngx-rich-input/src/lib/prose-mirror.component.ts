@@ -1,11 +1,43 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 
 import {EditorState, Plugin, PluginKey, Selection, TextSelection} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {ReplaceStep} from 'prosemirror-transform';
+import {STICKY_MODAL_DATA, StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
+import {Subject} from 'rxjs';
 
 const debug = false;
+
+@Component({
+  template: `
+      Text: {{config.text$ | async}}
+  `,
+  styles: [`
+      :host {
+          background: red;
+      }
+  `]
+})
+export class ContextMenuComponent implements OnInit {
+  constructor(@Inject(STICKY_MODAL_DATA) public config: any) {
+  }
+
+  ngOnInit() {
+  }
+}
+
+function appendStarNode(view) {
+  const type = view.state.doc.type.schema.nodes.star;
+  const {$from} = view.state.selection;
+
+  if (!$from.parent.canReplaceWith($from.index(), $from.index(), type)) {
+    return false;
+  }
+
+  view.dispatch(view.state.tr.replaceSelectionWith(type.create()));
+  return true;
+}
 
 function addHighlightMarkToSelectedText(view) {
   if (!isTextSelected(view.state.selection)) {
@@ -90,19 +122,23 @@ function getCurrentNode(selection) {
 }
 
 function suggestionPluginFactory({
+                                   onKeyDown = (context) => {
+                                     console.log(`onKeyDown handler`);
+
+                                     return false;
+                                   },
                                    onChange = (context) => {
                                      console.log(`onChange with text: ${context.match.text}`);
                                      return false;
                                    },
                                    onExit = (context) => {
                                      console.log(`onExit`);
-                                     removeAllSuggestionMarks(context.view);
 
                                      return false;
                                    },
                                    onEnter = (context) => {
                                      console.log(`onEnter`);
-                                     addSuggestionMarkToPreviousCharacter(context.view);
+                                     // need to show dialog
 
                                      return false;
                                    },
@@ -111,7 +147,9 @@ function suggestionPluginFactory({
     key: new PluginKey('suggestions'),
 
     props: {
+      // false = default behaviour
       handleKeyDown(view, event) {
+        console.log('handleKeyDown');
         const escapeCode = ['Escape'];
         const {active} = this.getState(view.state);
 
@@ -135,7 +173,7 @@ function suggestionPluginFactory({
           return false;
         }
 
-        return false;
+        return onKeyDown({view, event});
       },
     },
 
@@ -158,12 +196,16 @@ function suggestionPluginFactory({
 
           // Trigger the hooks when necessary
           if (stopped) {
+            removeAllSuggestionMarks(view);
+
             onExit({view, match: prevValue.match});
           }
           if (changed) {
             onChange({view, match: nextValue.match});
           }
           if (started) {
+            addSuggestionMarkToPreviousCharacter(view);
+
             onEnter({view, match: nextValue.match});
           }
         },
@@ -319,9 +361,6 @@ function suggestionPluginFactory({
   });
 }
 
-
-const suggestionPlugin = suggestionPluginFactory({});
-
 const statePlugin = new Plugin({
   state: {
     init: () => {
@@ -434,11 +473,20 @@ const tooltipPlugin = new Plugin({
 const nodes = {
   doc: {
     // may contains 0 or multiple text nodes
-    content: 'text*'
+    content: 'inline*'
   },
   text: {
-    inline: true
-  }
+    inline: true,
+    group: 'inline',
+  },
+  star: {
+    inline: true,
+    group: 'inline',
+    toDOM() {
+      return ['star', '🟊'];
+    },
+    parseDOM: [{tag: 'star'}]
+  },
 };
 
 const marks = {
@@ -537,13 +585,98 @@ export class ProseMirrorComponent {
   view: any;
   stateProperties: any = {};
 
+  constructor(private ngxStickyModalService: StickyModalService,
+              private componentFactoryResolver: ComponentFactoryResolver) {
+  }
+
   ngOnInit() {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = ''; // innerHTML;
+    domNode.innerHTML = 'Simple <star></star>'; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
+
+    let modalRef: StickyModalRef;
+    const textChange = new Subject();
+    const suggestionPlugin = suggestionPluginFactory({
+      onEnter: (context) => {
+        modalRef = this.ngxStickyModalService.open({
+          component: ContextMenuComponent,
+          data: {
+            text$: textChange,
+          },
+          positionStrategy: {
+            name: StickyPositionStrategy.flexibleConnected,
+            options: {
+              relativeTo: this.container.nativeElement
+            }
+          },
+          position: {
+            originX: 'start',
+            originY: 'top',
+            overlayX: 'start',
+            overlayY: 'top'
+          },
+          overlayConfig: {
+            hasBackdrop: true
+          },
+          componentFactoryResolver: this.componentFactoryResolver
+        });
+
+        modalRef.result.finally(() => {
+          modalRef = null;
+        });
+
+        return false;
+      },
+
+      onChange: (context) => {
+        console.log(`onChange`);
+
+        if (!modalRef) {
+          modalRef = this.ngxStickyModalService.open({
+            component: ContextMenuComponent,
+            data: {
+              text$: textChange,
+            },
+            positionStrategy: {
+              name: StickyPositionStrategy.flexibleConnected,
+              options: {
+                relativeTo: this.container.nativeElement
+              }
+            },
+            position: {
+              originX: 'start',
+              originY: 'top',
+              overlayX: 'start',
+              overlayY: 'top'
+            },
+            overlayConfig: {
+              hasBackdrop: true
+            },
+            componentFactoryResolver: this.componentFactoryResolver
+          });
+
+          modalRef.result.finally(() => {
+            modalRef = null;
+          });
+        }
+
+        textChange.next(context.match.text);
+        return false;
+      },
+
+      onExit() {
+        if (modalRef) {
+          modalRef.dismiss();
+          modalRef = null;
+        }
+
+        return false;
+      }
+    });
+
     const state = EditorState.create({
       doc,
       schema: customSchema,
@@ -718,6 +851,10 @@ export class ProseMirrorComponent {
   }
 
   // experimental functions
+  appendStarNode(view) {
+    appendStarNode(view);
+  }
+
   appendTextAtTheBeginning() {
     this.view.dispatch(
       this.view.state.tr.insertText('Manually inserted text. ')

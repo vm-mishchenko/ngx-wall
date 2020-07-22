@@ -4,7 +4,7 @@ import {SelectionTextContextMenuComponent} from './components/selection-menu/sel
 import {RichInputComponent} from './rich-input.component';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material';
-import {ProseMirrorComponent} from './prose-mirror.component';
+import {ContextMenuComponent, ProseMirrorComponent} from './prose-mirror.component';
 
 @NgModule({
   imports: [
@@ -15,9 +15,11 @@ import {ProseMirrorComponent} from './prose-mirror.component';
   declarations: [
     RichInputComponent,
     ProseMirrorComponent,
+    ContextMenuComponent,
     SelectionTextContextMenuComponent,
   ],
   entryComponents: [
+    ContextMenuComponent,
     SelectionTextContextMenuComponent
   ],
   exports: [
