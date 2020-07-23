@@ -150,19 +150,51 @@ function suggestionPluginFactory({
                                      return false;
                                    },
                                  }) {
-
-
   const pluginInstance = new Plugin({
-    replace(view, text) {
-      console.log(`replace`);
-      console.log(view);
-
+    replaceWithText(view, text) {
       const currentState = this.key.getState(view.state);
 
-      view.dispatch(view.state.tr.insertText('text', 0, view.state.doc.content.size));
+      if (!currentState.active) {
+        throw new Error(`Ignore replaceWithText call: plugin is inactive`);
+      }
 
+      let suggestionNode = null;
+      let suggestionPosition = null;
 
-      // appendStarNode(view);
+      view.state.doc.descendants((node, pos) => {
+        if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
+          suggestionNode = node;
+          suggestionPosition = pos;
+
+          // `false` to prevent traversal of its child nodes
+          return false;
+        }
+      });
+
+      view.dispatch(view.state.tr.insertText(text, suggestionPosition, suggestionPosition + suggestionNode.nodeSize));
+    },
+
+    replaceWithNode(view, newNode) {
+      const currentState = this.key.getState(view.state);
+
+      if (!currentState.active) {
+        throw new Error(`Ignore replaceWithNode call: plugin is inactive`);
+      }
+
+      let suggestionNode = null;
+      let suggestionPosition = null;
+
+      view.state.doc.descendants((node, pos) => {
+        if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
+          suggestionNode = node;
+          suggestionPosition = pos;
+
+          // `false` to prevent traversal of its child nodes
+          return false;
+        }
+      });
+
+      view.dispatch(view.state.tr.replaceWith(suggestionPosition, suggestionPosition + suggestionNode.nodeSize, newNode));
     },
 
     key: new PluginKey('suggestions'),
@@ -639,14 +671,10 @@ export class ProseMirrorComponent {
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
-    let pluginApi;
     let modalRef: StickyModalRef;
     const textChange = new BehaviorSubject('');
     const suggestionPlugin = suggestionPluginFactory({
       character: '/',
-      init(api) {
-        pluginApi = api;
-      },
 
       onEnter: (context) => {
         modalRef = this.ngxStickyModalService.open({
@@ -667,7 +695,7 @@ export class ProseMirrorComponent {
             overlayY: 'top'
           },
           overlayConfig: {
-            hasBackdrop: false
+            hasBackdrop: true
           },
           componentFactoryResolver: this.componentFactoryResolver
         });
@@ -765,17 +793,18 @@ export class ProseMirrorComponent {
         if (context.event.code === 'Enter') {
           console.log(`Enter! Convert to the Star!`);
 
-          suggestionPlugin.spec.replace(context.view, 'DONE');
+          // suggestionPlugin.spec.replaceWithText(context.view, 'DONE');
+          suggestionPlugin.spec.replaceWithNode(context.view, context.view.state.doc.type.schema.nodes.star.create());
           return true;
         }
 
         if (context.event.code === 'ArrowUp') {
-          console.log(`ArrowUp! Convert to the Star!`);
+          console.log(`ArrowUp! Prevent while suggestion active!`);
           return true;
         }
 
         if (context.event.code === 'ArrowDown') {
-          console.log(`ArrowDown! Convert to the Star!`);
+          console.log(`ArrowDown! Prevent while suggestion active!`);
           return true;
         }
       }
