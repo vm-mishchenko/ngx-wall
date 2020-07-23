@@ -5,7 +5,7 @@ import {EditorView} from 'prosemirror-view';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {ReplaceStep} from 'prosemirror-transform';
 import {STICKY_MODAL_DATA, StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
-import {Subject} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 const debug = false;
 
@@ -24,6 +24,7 @@ export class ContextMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.config.text$.getValue());
   }
 }
 
@@ -122,6 +123,12 @@ function getCurrentNode(selection) {
 }
 
 function suggestionPluginFactory({
+                                   character = '/',
+                                   onFocusedWithoutCursorChange = (context) => {
+                                     console.log(`onFocusedWithoutCursorChange handler`);
+
+                                     return false;
+                                   },
                                    onKeyDown = (context) => {
                                      console.log(`onKeyDown handler`);
 
@@ -143,7 +150,21 @@ function suggestionPluginFactory({
                                      return false;
                                    },
                                  }) {
-  return new Plugin({
+
+
+  const pluginInstance = new Plugin({
+    replace(view, text) {
+      console.log(`replace`);
+      console.log(view);
+
+      const currentState = this.key.getState(view.state);
+
+      view.dispatch(view.state.tr.insertText('text', 0, view.state.doc.content.size));
+
+
+      // appendStarNode(view);
+    },
+
     key: new PluginKey('suggestions'),
 
     props: {
@@ -175,6 +196,22 @@ function suggestionPluginFactory({
 
         return onKeyDown({view, event});
       },
+
+      handleClick(view, pos, event) {
+        const currentPluginState = this.getState(view.state);
+
+        if (!currentPluginState.active) {
+          console.log(`Ignore handleClick: plugin is not active`);
+          return;
+        }
+
+        if (view.state.selection.$cursor.pos !== pos) {
+          console.log(`Ignore handleClick: cursor position was changed, so there should be a new transaction that handle the change`);
+          return;
+        }
+
+        return onFocusedWithoutCursorChange({view, match: currentPluginState.match});
+      }
     },
 
     // called on each transaction
@@ -258,17 +295,17 @@ function suggestionPluginFactory({
             return {active: false, match: {}};
           }
 
-          if (text[text.length - 1] !== '/') {
-            console.log(`Ignore: "/" character was no added`);
+          if (text[text.length - 1] !== character) {
+            console.log(`Ignore: "${character}" character was no added`);
             return {active: false, match: {}};
           }
 
           if (text[text.length - 2] && text[text.length - 2] !== ' ') {
-            console.log(`Ignore: there is symbol before "/" character.`);
+            console.log(`Ignore: there is symbol before "${character}" character.`);
             return {active: false, match: {}};
           }
 
-          // check that current transaction actually added "/" symbol
+          // check that current transaction actually added "{{character}}" symbol
           if (tr.steps.length !== 1) {
             console.log(`Ignore: Expect only one transaction step present`);
             return {active: false, match: {}};
@@ -280,7 +317,7 @@ function suggestionPluginFactory({
           }
 
           const replaceStepContent = tr.steps[0].slice.content.textBetween(0, tr.steps[0].slice.content.size);
-          if (replaceStepContent !== '/') {
+          if (replaceStepContent !== character) {
             console.log(`Ignore: transaction step contains unexpected content:${replaceStepContent}`);
             return {active: false, match: {}};
           }
@@ -313,7 +350,7 @@ function suggestionPluginFactory({
             });
 
             // node before does not have suggestion mark
-            // it means that user type "/" and them copy-paste some text
+            // it means that user type "{{character}}" and them copy-paste some text
             // that text is copied to the new text node, rather than into suggestion node
             // as result we need to abort suggestion process
             if (!markSuggestion) {
@@ -322,11 +359,12 @@ function suggestionPluginFactory({
             }
           }
 
-          // check whether text after "/" does not have any spaces
+          // check whether text after "{{character}}" does not have any spaces
           // if it has than abort suggestion
           const text = getTextBeginningToCursor(tr.curSelection);
-          // match all after "/" except space
-          const match = text.match(/.*\/([^ ]*)$/);
+          // match all after "{{character}}" except space
+          const regexp = new RegExp(`.*\\${character}([^ ]*)$`);
+          const match = text.match(regexp);
 
           if (!match) {
             console.log(`Ignore: cannot find appropriate text in: ${text}`);
@@ -359,6 +397,10 @@ function suggestionPluginFactory({
       return newState.tr.setStoredMarks([]);
     }
   });
+
+  console.log(pluginInstance);
+
+  return pluginInstance;
 }
 
 const statePlugin = new Plugin({
@@ -593,13 +635,19 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = 'Simple <star></star>'; // innerHTML;
+    domNode.innerHTML = ''; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
+    let pluginApi;
     let modalRef: StickyModalRef;
-    const textChange = new Subject();
+    const textChange = new BehaviorSubject('');
     const suggestionPlugin = suggestionPluginFactory({
+      character: '/',
+      init(api) {
+        pluginApi = api;
+      },
+
       onEnter: (context) => {
         modalRef = this.ngxStickyModalService.open({
           component: ContextMenuComponent,
@@ -619,7 +667,7 @@ export class ProseMirrorComponent {
             overlayY: 'top'
           },
           overlayConfig: {
-            hasBackdrop: true
+            hasBackdrop: false
           },
           componentFactoryResolver: this.componentFactoryResolver
         });
@@ -674,6 +722,62 @@ export class ProseMirrorComponent {
         }
 
         return false;
+      },
+
+      onFocusedWithoutCursorChange: (context) => {
+        console.log(`onFocusedWithoutCursorChange`);
+
+        if (!modalRef) {
+          modalRef = this.ngxStickyModalService.open({
+            component: ContextMenuComponent,
+            data: {
+              text$: textChange,
+            },
+            positionStrategy: {
+              name: StickyPositionStrategy.flexibleConnected,
+              options: {
+                relativeTo: this.container.nativeElement
+              }
+            },
+            position: {
+              originX: 'start',
+              originY: 'top',
+              overlayX: 'start',
+              overlayY: 'top'
+            },
+            overlayConfig: {
+              hasBackdrop: true
+            },
+            componentFactoryResolver: this.componentFactoryResolver
+          });
+
+          modalRef.result.finally(() => {
+            modalRef = null;
+          });
+        }
+
+        textChange.next(context.match.text);
+        return false;
+      },
+
+      // called only when plugin is active
+      onKeyDown(context) {
+        if (context.event.code === 'Enter') {
+          console.log(`Enter! Convert to the Star!`);
+
+          suggestionPlugin.spec.replace(context.view, 'DONE');
+          return true;
+        }
+
+        if (context.event.code === 'ArrowUp') {
+          console.log(`ArrowUp! Convert to the Star!`);
+          return true;
+        }
+
+        if (context.event.code === 'ArrowDown') {
+          console.log(`ArrowDown! Convert to the Star!`);
+          return true;
+        }
       }
     });
 
@@ -688,7 +792,6 @@ export class ProseMirrorComponent {
         // tooltipPlugin
       ]
     });
-
     this.view = new EditorView(this.container.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
