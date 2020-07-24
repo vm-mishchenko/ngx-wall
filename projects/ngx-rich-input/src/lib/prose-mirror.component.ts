@@ -11,12 +11,12 @@ const debug = false;
 
 @Component({
   template: `
-      Text: {{config.text$ | async}}
+    Text: {{config.text$ | async}}
   `,
   styles: [`
-      :host {
-          background: red;
-      }
+    :host {
+      background: red;
+    }
   `]
 })
 export class ContextMenuComponent implements OnInit {
@@ -150,54 +150,61 @@ function suggestionPluginFactory({
                                      return false;
                                    },
                                  }) {
-  const pluginInstance = new Plugin({
-    replaceWithText(view, text) {
-      const currentState = this.key.getState(view.state);
 
-      if (!currentState.active) {
-        throw new Error(`Ignore replaceWithText call: plugin is inactive`);
-      }
+  const pluginKey = new PluginKey('suggestions');
 
-      let suggestionNode = null;
-      let suggestionPosition = null;
+  return new Plugin({
+    // todo: most probably it should not belong here
+    // plugin just need to call hooks and pass all necessary data to it
+    api: {
+      replaceWithText(view, text) {
+        const currentState = pluginKey.getState(view.state);
 
-      view.state.doc.descendants((node, pos) => {
-        if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
-          suggestionNode = node;
-          suggestionPosition = pos;
-
-          // `false` to prevent traversal of its child nodes
-          return false;
+        if (!currentState.active) {
+          throw new Error(`Ignore replaceWithText call: plugin is inactive`);
         }
-      });
 
-      view.dispatch(view.state.tr.insertText(text, suggestionPosition, suggestionPosition + suggestionNode.nodeSize));
+        let suggestionNode = null;
+        let suggestionPosition = null;
+
+        view.state.doc.descendants((node, pos) => {
+          if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
+            suggestionNode = node;
+            suggestionPosition = pos;
+
+            // `false` to prevent traversal of its child nodes
+            return false;
+          }
+        });
+
+        view.dispatch(view.state.tr.insertText(text, suggestionPosition, suggestionPosition + suggestionNode.nodeSize));
+      },
+
+      replaceWithNode(view, newNode) {
+        const currentState = pluginKey.getState(view.state);
+
+        if (!currentState.active) {
+          throw new Error(`Ignore replaceWithNode call: plugin is inactive`);
+        }
+
+        let suggestionNode = null;
+        let suggestionPosition = null;
+
+        view.state.doc.descendants((node, pos) => {
+          if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
+            suggestionNode = node;
+            suggestionPosition = pos;
+
+            // `false` to prevent traversal of its child nodes
+            return false;
+          }
+        });
+
+        view.dispatch(view.state.tr.replaceWith(suggestionPosition, suggestionPosition + suggestionNode.nodeSize, newNode));
+      },
     },
 
-    replaceWithNode(view, newNode) {
-      const currentState = this.key.getState(view.state);
-
-      if (!currentState.active) {
-        throw new Error(`Ignore replaceWithNode call: plugin is inactive`);
-      }
-
-      let suggestionNode = null;
-      let suggestionPosition = null;
-
-      view.state.doc.descendants((node, pos) => {
-        if (node.marks.map(mark => mark.type).includes(view.state.doc.type.schema.marks.suggestion)) {
-          suggestionNode = node;
-          suggestionPosition = pos;
-
-          // `false` to prevent traversal of its child nodes
-          return false;
-        }
-      });
-
-      view.dispatch(view.state.tr.replaceWith(suggestionPosition, suggestionPosition + suggestionNode.nodeSize, newNode));
-    },
-
-    key: new PluginKey('suggestions'),
+    key: pluginKey,
 
     props: {
       // false = default behaviour
@@ -429,10 +436,12 @@ function suggestionPluginFactory({
       return newState.tr.setStoredMarks([]);
     }
   });
+}
 
-  console.log(pluginInstance);
-
-  return pluginInstance;
+function getStrongSymbolDetectorPlugin() {
+  return new Plugin({
+    state: {}
+  });
 }
 
 const statePlugin = new Plugin({
@@ -638,19 +647,19 @@ const serializer = DOMSerializer.fromSchema(customSchema);
   selector: 'prose-mirror',
   templateUrl: `./prose-mirror.component.html`,
   styles: [`
-      #container {
-          padding: 5px;
-          border: 1px solid silver;
-      }
+    #container {
+      padding: 5px;
+      border: 1px solid silver;
+    }
 
-      ::ng-deep suggestion {
-          padding: 2px;
-          color: cornflowerblue;
-      }
+    ::ng-deep suggestion {
+      padding: 2px;
+      color: cornflowerblue;
+    }
 
-      .property {
-          margin-bottom: 5px;
-      }
+    .property {
+      margin-bottom: 5px;
+    }
   `]
 })
 export class ProseMirrorComponent {
@@ -794,7 +803,7 @@ export class ProseMirrorComponent {
           console.log(`Enter! Convert to the Star!`);
 
           // suggestionPlugin.spec.replaceWithText(context.view, 'DONE');
-          suggestionPlugin.spec.replaceWithNode(context.view, context.view.state.doc.type.schema.nodes.star.create());
+          suggestionPlugin.spec.api.replaceWithNode(context.view, context.view.state.doc.type.schema.nodes.star.create());
           return true;
         }
 
@@ -809,11 +818,44 @@ export class ProseMirrorComponent {
         }
       }
     });
+    const iconSuggestionPlugin = suggestionPluginFactory({
+      character: ':',
+
+      onEnter: (context) => {
+        console.log(`ENTER`);
+
+        return false;
+      },
+
+      onChange: (context) => {
+        console.log(`ONCHANGE`);
+        return false;
+      },
+
+      onExit() {
+        console.log(`ONEXIT`);
+
+        return false;
+      },
+
+      onFocusedWithoutCursorChange: (context) => {
+        console.log(`onFocusedWithoutCursorChange`);
+        return false;
+      },
+
+      // called only when plugin is active
+      onKeyDown(context) {
+        console.log(`ONKEYDOWN`);
+
+        return false;
+      }
+    });
 
     const state = EditorState.create({
       doc,
       schema: customSchema,
       plugins: [
+        iconSuggestionPlugin,
         suggestionPlugin,
         // statePlugin,
         // filterTransactionPlugin,
