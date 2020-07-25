@@ -9,6 +9,24 @@ import {BehaviorSubject} from 'rxjs';
 
 const debug = false;
 
+/**
+ *
+ * Node
+ *  - descendants
+ *  - forEach
+ *  - textBetween
+ *
+ * Fragment
+ *  does not expose `content` variable
+ *
+ *  - descendants
+ *  - forEach
+ *
+ * Transaction
+ *
+ *
+ */
+
 @Component({
   template: `
     Text: {{config.text$ | async}}
@@ -121,6 +139,31 @@ function getCurrentNode(selection) {
 
   return $cursor.parent.child($cursor.index());
 }
+
+function findFirstNodeInFragment(fragment, predicate) {
+  let firstMatchedNode;
+
+  fragment.descendants((node, pos, parent) => {
+    if (predicate(node)) {
+      firstMatchedNode = node;
+
+      // skip all next nodes
+      return false;
+    }
+  });
+
+  return firstMatchedNode;
+}
+
+function findFirstNodeWithMarkTypeInFragment(fragment, markType) {
+  return findFirstNodeInFragment(fragment, (node) => {
+    return Boolean(markType.isInSet(node.marks));
+  });
+}
+
+function doesFragmentContainsNode() {
+}
+
 
 function suggestionPluginFactory({
                                    character = '/',
@@ -436,26 +479,39 @@ function suggestionPluginFactory({
   });
 }
 
-function getStrongSymbolDetectorPlugin({
-                                         appendTransaction = (context) => {
-                                           // do nothing
-                                         }
-                                       }) {
+function symbolDetectorPluginFactory({
+                                       characters,
+                                       appendTransaction = (context) => {
+                                         // do nothing
+                                       }
+                                     }) {
+
+  if (!characters) {
+    throw new Error('Characters are required');
+  }
+
   const pluginKey = new PluginKey('StrongSymbolDetectorPlugin');
 
-  function findClosestLeftCharsPos(string) {
+  function findClosestLeftSubStringPos(string, subString) {
     let scanned = '';
-    const regex = new RegExp('.*\\*\\*$');
 
     for (let i = string.length - 1; i >= 0; i--) {
       scanned += string[i];
 
-      if (regex.test(scanned)) {
+      if (hasSubStringAtTheEnd(scanned, subString)) {
         return i;
       }
     }
 
     return -1;
+  }
+
+  function reverseString(text) {
+    return text.split('').reverse().join('');
+  }
+
+  function hasSubStringAtTheEnd(text: string, subString: string) {
+    return reverseString(text).indexOf(subString) === 0;
   }
 
   return new Plugin({
@@ -467,18 +523,6 @@ function getStrongSymbolDetectorPlugin({
       if (active) {
         return appendTransaction({newState, match});
       }
-    },
-
-    view() {
-      return {
-        update: (view) => {
-          const {active, match} = this.key.getState(view.state);
-
-          if (active) {
-            // dispatchTransaction({view, match});
-          }
-        }
-      };
     },
 
     state: {
@@ -516,15 +560,14 @@ function getStrongSymbolDetectorPlugin({
 
         // check that from cursor to the left side is a match with characters
         const text = getTextBeginningToCursor(tr.curSelection);
-        const regexp = new RegExp('.*\\*\\*$');
 
-        if (!regexp.test(text)) {
+        if (!hasSubStringAtTheEnd(text, characters)) {
           console.log(`Ignore: characters does not match pattern: ${text}`);
           return {active: false, match: {}};
         }
 
         // need to find position of closest corresponding characters on the left side
-        const closestLeftCharsPos = findClosestLeftCharsPos(text.slice(0, -2));
+        const closestLeftCharsPos = findClosestLeftSubStringPos(text.slice(0, -characters.length), characters);
 
         if (closestLeftCharsPos === -1) {
           console.log(`Ignore: characters match pattern, but there is no opening characters: ${text}`);
@@ -542,8 +585,8 @@ function getStrongSymbolDetectorPlugin({
         // **text|** - toPos
         const fromTriggersPos = closestLeftCharsPos;
         const toTriggersPos = tr.curSelection.$cursor.pos;
-        const fromPos = fromTriggersPos + 2;
-        const toPos = toTriggersPos - 2;
+        const fromPos = fromTriggersPos + characters.length;
+        const toPos = toTriggersPos - characters.length;
 
         const textBetween = tr.doc.textBetween(fromPos, toPos);
 
@@ -562,8 +605,6 @@ function getStrongSymbolDetectorPlugin({
           return {active: false, match: {}};
         }
 
-        console.log(`CATCH IT!: ${tr.doc.textBetween(fromPos, toPos)}`);
-
         return {
           active: true, match: {
             fromTriggersPos,
@@ -575,6 +616,17 @@ function getStrongSymbolDetectorPlugin({
         };
       }
     }
+  });
+}
+
+function getStrongSymbolDetectorPluginFactory({
+                                                appendTransaction = (context) => {
+                                                  // do nothing
+                                                }
+                                              }) {
+  return symbolDetectorPluginFactory({
+    characters: '**',
+    appendTransaction
   });
 }
 
@@ -810,7 +862,7 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = '**bold*'; // innerHTML;
+    domNode.innerHTML = ''; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
@@ -985,7 +1037,8 @@ export class ProseMirrorComponent {
       }
     });
 
-    const strongSymbolDetectorPlugin = getStrongSymbolDetectorPlugin({
+    const strongSymbolDetectorPlugin = symbolDetectorPluginFactory({
+      characters: '**',
       appendTransaction({newState, match}) {
         // the order of steps are important here!
         return newState.tr
@@ -997,7 +1050,67 @@ export class ProseMirrorComponent {
           // at first remove last character, so the next cursor is not screw up
           // if at first remove left characters then we need to "map" cursor position for the next transaction step
           .replaceWith(match.toPos, match.toPos + 2, '')
-          .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 2, '');
+          .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 2, '')
+          .setStoredMarks([]);
+      }
+    });
+
+    const italicSymbolDetectorPlugin = symbolDetectorPluginFactory({
+      characters: '*',
+      appendTransaction({newState, match}) {
+        // fromTriggersPos,
+        // fromPos,
+        // toTriggersPos
+        // toPos
+
+        // if fromTriggersPos in the middle of the text
+        if (match.fromTriggersPos > 0) {
+          const previousSymbol = newState.doc.textBetween(match.fromTriggersPos - 1, match.fromTriggersPos);
+
+          // case: **text* - text should not be converted into `italic` in such case
+          if (previousSymbol === '*') {
+            console.log(`Ignore: previous symbol is *`);
+            return false;
+          }
+        }
+
+        // the order of steps are important here!
+        return newState.tr
+          .addMark(
+            match.fromTriggersPos,
+            match.toTriggersPos,
+            newState.doc.type.schema.marks.em.create()
+          )
+          // at first remove last character, so the next cursor is not screw up
+          // if at first remove left characters then we need to "map" cursor position for the next transaction step
+          .replaceWith(match.toPos, match.toPos + 1, '')
+          .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 1, '')
+          // make sure next character does not contains any style
+          .setStoredMarks([]);
+      }
+    });
+
+    const highlightSymbolDetectorPlugin = symbolDetectorPluginFactory({
+      characters: '~',
+      appendTransaction({newState, match}) {
+        // fromTriggersPos,
+        // fromPos,
+        // toTriggersPos
+        // toPos
+
+        // the order of steps are important here!
+        return newState.tr
+          .addMark(
+            match.fromTriggersPos,
+            match.toTriggersPos,
+            newState.doc.type.schema.marks.highlight.create()
+          )
+          // at first remove last character, so the next cursor is not screw up
+          // if at first remove left characters then we need to "map" cursor position for the next transaction step
+          .replaceWith(match.toPos, match.toPos + 1, '')
+          .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 1, '')
+          // make sure next character does not contains any style
+          .setStoredMarks([]);
       }
     });
 
@@ -1005,6 +1118,8 @@ export class ProseMirrorComponent {
       doc,
       schema: customSchema,
       plugins: [
+        highlightSymbolDetectorPlugin,
+        italicSymbolDetectorPlugin,
         strongSymbolDetectorPlugin,
         // iconSuggestionPlugin,
         // suggestionPlugin,
@@ -1017,8 +1132,6 @@ export class ProseMirrorComponent {
     this.view = new EditorView(this.container.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
-        console.log(`dispatchTransaction 1`);
-
         if (transaction.docChanged) {
           debug && console.log(`doc was changed`);
         }
