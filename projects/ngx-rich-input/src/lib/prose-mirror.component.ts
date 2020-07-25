@@ -1,9 +1,11 @@
 import {Component, ComponentFactoryResolver, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 
+import {toggleMark} from 'prosemirror-commands';
 import {EditorState, Plugin, PluginKey, Selection, TextSelection} from 'prosemirror-state';
 import {EditorView} from 'prosemirror-view';
 import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {ReplaceStep} from 'prosemirror-transform';
+import {keymap} from 'prosemirror-keymap';
 import {STICKY_MODAL_DATA, StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {BehaviorSubject} from 'rxjs';
 
@@ -15,12 +17,14 @@ const debug = false;
  *  - descendants
  *  - forEach
  *  - textBetween
+ *  - rangeHasMark
  *
  * Fragment
  *  does not expose `content` variable
  *
  *  - descendants
  *  - forEach
+ *  - rangeHasMark
  *
  * Transaction
  *
@@ -787,7 +791,7 @@ const marks = {
       return ['em', 0];
     }
   },
-  b: {
+  strong: {
     parseDOM: [
       {
         tag: 'b'
@@ -1045,7 +1049,7 @@ export class ProseMirrorComponent {
           .addMark(
             match.fromTriggersPos,
             match.toTriggersPos,
-            newState.doc.type.schema.marks.b.create()
+            newState.doc.type.schema.marks.strong.create()
           )
           // at first remove last character, so the next cursor is not screw up
           // if at first remove left characters then we need to "map" cursor position for the next transaction step
@@ -1114,10 +1118,20 @@ export class ProseMirrorComponent {
       }
     });
 
+    const keymapPlugin = keymap({
+      'Mod-b': toggleMark(customSchema.marks.strong),
+      'Mod-B': toggleMark(customSchema.marks.strong),
+      'Mod-i': toggleMark(customSchema.marks.em),
+      'Mod-I': toggleMark(customSchema.marks.em),
+      'Mod-u': toggleMark(customSchema.marks.highlight),
+      'Mod-U': toggleMark(customSchema.marks.highlight),
+    });
+
     const state = EditorState.create({
       doc,
       schema: customSchema,
       plugins: [
+        keymapPlugin,
         highlightSymbolDetectorPlugin,
         italicSymbolDetectorPlugin,
         strongSymbolDetectorPlugin,

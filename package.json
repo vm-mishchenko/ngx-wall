@@ -50,6 +50,7 @@
         "codemirror": "5.42.0",
         "core-js": "^2.5.4",
         "prosemirror-commands": "^1.0.8",
+        "prosemirror-example-setup": "^1.1.2",
         "prosemirror-history": "^1.0.4",
         "prosemirror-keymap": "^1.0.1",
         "prosemirror-markdown": "^1.5.0",
