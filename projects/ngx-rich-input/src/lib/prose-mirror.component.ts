@@ -150,7 +150,6 @@ function suggestionPluginFactory({
                                      return false;
                                    },
                                  }) {
-
   const pluginKey = new PluginKey('suggestions');
 
   return new Plugin({
@@ -308,7 +307,6 @@ function suggestionPluginFactory({
         }
 
         const {selection} = tr;
-        const nextValue = {...prevValue};
 
         if (isTextSelected(selection)) {
           console.log(`Ignore: text is selected`);
@@ -438,9 +436,145 @@ function suggestionPluginFactory({
   });
 }
 
-function getStrongSymbolDetectorPlugin() {
+function getStrongSymbolDetectorPlugin({
+                                         appendTransaction = (context) => {
+                                           // do nothing
+                                         }
+                                       }) {
+  const pluginKey = new PluginKey('StrongSymbolDetectorPlugin');
+
+  function findClosestLeftCharsPos(string) {
+    let scanned = '';
+    const regex = new RegExp('.*\\*\\*$');
+
+    for (let i = string.length - 1; i >= 0; i--) {
+      scanned += string[i];
+
+      if (regex.test(scanned)) {
+        return i;
+      }
+    }
+
+    return -1;
+  }
+
   return new Plugin({
-    state: {}
+    key: pluginKey,
+
+    appendTransaction(transactions, oldState, newState) {
+      const {active, match} = pluginKey.getState(newState);
+
+      if (active) {
+        return appendTransaction({newState, match});
+      }
+    },
+
+    view() {
+      return {
+        update: (view) => {
+          const {active, match} = this.key.getState(view.state);
+
+          if (active) {
+            // dispatchTransaction({view, match});
+          }
+        }
+      };
+    },
+
+    state: {
+      init() {
+        return {
+          active: false,
+          match: {}
+        };
+      },
+
+      apply(tr, prevValue, oldState, newState) {
+        if (!tr.docChanged) {
+          // ignore if doc was not changed
+          console.log(`Ignore: doc is not changed`);
+          return {active: false, match: {}};
+        }
+
+        // check that symbol is added by that tr
+        // check that current transaction actually added "{{character}}" symbol
+        if (tr.steps.length !== 1) {
+          console.log(`Ignore: Expect only one transaction step present`);
+          return {active: false, match: {}};
+        }
+
+        if (!(tr.steps[0] instanceof ReplaceStep)) {
+          console.log(`Ignore: Unexpected transaction step`);
+          return {active: false, match: {}};
+        }
+
+        const replaceStepContent = tr.steps[0].slice.content.textBetween(0, tr.steps[0].slice.content.size);
+        if (!replaceStepContent.length) {
+          console.log(`Ignore: transaction does't add any text.`);
+          return {active: false, match: {}};
+        }
+
+        // check that from cursor to the left side is a match with characters
+        const text = getTextBeginningToCursor(tr.curSelection);
+        const regexp = new RegExp('.*\\*\\*$');
+
+        if (!regexp.test(text)) {
+          console.log(`Ignore: characters does not match pattern: ${text}`);
+          return {active: false, match: {}};
+        }
+
+        // need to find position of closest corresponding characters on the left side
+        const closestLeftCharsPos = findClosestLeftCharsPos(text.slice(0, -2));
+
+        if (closestLeftCharsPos === -1) {
+          console.log(`Ignore: characters match pattern, but there is no opening characters: ${text}`);
+          return {active: false, match: {}};
+        }
+        // check if there is "space" near the characters
+        // **te st** - valid
+        // ** text** - invalid
+        // ** text ** - invalid
+        // **text ** - invalid
+
+        // |**text** - fromTriggersPos
+        // **text**| - toTriggersPos
+        // **|text** - fromPos
+        // **text|** - toPos
+        const fromTriggersPos = closestLeftCharsPos;
+        const toTriggersPos = tr.curSelection.$cursor.pos;
+        const fromPos = fromTriggersPos + 2;
+        const toPos = toTriggersPos - 2;
+
+        const textBetween = tr.doc.textBetween(fromPos, toPos);
+
+        if (!textBetween.length) {
+          console.log(`Ignore: No text between characters`);
+          return {active: false, match: {}};
+        }
+
+        if (textBetween[0] === ' ') {
+          console.log(`Ignore: First left symbol is space`);
+          return {active: false, match: {}};
+        }
+
+        if (textBetween[textBetween.length - 1] === ' ') {
+          console.log(`Ignore: Last right symbol is space`);
+          return {active: false, match: {}};
+        }
+
+        console.log(`CATCH IT!: ${tr.doc.textBetween(fromPos, toPos)}`);
+
+        return {
+          active: true, match: {
+            fromTriggersPos,
+            toTriggersPos,
+            fromPos,
+            toPos,
+            textBetween: tr.doc.textBetween(fromPos, toPos)
+          }
+        };
+      }
+    }
   });
 }
 
@@ -676,7 +810,7 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = ''; // innerHTML;
+    domNode.innerHTML = '**bold*'; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
@@ -851,12 +985,29 @@ export class ProseMirrorComponent {
       }
     });
 
+    const strongSymbolDetectorPlugin = getStrongSymbolDetectorPlugin({
+      appendTransaction({newState, match}) {
+        // the order of steps are important here!
+        return newState.tr
+          .addMark(
+            match.fromTriggersPos,
+            match.toTriggersPos,
+            newState.doc.type.schema.marks.b.create()
+          )
+          // at first remove last character, so the next cursor is not screw up
+          // if at first remove left characters then we need to "map" cursor position for the next transaction step
+          .replaceWith(match.toPos, match.toPos + 2, '')
+          .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 2, '');
+      }
+    });
+
     const state = EditorState.create({
       doc,
       schema: customSchema,
       plugins: [
-        iconSuggestionPlugin,
-        suggestionPlugin,
+        strongSymbolDetectorPlugin,
+        // iconSuggestionPlugin,
+        // suggestionPlugin,
         // statePlugin,
         // filterTransactionPlugin,
         // keyHandlerPluginFactory('ControlLeft'),
@@ -866,6 +1017,8 @@ export class ProseMirrorComponent {
     this.view = new EditorView(this.container.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
+        console.log(`dispatchTransaction 1`);
+
         if (transaction.docChanged) {
           debug && console.log(`doc was changed`);
         }
@@ -878,9 +1031,11 @@ export class ProseMirrorComponent {
           debug && console.log(`Transaction caused by mouse or touch input`);
         }
 
+        console.log(`dispatchTransaction 2`);
         const newState = this.view.state.apply(transaction);
 
         // The updateState method is just a shorthand to updating the "state" prop.
+        console.log(`dispatchTransaction 3`);
         this.view.updateState(newState);
 
         debug && console.log(transaction);
