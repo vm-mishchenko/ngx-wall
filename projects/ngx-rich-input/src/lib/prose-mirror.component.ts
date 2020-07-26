@@ -8,6 +8,8 @@ import {ReplaceStep} from 'prosemirror-transform';
 import {keymap} from 'prosemirror-keymap';
 import {STICKY_MODAL_DATA, StickyModalRef, StickyModalService, StickyPositionStrategy} from 'ngx-sticky-modal';
 import {BehaviorSubject} from 'rxjs';
+import {FormBuilder, Validators} from '@angular/forms';
+import {FormGroup} from '@angular/forms/src/model';
 
 const debug = false;
 
@@ -33,21 +35,68 @@ const debug = false;
 
 @Component({
   template: `
-    Text: {{config.text$ | async}}
+    <form [formGroup]="linkMenuForm" (keydown.enter)="onSubmit($event)">
+      <p>
+        <input formControlName="title" placeholder="title" type="text">
+      </p>
+
+      <p>
+        <input formControlName="href" #href placeholder="url" type="text" required>
+      </p>
+
+      <button type="submit" mat-button [disabled]="!linkMenuForm.valid">
+        Apply
+      </button>
+
+    </form>
   `,
   styles: [`
     :host {
-      background: red;
+      margin: 20px;
+      background: aquamarine;
     }
   `]
 })
-export class ContextMenuComponent implements OnInit {
-  constructor(@Inject(STICKY_MODAL_DATA) public config: any) {
+export class LinkMenuComponent implements OnInit {
+  @ViewChild('href') href: ElementRef;
+
+  linkMenuForm: FormGroup;
+
+  constructor(@Inject(STICKY_MODAL_DATA) public config: any,
+              private ngxStickyModalRef: StickyModalRef,
+              private fb: FormBuilder) {
   }
 
   ngOnInit() {
-    console.log(this.config.text$.getValue());
+    this.linkMenuForm = this.fb.group({
+      title: [this.config.text],
+      href: ['', Validators.required]
+    });
+
+    this.href.nativeElement.focus();
   }
+
+  onSubmit() {
+    if (!this.linkMenuForm.valid) {
+      return;
+    }
+
+    this.ngxStickyModalRef.close(this.linkMenuForm.value);
+  }
+}
+
+function getTextRepresentation(doc) {
+  return doc.textContent;
+}
+
+function getSelectedText(state) {
+  const $to = state.selection.$to;
+  const $from = state.selection.$from;
+
+  // Create a copy of this node with only the content between the given positions.
+  const doc = $from.parent.cut($from.pos, $to.pos);
+
+  return getTextRepresentation(doc);
 }
 
 function appendStarNode(view) {
@@ -168,6 +217,24 @@ function findFirstNodeWithMarkTypeInFragment(fragment, markType) {
 function doesFragmentContainsNode() {
 }
 
+@Component({
+  template: `
+    Text: {{config.text$ | async}}
+  `,
+  styles: [`
+    :host {
+      background: red;
+    }
+  `]
+})
+export class ContextMenuComponent implements OnInit {
+  constructor(@Inject(STICKY_MODAL_DATA) public config: any) {
+  }
+
+  ngOnInit() {
+    console.log(this.config.text$.getValue());
+  }
+}
 
 function suggestionPluginFactory({
                                    character = '/',
@@ -866,7 +933,7 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = ''; // innerHTML;
+    domNode.innerHTML = 'simple <a href="https://google.com">google.com</a>'; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
@@ -1125,16 +1192,72 @@ export class ProseMirrorComponent {
       'Mod-I': toggleMark(customSchema.marks.em),
       'Mod-u': toggleMark(customSchema.marks.highlight),
       'Mod-U': toggleMark(customSchema.marks.highlight),
+      'Mod-k': activateLinkMark,
     });
+
+    const componentFactoryResolver = this.componentFactoryResolver;
+    const ngxStickyModalService = this.ngxStickyModalService;
+    const container = this.container;
+
+    function activateLinkMark(state, dispatch, view) {
+      console.log('activateLinkMark');
+
+
+      const modalRef2 = ngxStickyModalService.open({
+        component: LinkMenuComponent,
+        data: {
+          text: getSelectedText(state),
+        },
+        positionStrategy: {
+          name: StickyPositionStrategy.flexibleConnected,
+          options: {
+            relativeTo: container.nativeElement
+          }
+        },
+        position: {
+          originX: 'start',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top'
+        },
+        overlayConfig: {
+          hasBackdrop: true
+        },
+        componentFactoryResolver: componentFactoryResolver
+      });
+
+      modalRef2.result.then((result) => {
+        if (!result.title) {
+          result.title = result.href;
+        }
+
+        if (isTextSelected(state.selection)) {
+
+        } else {
+          const link = customSchema.text(result.title, customSchema.marks.link.create(result));
+
+          view.dispatch(
+            view.state.tr.insert(state.selection.$cursor.pos, link)
+          );
+        }
+
+      }).catch(() => {
+        console.log(`catch`);
+      }).finally(() => {
+        view.focus();
+      });
+
+      return true;
+    }
 
     const state = EditorState.create({
       doc,
       schema: customSchema,
       plugins: [
         keymapPlugin,
-        highlightSymbolDetectorPlugin,
-        italicSymbolDetectorPlugin,
-        strongSymbolDetectorPlugin,
+        // highlightSymbolDetectorPlugin,
+        // italicSymbolDetectorPlugin,
+        // strongSymbolDetectorPlugin,
         // iconSuggestionPlugin,
         // suggestionPlugin,
         // statePlugin,
@@ -1158,11 +1281,9 @@ export class ProseMirrorComponent {
           debug && console.log(`Transaction caused by mouse or touch input`);
         }
 
-        console.log(`dispatchTransaction 2`);
         const newState = this.view.state.apply(transaction);
 
         // The updateState method is just a shorthand to updating the "state" prop.
-        console.log(`dispatchTransaction 3`);
         this.view.updateState(newState);
 
         debug && console.log(transaction);
@@ -1186,7 +1307,7 @@ export class ProseMirrorComponent {
         isCursorBetweenNodes: isCursorBetweenNodes(this.view.state.selection),
         isCursorAtTheStart: this.isCursorAtTheStart(this.view.state),
         isCursorAtTheEnd: this.isCursorAtTheEnd(this.view.state),
-        selectedText: this.getSelectedText(this.view.state),
+        selectedText: getSelectedText(this.view.state),
         selectedHTML: this.getSelectedHTML(this.view.state),
         rightText: this.getTextCursorToEnd(this.view.state),
         rightHTML: this.getHTMLCursorToEnd(this.view.state),
@@ -1224,7 +1345,7 @@ export class ProseMirrorComponent {
   }
 
   getTextRepresentation(doc) {
-    return doc.textContent;
+    return getTextRepresentation(doc);
   }
 
   getHTMLRepresentation(doc) {
@@ -1268,16 +1389,6 @@ export class ProseMirrorComponent {
     const doc = $from.parent.cut($from.pos);
 
     return this.getHTMLRepresentation(doc);
-  }
-
-  getSelectedText(state) {
-    const $to = state.selection.$to;
-    const $from = state.selection.$from;
-
-    // Create a copy of this node with only the content between the given positions.
-    const doc = $from.parent.cut($from.pos, $to.pos);
-
-    return this.getTextRepresentation(doc);
   }
 
   getSelectedHTML(state) {
