@@ -11,7 +11,7 @@ import {BehaviorSubject} from 'rxjs';
 import {FormBuilder, Validators} from '@angular/forms';
 import {FormGroup} from '@angular/forms/src/model';
 
-const debug = false;
+const debug = true;
 
 /**
  *
@@ -29,25 +29,32 @@ const debug = false;
  *  - rangeHasMark
  *
  * Transaction
+ *  - replaceWith - take position and Node|Fragment
  *
+ * Cursor
+ *  - marks() - get list of marks for node where cursor points
  *
+ * Mark
+ *  - attrs
+ *
+ *  Selection
+ *   - content - Slice of selected content
  */
 
 @Component({
   template: `
-    <form [formGroup]="linkMenuForm" (keydown.enter)="onSubmit($event)">
+    <form [formGroup]="linkMenuForm" (keydown.enter)="onSubmit()">
       <p>
         <input formControlName="title" placeholder="title" type="text">
       </p>
 
       <p>
-        <input formControlName="href" #href placeholder="url" type="text" required>
+        <input formControlName="href" #href placeholder="href" type="text" required>
       </p>
 
       <button type="submit" mat-button [disabled]="!linkMenuForm.valid">
         Apply
       </button>
-
     </form>
   `,
   styles: [`
@@ -69,8 +76,8 @@ export class LinkMenuComponent implements OnInit {
 
   ngOnInit() {
     this.linkMenuForm = this.fb.group({
-      title: [this.config.text],
-      href: ['', Validators.required]
+      title: [this.config.title || ''],
+      href: [this.config.href || '', Validators.required]
     });
 
     this.href.nativeElement.focus();
@@ -175,7 +182,11 @@ function isCursorBetweenNodes(selection) {
     return;
   }
 
-  return selection.$cursor.textOffset === 0;
+  return isResPositionBetweenNodes(selection.$cursor);
+}
+
+function isResPositionBetweenNodes(resolvedPos): boolean {
+  return resolvedPos.textOffset === 0;
 }
 
 function getCurrentNode(selection) {
@@ -193,29 +204,34 @@ function getCurrentNode(selection) {
   return $cursor.parent.child($cursor.index());
 }
 
-function findFirstNodeInFragment(fragment, predicate) {
-  let firstMatchedNode;
+function doesNodeHaveMarkType(node, markType): boolean {
+  return Boolean(markType.isInSet(node.marks));
+}
 
-  fragment.descendants((node, pos, parent) => {
-    if (predicate(node)) {
+function findNode(fragmentOrNode, predicate: (node, pos, parent) => boolean): { node: any, pos: number } {
+  let firstMatchedNode;
+  let firstMatchedNodePos;
+
+  fragmentOrNode.descendants((node, pos, parent) => {
+    if (predicate(node, pos, parent)) {
       firstMatchedNode = node;
+      firstMatchedNodePos = pos;
 
       // skip all next nodes
       return false;
     }
   });
 
-  return firstMatchedNode;
+  if (!firstMatchedNode) {
+    return null;
+  }
+
+  return {
+    node: firstMatchedNode,
+    pos: firstMatchedNodePos
+  };
 }
 
-function findFirstNodeWithMarkTypeInFragment(fragment, markType) {
-  return findFirstNodeInFragment(fragment, (node) => {
-    return Boolean(markType.isInSet(node.marks));
-  });
-}
-
-function doesFragmentContainsNode() {
-}
 
 @Component({
   template: `
@@ -277,6 +293,7 @@ function suggestionPluginFactory({
           throw new Error(`Ignore replaceWithText call: plugin is inactive`);
         }
 
+        // find suggestion node position
         let suggestionNode = null;
         let suggestionPosition = null;
 
@@ -933,7 +950,7 @@ export class ProseMirrorComponent {
     const domNode = document.createElement('div');
     // domNode.innerHTML = 'Simple <highlight>custom</highlight><b>bold</b> simple <a href="http://google.com">Link</a>'; // innerHTML;
     // domNode.innerHTML = 'Simple <suggestion>custom</suggestion>Some'; // innerHTML;
-    domNode.innerHTML = 'simple <a href="https://google.com">google.com</a>'; // innerHTML;
+    domNode.innerHTML = 'a <a title="First" href="https://first.com">First</a><a title="Second" href="https://second.com">Second</a><a href="https://third.com">Third</a>'; // innerHTML;
     // // Read-only, represent document as hierarchy of nodes
     const doc = DOMParser.fromSchema(customSchema).parse(domNode);
 
@@ -1200,13 +1217,106 @@ export class ProseMirrorComponent {
     const container = this.container;
 
     function activateLinkMark(state, dispatch, view) {
-      console.log('activateLinkMark');
+      let href;
+      let title;
+      let to;
+      let from;
 
+      // behavior similar to Google docs
+      if (isTextSelected(state.selection)) {
+        // basic assumption
+        from = state.selection.from;
+        to = state.selection.to;
 
-      const modalRef2 = ngxStickyModalService.open({
+        // if `from` points to inside the text node with `link` mark, then extend `from` to the beginning of that node
+        if (!isResPositionBetweenNodes(state.selection.$from) &&
+          doesNodeHaveMarkType(state.doc.child(state.selection.$from.index()), customSchema.marks.link)) {
+          from = state.selection.from - state.selection.$from.textOffset;
+        }
+
+        // if `$to` is not between the two nodes, then expand to the end of current text node if it has link mark
+        if (!isResPositionBetweenNodes(state.selection.$to) &&
+          state.selection.$to.nodeAfter &&
+          doesNodeHaveMarkType(state.doc.child(state.selection.$to.index()), customSchema.marks.link)) {
+          to = state.selection.to + state.selection.$to.nodeAfter.nodeSize;
+        }
+
+        title = state.doc.textBetween(from, to);
+
+        // if selection picks links, set the first `href` as pre-defined
+        const nodeWithLinkMark = findNode(state.doc.slice(from, to).content, (node) => {
+          return doesNodeHaveMarkType(node, customSchema.marks.link);
+        });
+
+        if (nodeWithLinkMark) {
+          href = nodeWithLinkMark.node.marks.find((mark) => {
+            return mark.type === customSchema.marks.link;
+          }).attrs.href;
+        }
+      } else {
+        if (isCursorBetweenNodes(state.selection)) {
+          // edit node with link mark
+          // if both `after` and `before` nodes has `link` mark - ignore both, append new mark
+          const {nodeAfter, nodeBefore} = state.selection.$cursor;
+
+          if (nodeAfter && nodeBefore) {
+            const doesNodeAfterHaveLinkMark = doesNodeHaveMarkType(nodeAfter, customSchema.marks.link);
+            const doesNodeBeforeHaveLinkMark = doesNodeHaveMarkType(nodeBefore, customSchema.marks.link);
+
+            if (doesNodeAfterHaveLinkMark && doesNodeBeforeHaveLinkMark) {
+              // ignore
+            } else if (doesNodeAfterHaveLinkMark) {
+              const linkMark = nodeAfter.marks.find(mark => mark.type === customSchema.marks.link);
+
+              from = state.selection.$cursor.pos;
+              to = state.selection.$cursor.pos + nodeAfter.nodeSize;
+              href = linkMark.attrs.href;
+              title = nodeAfter.textContent;
+
+            } else if (doesNodeBeforeHaveLinkMark) {
+              const linkMark = nodeBefore.marks.find(mark => mark.type === customSchema.marks.link);
+
+              from = state.selection.$cursor.pos - nodeAfter.nodeSize;
+              to = state.selection.$cursor.pos;
+              href = linkMark.attrs.href;
+              title = nodeBefore.textContent;
+            }
+
+            // only one `after` or `before` node exists
+          } else {
+            const existingNode = nodeAfter || nodeBefore;
+
+            if (existingNode && doesNodeHaveMarkType(existingNode, customSchema.marks.link)) {
+              const linkMark = existingNode.marks.find(mark => mark.type === customSchema.marks.link);
+
+              href = linkMark.attrs.href;
+              title = existingNode.textContent;
+            }
+          }
+
+          // node in the middle of some text node
+        } else {
+          // check whether current node has `link` mark
+          const currentNode = state.selection.$cursor.parent.child(state.selection.$cursor.index());
+
+          if (doesNodeHaveMarkType(currentNode, customSchema.marks.link)) {
+            const linkMark = currentNode.marks.find(mark => mark.type === customSchema.marks.link);
+
+            href = linkMark.attrs.href;
+            title = currentNode.textContent;
+
+            // calculate node position
+            to = state.selection.$cursor.pos + state.selection.$cursor.nodeAfter.nodeSize;
+            from = state.selection.$cursor.pos - state.selection.$cursor.nodeBefore.nodeSize;
+          }
+        }
+      }
+
+      ngxStickyModalService.open({
         component: LinkMenuComponent,
         data: {
-          text: getSelectedText(state),
+          href,
+          title,
         },
         positionStrategy: {
           name: StickyPositionStrategy.flexibleConnected,
@@ -1221,28 +1331,38 @@ export class ProseMirrorComponent {
           overlayY: 'top'
         },
         overlayConfig: {
-          hasBackdrop: true
+          hasBackdrop: false
         },
         componentFactoryResolver: componentFactoryResolver
-      });
+      }).result
+        .then((result) => {
+          if (!result.title) {
+            result.title = result.href;
+          }
 
-      modalRef2.result.then((result) => {
-        if (!result.title) {
-          result.title = result.href;
-        }
+          // in case if there was selected text
+          // or cursor points to already existing node with link mark
+          if (to) {
+            // there is a know problem - when the same link is split by several nodes
+            // because they all have a different set of marks
+            const link = customSchema.text(result.title, customSchema.marks.link.create(result));
 
-        if (isTextSelected(state.selection)) {
+            view.dispatch(
+              // all other marks for that section will be lost, that's expected behavior
+              view.state.tr
+                .setSelection(TextSelection.create(state.doc, /* anchor= */to, /* head? */to))
+                .replaceWith(from, to, link)
+            );
+          } else {
+            const link = customSchema.text(result.title, customSchema.marks.link.create(result));
 
-        } else {
-          const link = customSchema.text(result.title, customSchema.marks.link.create(result));
+            view.dispatch(
+              view.state.tr.insert(state.selection.$cursor.pos, link)
+            );
+          }
 
-          view.dispatch(
-            view.state.tr.insert(state.selection.$cursor.pos, link)
-          );
-        }
-
-      }).catch(() => {
-        console.log(`catch`);
+        }).catch(() => {
+        // user decided to cancel operation, nothing I can do
       }).finally(() => {
         view.focus();
       });
@@ -1255,11 +1375,11 @@ export class ProseMirrorComponent {
       schema: customSchema,
       plugins: [
         keymapPlugin,
-        // highlightSymbolDetectorPlugin,
-        // italicSymbolDetectorPlugin,
-        // strongSymbolDetectorPlugin,
-        // iconSuggestionPlugin,
-        // suggestionPlugin,
+        highlightSymbolDetectorPlugin,
+        italicSymbolDetectorPlugin,
+        strongSymbolDetectorPlugin,
+        iconSuggestionPlugin,
+        suggestionPlugin,
         // statePlugin,
         // filterTransactionPlugin,
         // keyHandlerPluginFactory('ControlLeft'),
