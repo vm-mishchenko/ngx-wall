@@ -1209,7 +1209,8 @@ export class ProseMirrorComponent {
       'Mod-I': toggleMark(customSchema.marks.em),
       'Mod-u': toggleMark(customSchema.marks.highlight),
       'Mod-U': toggleMark(customSchema.marks.highlight),
-      'Mod-k': activateLinkMark,
+      'Mod-k': modifyLinkMark,
+      'Alt-Enter': activateLinkMark,
     });
 
     const componentFactoryResolver = this.componentFactoryResolver;
@@ -1217,6 +1218,64 @@ export class ProseMirrorComponent {
     const container = this.container;
 
     function activateLinkMark(state, dispatch, view) {
+      if (isTextSelected(state.selection)) {
+        const nodeWithLinkMark = findNode(state.selection.content().content, (node) => {
+          return doesNodeHaveMarkType(node, customSchema.marks.link);
+        });
+
+        if (nodeWithLinkMark) {
+          const href = nodeWithLinkMark.node.marks.find((mark) => {
+            return mark.type === customSchema.marks.link;
+          }).attrs.href;
+          window.open(href, '_blank');
+        }
+      } else {
+        if (isCursorBetweenNodes(state.selection)) {
+          const {nodeAfter, nodeBefore} = state.selection.$cursor;
+
+          if (nodeAfter && nodeBefore) {
+            const doesNodeAfterHaveLinkMark = doesNodeHaveMarkType(nodeAfter, customSchema.marks.link);
+            const doesNodeBeforeHaveLinkMark = doesNodeHaveMarkType(nodeBefore, customSchema.marks.link);
+
+            if (doesNodeAfterHaveLinkMark && doesNodeBeforeHaveLinkMark) {
+              // ignore
+            } else if (doesNodeAfterHaveLinkMark) {
+              const href = nodeAfter.marks.find(mark => mark.type === customSchema.marks.link).attrs.href;
+              window.open(href, '_blank');
+
+            } else if (doesNodeBeforeHaveLinkMark) {
+              const href = nodeBefore.marks.find(mark => mark.type === customSchema.marks.link).attrs.href;
+              window.open(href, '_blank');
+            }
+
+            // only one `after` or `before` node exists
+          } else {
+            const existingNode = nodeAfter || nodeBefore;
+
+            if (existingNode && doesNodeHaveMarkType(existingNode, customSchema.marks.link)) {
+              const href = existingNode.marks.find((mark) => {
+                return mark.type === customSchema.marks.link;
+              }).attrs.href;
+              window.open(href, '_blank');
+            }
+          }
+        } else {
+          const currentNode = state.selection.$cursor.parent.child(state.selection.$cursor.index());
+
+          if (doesNodeHaveMarkType(currentNode, customSchema.marks.link)) {
+            const href = currentNode.marks.find((mark) => {
+              return mark.type === customSchema.marks.link;
+            }).attrs.href;
+            window.open(href, '_blank');
+          }
+        }
+      }
+
+      return true;
+    }
+
+    function modifyLinkMark(state, dispatch, view) {
+      console.log(`modifyLinkMark`);
       let href;
       let title;
       let to;
