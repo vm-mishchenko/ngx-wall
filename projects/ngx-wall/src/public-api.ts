@@ -19,6 +19,7 @@ export * from './lib/bricks/video-brick/video-brick';
 export * from './lib/bricks/web-bookmark-brick/web-bookmark-brick';
 export * from './lib/bricks/code-brick/code-brick';
 export * from './lib/bricks/text-brick/text-brick';
+export * from './lib/bricks/text-brick-2/text-brick-2';
 
 // modules
 export * from './lib/modules/pick-out/pick-out';
