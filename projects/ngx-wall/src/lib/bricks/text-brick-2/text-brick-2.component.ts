@@ -1,17 +1,18 @@
-import {Component, ComponentFactoryResolver, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ComponentFactoryResolver, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {Subject} from 'rxjs';
 import {IBaseTextState} from '../base-text-brick/base-text-state.interface';
 import {IOnWallStateChange} from '../../wall/components/wall/interfaces/wall-component/on-wall-state-change.interface';
 import {IOnWallFocus} from '../../wall/components/wall/interfaces/wall-component/on-wall-focus.interface';
 import {IFocusContext} from '../../wall/components/wall/interfaces/wall-component/wall-component-focus-context.interface';
-import {FOCUS_INITIATOR} from '../base-text-brick/base-text-brick.constant';
-import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {EditorView} from 'prosemirror-view';
+import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 import {StickyModalService} from 'ngx-sticky-modal';
-import {EditorState, Plugin, PluginKey, Selection, TextSelection} from 'prosemirror-state';
-import {setCursorAtTheStart} from 'ngx-rich-input';
-import {filter, takeUntil, withLatestFrom} from 'rxjs/operators';
-import {VIEW_MODE} from '../../wall/components/wall/wall-view.model';
+import {toggleMark} from 'prosemirror-commands';
+import {keymap} from 'prosemirror-keymap';
+import {EditorState} from 'prosemirror-state';
+import {getHTMLRepresentation, setCursorAtTheStart} from 'ngx-rich-input';
+import {takeUntil} from 'rxjs/operators';
+import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 
 const nodes = {
   doc: {
@@ -100,6 +101,7 @@ const marks = {
 };
 
 const customSchema = new Schema({nodes, marks});
+const serializer = DOMSerializer.fromSchema(customSchema);
 
 @Component({
   selector: 'text-brick2',
@@ -107,6 +109,11 @@ const customSchema = new Schema({nodes, marks});
   styleUrls: ['./text-brick2.component.scss']
 })
 export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChange, IOnWallFocus {
+  @Input() id: string;
+  @Input() state: IBaseTextState;
+  @Input() wallModel: IWallModel;
+  @Output() stateChanges: EventEmitter<IBaseTextState> = new EventEmitter();
+
   @ViewChild('container') editor: ElementRef;
 
   // take care of all subscriptions that should be destroyed after component will be destroyed
@@ -122,25 +129,37 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   ngOnInit() {
     this.textChange$.pipe(
       takeUntil(this.destroyed$),
-    ).subscribe(() => {
-      // todo: continue here
-      // this.setTextState(this.scope.text);
-      // this.saveCurrentState();
+    ).subscribe((html) => {
+      console.log(`Save text state`);
+      this.stateChanges.emit({
+        text: html,
+        tabs: 0
+      });
     });
+
+    const keymapPlugin = keymap({
+      'Mod-b': toggleMark(customSchema.marks.strong),
+      'Mod-B': toggleMark(customSchema.marks.strong),
+      'Mod-i': toggleMark(customSchema.marks.em),
+      'Mod-I': toggleMark(customSchema.marks.em),
+      'Mod-u': toggleMark(customSchema.marks.highlight),
+      'Mod-U': toggleMark(customSchema.marks.highlight),
+    });
+
+    const domNode = document.createElement('div');
+    domNode.innerHTML = this.state.text;
 
     const state = EditorState.create({
       schema: customSchema,
-      plugins: []
+      plugins: [
+        keymapPlugin
+      ],
+      doc: DOMParser.fromSchema(customSchema).parse(domNode)
     });
-
 
     this.view = new EditorView(this.editor.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
-        if (transaction.docChanged) {
-          console.log(`doc was changed`);
-        }
-
         if (transaction.selectionSet) {
           console.log(`selection was explicitly updated by this transaction.`);
         }
@@ -154,18 +173,26 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
         // The updateState method is just a shorthand to updating the "state" prop.
         this.view.updateState(newState);
 
-        this.textChange.subscribe(() => {
-          this.setTextState(this.scope.text);
-          this.saveCurrentState();
-        });
-
-        console.log(transaction);
+        if (transaction.docChanged) {
+          const text = getHTMLRepresentation(newState.doc, serializer);
+          this.textChange$.next(text);
+        }
       },
     });
   }
 
   onWallStateChange(newState: IBaseTextState) {
-    console.log(newState);
+    if (newState && newState.text === getHTMLRepresentation(this.view.state.doc, serializer)) {
+      return;
+    }
+
+    const domNode = document.createElement('div');
+    domNode.innerHTML = newState.text;
+    const doc = DOMParser.fromSchema(customSchema).parse(domNode);
+
+    this.view.dispatch(
+      this.view.state.tr.replaceWith(0, this.view.state.doc.content.size, doc)
+    );
   }
 
   onWallFocus(context?: IFocusContext): void {
@@ -173,12 +200,11 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       return;
     }
 
-    console.log(context);
     this.editor.nativeElement.firstChild.focus();
+
     if (context) {
 
     } else {
-
       setCursorAtTheStart(this.view.state, this.view.dispatch);
     }
   }
@@ -189,5 +215,4 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   // HELPFUL FUNCTIONS
-
 }
