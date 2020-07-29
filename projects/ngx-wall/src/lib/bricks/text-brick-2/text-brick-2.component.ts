@@ -10,9 +10,12 @@ import {StickyModalService} from 'ngx-sticky-modal';
 import {toggleMark} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 import {EditorState} from 'prosemirror-state';
-import {getHTMLRepresentation, setCursorAtTheStart} from 'ngx-rich-input';
+import {getHTMLRepresentation, setCursorAtTheStart, isTextSelected} from 'ngx-rich-input';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
+import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
+import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
+import {FOCUS_INITIATOR} from '../base-text-brick/base-text-brick.constant';
 
 const nodes = {
   doc: {
@@ -114,6 +117,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   @Input() wallModel: IWallModel;
   @Output() stateChanges: EventEmitter<IBaseTextState> = new EventEmitter();
 
+  wallUiApi: IWallUiApi;
+
   @ViewChild('container') editor: ElementRef;
 
   // take care of all subscriptions that should be destroyed after component will be destroyed
@@ -127,6 +132,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   ngOnInit() {
+    this.wallUiApi = this.wallModel.api.ui;
+
     this.textChange$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((html) => {
@@ -138,6 +145,9 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     });
 
     const keymapPlugin = keymap({
+      'ArrowUp': this.onArrowUp.bind(this),
+      'ArrowDown': this.onArrowDown.bind(this),
+      'Enter': this.onEnter.bind(this),
       'Mod-b': toggleMark(customSchema.marks.strong),
       'Mod-B': toggleMark(customSchema.marks.strong),
       'Mod-i': toggleMark(customSchema.marks.em),
@@ -150,11 +160,11 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     domNode.innerHTML = this.state.text;
 
     const state = EditorState.create({
+      doc: DOMParser.fromSchema(customSchema).parse(domNode),
       schema: customSchema,
       plugins: [
         keymapPlugin
-      ],
-      doc: DOMParser.fromSchema(customSchema).parse(domNode)
+      ]
     });
 
     this.view = new EditorView(this.editor.nativeElement, {
@@ -175,6 +185,11 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
         if (transaction.docChanged) {
           const text = getHTMLRepresentation(newState.doc, serializer);
+
+          if (text === this.state.text) {
+            throw new Error(`Editor change: text the same as in state`);
+          }
+
           this.textChange$.next(text);
         }
       },
@@ -209,6 +224,38 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     }
   }
 
+  onEnter() {
+    console.log(`Enter`);
+
+    return true;
+  }
+
+  onArrowUp() {
+    console.log(`onArrowUp`);
+
+    return true;
+  }
+
+  onArrowDown() {
+    if (isTextSelected(this.view.state.selection)) {
+      const focusContext: IFocusContext = {
+        initiator: FOCUS_INITIATOR,
+        details: {
+          bottomKey: true,
+          caretLeftCoordinate: 0
+        }
+      };
+
+      this.wallUiApi.mode.edit.focusOnNextTextBrick(this.id, focusContext);
+    } else {
+      // const cursorPositionInLine = new CursorPositionInLine(leftRightText.left, leftRightText.right, this.editor.nativeElement);
+      // const $from = this.view.state.selection.$from;
+    }
+
+
+    return true;
+  }
+
   ngOnDestroy() {
     // destroy all component subscriptions
     this.destroyed$.next();
@@ -216,3 +263,4 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
   // HELPFUL FUNCTIONS
 }
+

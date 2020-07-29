@@ -11,6 +11,7 @@ import {BehaviorSubject} from 'rxjs';
 import {FormBuilder, Validators} from '@angular/forms';
 import {FormGroup} from '@angular/forms/src/model';
 import {linkSchema} from './prose-components/link';
+import {isTextSelected} from './prose-components/commands';
 
 const debug = true;
 
@@ -171,11 +172,6 @@ function getTextBeginningToCursor(selection) {
 
 function getTextFromAndTo(doc, from, to) {
   return doc.textBetween(from, to);
-}
-
-function isTextSelected(selection) {
-  // another way to test it - if ($cursor = null) text is selected
-  return !selection.empty;
 }
 
 function isCursorBetweenNodes(selection) {

@@ -1,5 +1,4 @@
 import {Selection} from 'prosemirror-state';
-import {DOMParser, DOMSerializer, Schema} from 'prosemirror-model';
 
 export function setCursorAtTheStart(state, dispatch) {
   dispatch(
@@ -14,5 +13,10 @@ export function getHTMLRepresentation(node, serializer) {
   div.append(documentFragment);
 
   return div.innerHTML;
+}
+
+export function isTextSelected(selection) {
+  // another way to test it - if ($cursor = null) text is selected
+  return !selection.empty;
 }
 
