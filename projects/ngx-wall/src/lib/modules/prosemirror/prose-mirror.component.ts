@@ -11,7 +11,14 @@ import {BehaviorSubject} from 'rxjs';
 import {FormBuilder, Validators} from '@angular/forms';
 import {FormGroup} from '@angular/forms/src/model';
 import {linkSchema} from './prose-components/link';
-import {isTextSelected} from './prose-components/commands';
+import {
+  findNode,
+  isTextSelected,
+  doesNodeHaveMarkType,
+  getTextFromAndTo,
+  isResPositionBetweenNodes,
+  getTextRepresentation, getSelectedText, isCursorBetweenNodes, getCurrentNode
+} from './prose-components/commands';
 
 const debug = true;
 
@@ -94,20 +101,6 @@ export class LinkMenuComponent implements OnInit {
   }
 }
 
-function getTextRepresentation(doc) {
-  return doc.textContent;
-}
-
-function getSelectedText(state) {
-  const $to = state.selection.$to;
-  const $from = state.selection.$from;
-
-  // Create a copy of this node with only the content between the given positions.
-  const doc = $from.parent.cut($from.pos, $to.pos);
-
-  return getTextRepresentation(doc);
-}
-
 function appendStarNode(view) {
   const type = view.state.doc.type.schema.nodes.star;
   const {$from} = view.state.selection;
@@ -169,66 +162,6 @@ function getTextBeginningToCursor(selection) {
 
   return getTextFromAndTo(selection.$cursor.parent, 0, selection.$cursor.pos);
 }
-
-function getTextFromAndTo(doc, from, to) {
-  return doc.textBetween(from, to);
-}
-
-function isCursorBetweenNodes(selection) {
-  if (isTextSelected(selection)) {
-    return;
-  }
-
-  return isResPositionBetweenNodes(selection.$cursor);
-}
-
-function isResPositionBetweenNodes(resolvedPos): boolean {
-  return resolvedPos.textOffset === 0;
-}
-
-function getCurrentNode(selection) {
-  // For all these cases Node is not determined
-  // 1. <node>|<node>
-  // 2. |<node>...
-  // 3. ...<node>|
-
-  if (isTextSelected(selection) || isCursorBetweenNodes(selection)) {
-    return;
-  }
-
-  const $cursor = selection.$cursor;
-
-  return $cursor.parent.child($cursor.index());
-}
-
-function doesNodeHaveMarkType(node, markType): boolean {
-  return Boolean(markType.isInSet(node.marks));
-}
-
-function findNode(fragmentOrNode, predicate: (node, pos, parent) => boolean): { node: any, pos: number } {
-  let firstMatchedNode;
-  let firstMatchedNodePos;
-
-  fragmentOrNode.descendants((node, pos, parent) => {
-    if (predicate(node, pos, parent)) {
-      firstMatchedNode = node;
-      firstMatchedNodePos = pos;
-
-      // skip all next nodes
-      return false;
-    }
-  });
-
-  if (!firstMatchedNode) {
-    return null;
-  }
-
-  return {
-    node: firstMatchedNode,
-    pos: firstMatchedNodePos
-  };
-}
-
 
 @Component({
   template: `

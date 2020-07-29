@@ -4,7 +4,6 @@ import {SelectionTextContextMenuComponent} from './components/selection-menu/sel
 import {RichInputComponent} from './rich-input.component';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material';
-import {ContextMenuComponent, LinkMenuComponent, ProseMirrorComponent} from './prose-mirror.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
@@ -17,18 +16,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   ],
   declarations: [
     RichInputComponent,
-    ProseMirrorComponent,
-    ContextMenuComponent,
-    LinkMenuComponent,
     SelectionTextContextMenuComponent,
   ],
   entryComponents: [
-    ContextMenuComponent,
-    LinkMenuComponent,
     SelectionTextContextMenuComponent
   ],
   exports: [
-    ProseMirrorComponent,
     RichInputComponent
   ]
 })

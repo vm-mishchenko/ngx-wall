@@ -10,10 +10,9 @@ import {StickyModalService} from 'ngx-sticky-modal';
 import {toggleMark} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 import {EditorState} from 'prosemirror-state';
-import {getHTMLRepresentation, setCursorAtTheStart, isTextSelected} from 'ngx-rich-input';
+import {getHTMLRepresentation, isTextSelected, setCursorAtTheStart} from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
-import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
 import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
 import {FOCUS_INITIATOR} from '../base-text-brick/base-text-brick.constant';
 

@@ -5,11 +5,9 @@ import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MatButtonModule} from '@angular/material';
 import {BrickRegistry} from '../../wall/registry/brick-registry.service';
-import {RichInputModule} from 'ngx-rich-input';
 
 @NgModule({
   imports: [
-    RichInputModule,
     FormsModule,
     CommonModule,
     MatButtonModule,

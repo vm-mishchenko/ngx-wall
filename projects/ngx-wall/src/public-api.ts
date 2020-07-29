@@ -26,3 +26,4 @@ export * from './lib/modules/pick-out/pick-out';
 export * from './lib/modules/tow/tow';
 export * from './lib/modules/radar/radar';
 export * from './lib/modules/file-uploader/file-uploader';
+export * from './lib/modules/prosemirror/prosemirror';
