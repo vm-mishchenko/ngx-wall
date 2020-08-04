@@ -10,7 +10,15 @@ import {StickyModalService} from 'ngx-sticky-modal';
 import {toggleMark} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 import {EditorState} from 'prosemirror-state';
-import {getHTMLRepresentation, getTextBeforeResolvedPos, isTextSelected, setCursorAtTheStart} from '../../modules/prosemirror/prosemirror';
+import {
+  getHTMLAfterResolvedPos,
+  getHTMLBeforeResolvedPos,
+  getHTMLRepresentation,
+  getTextAfterResolvedPos,
+  getTextBeforeResolvedPos,
+  isTextSelected,
+  setCursorAtTheStart
+} from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
@@ -186,24 +194,28 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
         if (transaction.docChanged) {
           const text = getHTMLRepresentation(newState.doc, serializer);
 
+          // happen when the text was changed outside the component/prose-mirror editor
           if (text === this.state.text) {
-            throw new Error(`Editor change: text the same as in state`);
+            return;
           }
 
-          this.textChange$.next(text);
+          this.updateText(text);
         }
       },
     });
   }
 
   onWallStateChange(newState: IBaseTextState) {
+    // happen when text is changed internally by prose-mirror component
     if (newState && newState.text === getHTMLRepresentation(this.view.state.doc, serializer)) {
       return;
     }
 
     const domNode = document.createElement('div');
     domNode.innerHTML = newState.text;
-    const doc = DOMParser.fromSchema(customSchema).parse(domNode);
+    const doc = DOMParser.fromSchema(customSchema).parse(domNode, {
+      preserveWhitespace: true
+    });
 
     this.view.dispatch(
       this.view.state.tr.replaceWith(0, this.view.state.doc.content.size, doc)
@@ -225,7 +237,30 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onEnter() {
-    console.log(`Enter`);
+    const $cursor = isTextSelected(this.view.state.selection) ?
+      this.view.state.selection.$head :
+      this.view.state.selection.$cursor;
+
+    const leftHTML = getHTMLBeforeResolvedPos($cursor, serializer);
+    const rightHTML = getHTMLAfterResolvedPos($cursor, serializer);
+
+    if (leftHTML.length) {
+      if (rightHTML.length) {
+        // text is splitted to two part
+        this.splitBrickForTwoPart(leftHTML, rightHTML);
+      } else {
+        // cursor at end - text's exist - create new and focus on it
+        this.addEmptyBrickAfter();
+      }
+    } else {
+      if (rightHTML.length) {
+        // cursor at start, text exists - just create new line at top, do not move focus
+        this.addEmptyTextBrickBefore();
+      } else {
+        // there are no text at all - create new and focus on it
+        this.addEmptyBrickAfter();
+      }
+    }
 
     return true;
   }
@@ -235,8 +270,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       this.view.state.selection.$head :
       this.view.state.selection.$cursor;
 
-    const leftText = this.view.state.doc.textBetween(0, $cursor.pos);
-    const rightText = this.view.state.doc.cut($cursor.pos).textContent;
+    const leftText = getTextBeforeResolvedPos($cursor);
+    const rightText = getTextAfterResolvedPos($cursor);
 
     const cursorPositionInLine = new CursorPositionInLine(leftText, rightText, this.editor.nativeElement);
 
@@ -265,7 +300,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       this.view.state.selection.$cursor;
 
     const leftText = getTextBeforeResolvedPos($cursor);
-    const rightText = this.view.state.doc.cut($cursor.pos).textContent;
+    const rightText = getTextAfterResolvedPos($cursor);
 
     const cursorPositionInLine = new CursorPositionInLine(leftText, rightText, this.editor.nativeElement);
 
@@ -294,5 +329,55 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   // HELPFUL FUNCTIONS
+
+  private addEmptyTextBrickBefore() {
+    const newTextState = {
+      text: '',
+      tabs: this.state.tabs
+    };
+
+    this.wallModel.api.core2
+      .addBrickBeforeBrickId(this.id, 'text2', newTextState);
+
+    // scroll browser view to element
+    this.editor.nativeElement.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'start'
+    });
+  }
+
+  private addEmptyBrickAfter() {
+    // cursor at end - text's exist - create new and focus on it
+    this.addBrickAfter('');
+  }
+
+  private addBrickAfter(text: string) {
+    const newTextState = {
+      text: text,
+      tabs: this.state.tabs
+    };
+
+    const addedBrick = this.wallModel.api.core2
+      .addBrickAfterBrickId(this.id, 'text2', newTextState);
+
+    // wait one tick for component rendering
+    setTimeout(() => {
+      this.wallUiApi.mode.edit.focusOnBrickId(addedBrick.id);
+    });
+  }
+
+  private splitBrickForTwoPart(left: string, right: string) {
+    this.addBrickAfter(right);
+    this.updateText(left);
+  }
+
+  private updateText(text) {
+    if (text === this.state.text) {
+      throw new Error(`Trying to save the same text: ${text}`);
+    }
+
+    this.textChange$.next(text);
+  }
 }
 

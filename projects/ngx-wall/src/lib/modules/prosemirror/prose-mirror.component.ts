@@ -18,7 +18,13 @@ import {
   getTextFromAndTo,
   getTextBeforeResolvedPos,
   isResPositionBetweenNodes,
-  getTextRepresentation, getSelectedText, isCursorBetweenNodes, getCurrentNode
+  getDocTextRepresentation,
+  getSelectedText,
+  isCursorBetweenNodes,
+  getCurrentNode,
+  getTextAfterResolvedPos,
+  getHTMLAfterResolvedPos,
+  getHTMLBeforeResolvedPos
 } from './prose-components/commands';
 
 const debug = true;
@@ -1391,10 +1397,10 @@ export class ProseMirrorComponent {
         isCursorAtTheEnd: this.isCursorAtTheEnd(this.view.state),
         selectedText: getSelectedText(this.view.state),
         selectedHTML: this.getSelectedHTML(this.view.state),
-        rightText: this.getTextCursorToEnd(this.view.state),
-        rightHTML: this.getHTMLCursorToEnd(this.view.state),
+        rightText: this.getTextCursorToEnd(this.view.state.selection),
+        rightHTML: this.getHTMLCursorToEnd(this.view.state.selection),
         leftText: this.getTextBeginningToCursor(this.view.state.selection),
-        leftHTML: this.getHTMLBeginningToCursor(this.view.state),
+        leftHTML: this.getHTMLBeginningToCursor(this.view.state.selection),
         text: this.getSelectionAsText(this.view.state),
         currentNode: getCurrentNode(this.view.state.selection)
       }
@@ -1427,7 +1433,7 @@ export class ProseMirrorComponent {
   }
 
   getTextRepresentation(doc) {
-    return getTextRepresentation(doc);
+    return getDocTextRepresentation(doc);
   }
 
   getHTMLRepresentation(doc) {
@@ -1446,31 +1452,28 @@ export class ProseMirrorComponent {
     // console.log(content.openEnd);
   }
 
-  getHTMLBeginningToCursor(state) {
-    const $from = state.selection.$from;
+  getHTMLBeginningToCursor(selection) {
+    if (isTextSelected(selection)) {
+      return;
+    }
 
-    // Create a copy of this node with only the content between the given positions.
-    const doc = $from.parent.cut(0, $from.pos);
-
-    return this.getHTMLRepresentation(doc);
+    return getHTMLBeforeResolvedPos(selection.$cursor, serializer);
   }
 
-  getTextCursorToEnd(state) {
-    const $from = state.selection.$from;
+  getTextCursorToEnd(selection) {
+    if (isTextSelected(selection)) {
+      return;
+    }
 
-    // Create a copy of this node with only the content between the given positions.
-    const doc = $from.parent.cut($from.pos);
-
-    return this.getTextRepresentation(doc);
+    return getTextAfterResolvedPos(selection.$cursor);
   }
 
-  getHTMLCursorToEnd(state) {
-    const $from = state.selection.$from;
+  getHTMLCursorToEnd(selection) {
+    if (isTextSelected(selection)) {
+      return;
+    }
 
-    // Create a copy of this node with only the content between the given positions.
-    const doc = $from.parent.cut($from.pos);
-
-    return this.getHTMLRepresentation(doc);
+    return getHTMLAfterResolvedPos(selection.$cursor, serializer);
   }
 
   getSelectedHTML(state) {

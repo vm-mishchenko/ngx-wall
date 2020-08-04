@@ -58,21 +58,13 @@ export class WallEditorComponent implements OnInit {
 
   wallPlan2: IWallDefinition2 = [
     {
-      'id': '82600916-c474-c669-7a0a-a362fb134a69',
-      'tag': 'text',
-      'meta': {},
-      'data': {
-        'text': 'Hi, World!'
-      }
-    },
-    {
       'id': '82600916-c474-c669-7a0a-a362fb134a63',
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': 'Hi, <b>World</b>!'
+        'text': 'Hi there, <b>World</b>!'
       }
-    }
+    },
   ];
 
   wallModel: IWallModel;

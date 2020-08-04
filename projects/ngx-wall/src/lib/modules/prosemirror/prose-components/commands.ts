@@ -6,15 +6,6 @@ export function setCursorAtTheStart(state, dispatch) {
   );
 }
 
-export function getHTMLRepresentation(node, serializer) {
-  const documentFragment = serializer.serializeFragment(node.content);
-  const div = document.createElement('DIV');
-
-  div.append(documentFragment);
-
-  return div.innerHTML;
-}
-
 export function isTextSelected(selection) {
   // another way to test it - if ($cursor = null) text is selected
   return !selection.empty;
@@ -48,24 +39,12 @@ export function doesNodeHaveMarkType(node, markType): boolean {
   return Boolean(markType.isInSet(node.marks));
 }
 
-
 export function isResPositionBetweenNodes(resolvedPos): boolean {
   return resolvedPos.textOffset === 0;
 }
 
-export function getTextRepresentation(doc) {
+export function getDocTextRepresentation(doc) {
   return doc.textContent;
-}
-
-export function getSelectedText(state) {
-  // need to replace to `textBetween` call
-  const $to = state.selection.$to;
-  const $from = state.selection.$from;
-
-  // Create a copy of this node with only the content between the given positions.
-  const doc = $from.parent.cut($from.pos, $to.pos);
-
-  return getTextRepresentation(doc);
 }
 
 export function getCurrentNode(selection) {
@@ -92,10 +71,51 @@ export function isCursorBetweenNodes(selection) {
 }
 
 // get text/HTML functions
+export function getHTMLRepresentation(node, serializer) {
+  const documentFragment = serializer.serializeFragment(node.content);
+  const div = document.createElement('DIV');
+
+  div.append(documentFragment);
+
+  return div.innerHTML;
+}
+
 export function getTextFromAndTo(doc, from, to) {
   return doc.textBetween(from, to);
 }
 
 export function getTextBeforeResolvedPos(resolvedPos) {
   return getTextFromAndTo(resolvedPos.parent, 0, resolvedPos.pos);
+}
+
+export function getTextAfterResolvedPos(resolvedPos) {
+  // Create a copy of this node with only the content between the given positions.
+  const cutDoc = resolvedPos.parent.cut(resolvedPos.pos);
+
+  return getDocTextRepresentation(cutDoc);
+}
+
+export function getSelectedText(state) {
+  // need to replace to `textBetween` call
+  const $to = state.selection.$to;
+  const $from = state.selection.$from;
+
+  // Create a copy of this node with only the content between the given positions.
+  const doc = $from.parent.cut($from.pos, $to.pos);
+
+  return getDocTextRepresentation(doc);
+}
+
+export function getHTMLBeforeResolvedPos(resolvedPos, serializer) {
+  // Create a copy of this node with only the content between the given positions.
+  const doc = resolvedPos.parent.cut(0, resolvedPos.pos);
+
+  return getHTMLRepresentation(doc, serializer);
+}
+
+export function getHTMLAfterResolvedPos(resolvedPos, serializer) {
+  // Create a copy of this node with only the content between the given positions.
+  const doc = resolvedPos.parent.cut(resolvedPos.pos);
+
+  return getHTMLRepresentation(doc, serializer);
 }
