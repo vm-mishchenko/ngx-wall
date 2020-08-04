@@ -119,3 +119,12 @@ export function getHTMLAfterResolvedPos(resolvedPos, serializer) {
 
   return getHTMLRepresentation(doc, serializer);
 }
+
+// get Cursor
+export function isCursorAtStart($cursor): boolean {
+  return $cursor.pos === 0;
+}
+
+export function isCursorAtEnd($cursor): boolean {
+  return $cursor.pos === $cursor.parent.content.size;
+}

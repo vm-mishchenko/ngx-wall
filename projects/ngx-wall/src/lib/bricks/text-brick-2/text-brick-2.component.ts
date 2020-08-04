@@ -16,6 +16,8 @@ import {
   getHTMLRepresentation,
   getTextAfterResolvedPos,
   getTextBeforeResolvedPos,
+  isCursorAtEnd,
+  isCursorAtStart,
   isTextSelected,
   setCursorAtTheStart
 } from '../../modules/prosemirror/prosemirror';
@@ -155,6 +157,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     const keymapPlugin = keymap({
       'ArrowUp': this.onArrowUp.bind(this),
       'ArrowDown': this.onArrowDown.bind(this),
+      'ArrowLeft': this.onArrowLeft.bind(this),
+      'ArrowRight': this.onArrowRight.bind(this),
       'Enter': this.onEnter.bind(this),
       'Mod-b': toggleMark(customSchema.marks.strong),
       'Mod-B': toggleMark(customSchema.marks.strong),
@@ -320,6 +324,40 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
     // means that this function will handle the key event, so prose mirror
     // will call preventDefault internally
+    return true;
+  }
+
+  onArrowLeft() {
+    if (isTextSelected(this.view.state.selection) || !isCursorAtStart(this.view.state.selection.$cursor)) {
+      return;
+    }
+
+    const focusContext: IFocusContext = {
+      initiator: FOCUS_INITIATOR,
+      details: {
+        leftKey: true
+      }
+    };
+
+    this.wallUiApi.mode.edit.focusOnPreviousTextBrick(this.id, focusContext);
+
+    return true;
+  }
+
+  onArrowRight() {
+    if (isTextSelected(this.view.state.selection) || !isCursorAtEnd(this.view.state.selection.$cursor)) {
+      return;
+    }
+
+    const focusContext: IFocusContext = {
+      initiator: FOCUS_INITIATOR,
+      details: {
+        rightKey: true
+      }
+    };
+
+    this.wallUiApi.mode.edit.focusOnNextTextBrick(this.id, focusContext);
+
     return true;
   }
 
