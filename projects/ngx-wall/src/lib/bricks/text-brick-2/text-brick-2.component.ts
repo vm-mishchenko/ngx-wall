@@ -119,6 +119,7 @@ const marks = {
 
 const customSchema = new Schema({nodes, marks});
 const serializer = DOMSerializer.fromSchema(customSchema);
+const maxTabNumber = 3;
 
 @Component({
   selector: 'text-brick2',
@@ -138,7 +139,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   // take care of all subscriptions that should be destroyed after component will be destroyed
   private destroyed$ = new Subject();
 
-  private textChange$: Subject<string> = new Subject();
+  private newState$: Subject<IBaseTextState> = new Subject();
   private view: any;
 
   constructor(private ngxStickyModalService: StickyModalService,
@@ -148,14 +149,10 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   ngOnInit() {
     this.wallUiApi = this.wallModel.api.ui;
 
-    this.textChange$.pipe(
+    this.newState$.pipe(
       takeUntil(this.destroyed$),
-    ).subscribe((html) => {
-      console.log(`Save text state: ${html}`);
-      this.stateChanges.emit({
-        text: html,
-        tabs: 0
-      });
+    ).subscribe((newState) => {
+      this.stateChanges.emit(newState);
     });
 
     const keymapPlugin = keymap({
@@ -166,6 +163,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       'Enter': this.onEnter.bind(this),
       'Backspace': this.onBackspace.bind(this),
       'Delete': this.onDelete.bind(this),
+      'Tab': this.onTab.bind(this),
       'Mod-b': toggleMark(customSchema.marks.strong),
       'Mod-B': toggleMark(customSchema.marks.strong),
       'Mod-i': toggleMark(customSchema.marks.em),
@@ -188,8 +186,6 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.view = new EditorView(this.editor.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
-        console.log(transaction);
-
         const newState = this.view.state.apply(transaction);
 
         // The updateState method is just a shorthand to updating the "state" prop.
@@ -279,8 +275,10 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     }
 
     if (this.state.tabs) {
-      // this.decreaseTab();
-      // this.saveCurrentState();
+      this.updateState({
+        ...this.state,
+        tabs: this.state.tabs - 1
+      });
     } else {
       if (this.state.text.length) {
         this.concatWithPreviousTextSupportingBrick();
@@ -394,6 +392,24 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     return true;
   }
 
+  onTab() {
+    if (!isCursorAtStart(this.view.state.selection.$cursor)) {
+      return;
+    }
+
+    if (this.state.tabs >= maxTabNumber) {
+      // handle Tab keypress, but do nothing
+      return true;
+    }
+
+    this.updateState({
+      ...this.state,
+      tabs: (this.state.tabs || 0) + 1
+    });
+
+    return true;
+  }
+
   ngOnDestroy() {
     // destroy all component subscriptions
     this.destroyed$.next();
@@ -448,7 +464,14 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       throw new Error(`Trying to save the same text: ${text}`);
     }
 
-    this.textChange$.next(text);
+    this.updateState({
+      ...this.state,
+      text
+    });
+  }
+
+  private updateState(newState: IBaseTextState) {
+    this.newState$.next(newState);
   }
 
   private concatWithPreviousTextSupportingBrick() {
@@ -562,4 +585,3 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     return true;
   }
 }
-
