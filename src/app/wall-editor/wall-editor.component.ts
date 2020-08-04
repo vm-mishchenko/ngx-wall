@@ -62,7 +62,15 @@ export class WallEditorComponent implements OnInit {
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': 'Hi there, <b>World</b>!'
+        'text': 'Hi there, <b>World</b>'
+      }
+    },
+    {
+      'id': '82600916-c474-c669-7a0a-a362fb134a62',
+      'tag': 'text2',
+      'meta': {},
+      'data': {
+        'text': '<b>Error</b>'
       }
     },
   ];

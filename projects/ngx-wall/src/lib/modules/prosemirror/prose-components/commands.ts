@@ -1,10 +1,5 @@
-import {Selection} from 'prosemirror-state';
-
-export function setCursorAtTheStart(state, dispatch) {
-  dispatch(
-    state.tr.setSelection(Selection.atStart(state.doc))
-  );
-}
+import {Selection, TextSelection} from 'prosemirror-state';
+import {DOMParser} from 'prosemirror-model';
 
 export function isTextSelected(selection) {
   // another way to test it - if ($cursor = null) text is selected
@@ -71,8 +66,8 @@ export function isCursorBetweenNodes(selection) {
 }
 
 // get text/HTML functions
-export function getHTMLRepresentation(node, serializer) {
-  const documentFragment = serializer.serializeFragment(node.content);
+export function getHTMLRepresentation(proseNode, serializer) {
+  const documentFragment = serializer.serializeFragment(proseNode.content);
   const div = document.createElement('DIV');
 
   div.append(documentFragment);
@@ -127,4 +122,31 @@ export function isCursorAtStart($cursor): boolean {
 
 export function isCursorAtEnd($cursor): boolean {
   return $cursor.pos === $cursor.parent.content.size;
+}
+
+// set Cursor
+export function setCursorAtTheStart(state, dispatch) {
+  dispatch(
+    state.tr.setSelection(Selection.atStart(state.doc))
+  );
+}
+
+export function setCursorAtPosition(state: any, position: number, dispatch: any) {
+  dispatch(
+    state.tr.setSelection(TextSelection.create(state.doc, /* anchor= */position, /* head? */position))
+  );
+}
+
+// utils
+
+// convert <b>1</b><b>2</b> to <b>12</b>
+export function normalizeHtmlString(htmlString: string, customSchema: any, serializer: any): string {
+  const domNode = document.createElement('div');
+  domNode.innerHTML = htmlString;
+
+  const doc = DOMParser.fromSchema(customSchema).parse(domNode, {
+    preserveWhitespace: true
+  });
+
+  return getHTMLRepresentation(doc, serializer);
 }

@@ -19,6 +19,8 @@ import {
   isCursorAtEnd,
   isCursorAtStart,
   isTextSelected,
+  setCursorAtPosition,
+  normalizeHtmlString,
   setCursorAtTheStart
 } from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
@@ -26,6 +28,7 @@ import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
 import {FOCUS_INITIATOR} from '../base-text-brick/base-text-brick.constant';
 import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
+import {disableViewTransactionProcessing} from '../../wall/components/wall/wall-view.model';
 
 const nodes = {
   doc: {
@@ -147,7 +150,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.textChange$.pipe(
       takeUntil(this.destroyed$),
     ).subscribe((html) => {
-      console.log(`Save text state`);
+      console.log(`Save text state: ${html}`);
       this.stateChanges.emit({
         text: html,
         tabs: 0
@@ -160,6 +163,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       'ArrowLeft': this.onArrowLeft.bind(this),
       'ArrowRight': this.onArrowRight.bind(this),
       'Enter': this.onEnter.bind(this),
+      'Backspace': this.onBackspace.bind(this),
       'Mod-b': toggleMark(customSchema.marks.strong),
       'Mod-B': toggleMark(customSchema.marks.strong),
       'Mod-i': toggleMark(customSchema.marks.em),
@@ -182,14 +186,6 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.view = new EditorView(this.editor.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
-        if (transaction.selectionSet) {
-          console.log(`selection was explicitly updated by this transaction.`);
-        }
-
-        if (transaction.getMeta('pointer')) {
-          console.log(`Transaction caused by mouse or touch input`);
-        }
-
         const newState = this.view.state.apply(transaction);
 
         // The updateState method is just a shorthand to updating the "state" prop.
@@ -210,8 +206,12 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onWallStateChange(newState: IBaseTextState) {
+    if (!newState) {
+      return;
+    }
+
     // happen when text is changed internally by prose-mirror component
-    if (newState && newState.text === getHTMLRepresentation(this.view.state.doc, serializer)) {
+    if (normalizeHtmlString(newState.text, customSchema, serializer) === getHTMLRepresentation(this.view.state.doc, serializer)) {
       return;
     }
 
@@ -234,7 +234,9 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.editor.nativeElement.firstChild.focus();
 
     if (context) {
-
+      if (context.details.concatText) {
+        this.placeCaretBaseOnConcatenatedText(context.details);
+      }
     } else {
       setCursorAtTheStart(this.view.state, this.view.dispatch);
     }
@@ -266,6 +268,26 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       }
     }
 
+    return true;
+  }
+
+  onBackspace() {
+    if (isTextSelected(this.view.state.selection) || !isCursorAtStart(this.view.state.selection.$cursor)) {
+      return;
+    }
+
+    if (this.state.tabs) {
+      // this.decreaseTab();
+      // this.saveCurrentState();
+    } else {
+      if (this.state.text.length) {
+        this.concatWithPreviousTextSupportingBrick();
+      } else {
+        // this.onDeleteAndFocusToPrevious(e);
+      }
+    }
+
+    console.log(`onBackspace`);
     return true;
   }
 
@@ -416,6 +438,48 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     }
 
     this.textChange$.next(text);
+  }
+
+  concatWithPreviousTextSupportingBrick() {
+    const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
+
+    if (!previousTextBrickId) {
+      return;
+    }
+
+    const previousBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(previousTextBrickId);
+
+    this.wallModel.api.core2.updateBrickState(previousTextBrickId, {
+      text: normalizeHtmlString(previousBrickSnapshot.state.text + this.state.text, customSchema, serializer)
+    });
+
+    // wait for component to re-render
+    setTimeout(() => {
+      const focusContext: IFocusContext = {
+        initiator: FOCUS_INITIATOR,
+        details: {
+          concatText: true,
+          initialText: previousBrickSnapshot.state.text,
+          addedText: this.state.text
+        }
+      };
+
+      this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId, focusContext);
+
+      // remove only after focus will be established
+      // that prevents flickering on mobile
+      this.wallModel.api.core2.removeBrick(this.id, disableViewTransactionProcessing);
+    });
+  }
+
+  private placeCaretBaseOnConcatenatedText({initialText}) {
+    const domNode = document.createElement('div');
+    domNode.innerHTML = initialText;
+    const doc = DOMParser.fromSchema(customSchema).parse(domNode, {
+      preserveWhitespace: true
+    });
+
+    setCursorAtPosition(this.view.state, doc.content.size, this.view.dispatch);
   }
 }
 
