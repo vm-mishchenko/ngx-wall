@@ -1,3 +1,10 @@
-<p id="container" #container></p>
+<!--Readonly mode-->
+<p [className]="'text-brick-tabs-' + state.tabs"
+   *ngIf="wallModel.api.core2.isReadOnly$|async" [innerHTML]="state.text">
+</p>
 
-{{state.tabs}}
+<!--Edit mode-->
+<div
+  [ngClass]="['text-brick-2__editor', 'text-brick-2-tabs-' + state.tabs]"
+  #container>
+</div>

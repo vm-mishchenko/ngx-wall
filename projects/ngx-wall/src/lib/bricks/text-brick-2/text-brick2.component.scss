@@ -1,4 +1,32 @@
-#container {
-  padding: 5px;
-  border: 1px solid silver;
+::ng-deep {
+  .ProseMirror {
+    word-break: break-all;
+    padding: 0 2px;
+    line-height: 1.4;
+    margin: 0;
+    box-sizing: content-box;
+    min-height: 23px;
+
+    &.hidden {
+      display: none;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.text-brick-2__editor {
+  .text-brick-2-tabs-1 {
+    margin-left: 1.5rem;
+  }
+
+  .text-brick-2-tabs-2 {
+    margin-left: 3rem;
+  }
+
+  .text-brick-2-tabs-3 {
+    margin-left: 4.5rem;
+  }
 }
