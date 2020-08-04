@@ -10,11 +10,12 @@ import {StickyModalService} from 'ngx-sticky-modal';
 import {toggleMark} from 'prosemirror-commands';
 import {keymap} from 'prosemirror-keymap';
 import {EditorState} from 'prosemirror-state';
-import {getHTMLRepresentation, isTextSelected, setCursorAtTheStart} from '../../modules/prosemirror/prosemirror';
+import {getHTMLRepresentation, getTextBeforeResolvedPos, isTextSelected, setCursorAtTheStart} from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
 import {IWallUiApi} from '../../wall/components/wall/interfaces/ui-api.interface';
 import {FOCUS_INITIATOR} from '../base-text-brick/base-text-brick.constant';
+import {CursorPositionInLine} from '../../modules/utils/node/cursor-position-in-line';
 
 const nodes = {
   doc: {
@@ -230,28 +231,60 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onArrowUp() {
-    console.log(`onArrowUp`);
+    const $cursor = isTextSelected(this.view.state.selection) ?
+      this.view.state.selection.$head :
+      this.view.state.selection.$cursor;
 
+    const leftText = this.view.state.doc.textBetween(0, $cursor.pos);
+    const rightText = this.view.state.doc.cut($cursor.pos).textContent;
+
+    const cursorPositionInLine = new CursorPositionInLine(leftText, rightText, this.editor.nativeElement);
+
+    if (!cursorPositionInLine.isOnFirstLine) {
+      return;
+    }
+
+    const focusContext: IFocusContext = {
+      initiator: FOCUS_INITIATOR,
+      details: {
+        topKey: true,
+        caretLeftCoordinate: null
+      }
+    };
+
+    this.wallUiApi.mode.edit.focusOnPreviousTextBrick(this.id, focusContext);
+
+    // means that this function will handle the key event, so prose mirror
+    // will call preventDefault internally
     return true;
   }
 
   onArrowDown() {
-    if (isTextSelected(this.view.state.selection)) {
-      const focusContext: IFocusContext = {
-        initiator: FOCUS_INITIATOR,
-        details: {
-          bottomKey: true,
-          caretLeftCoordinate: 0
-        }
-      };
+    const $cursor = isTextSelected(this.view.state.selection) ?
+      this.view.state.selection.$head :
+      this.view.state.selection.$cursor;
 
-      this.wallUiApi.mode.edit.focusOnNextTextBrick(this.id, focusContext);
-    } else {
-      // const cursorPositionInLine = new CursorPositionInLine(leftRightText.left, leftRightText.right, this.editor.nativeElement);
-      // const $from = this.view.state.selection.$from;
+    const leftText = getTextBeforeResolvedPos($cursor);
+    const rightText = this.view.state.doc.cut($cursor.pos).textContent;
+
+    const cursorPositionInLine = new CursorPositionInLine(leftText, rightText, this.editor.nativeElement);
+
+    if (!cursorPositionInLine.isOnLastLine) {
+      return;
     }
 
+    const focusContext: IFocusContext = {
+      initiator: FOCUS_INITIATOR,
+      details: {
+        bottomKey: true,
+        caretLeftCoordinate: null
+      }
+    };
 
+    this.wallUiApi.mode.edit.focusOnNextTextBrick(this.id, focusContext);
+
+    // means that this function will handle the key event, so prose mirror
+    // will call preventDefault internally
     return true;
   }
 

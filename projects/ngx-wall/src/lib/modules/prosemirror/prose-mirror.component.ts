@@ -16,6 +16,7 @@ import {
   isTextSelected,
   doesNodeHaveMarkType,
   getTextFromAndTo,
+  getTextBeforeResolvedPos,
   isResPositionBetweenNodes,
   getTextRepresentation, getSelectedText, isCursorBetweenNodes, getCurrentNode
 } from './prose-components/commands';
@@ -152,15 +153,6 @@ function removeAllSuggestionMarks(view) {
     .setMeta('suggestion-stage', 'exit');
 
   view.dispatch(tr);
-}
-
-function getTextBeginningToCursor(selection) {
-  if (isTextSelected(selection)) {
-    console.warn('Cannot get getTextBeginningToCursor - Text is selected.');
-    return;
-  }
-
-  return getTextFromAndTo(selection.$cursor.parent, 0, selection.$cursor.pos);
 }
 
 @Component({
@@ -386,7 +378,7 @@ function suggestionPluginFactory({
             return {active: false, match: {}};
           }
 
-          const text = getTextBeginningToCursor(tr.curSelection);
+          const text = getTextBeforeResolvedPos(tr.curSelection.$cursor);
 
           if (text.length === 0) {
             console.log(`Ignore: text is empty`);
@@ -459,7 +451,7 @@ function suggestionPluginFactory({
 
           // check whether text after "{{character}}" does not have any spaces
           // if it has than abort suggestion
-          const text = getTextBeginningToCursor(tr.curSelection);
+          const text = getTextBeforeResolvedPos(tr.curSelection.$cursor);
           // match all after "{{character}}" except space
           const regexp = new RegExp(`.*\\${character}([^ ]*)$`);
           const match = text.match(regexp);
@@ -577,7 +569,7 @@ function symbolDetectorPluginFactory({
         }
 
         // check that from cursor to the left side is a match with characters
-        const text = getTextBeginningToCursor(tr.curSelection);
+        const text = getTextBeforeResolvedPos(tr.curSelection.$cursor);
 
         if (!hasSubStringAtTheEnd(text, characters)) {
           console.log(`Ignore: characters does not match pattern: ${text}`);
@@ -1401,7 +1393,7 @@ export class ProseMirrorComponent {
         selectedHTML: this.getSelectedHTML(this.view.state),
         rightText: this.getTextCursorToEnd(this.view.state),
         rightHTML: this.getHTMLCursorToEnd(this.view.state),
-        leftText: getTextBeginningToCursor(this.view.state.selection),
+        leftText: this.getTextBeginningToCursor(this.view.state.selection),
         leftHTML: this.getHTMLBeginningToCursor(this.view.state),
         text: this.getSelectionAsText(this.view.state),
         currentNode: getCurrentNode(this.view.state.selection)
@@ -1505,6 +1497,14 @@ export class ProseMirrorComponent {
     }
 
     return state.selection.$cursor.pos === state.selection.$cursor.parent.content.size;
+  }
+
+  getTextBeginningToCursor(selection) {
+    if (isTextSelected(selection)) {
+      return;
+    }
+
+    return getTextBeforeResolvedPos(selection.$cursor);
   }
 
   // experimental functions

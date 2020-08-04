@@ -48,9 +48,6 @@ export function doesNodeHaveMarkType(node, markType): boolean {
   return Boolean(markType.isInSet(node.marks));
 }
 
-export function getTextFromAndTo(doc, from, to) {
-  return doc.textBetween(from, to);
-}
 
 export function isResPositionBetweenNodes(resolvedPos): boolean {
   return resolvedPos.textOffset === 0;
@@ -92,4 +89,13 @@ export function isCursorBetweenNodes(selection) {
   }
 
   return isResPositionBetweenNodes(selection.$cursor);
+}
+
+// get text/HTML functions
+export function getTextFromAndTo(doc, from, to) {
+  return doc.textBetween(from, to);
+}
+
+export function getTextBeforeResolvedPos(resolvedPos) {
+  return getTextFromAndTo(resolvedPos.parent, 0, resolvedPos.pos);
 }
