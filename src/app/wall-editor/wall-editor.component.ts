@@ -62,7 +62,7 @@ export class WallEditorComponent implements OnInit {
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': 'Hi'
+        'text': ''
       }
     },
     {
@@ -70,7 +70,7 @@ export class WallEditorComponent implements OnInit {
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': ''
+        'text': 'Update the view\'s props. Will immediately cause an update to the DOM.'
       }
     },
   ];
