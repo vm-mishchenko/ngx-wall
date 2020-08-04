@@ -125,9 +125,16 @@ export function isCursorAtEnd($cursor): boolean {
 }
 
 // set Cursor
-export function setCursorAtTheStart(state, dispatch) {
+export function setCursorAtStart(state, dispatch) {
   dispatch(
     state.tr.setSelection(Selection.atStart(state.doc))
+  );
+}
+
+export function setCursorAtEnd(state, dispatch) {
+  console.log(`setCursorAtEnd`);
+  dispatch(
+    state.tr.setSelection(Selection.atEnd(state.doc))
   );
 }
 

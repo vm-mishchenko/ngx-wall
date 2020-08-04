@@ -19,9 +19,10 @@ import {
   isCursorAtEnd,
   isCursorAtStart,
   isTextSelected,
-  setCursorAtPosition,
   normalizeHtmlString,
-  setCursorAtTheStart
+  setCursorAtEnd,
+  setCursorAtPosition,
+  setCursorAtStart
 } from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
@@ -164,6 +165,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       'ArrowRight': this.onArrowRight.bind(this),
       'Enter': this.onEnter.bind(this),
       'Backspace': this.onBackspace.bind(this),
+      'Delete': this.onDelete.bind(this),
       'Mod-b': toggleMark(customSchema.marks.strong),
       'Mod-B': toggleMark(customSchema.marks.strong),
       'Mod-i': toggleMark(customSchema.marks.em),
@@ -186,6 +188,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.view = new EditorView(this.editor.nativeElement, {
       state,
       dispatchTransaction: (transaction) => {
+        console.log(transaction);
+
         const newState = this.view.state.apply(transaction);
 
         // The updateState method is just a shorthand to updating the "state" prop.
@@ -227,18 +231,16 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onWallFocus(context?: IFocusContext): void {
-    if (this.editor.nativeElement === document.activeElement) {
-      return;
-    }
-
-    this.editor.nativeElement.firstChild.focus();
+    this.view.focus();
 
     if (context) {
       if (context.details.concatText) {
-        this.placeCaretBaseOnConcatenatedText(context.details);
+        this.placeCaretBaseOnConcatenatedText(context.details.initialText);
+      } else if (context.details.deletePreviousText) {
+        setCursorAtEnd(this.view.state, this.view.dispatch);
       }
     } else {
-      setCursorAtTheStart(this.view.state, this.view.dispatch);
+      setCursorAtStart(this.view.state, this.view.dispatch);
     }
   }
 
@@ -283,12 +285,21 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       if (this.state.text.length) {
         this.concatWithPreviousTextSupportingBrick();
       } else {
-        // this.onDeleteAndFocusToPrevious(e);
+        this.onDeleteAndFocusToPrevious();
       }
     }
 
-    console.log(`onBackspace`);
     return true;
+  }
+
+  onDelete() {
+    if (!this.state.text.length) {
+      return this.onDeleteAndFocusToNext();
+    }
+
+    if (this.state.text.length && isCursorAtEnd(this.view.state.selection.$cursor) && !isTextSelected(this.view.state.selection)) {
+      return this.concatWithNextTextSupportingBrick();
+    }
   }
 
   onArrowUp() {
@@ -440,7 +451,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     this.textChange$.next(text);
   }
 
-  concatWithPreviousTextSupportingBrick() {
+  private concatWithPreviousTextSupportingBrick() {
     const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
 
     if (!previousTextBrickId) {
@@ -472,7 +483,33 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     });
   }
 
-  private placeCaretBaseOnConcatenatedText({initialText}) {
+  private onDeleteAndFocusToPrevious() {
+    const previousTextBrickId = this.wallModel.api.core2.getPreviousTextBrickId(this.id);
+    const nextTextBrickId = this.wallModel.api.core2.getNextBrickId(this.id);
+
+    this.wallModel.api.core2.removeBrick(this.id, disableViewTransactionProcessing);
+
+    if (previousTextBrickId || nextTextBrickId) {
+      const focusContext: IFocusContext = {
+        initiator: FOCUS_INITIATOR,
+        details: {
+          deletePreviousText: true
+        }
+      };
+
+      this.wallUiApi.mode.edit.focusOnBrickId(previousTextBrickId || nextTextBrickId, focusContext);
+    } else {
+      // there is any text brick on the page, add default one
+      const newTextBrick = this.wallModel.api.core2.addDefaultBrick();
+
+      // wait until it will be rendered
+      setTimeout(() => {
+        this.wallUiApi.mode.edit.focusOnBrickId(newTextBrick.id);
+      });
+    }
+  }
+
+  private placeCaretBaseOnConcatenatedText(initialText) {
     const domNode = document.createElement('div');
     domNode.innerHTML = initialText;
     const doc = DOMParser.fromSchema(customSchema).parse(domNode, {
@@ -480,6 +517,49 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     });
 
     setCursorAtPosition(this.view.state, doc.content.size, this.view.dispatch);
+  }
+
+  private onDeleteAndFocusToNext() {
+    const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
+
+    if (!nextTextBrickId) {
+      return;
+    }
+
+    this.wallModel.api.core2.removeBrick(this.id, disableViewTransactionProcessing);
+
+    const focusContext: IFocusContext = {
+      initiator: FOCUS_INITIATOR,
+      details: {
+        deletePreviousText: true
+      }
+    };
+
+    this.wallUiApi.mode.edit.focusOnBrickId(nextTextBrickId, focusContext);
+  }
+
+  private concatWithNextTextSupportingBrick(): boolean {
+    const nextTextBrickId = this.wallModel.api.core2.getNextTextBrickId(this.id);
+
+    if (!nextTextBrickId) {
+      return;
+    }
+
+    const nextTextBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(nextTextBrickId);
+    const concatenationText = nextTextBrickSnapshot.state.text || '';
+    const initialText = this.state.text;
+
+    this.wallModel.api.core2.removeBrick(nextTextBrickId, disableViewTransactionProcessing);
+
+    if (concatenationText.length) {
+      this.updateText(normalizeHtmlString(initialText + concatenationText, customSchema, serializer));
+
+      setTimeout(() => {
+        this.placeCaretBaseOnConcatenatedText(initialText);
+      });
+    }
+
+    return true;
   }
 }
 

@@ -62,7 +62,7 @@ export class WallEditorComponent implements OnInit {
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': 'Hi there, <b>World</b>'
+        'text': 'Hi'
       }
     },
     {
@@ -70,7 +70,7 @@ export class WallEditorComponent implements OnInit {
       'tag': 'text2',
       'meta': {},
       'data': {
-        'text': '<b>Error</b>'
+        'text': ''
       }
     },
   ];

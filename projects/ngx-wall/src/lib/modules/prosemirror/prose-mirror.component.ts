@@ -18,13 +18,14 @@ import {
   getTextFromAndTo,
   getTextBeforeResolvedPos,
   isResPositionBetweenNodes,
+  setCursorAtPosition,
   getDocTextRepresentation,
   getSelectedText,
   isCursorBetweenNodes,
   getCurrentNode,
   getTextAfterResolvedPos,
   getHTMLAfterResolvedPos,
-  getHTMLBeforeResolvedPos
+  getHTMLBeforeResolvedPos, setCursorAtStart, setCursorAtEnd
 } from './prose-components/commands';
 
 const debug = true;
@@ -1522,21 +1523,15 @@ export class ProseMirrorComponent {
   }
 
   setCursorAtTheStart() {
-    this.view.dispatch(
-      this.view.state.tr.setSelection(Selection.atStart(this.view.state.doc))
-    );
+    setCursorAtStart(this.view.state, this.view.dispatch);
   }
 
   setCursorAtTheEnd() {
-    this.view.dispatch(
-      this.view.state.tr.setSelection(Selection.atEnd(this.view.state.doc))
-    );
+    setCursorAtEnd(this.view.state, this.view.dispatch);
   }
 
   setCursorAtPosition(position: number) {
-    this.view.dispatch(
-      this.view.state.tr.setSelection(TextSelection.create(this.view.state.doc, /* anchor= */position, /* head? */position))
-    );
+    setCursorAtPosition(this.view.state, position, this.view.dispatch);
   }
 
   addHighlightMarkToSelectedText(view) {
