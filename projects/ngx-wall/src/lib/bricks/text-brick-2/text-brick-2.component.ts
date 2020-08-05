@@ -22,7 +22,8 @@ import {
   normalizeHtmlString,
   setCursorAtEnd,
   setCursorAtPosition,
-  setCursorAtStart
+  setCursorAtStart,
+  symbolDetectorPluginFactory
 } from '../../modules/prosemirror/prosemirror';
 import {takeUntil} from 'rxjs/operators';
 import {IWallModel} from '../../wall/model/interfaces/wall-model.interface';
@@ -121,6 +122,83 @@ const customSchema = new Schema({nodes, marks});
 const serializer = DOMSerializer.fromSchema(customSchema);
 const maxTabNumber = 3;
 
+const strongSymbolDetectorPlugin = symbolDetectorPluginFactory({
+  characters: '**',
+  appendTransaction({newState, match}) {
+    // the order of steps are important here!
+    return newState.tr
+      .addMark(
+        match.fromTriggersPos,
+        match.toTriggersPos,
+        newState.doc.type.schema.marks.strong.create()
+      )
+      // at first remove last character, so the next cursor is not screw up
+      // if at first remove left characters then we need to "map" cursor position for the next transaction step
+      .replaceWith(match.toPos, match.toPos + 2, '')
+      .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 2, '')
+      .setStoredMarks([]);
+  }
+});
+
+const italicSymbolDetectorPlugin = symbolDetectorPluginFactory({
+  characters: '*',
+  appendTransaction({newState, match}) {
+    // fromTriggersPos,
+    // fromPos,
+    // toTriggersPos
+    // toPos
+
+    // if fromTriggersPos in the middle of the text
+    if (match.fromTriggersPos > 0) {
+      const previousSymbol = newState.doc.textBetween(match.fromTriggersPos - 1, match.fromTriggersPos);
+
+      // case: **text* - text should not be converted into `italic` in such case
+      if (previousSymbol === '*') {
+        console.log(`Ignore: previous symbol is *`);
+        return false;
+      }
+    }
+
+    // the order of steps are important here!
+    return newState.tr
+      .addMark(
+        match.fromTriggersPos,
+        match.toTriggersPos,
+        newState.doc.type.schema.marks.em.create()
+      )
+      // at first remove last character, so the next cursor is not screw up
+      // if at first remove left characters then we need to "map" cursor position for the next transaction step
+      .replaceWith(match.toPos, match.toPos + 1, '')
+      .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 1, '')
+      // make sure next character does not contains any style
+      .setStoredMarks([]);
+  }
+});
+
+const highlightSymbolDetectorPlugin = symbolDetectorPluginFactory({
+  characters: '~',
+  appendTransaction({newState, match}) {
+    // fromTriggersPos,
+    // fromPos,
+    // toTriggersPos
+    // toPos
+
+    // the order of steps are important here!
+    return newState.tr
+      .addMark(
+        match.fromTriggersPos,
+        match.toTriggersPos,
+        newState.doc.type.schema.marks.highlight.create()
+      )
+      // at first remove last character, so the next cursor is not screw up
+      // if at first remove left characters then we need to "map" cursor position for the next transaction step
+      .replaceWith(match.toPos, match.toPos + 1, '')
+      .replaceWith(match.fromTriggersPos, match.fromTriggersPos + 1, '')
+      // make sure next character does not contains any style
+      .setStoredMarks([]);
+  }
+});
+
 @Component({
   selector: 'text-brick2',
   templateUrl: './text-brick2.component.html',
@@ -179,6 +257,9 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       doc: DOMParser.fromSchema(customSchema).parse(domNode),
       schema: customSchema,
       plugins: [
+        strongSymbolDetectorPlugin,
+        italicSymbolDetectorPlugin,
+        highlightSymbolDetectorPlugin,
         keymapPlugin
       ]
     });
@@ -295,7 +376,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
       return this.onDeleteAndFocusToNext();
     }
 
-    if (this.state.text.length && isCursorAtEnd(this.view.state.selection.$cursor) && !isTextSelected(this.view.state.selection)) {
+    if (this.state.text.length && !isTextSelected(this.view.state.selection) && isCursorAtEnd(this.view.state.selection.$cursor)) {
       return this.concatWithNextTextSupportingBrick();
     }
   }
