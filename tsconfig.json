@@ -20,28 +20,16 @@
     ],
     "paths": {
       "ngx-sticky-modal": [
-        "dist/ngx-sticky-modal"
-      ],
-      "ngx-sticky-modal/*": [
-        "dist/ngx-sticky-modal/*"
+        "projects/ngx-sticky-modal/src/public-api"
       ],
       "ngx-wall": [
-        "dist/ngx-wall"
-      ],
-      "ngx-wall/*": [
-        "dist/ngx-wall/*"
+        "projects/ngx-wall/src/public-api"
       ],
       "ngx-input-projection": [
-        "dist/ngx-input-projection"
-      ],
-      "ngx-input-projection/*": [
-        "dist/ngx-input-projection/*"
+        "projects/ngx-input-projection/src/public-api"
       ],
       "ngx-rich-input": [
-        "dist/ngx-rich-input"
-      ],
-      "ngx-rich-input/*": [
-        "dist/ngx-rich-input/*"
+        "projects/ngx-rich-input/src/public-api"
       ]
     }
   }
