@@ -59,18 +59,9 @@ export class WallEditorComponent implements OnInit {
   wallPlan2: IWallDefinition2 = [
     {
       'id': '82600916-c474-c669-7a0a-a362fb134a63',
-      'tag': 'text2',
+      'tag': 'text',
       'meta': {},
       'data': {
-        'text': ''
-      }
-    },
-    {
-      'id': '82600916-c474-c669-7a0a-a362fb134a62',
-      'tag': 'text2',
-      'meta': {},
-      'data': {
-        'text': 'Update the view\'s props. Will immediately cause an update to the DOM.'
       }
     },
   ];

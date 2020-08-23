@@ -25,7 +25,7 @@ import {WallEditorComponent} from './wall-editor.component';
 
     // brick modules
     QuoteBrickModule,
-    TextBrickModule,
+    // TextBrickModule,
     TextBrick2Module,
     DividerBrickModule,
     VideoBrickModule,

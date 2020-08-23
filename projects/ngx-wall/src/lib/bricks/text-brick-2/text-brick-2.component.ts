@@ -251,7 +251,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     });
 
     const domNode = document.createElement('div');
-    domNode.innerHTML = this.state.text;
+    domNode.innerHTML = this.state.text || '';
 
     const state = EditorState.create({
       doc: DOMParser.fromSchema(customSchema).parse(domNode),
@@ -292,12 +292,12 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     }
 
     // happen when text is changed internally by prose-mirror component
-    if (normalizeHtmlString(newState.text, customSchema, serializer) === getHTMLRepresentation(this.view.state.doc, serializer)) {
+    if (normalizeHtmlString(newState.text || '', customSchema, serializer) === getHTMLRepresentation(this.view.state.doc, serializer)) {
       return;
     }
 
     const domNode = document.createElement('div');
-    domNode.innerHTML = newState.text;
+    domNode.innerHTML = newState.text || '';
     const doc = DOMParser.fromSchema(customSchema).parse(domNode, {
       preserveWhitespace: true
     });
@@ -322,6 +322,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onEnter() {
+    console.log(`onEnter`);
     const $cursor = isTextSelected(this.view.state.selection) ?
       this.view.state.selection.$head :
       this.view.state.selection.$cursor;
@@ -331,7 +332,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
     if (leftHTML.length) {
       if (rightHTML.length) {
-        // text is splitted to two part
+        // text is splited to two part
         this.splitBrickForTwoPart(leftHTML, rightHTML);
       } else {
         // cursor at end - text's exist - create new and focus on it
@@ -351,8 +352,16 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onBackspace() {
-    if (isTextSelected(this.view.state.selection) || !isCursorAtStart(this.view.state.selection.$cursor)) {
+    if (isTextSelected(this.view.state.selection)) {
       return;
+    }
+
+    if (!isCursorAtStart(this.view.state.selection.$cursor)) {
+      return false;
+    }
+
+    if (isCursorAtStart(this.view.state.selection.$cursor) && !this.wallModel.api.core2.getPreviousTextBrickId(this.id)) {
+      return false;
     }
 
     if (this.state.tabs) {
@@ -361,7 +370,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
         tabs: this.state.tabs - 1
       });
     } else {
-      if (this.state.text.length) {
+      if (this.state.text && this.state.text.length) {
         this.concatWithPreviousTextSupportingBrick();
       } else {
         this.onDeleteAndFocusToPrevious();
@@ -372,11 +381,11 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   onDelete() {
-    if (!this.state.text.length) {
+    if (!this.state.text || !this.state.text.length) {
       return this.onDeleteAndFocusToNext();
     }
 
-    if (this.state.text.length && !isTextSelected(this.view.state.selection) && isCursorAtEnd(this.view.state.selection.$cursor)) {
+    if (!isTextSelected(this.view.state.selection) && isCursorAtEnd(this.view.state.selection.$cursor)) {
       return this.concatWithNextTextSupportingBrick();
     }
   }
@@ -505,7 +514,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     };
 
     this.wallModel.api.core2
-      .addBrickBeforeBrickId(this.id, 'text2', newTextState);
+      .addBrickBeforeBrickId(this.id, 'text', newTextState);
 
     // scroll browser view to element
     this.editor.nativeElement.scrollIntoView({
@@ -527,7 +536,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
     };
 
     const addedBrick = this.wallModel.api.core2
-      .addBrickAfterBrickId(this.id, 'text2', newTextState);
+      .addBrickAfterBrickId(this.id, 'text', newTextState);
 
     // wait one tick for component rendering
     setTimeout(() => {
@@ -541,7 +550,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
   }
 
   private updateText(text) {
-    if (text === this.state.text) {
+    if (text === this.state.text || '') {
       throw new Error(`Trying to save the same text: ${text}`);
     }
 
@@ -564,8 +573,15 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
     const previousBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(previousTextBrickId);
 
+    // if previous text brick is empty, than just remove prvious brick
+    if (!previousBrickSnapshot.state.text || !previousBrickSnapshot.state.text.length) {
+      this.wallModel.api.core2.removeBrick(previousBrickSnapshot.id, disableViewTransactionProcessing);
+      return;
+    }
+
+    // previous brick has a text -> concatenate current and previous bricks
     this.wallModel.api.core2.updateBrickState(previousTextBrickId, {
-      text: normalizeHtmlString(previousBrickSnapshot.state.text + this.state.text, customSchema, serializer)
+      text: normalizeHtmlString((previousBrickSnapshot.state.text || '') + (this.state.text || ''), customSchema, serializer)
     });
 
     // wait for component to re-render
@@ -574,8 +590,8 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
         initiator: FOCUS_INITIATOR,
         details: {
           concatText: true,
-          initialText: previousBrickSnapshot.state.text,
-          addedText: this.state.text
+          initialText: previousBrickSnapshot.state.text || '',
+          addedText: this.state.text || ''
         }
       };
 
@@ -651,7 +667,7 @@ export class TextBrick2Component implements OnInit, OnDestroy, IOnWallStateChang
 
     const nextTextBrickSnapshot = this.wallModel.api.core2.getBrickSnapshot(nextTextBrickId);
     const concatenationText = nextTextBrickSnapshot.state.text || '';
-    const initialText = this.state.text;
+    const initialText = this.state.text || '';
 
     this.wallModel.api.core2.removeBrick(nextTextBrickId, disableViewTransactionProcessing);
 

@@ -25,7 +25,7 @@ import {BrickRegistry} from '../../wall/registry/brick-registry.service';
 export class TextBrick2Module {
   constructor(private brickRegistry: BrickRegistry) {
     this.brickRegistry.register({
-      tag: 'text2',
+      tag: 'text',
       component: TextBrick2Component,
       supportText: true,
       name: 'Text 2',
