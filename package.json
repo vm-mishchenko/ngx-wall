@@ -48,7 +48,7 @@
         "core-js": "^2.5.4",
         "rxjs": "^6.3.3",
         "zone.js": "^0.8.26",
-        "codemirror": "5.42.0",
+        "codemirror": "5.58.2",
         "ngx-sticky-modal": "^0.0.4",
         "bootstrap": "^4.3.1"
     },
